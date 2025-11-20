@@ -4,6 +4,15 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Festibask'impro — 15–17 mai 2026 · Anglet</title>
+<!-- Redirection vers www si accès sans www -->
+<script>
+  if (window.location.hostname === 'festibask-impro.fr') {
+    window.location.replace('https://www.festibask-impro.fr' + window.location.pathname + window.location.search + window.location.hash);
+  }
+</script>
+<noscript>
+  <meta http-equiv="refresh" content="0; url=https://www.festibask-impro.fr">
+</noscript>
 <meta name="description" content="Festibask'impro : Festival international d'improvisation à Anglet. 3 soirées, matchs vs Suisse, Équipe de France et Belgique, formats longs de La Malice, 12 ateliers, soirée festive.">
 <link rel="icon" href="festival-2026/favicon.png">
 <style>
@@ -14,6 +23,11 @@
   img{max-width:100%;height:auto;display:block}
   .container{width:min(1120px,100%);margin-inline:auto;padding:0 16px}
   .section{padding:56px 0}
+  .section-bg-1{background:linear-gradient(180deg, rgba(31,78,115,.12) 0%, rgba(46,107,143,.08) 100%)}
+  .section-bg-2{background:linear-gradient(180deg, rgba(57,130,171,.1) 0%, rgba(46,108,145,.06) 100%)}
+  .section-bg-3{background:linear-gradient(180deg, rgba(81,178,201,.08) 0%, rgba(99,193,206,.05) 100%)}
+  .section-bg-4{background:linear-gradient(180deg, rgba(248,214,120,.12) 0%, rgba(249,223,133,.08) 100%)}
+  .section-bg-5{background:linear-gradient(180deg, rgba(252,236,172,.1) 0%, rgba(249,229,165,.06) 100%)}
   .small{font-size:.9rem;color:var(--muted)}
   .btn{display:inline-block;padding:.95rem 1.25rem;border-radius:8px;font-weight:700;border:2px solid transparent;box-shadow:0 2px 8px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.2);transition:all .3s ease}
   .btn-primary{background:var(--accent);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.2)}.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(212,90,122,.3),inset 0 1px 0 rgba(255,255,255,.2)}
@@ -58,7 +72,10 @@
   .headline{font-size:clamp(1.4rem,2.6vw,2rem);font-weight:900;margin:0 0 8px}
   .pill{display:inline-block;border:1px solid rgba(90,143,163,.3);background:rgba(255,255,255,.6);color:var(--text);border-radius:20px;padding:.45rem .75rem;font-weight:700;backdrop-filter:blur(4px);box-shadow:0 1px 4px rgba(0,0,0,.08)}
   .stars{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
-  .star{display:flex;gap:12px;align-items:center;background:rgba(255,255,255,.7);border:1px solid rgba(90,143,163,.25);border-radius:12px;padding:10px 12px;flex:1 1 0;min-width:200px;backdrop-filter:blur(4px);box-shadow:0 2px 8px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.5)}
+  .star{display:flex;gap:12px;align-items:center;background:rgba(255,255,255,.7);border:1px solid rgba(90,143,163,.25);border-radius:12px;padding:10px 12px;flex:1 1 0;min-width:200px;backdrop-filter:blur(4px);box-shadow:0 2px 8px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.5);cursor:pointer;transition:all 0.3s ease}
+  .star:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.5);border-color:rgba(90,143,163,.4)}
+  .team-visual{width:100%;max-width:800px;margin:24px auto 0;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.1);display:block}
+  .team-visual img{width:100%;height:auto;display:block}
 
   /* Chiffres */
   .stats{display:grid;gap:16px}
@@ -94,7 +111,7 @@
     .hero{min-height:auto;aspect-ratio:16/9;background:
       linear-gradient(180deg, rgba(14,29,59,.15) 0%, rgba(10,20,40,.55) 100%),
       var(--hero-image-desktop) var(--hero-position-desktop)/cover no-repeat}
-    .hero .cta-wrap{width:auto}
+    .hero .cta-wrap{width:auto;margin-left:auto;margin-right:clamp(40px,12vw,120px);padding-right:0}
     .hero-title{top:32px;right:clamp(32px,8vw,120px)}
   }
 
@@ -145,14 +162,14 @@
   <div class="container cta-wrap">
     <div class="cta-card">
       <button class="btn btn-primary" data-open="notify">Prévenez-moi</button>
-      <a class="btn btn-secondary" href="#programme">Découvrir le programme</a>
+      <a class="btn btn-secondary" href="#programme">Découvrez le programme</a>
     </div>
     <p class="small" style="margin-top:10px">Billetterie à venir. Recevez une alerte dès l’ouverture.</p>
   </div>
 </section>
 
 <!-- Proposition de valeur -->
-<section id="valeur" class="section">
+<section id="valeur" class="section section-bg-1">
   <div class="container">
     <p class="pill">Festival international</p>
     <h2 class="headline">Trois soirées d'impro de haut niveau — <span style="color:var(--accent)">Suisse</span>, <span style="color:var(--accent)">Équipe de France</span>, <span style="color:var(--accent)">Belgique</span> & <span style="color:var(--accent)">La Malice</span></h2>
@@ -163,29 +180,31 @@
          - Photo réaliste détourée ou collage charte
          - Énergie, cohérence visuelle -->
     <div class="stars" style="margin-top:14px">
-      <div class="star">
+      <div class="star" data-team="france">
         <img src="festival-2026/headliners/france-flag.svg" alt="Équipe de France" width="90" height="90" style="object-fit: contain;">
         <div><strong>Équipe de France</strong><br><span class="small">Invitée d'honneur — samedi soir</span></div>
       </div>
-      <div class="star">
+      <div class="star" data-team="belgique">
         <img src="festival-2026/headliners/belgique-flag.svg" alt="Équipe de Belgique" width="90" height="90" style="object-fit: contain;">
         <div><strong>Équipe de Belgique</strong><br><span class="small">Match du dimanche</span></div>
       </div>
-      <div class="star">
+      <div class="star" data-team="suisse">
         <img src="festival-2026/headliners/suisse-flag.svg" alt="Équipe de Suisse" width="90" height="90" style="object-fit: contain;">
         <div><strong>Équipe de Suisse</strong><br><span class="small">Match du vendredi</span></div>
       </div>
-      <div class="star">
-        <img src="assets/img/logos/logo-malice-bleu-blanc-tr-400x400.png" alt="La Malice" width="90" height="90" style="object-fit: contain;">
+      <div class="star" data-team="malice">
+        <img src="assets/img/logos/logo-la-malice-noir-bleu-tr.png" alt="La Malice" width="90" height="90" style="object-fit: contain;">
         <div><strong>La Malice</strong><br><span class="small">Équipe organisatrice</span></div>
       </div>
     </div>
-    <p class="small" style="margin-top:10px">Visuels des artistes et des équipes à venir.</p>
+    <div class="team-visual" id="teamVisual">
+      <img src="assets/img/equipe-de-france.webp" alt="Équipe de France" id="teamImage">
+    </div>
   </div>
 </section>
 
 <!-- Les chiffres -->
-<section id="chiffres" class="section" aria-labelledby="stats-title">
+<section id="chiffres" class="section section-bg-2" aria-labelledby="stats-title">
   <div class="container">
     <h2 id="stats-title">Les chiffres</h2>
     <div class="stats" style="margin-top:14px">
@@ -197,7 +216,7 @@
 </section>
 
 <!-- Programme -->
-<section id="programme" class="section program">
+<section id="programme" class="section program section-bg-3">
   <div class="container">
     <h2>Programme</h2>
     <p class="small">Chaque journée alterne des <strong>stages d’impro</strong> (matin & après-midi) et une <strong>soirée</strong> en deux temps : <em>format long</em> puis <em>match international</em>.</p>
@@ -269,11 +288,17 @@
       </div>
     </div>
 
-    <!-- Tarifs -->
+  </div>
+</section>
+
+<!-- Tarifs et Billetterie -->
+<section id="tarifs" class="section section-bg-4">
+  <div class="container">
+    <h2>Tarifs & Billetterie</h2>
     <div class="pricing" style="margin-top:18px">
       <div class="price"><h4>Pass 1 jour</h4><div class="value">25 €</div><p class="small">2 spectacles + 1 boisson incluse</p></div>
       <div class="price"><h4>Pass 3 jours</h4><div class="value">60 €</div><p class="small">Accès aux 3 soirées</p></div>
-      <div class="price"><h4>Réductions</h4><div class="value">-40%</div><p class="small">Étudiant·e·s & demandeur·se·s d’emploi</p></div>
+      <div class="price"><h4>Réductions</h4><div class="value">-40%</div><p class="small">Étudiant·e·s & demandeur·se·s d'emploi</p></div>
     </div>
 
     <div class="card" style="margin-top:18px">
@@ -286,7 +311,7 @@
 </section>
 
 <!-- Ateliers -->
-<section id="ateliers" class="section">
+<section id="ateliers" class="section section-bg-5">
   <div class="container">
     <h2>Ateliers d’impro</h2>
     <p class="small">
@@ -349,7 +374,7 @@
 </section>
 
 <!-- Infos pratiques -->
-<section id="infos" class="section">
+<section id="infos" class="section section-bg-5">
   <div class="container grid grid-2">
     <div>
       <h2>Infos pratiques</h2>
@@ -374,7 +399,7 @@
 </section>
 
 <!-- Sponsors -->
-<section id="sponsors" class="section">
+<section id="sponsors" class="section section-bg-5">
   <div class="container">
     <h2>Partenaires & sponsors</h2>
     <p class="small">Merci à nos partenaires. Vous souhaitez nous soutenir ? <a href="#"><!-- TODO: lien -->Devenir sponsor</a>.</p>
@@ -412,7 +437,7 @@
       <!-- LOGO LA MALICE
            - PNG transparent, carré
            - Largeur affichée : ~140px -->
-      <img src="assets/img/logos/logo-malice-bleu-blanc-tr-400x400.png" alt="Logo La Malice" width="140" height="140" style="margin-top:8px">
+      <img src="assets/img/logos/logo-la-malice-noir-bleu-tr.png" alt="Logo La Malice" width="140" height="140" style="margin-top:8px">
     </div>
     <div>
       <h4>Liens</h4>
@@ -477,9 +502,27 @@
   // Placeholder submit (remplacer par Brevo)
   document.getElementById('notifyForm').addEventListener('submit',e=>{
     e.preventDefault();
-    alert("Merci ! Vous serez prévenu·e dès l’ouverture de la billetterie. (Brancher Brevo ici)");
+    alert("Merci ! Vous serez prévenu·e dès l'ouverture de la billetterie. (Brancher Brevo ici)");
     dlg.close();
   },{once:true});
+
+  // Gestion des clics sur les cards d'équipes
+  const teamImage = document.getElementById('teamImage');
+  const teamVisual = document.getElementById('teamVisual');
+  const teamImages = {
+    france: 'assets/img/equipe-de-france.webp',
+    belgique: 'assets/img/malice-belgique.png',
+    suisse: 'assets/img/placeholder-equipe.svg',
+    malice: 'assets/img/malice-belgique.png'
+  };
+  document.querySelectorAll('.star[data-team]').forEach(star=>{
+    star.addEventListener('click',()=>{
+      const team=star.getAttribute('data-team');
+      teamImage.src=teamImages[team];
+      teamImage.alt=star.querySelector('strong').textContent;
+      teamVisual.scrollIntoView({behavior:'smooth',block:'nearest'});
+    });
+  });
 </script>
 </body>
 </html>
