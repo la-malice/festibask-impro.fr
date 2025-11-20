@@ -51,9 +51,7 @@
   /* Hero (image en background, CTAs par-dessus) */
   .hero{
     position:relative;min-height:72vh;display:grid;grid-template-rows:1fr auto;padding:24px 0 48px;
-    background:
-      linear-gradient(180deg, rgba(14,29,59,.15) 0%, rgba(10,20,40,.55) 100%),
-      var(--hero-image-mobile) var(--hero-position-mobile)/cover no-repeat;
+    background:var(--hero-image-mobile) var(--hero-position-mobile)/cover no-repeat;
     border-bottom:1px solid rgba(90,143,163,.15);
   }
   .hero-title{position:absolute;top:24px;right:clamp(16px,8vw,80px);text-align:right;z-index:10;line-height:1.1;display:flex;flex-direction:column;align-items:flex-end}
@@ -108,9 +106,7 @@
 
   /* Hero desktop: plein écran en background, CTA compact. Permet un visuel dédié desktop */
   @media(min-width:1024px){
-    .hero{min-height:auto;aspect-ratio:16/9;background:
-      linear-gradient(180deg, rgba(14,29,59,.15) 0%, rgba(10,20,40,.55) 100%),
-      var(--hero-image-desktop) var(--hero-position-desktop)/cover no-repeat}
+    .hero{min-height:auto;aspect-ratio:16/9;background:var(--hero-image-desktop) var(--hero-position-desktop)/cover no-repeat}
     .hero .cta-wrap{width:auto;margin-left:auto;margin-right:clamp(40px,12vw,120px);padding-right:0}
     .hero-title{top:32px;right:clamp(32px,8vw,120px)}
   }
