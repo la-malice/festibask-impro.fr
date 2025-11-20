@@ -18,12 +18,8 @@
     if(!inside) dlg.close();
   });
 
-  // Placeholder submit (remplacer par Brevo)
-  document.getElementById('notifyForm').addEventListener('submit',e=>{
-    e.preventDefault();
-    alert("Merci ! Vous serez prévenu·e dès l'ouverture de la billetterie. (Brancher Brevo ici)");
-    dlg.close();
-  },{once:true});
+  // Brevo gère automatiquement le masquage du formulaire avec AUTOHIDE = Boolean(1)
+  // Le bouton "Fermer" dans le message de succès permet de fermer la popup explicitement
 
   // Carrousel des matches
   const carouselContainer = document.getElementById('matchesCarousel');
