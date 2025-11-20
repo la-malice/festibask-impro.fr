@@ -7,7 +7,7 @@
 <meta name="description" content="Festibask'impro : Festival international d'improvisation à Anglet. 3 soirées, matchs vs Suisse, Équipe de France et Belgique, formats longs de La Malice, ≈10 ateliers, soirée festive.">
 <link rel="icon" href="festival-2026/favicon.png">
 <style>
-  :root{--bg:#0A1428;--bg2:#0E1D3B;--accent:#FF3B82;--blue:#36D6F0;--text:#E8F1FF;--muted:#9FB3D1;--card:#0f203f;--hero-image: url("festival-2026/hero-collage-1920x1080.png");--hero-image-mobile: var(--hero-image);--hero-image-desktop: var(--hero-image);--hero-position-mobile:center 50%;--hero-position-desktop:center 45%}
+  :root{--bg:#0A1428;--bg2:#0E1D3B;--accent:#FF3B82;--blue:#36D6F0;--text:#E8F1FF;--muted:#9FB3D1;--card:#0f203f;--hero-image: url("festival-2026/hero-collage-1536x1024.jpg");--hero-image-mobile: var(--hero-image);--hero-image-desktop: var(--hero-image);--hero-position-mobile:center 50%;--hero-position-desktop:center 45%}
   *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;line-height:1.5}
   a{color:var(--blue);text-decoration:none} a:hover{text-decoration:underline}
   img{max-width:100%;height:auto;display:block}
@@ -37,7 +37,7 @@
   .hero{
     position:relative;min-height:72vh;display:grid;place-items:end start;padding:24px 0 48px;
     background:
-      linear-gradient(180deg, rgba(14,29,59,.35) 0%, rgba(10,20,40,.85) 100%),
+      linear-gradient(180deg, rgba(14,29,59,.15) 0%, rgba(10,20,40,.55) 100%),
       var(--hero-image-mobile) var(--hero-position-mobile)/cover no-repeat;
     border-bottom:1px solid #12254a;
   }
@@ -49,7 +49,7 @@
   .headline{font-size:clamp(1.4rem,2.6vw,2rem);font-weight:900;margin:0 0 8px}
   .pill{display:inline-block;border:1px solid #183468;background:#0b1c3a;color:#cfe1ff;border-radius:999px;padding:.45rem .75rem;font-weight:700}
   .stars{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
-  .star{display:flex;gap:12px;align-items:center;background:#0b1c3a;border:1px solid #183468;border-radius:14px;padding:10px 12px}
+  .star{display:flex;gap:12px;align-items:center;background:#0b1c3a;border:1px solid #183468;border-radius:14px;padding:10px 12px;flex:1 1 0;min-width:200px}
 
   /* Chiffres */
   .stats{display:grid;gap:16px}
@@ -69,6 +69,8 @@
   .sponsors-list{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
   @media(min-width:720px){.sponsors-list{grid-template-columns:repeat(6,1fr)}}
   .sponsor{background:#0b1c3a;border:1px dashed #284d8c;height:64px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#6fa3ff;font-weight:700}
+  .sponsor-placeholder{background:#0b1c3a;border:2px dashed #284d8c;height:64px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#6fa3ff;font-weight:700;text-decoration:none;transition:all 0.2s;cursor:pointer}
+  .sponsor-placeholder:hover{background:#0f203f;border-color:#36D6F0;color:#36D6F0;text-decoration:none}
 
   footer{border-top:1px solid #132a55;background:#081225}
   .footer-grid{display:grid;gap:18px}@media(min-width:800px){.footer-grid{grid-template-columns:2fr 1fr 1fr}}
@@ -81,7 +83,7 @@
   /* Hero desktop: plein écran en background, CTA compact. Permet un visuel dédié desktop */
   @media(min-width:1024px){
     .hero{min-height:auto;aspect-ratio:16/9;background:
-      linear-gradient(180deg, rgba(14,29,59,.35) 0%, rgba(10,20,40,.85) 100%),
+      linear-gradient(180deg, rgba(14,29,59,.15) 0%, rgba(10,20,40,.55) 100%),
       var(--hero-image-desktop) var(--hero-position-desktop)/cover no-repeat}
     .hero .cta-wrap{width:auto}
   }
@@ -138,7 +140,7 @@
 <section id="valeur" class="section">
   <div class="container">
     <p class="pill">Festival international</p>
-    <h2 class="headline">Trois soirées d’impro de haut niveau — <span style="color:var(--accent)">Suisse</span>, <span style="color:var(--accent)">Équipe de France</span> & <span style="color:var(--accent)">Belgique</span></h2>
+    <h2 class="headline">Trois soirées d'impro de haut niveau — <span style="color:var(--accent)">Suisse</span>, <span style="color:var(--accent)">Équipe de France</span>, <span style="color:var(--accent)">Belgique</span> & <span style="color:var(--accent)">La Malice</span></h2>
     <p class="small">Des matchs d’exception face à des équipes invitées internationales, précédés chaque soir d’un format long créé par <strong>La Malice</strong>.</p>
 
     <!-- DESIGNER : 3 visuels headliners
@@ -147,16 +149,20 @@
          - Énergie, cohérence visuelle -->
     <div class="stars" style="margin-top:14px">
       <div class="star">
-        <img src="festival-2026/headliners/suisse-800x450.jpg" alt="Équipe de Suisse" width="160" height="90">
+        <img src="festival-2026/headliners/france-flag.svg" alt="Équipe de France" width="90" height="90" style="object-fit: contain;">
+        <div><strong>Équipe de France</strong><br><span class="small">Invitée d'honneur — samedi soir</span></div>
+      </div>
+      <div class="star">
+        <img src="festival-2026/headliners/belgique-flag.svg" alt="Équipe de Belgique" width="90" height="90" style="object-fit: contain;">
+        <div><strong>Équipe de Belgique</strong><br><span class="small">Match du dimanche</span></div>
+      </div>
+      <div class="star">
+        <img src="festival-2026/headliners/suisse-flag.svg" alt="Équipe de Suisse" width="90" height="90" style="object-fit: contain;">
         <div><strong>Équipe de Suisse</strong><br><span class="small">Match du vendredi</span></div>
       </div>
       <div class="star">
-        <img src="festival-2026/headliners/equipe-france-800x450.jpg" alt="Équipe de France d’Improvisation" width="160" height="90">
-        <div><strong>Équipe de France d’Improvisation</strong><br><span class="small">Invitée d’honneur — samedi soir</span></div>
-      </div>
-      <div class="star">
-        <img src="festival-2026/headliners/belgique-800x450.jpg" alt="Équipe de Belgique" width="160" height="90">
-        <div><strong>Équipe de Belgique</strong><br><span class="small">Match du dimanche</span></div>
+        <img src="assets/img/logos/logo-malice-bleu-blanc-tr-400x400.png" alt="La Malice" width="90" height="90" style="object-fit: contain;">
+        <div><strong>La Malice</strong><br><span class="small">Équipe organisatrice</span></div>
       </div>
     </div>
     <p class="small" style="margin-top:10px">Visuels des artistes et des équipes à venir.</p>
@@ -293,7 +299,7 @@
         <p><!-- TODO: Bénéfice clair (1–2 phrases) --></p>
         <p class="small">Niveau : <!-- TODO --> · Durée : 3 h · Places : ≈ 15</p>
         <div class="small" style="display:flex;align-items:center;gap:10px">
-          <img src="festival-2026/ateliers/instructor-1-600x600.jpg" alt="Portrait formateur 1" width="64" height="64" style="border-radius:50%;object-fit:cover;aspect-ratio:1/1">
+          <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Portrait formateur" width="64" height="64" style="border-radius:50%;object-fit:cover;aspect-ratio:1/1">
           <span><strong><!-- TODO: Nom --></strong> — <!-- TODO: micro bio --></span>
         </div>
         <div class="cta-row" style="margin-top:10px"><a class="btn btn-secondary" href="#" aria-disabled="true">Bientôt en ligne</a></div>
@@ -306,7 +312,7 @@
         <p><!-- TODO --></p>
         <p class="small">Niveau : <!-- --> · Durée : 3 h · Places : ≈ 15</p>
         <div class="small" style="display:flex;align-items:center;gap:10px">
-          <img src="festival-2026/ateliers/instructor-2-600x600.jpg" alt="Portrait formateur 2" width="64" height="64" style="border-radius:50%;object-fit:cover;aspect-ratio:1/1">
+          <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Portrait formateur" width="64" height="64" style="border-radius:50%;object-fit:cover;aspect-ratio:1/1">
           <span><strong><!-- --></strong> — <!-- --></span>
         </div>
         <div class="cta-row" style="margin-top:10px"><a class="btn btn-secondary" href="#" aria-disabled="true">Bientôt en ligne</a></div>
@@ -319,7 +325,7 @@
         <p><!-- TODO --></p>
         <p class="small">Niveau : <!-- --> · Durée : 3 h · Places : ≈ 15</p>
         <div class="small" style="display:flex;align-items:center;gap:10px">
-          <img src="festival-2026/ateliers/instructor-3-600x600.jpg" alt="Portrait formateur 3" width="64" height="64" style="border-radius:50%;object-fit:cover;aspect-ratio:1/1">
+          <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Portrait formateur" width="64" height="64" style="border-radius:50%;object-fit:cover;aspect-ratio:1/1">
           <span><strong><!-- --></strong> — <!-- --></span>
         </div>
         <div class="cta-row" style="margin-top:10px"><a class="btn btn-secondary" href="#" aria-disabled="true">Bientôt en ligne</a></div>
@@ -371,12 +377,10 @@
          - Taille cible 200x80 (hauteur max 80px dans le ruban)
          - Versions monochromes acceptées si plus harmonieuses -->
     <div class="sponsors-list" style="margin-top:14px">
-      <img class="sponsor" src="assets/Logo_de_la_ville_d'Anglet_2010.jpg" alt="Ville d'Anglet">
-      <img class="sponsor" src="festival-2026/logos/aperock-cafe.svg" alt="Aperock Café">
-      <img class="sponsor" src="festival-2026/logos/rtl2.svg" alt="RTL2">
-      <img class="sponsor" src="festival-2026/logos/sponsor-4.svg" alt="Votre logo">
-      <img class="sponsor" src="festival-2026/logos/sponsor-5.svg" alt="Votre logo">
-      <img class="sponsor" src="festival-2026/logos/sponsor-6.svg" alt="Votre logo">
+      <img class="sponsor" src="assets/img/logos/Logo_de_la_ville_d'Anglet_2010.jpg" alt="Ville d'Anglet">
+      <img class="sponsor" src="assets/img/logos/logo-aperock.jpeg" alt="Aperock Café">
+      <img class="sponsor" src="assets/img/logos/rtl2-logo.png" alt="RTL2">
+      <a href="#sponsors" class="sponsor-placeholder">Votre logo ici</a>
     </div>
   </div>
 </section>
@@ -401,7 +405,7 @@
       <!-- LOGO LA MALICE
            - PNG transparent, carré
            - Largeur affichée : ~140px -->
-      <img src="assets/logo-la-malice-square-bleu-tr.png" alt="Logo La Malice" width="140" height="140" style="margin-top:8px">
+      <img src="assets/img/logos/logo-malice-bleu-blanc-tr-400x400.png" alt="Logo La Malice" width="140" height="140" style="margin-top:8px">
     </div>
     <div>
       <h4>Liens</h4>
