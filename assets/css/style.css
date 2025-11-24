@@ -668,12 +668,13 @@ nav.primary {
 .format-long-block {
   position: relative;
   width: 100%;
+  height: 280px;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: var(--shadow-lg);
   margin-bottom: 8px;
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, height 0.3s ease;
 }
 
 .format-long-block:hover {
@@ -701,6 +702,10 @@ nav.primary {
 
 .format-long-block:hover::after {
   opacity: 1;
+}
+
+.format-long-block.flipped::after {
+  display: none;
 }
 
 @media (max-width: 768px) {
@@ -741,7 +746,7 @@ nav.primary {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
+  right: 33.333%;
   bottom: 0;
   padding: 24px;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.85) 100%);
@@ -759,6 +764,16 @@ nav.primary {
 .format-long-block.flipped .format-long-pitch {
   opacity: 1;
   pointer-events: auto;
+}
+
+.format-long-block.flipped .format-long-image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 33.333%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 2;
 }
 
 .format-long-pitch h4 {
@@ -1023,6 +1038,17 @@ nav.primary {
   
   .day-date {
     gap: 12px;
+  }
+  
+  /* Sur mobile, le pitch prend toute la place */
+  .format-long-pitch {
+    right: 0;
+  }
+  
+  .format-long-block.flipped .format-long-image {
+    width: 100%;
+    height: auto;
+    position: static;
   }
 }
 
