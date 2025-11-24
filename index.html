@@ -53,7 +53,7 @@
   <a href="#ateliers">Ateliers</a>
   <a href="#infos">Infos pratiques</a>
   <a href="#sponsors">Partenaires</a>
-  <a href="#" data-open="notify" style="margin-top:8px">Prévenez-moi</a>
+  <a href="#" data-open="notify" class="mt-8">Prévenez-moi</a>
 </nav>
 
 <!-- HERO -->
@@ -69,77 +69,155 @@
       <button class="btn btn-primary" data-open="notify">Prévenez-moi</button>
       <a class="btn btn-secondary" href="#programme">Découvrez le programme</a>
     </div>
-    <p class="small" style="background:rgba(0,0,0,.5);color:#fff;padding:8px 12px;border-radius:8px;display:inline-block;backdrop-filter:blur(4px);text-shadow:0 1px 2px rgba(0,0,0,.3);margin:0">Billetterie à venir. Recevez une alerte dès l'ouverture.</p>
+    <p class="small hero-notice">Billetterie à venir. Recevez une alerte dès l'ouverture.</p>
   </div>
 </section>
 
 <!-- Proposition de valeur -->
 <section id="valeur" class="section section-bg-1">
   <div class="container">
-    <p class="pill">Festival international d'Improvisation à Anglet</p>
-    <h2 class="headline">3 soirées d'impro exceptionnelles</h2>
-    <p style="margin:20px 0;font-size:clamp(1.1rem,2vw,1.3rem);line-height:1.6;text-align:center;max-width:800px;margin-left:auto;margin-right:auto;color:var(--text)">Pour fêter ses 10 ans, la troupe de La Malice débarque à la patinoire de la barre pour vous offrir un grand festival d'improvisation&nbsp;!!!</p>
-    <h3 style="margin-top:24px;font-family:'Bobby Jones',sans-serif;font-size:clamp(1.8rem,3.5vw,2.5rem);color:#017aa1;font-weight:normal">MATCHES D'IMPRO INTERNATIONAUX</h3>
-    <p class="small">Le match d'impro est le format phare par lequel l'impro s'est diffusée. Venu du Québec, il emprunte aux codes du Hockey sur glace où 2 équipes de comédiens s'affrontent sur une patinoire dans des séquences brèves et rythmées sous la surveillance d'un arbitre implacable&nbsp;!</p>
-
-    <!-- Carrousel des matches -->
-    <div class="matches-carousel">
-      <button class="carousel-arrow prev" aria-label="Match précédent">‹</button>
-      <button class="carousel-arrow next" aria-label="Match suivant">›</button>
-      <div class="matches-carousel-container" id="matchesCarousel">
-        <!-- Vendredi - Malice vs Suisse -->
-        <div class="match-slide">
-          <div class="match-illustration">
-            <img src="assets/img/placeholder-equipe.svg" alt="La Malice vs Suisse" class="match-photo">
+    <p class="pill">Festival d'Improvisation à Anglet</p>
+    <div class="intro-with-logo">
+      <img src="assets/img/logos/logo-la-malice-noir-bleu-tr.png" alt="La Malice" class="intro-logo">
+      <p class="intro-text">Depuis 50 ans, les matchs d'impro ramènent une patinoire sur scène. Nous, à <a href="https://www.instagram.com/lamaliceimprovise" target="_blank" rel="noopener noreferrer" class="intro-link">La Malice</a>, on a mal compris : on a ramené la scène dans une patinoire. Pour nos 10 ans, rendez-vous à la Patinoire de la Barre, à Anglet pour <span class="intro-highlight">3 soirées d'impro exceptionnelles</span>&nbsp;!</p>
+    </div>
+    <!-- Slider jour par jour -->
+    <div class="day-slider">
+      <div class="day-slider-container" id="daySlider">
+        <!-- Vendredi 15 mai -->
+        <div class="day-slide">
+          <div class="day-date">
+            <button class="carousel-arrow prev" aria-label="Jour précédent">‹</button>
+            <span class="date-text">Vendredi 15 mai</span>
+            <button class="carousel-arrow next" aria-label="Jour suivant">›</button>
           </div>
-          <div class="match-date">Vendredi 15 mai · 20:30</div>
-          <h3 class="match-title">La Malice vs Suisse</h3>
-          <div class="match-teams">
-            <div class="match-team">
-              <img src="assets/img/logos/logo-la-malice-noir-bleu-tr.png" alt="La Malice" width="120" height="120">
-              <div class="match-team-name">La Malice</div>
+          
+          <!-- Format long -->
+          <div class="format-long-block">
+            <img src="assets/img/longform-placeholder.jpg" alt="Création originale" class="format-long-image">
+            <div class="format-long-overlay">
+              <div class="format-long-time">19:00</div>
+              <div class="format-long-label">Impro longue</div>
+              <h3 class="format-long-title">Création originale</h3>
             </div>
-            <div class="match-team">
-              <img src="festival-2026/headliners/suisse-flag.svg" alt="Équipe de Suisse" width="120" height="120">
-              <div class="match-team-name">Équipe de Suisse</div>
+            <div class="format-long-pitch">
+              <h4>Création originale</h4>
+              <p>Nous sommes en train de créer un spectacle inédit, spécialement pour l'événement. Il sera bientôt révélé. Revenez voir bientôt.</p>
+            </div>
+          </div>
+          
+          <!-- Match -->
+          <div class="match-block">
+            <img src="assets/img/equipe-suisse.jpg" alt="La Malice vs Suisse" class="match-image">
+            <div class="match-teams-overlay">
+              <div class="match-team-logo">
+                <img src="assets/img/logos/logo-la-malice-noir-bleu-tr.png" alt="La Malice" width="100" height="100">
+              </div>
+              <div class="match-vs">VS</div>
+              <div class="match-team-logo">
+                <img src="festival-2026/headliners/suisse-flag.svg" alt="Équipe de Suisse" width="100" height="100">
+              </div>
+            </div>
+            <div class="match-overlay">
+              <div class="match-time">20:30</div>
+              <div class="match-label-small">Match</div>
+              <div class="match-label">La Malice vs Suisse</div>
+            </div>
+            <div class="match-pitch">
+              <h4>Match d'impro</h4>
+              <p>Le match d'impro est le format phare par lequel l'impro s'est diffusée. Venu du Québec, il emprunte aux codes du Hockey sur glace où 2 équipes de comédiens s'affrontent sur une patinoire dans des séquences brèves et rythmées sous la surveillance d'un arbitre implacable&nbsp;!</p>
             </div>
           </div>
         </div>
         
-        <!-- Samedi - Malice vs France -->
-        <div class="match-slide">
-          <div class="match-illustration">
-            <img src="assets/img/241125-MATCH-FRANCE-BELGIQUE-©J-55_BD-1200x470.jpg" alt="La Malice vs Équipe de France" class="match-photo">
+        <!-- Samedi 16 mai -->
+        <div class="day-slide">
+          <div class="day-date">
+            <button class="carousel-arrow prev" aria-label="Jour précédent">‹</button>
+            <span class="date-text">Samedi 16 mai</span>
+            <button class="carousel-arrow next" aria-label="Jour suivant">›</button>
           </div>
-          <div class="match-date">Samedi 16 mai · 20:30</div>
-          <h3 class="match-title">La Malice vs Équipe de France</h3>
-          <div class="match-teams">
-            <div class="match-team">
-              <img src="assets/img/logos/logo-la-malice-noir-bleu-tr.png" alt="La Malice" width="120" height="120">
-              <div class="match-team-name">La Malice</div>
+          
+          <!-- Format long -->
+          <div class="format-long-block">
+            <img src="assets/img/commis-d-office.jpg" alt="Commis d'Office" class="format-long-image">
+            <div class="format-long-overlay">
+              <div class="format-long-time">19:00</div>
+              <div class="format-long-label">Impro longue</div>
+              <h3 class="format-long-title">Commis d'Office</h3>
             </div>
-            <div class="match-team">
-              <img src="festival-2026/headliners/france-flag.svg" alt="Équipe de France" width="120" height="120">
-              <div class="match-team-name">Équipe de France</div>
+            <div class="format-long-pitch">
+              <h4>Commis d'Office</h4>
+              <p>Un jeune avocat commis d'office reçoit un accusé malheureux qui va se confier et expliquer le long chemin qui l'a mené jusqu'à commettre l'impensable. Pendant 1h nous verrons son parcours, ses errances, ses rencontres jusqu'à comprendre sa destinée. Saurons-nous s'il est déclaré coupable ou non ?</p>
+            </div>
+          </div>
+          
+          <!-- Match -->
+          <div class="match-block">
+            <img src="assets/img/241125-MATCH-FRANCE-BELGIQUE-©J-55_BD-1200x470.jpg" alt="La Malice vs Équipe de France" class="match-image">
+            <div class="match-teams-overlay">
+              <div class="match-team-logo">
+                <img src="assets/img/logos/logo-la-malice-noir-bleu-tr.png" alt="La Malice" width="100" height="100">
+              </div>
+              <div class="match-vs">VS</div>
+              <div class="match-team-logo">
+                <img src="festival-2026/headliners/france-flag.svg" alt="Équipe de France" width="100" height="100">
+              </div>
+            </div>
+            <div class="match-overlay">
+              <div class="match-time">20:30</div>
+              <div class="match-label-small">Match</div>
+              <div class="match-label">La Malice vs France</div>
+            </div>
+            <div class="match-pitch">
+              <h4>Match d'impro</h4>
+              <p>Le match d'impro est le format phare par lequel l'impro s'est diffusée. Venu du Québec, il emprunte aux codes du Hockey sur glace où 2 équipes de comédiens s'affrontent sur une patinoire dans des séquences brèves et rythmées sous la surveillance d'un arbitre implacable&nbsp;!</p>
             </div>
           </div>
         </div>
         
-        <!-- Dimanche - Malice vs Belgique -->
-        <div class="match-slide">
-          <div class="match-illustration">
-            <img src="assets/img/malice-belgique.png" alt="La Malice vs Belgique" class="match-photo">
+        <!-- Dimanche 17 mai -->
+        <div class="day-slide">
+          <div class="day-date">
+            <button class="carousel-arrow prev" aria-label="Jour précédent">‹</button>
+            <span class="date-text">Dimanche 17 mai</span>
+            <button class="carousel-arrow next" aria-label="Jour suivant">›</button>
           </div>
-          <div class="match-date">Dimanche 17 mai · 20:30</div>
-          <h3 class="match-title">La Malice vs Belgique</h3>
-          <div class="match-teams">
-            <div class="match-team">
-              <img src="assets/img/logos/logo-la-malice-noir-bleu-tr.png" alt="La Malice" width="120" height="120">
-              <div class="match-team-name">La Malice</div>
+          
+          <!-- Format long -->
+          <div class="format-long-block">
+            <img src="assets/img/longform-placeholder.jpg" alt="Création originale" class="format-long-image">
+            <div class="format-long-overlay">
+              <div class="format-long-time">19:00</div>
+              <div class="format-long-label">Impro longue</div>
+              <h3 class="format-long-title">Création originale</h3>
             </div>
-            <div class="match-team">
-              <img src="festival-2026/headliners/belgique-flag.svg" alt="Équipe de Belgique" width="120" height="120">
-              <div class="match-team-name">Équipe de Belgique</div>
+            <div class="format-long-pitch">
+              <h4>Création originale</h4>
+              <p>Nous sommes en train de créer un spectacle inédit, spécialement pour l'événement. Il sera bientôt révélé. Revenez voir bientôt.</p>
+            </div>
+          </div>
+          
+          <!-- Match -->
+          <div class="match-block">
+            <img src="assets/img/equipe-belgique.jpg" alt="La Malice vs Belgique" class="match-image">
+            <div class="match-teams-overlay">
+              <div class="match-team-logo">
+                <img src="assets/img/logos/logo-la-malice-noir-bleu-tr.png" alt="La Malice" width="100" height="100">
+              </div>
+              <div class="match-vs">VS</div>
+              <div class="match-team-logo">
+                <img src="festival-2026/headliners/belgique-flag.svg" alt="Équipe de Belgique" width="100" height="100">
+              </div>
+            </div>
+            <div class="match-overlay">
+              <div class="match-time">20:30</div>
+              <div class="match-label-small">Match</div>
+              <div class="match-label">La Malice vs Belgique</div>
+            </div>
+            <div class="match-pitch">
+              <h4>Match d'impro</h4>
+              <p>Le match d'impro est le format phare par lequel l'impro s'est diffusée. Venu du Québec, il emprunte aux codes du Hockey sur glace où 2 équipes de comédiens s'affrontent sur une patinoire dans des séquences brèves et rythmées sous la surveillance d'un arbitre implacable&nbsp;!</p>
             </div>
           </div>
         </div>
@@ -151,39 +229,6 @@
       </div>
     </div>
 
-    <h3 style="margin-top:40px;font-family:'Bobby Jones',sans-serif;font-size:clamp(1.8rem,3.5vw,2.5rem);color:#017aa1;font-weight:normal">SPECTACLES LONG FORMAT</h3>
-    <p class="small" style="margin-bottom:24px;line-height:1.6">En première partie de soirée, venez assister à des spectacles inédits. De concepts tout droits sortis de la tête des Malicieux. Ce que vous verrez ce soir, vous ne le verrez plus jamais ailleurs. Émotion, et fou-rires garantis.</p>
-    <div class="format-longs">
-      <!-- Vendredi -->
-      <article class="format-long-card">
-        <img src="assets/img/longform-placeholder.jpg" alt="Format long vendredi">
-        <div class="content">
-          <div class="day">Vendredi 15 mai · 19:00</div>
-          <h3>Création originale</h3>
-          <p>Nous sommes en train de créer un spectacle inédit, spécialement pour l'événement. Il sera bientôt révélé. Revenez voir bientôt.</p>
-        </div>
-      </article>
-
-      <!-- Samedi -->
-      <article class="format-long-card">
-        <img src="assets/img/commis-d-office.jpg" alt="Commis d'Office">
-        <div class="content">
-          <div class="day">Samedi 16 mai · 19:00</div>
-          <h3>Commis d'Office</h3>
-          <p>Un jeune avocat commis d'office reçoit un accusé malheureux qui va se confier et expliquer le long chemin qui l'a mené jusqu'à commettre l'impensable. Pendant 1h nous verrons son parcours, ses errances, ses rencontres jusqu'à comprendre sa destinée. Saurons-nous s'il est déclaré coupable ou non ?</p>
-        </div>
-      </article>
-
-      <!-- Dimanche -->
-      <article class="format-long-card">
-        <img src="assets/img/longform-placeholder.jpg" alt="Format long dimanche">
-        <div class="content">
-          <div class="day">Dimanche 17 mai · 19:00</div>
-          <h3>Création originale</h3>
-          <p>Nous sommes en train de créer un spectacle inédit, spécialement pour l'événement. Il sera bientôt révélé. Revenez voir bientôt.</p>
-        </div>
-      </article>
-    </div>
   </div>
 </section>
 
@@ -191,7 +236,7 @@
 <section id="ateliers" class="section section-bg-5">
   <div class="container">
     <h2>Ateliers d'impro</h2>
-    <p class="small" style="margin-bottom:16px">Chaque jour des ateliers d'improvisation animés vous sont proposés. Que vous souhaitiez vous initier seul ou en famille, ou que vous souhaitiez vous perfectionner ou prendre une master class, il y aura forcément un atelier pour vous. Nous avons 12 créneaux disponibles et des places limitées.</p>
+    <p class="small mb-16">Chaque jour des ateliers d'improvisation animés vous sont proposés. Que vous souhaitiez vous initier seul ou en famille, ou que vous souhaitiez vous perfectionner ou prendre une master class, il y aura forcément un atelier pour vous. Nous avons 12 créneaux disponibles et des places limitées.</p>
 
     <div class="ateliers-grid">
       <!-- Stage Initiation Adulte -->
@@ -288,10 +333,10 @@
       </article>
     </div>
 
-    <div class="card" style="margin-top:18px">
+    <div class="card mt-18">
       <div class="grid grid-2">
         <div><h3>Proposer un atelier</h3><p>Vous souhaitez animer un atelier pendant le festival ? Envoyez-nous votre proposition (titre, bénéfice, niveau, prérequis, durée, places, bio courte).</p></div>
-        <div style="align-self:center"><a class="btn btn-primary" href="#"><!-- TODO: lien formulaire -->Soumettre ma proposition</a></div>
+        <div class="align-self-center"><a class="btn btn-primary" href="#"><!-- TODO: lien formulaire -->Soumettre ma proposition</a></div>
       </div>
     </div>
   </div>
@@ -303,7 +348,7 @@
     <h2>Programme</h2>
     <p class="small">Chaque journée alterne des <strong>stages d’impro</strong> (matin & après-midi) et une <strong>soirée</strong> en deux temps : <em>format long</em> puis <em>match international</em>.</p>
 
-    <div class="grid grid-3" style="margin-top:18px">
+    <div class="grid grid-3 mt-18">
       <!-- Vendredi -->
       <div class="day card">
         <h3>Vendredi 15 mai</h3>
@@ -443,46 +488,46 @@
 <section id="tarifs" class="section section-bg-4">
   <div class="container">
     <h2>Tarifs & Billetterie</h2>
-    <div class="pricing" style="margin-top:18px">
+    <div class="pricing mt-18">
       <div class="price"><h4>Pass 1 jour</h4><div class="value">25 €</div><p class="small">2 spectacles + 1 boisson incluse</p></div>
       <div class="price"><h4>Pass 3 jours</h4><div class="value">60 €</div><p class="small">Accès aux 3 soirées</p></div>
       <div class="price"><h4>Réductions</h4><div class="value">-40%</div><p class="small">Étudiant·e·s & demandeur·se·s d'emploi</p></div>
     </div>
 
-    <div class="tarifs-encarts" style="margin-top:18px">
+    <div class="tarifs-encarts mt-18">
       <div class="card">
         <div class="grid grid-2">
           <div>
             <h3>Billetterie</h3>
-            <p style="margin-bottom:12px">Ouverture bientôt sur HelloAsso.</p>
-            <div style="background:rgba(212,90,122,.08);border-left:3px solid var(--accent);border-radius:6px;padding:12px;margin-bottom:12px">
-              <p style="margin:0;font-weight:600;color:var(--text);font-size:1rem"><span style="color:var(--accent)">⚡ Early bird</span> — Places à tarif réduit en quantité limitée</p>
+            <p class="mb-12">Ouverture bientôt sur HelloAsso.</p>
+            <div class="early-bird-notice">
+              <p><span>⚡ Early bird</span> — Places à tarif réduit en quantité limitée</p>
             </div>
-            <p class="small" style="margin:0">Inscrivez-vous pour être prévenu·e en premier et ne pas manquer l'occasion.</p>
+            <p class="small m-0">Inscrivez-vous pour être prévenu·e en premier et ne pas manquer l'occasion.</p>
           </div>
-          <div style="align-self:center"><button class="btn btn-primary" data-open="notify">Prévenez-moi</button></div>
+          <div class="align-self-center"><button class="btn btn-primary" data-open="notify">Prévenez-moi</button></div>
         </div>
       </div>
 
       <div class="card pass-gagnant">
         <div class="grid grid-2">
           <div>
-            <h3 style="color:#fe4d7e;margin-top:0">🎁 Des pass à gagner !</h3>
-            <p style="margin-bottom:0">À chaque spectacle de La Malice, des pass sont à gagner ! Suivez-nous, venez nous voir et votre fidélité sera peut-être récompensée. 🎭✨</p>
+            <h3 class="pink mb-0">🎁 Des pass à gagner !</h3>
+            <p class="mb-0">À chaque spectacle de La Malice, des pass sont à gagner ! Suivez-nous, venez nous voir et votre fidélité sera peut-être récompensée. 🎭✨</p>
           </div>
-          <div style="align-self:center;text-align:center">
-            <p class="small" style="margin:0 0 12px;font-weight:600;color:var(--text)">Suivez-nous :</p>
-            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-              <a href="https://www.instagram.com/lamaliceimprovise/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="display:inline-flex;align-items:center;gap:6px">
-                <img src="assets/img/logos/Instagram_Glyph_Gradient.png" alt="Instagram" width="20" height="20" style="display:block;flex-shrink:0">
+          <div class="align-self-center text-center">
+            <p class="small mb-12 font-semibold">Suivez-nous :</p>
+            <div class="social-links">
+              <a href="https://www.instagram.com/lamaliceimprovise/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-social">
+                <img src="assets/img/logos/Instagram_Glyph_Gradient.png" alt="Instagram" width="20" height="20">
                 Instagram
               </a>
-              <a href="https://facebook.com/lamaliceimprovise" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="display:inline-flex;align-items:center;gap:6px">
-                <img src="assets/img/logos/Facebook_Logo_Primary.png" alt="Facebook" width="20" height="20" style="display:block;flex-shrink:0">
+              <a href="https://facebook.com/lamaliceimprovise" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-social">
+                <img src="assets/img/logos/Facebook_Logo_Primary.png" alt="Facebook" width="20" height="20">
                 Facebook
               </a>
             </div>
-            <p class="small" style="margin:12px 0 0;color:var(--muted)">@lamaliceimprovise</p>
+            <p class="small mt-12 mb-0">@lamaliceimprovise</p>
           </div>
         </div>
       </div>
@@ -525,7 +570,7 @@
          - Orientation horizontale si possible
          - Taille cible 200x80 (hauteur max 80px dans le ruban)
          - Versions monochromes acceptées si plus harmonieuses -->
-    <div class="sponsors-list" style="margin-top:14px">
+    <div class="sponsors-list mt-14">
       <img class="sponsor" src="assets/img/logos/Logo_de_la_ville_d'Anglet_2010.jpg" alt="Ville d'Anglet">
       <img class="sponsor" src="assets/img/logos/logo-aperock.jpeg" alt="Aperock Café">
       <img class="sponsor" src="assets/img/logos/rtl2-logo.png" alt="RTL2">
@@ -535,11 +580,11 @@
 </section>
 
 <!-- Bloc capture e-mail -->
-<section class="section" style="padding-top:0">
+<section class="section section-no-padding-top">
   <div class="container card">
     <div class="grid grid-2">
-      <div><h3>Soyez les premiers informés</h3><p>Inscrivez-vous pour recevoir un e-mail dès l’ouverture de la billetterie.</p></div>
-      <div style="align-self:center"><button class="btn btn-primary" data-open="notify">Prévenez-moi</button></div>
+      <div><h3>Soyez les premiers informés</h3><p>Inscrivez-vous pour recevoir un e-mail dès l'ouverture de la billetterie.</p></div>
+      <div class="align-self-center"><button class="btn btn-primary" data-open="notify">Prévenez-moi</button></div>
     </div>
   </div>
 </section>
@@ -550,15 +595,15 @@
     <div>
       <h3>Festibask'impro</h3>
       <p class="small">15–17 mai 2026 · Patinoire de la Barre, Anglet</p>
-      <p class="small">Organisé par <a href="https://www.instagram.com/stories/lamaliceimprovise/" target="_blank" rel="noopener noreferrer" style="font-weight:600;text-decoration:none;color:var(--blue);transition:color 0.2s"><strong>La Malice</strong></a>.</p>
+      <p class="small">Organisé par <a href="https://www.instagram.com/stories/lamaliceimprovise/" target="_blank" rel="noopener noreferrer" class="footer-link"><strong>La Malice</strong></a>.</p>
     </div>
     <div>
       <h4>Liens</h4>
-      <ul class="small" style="list-style:none;padding:0;margin:0">
-        <li style="margin-bottom:6px"><a href="#valeur">À l'affiche</a></li>
-        <li style="margin-bottom:6px"><a href="#programme">Programme</a></li>
-        <li style="margin-bottom:6px"><a href="#ateliers">Ateliers</a></li>
-        <li style="margin-bottom:6px"><a href="#infos">Infos pratiques</a></li>
+      <ul class="small footer-list">
+        <li><a href="#valeur">À l'affiche</a></li>
+        <li><a href="#programme">Programme</a></li>
+        <li><a href="#ateliers">Ateliers</a></li>
+        <li><a href="#infos">Infos pratiques</a></li>
       </ul>
     </div>
     <div>
@@ -585,7 +630,7 @@
       </svg>
     </button>
     <div id="sib-form-container" class="sib-form-container">
-      <div id="error-message" class="sib-form-message-panel" style="font-size:16px; text-align:left; font-family:system-ui, -apple-system, sans-serif; color:#661d1d; background-color:#ffeded; border-radius:3px; border-color:#ff4949;max-width:100%;">
+      <div id="error-message" class="sib-form-message-panel">
         <div class="sib-form-message-panel__text sib-form-message-panel__text--center">
           <svg viewBox="0 0 512 512" class="sib-icon sib-notification__icon">
             <path d="M256 40c118.621 0 216 96.075 216 216 0 119.291-96.61 216-216 216-119.244 0-216-96.562-216-216 0-119.203 96.602-216 216-216m0-32C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm-11.49 120h22.979c6.823 0 12.274 5.682 11.99 12.5l-7 168c-.268 6.428-5.556 11.5-11.99 11.5h-8.979c-6.433 0-11.722-5.073-11.99-11.5l-7-168c-.283-6.818 5.167-12.5 11.99-12.5zM256 340c-15.464 0-28 12.536-28 28s12.536 28 28 28 28-12.536 28-28-12.536-28-28-28z" />
@@ -596,7 +641,7 @@
         </div>
       </div>
       <div></div>
-      <div id="success-message" class="sib-form-message-panel" style="font-size:16px; text-align:left; font-family:system-ui, -apple-system, sans-serif; color:#085229; background-color:#e7faf0; border-radius:3px; border-color:#13ce66;max-width:100%;">
+      <div id="success-message" class="sib-form-message-panel">
         <div class="sib-form-message-panel__text sib-form-message-panel__text--center">
           <svg viewBox="0 0 512 512" class="sib-icon sib-notification__icon">
             <path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 464c-118.664 0-216-96.055-216-216 0-118.663 96.055-216 216-216 118.664 0 216 96.055 216 216 0 118.663-96.055 216-216 216zm141.63-274.961L217.15 376.071c-4.705 4.667-12.303 4.637-16.97-.068l-85.878-86.572c-4.667-4.705-4.637-12.303.068-16.97l8.52-8.451c4.705-4.667 12.303-4.637 16.97.068l68.976 69.533 163.441-162.13c4.705-4.667 12.303-4.637 16.97.068l8.451 8.52c4.668 4.705 4.637 12.303-.068 16.97z" />
@@ -607,59 +652,49 @@
         </div>
       </div>
       <div></div>
-      <div id="success-close-btn-container" style="text-align:center; margin-top:16px; display:none;">
+      <div id="success-close-btn-container" class="hidden">
         <button class="btn btn-secondary" onclick="document.getElementById('notify').close()">Fermer</button>
       </div>
       <div></div>
-      <div id="sib-container" class="sib-container--large sib-container--vertical" style="text-align:center; background-color:transparent; max-width:100%; border-radius:0; border-width:0; border-style:none; direction:ltr">
+      <div id="sib-container" class="sib-container--large sib-container--vertical">
         <form id="sib-form" method="POST" action="https://251bdd89.sibforms.com/serve/MUIFAKEx3-EJKBmr9rHDX7Cv2V8YhOb8BulNnn-klvM4yyqNq6_Cj5xFvQFro8Ip89nqHxVsJ7Y737-o1jasu3aAvQbGlEtQJxDlTP276Q35sqKOBVa_hmGghYlydMFQSwxWScJiYsLQRORJUEfMkXRXE84v3Y2CrYXVuuBs44wJWpwS97z9TdLWrIUrpa4UVxy3niGGIy_Li3gm" data-type="subscription">
-          <div style="padding: 8px 0;">
-            <div class="sib-form-block" style="font-size:32px; text-align:left; font-weight:700; font-family:system-ui, -apple-system, sans-serif; color:var(--text); background-color:transparent; text-align:left">
-              <p>Recevoir l'alerte d'ouverture</p>
+          <div class="sib-form-block">
+            <p>Recevoir l'alerte d'ouverture</p>
+          </div>
+          <div class="sib-form-block">
+            <div class="sib-text-form-block">
+              <p>Laissez votre e-mail pour être prévenu·e dès que la billetterie ouvre.</p>
             </div>
           </div>
-          <div style="padding: 8px 0;">
-            <div class="sib-form-block" style="font-size:16px; text-align:left; font-family:system-ui, -apple-system, sans-serif; color:var(--text); background-color:transparent; text-align:left">
-              <div class="sib-text-form-block">
-                <p>Laissez votre e-mail pour être prévenu·e dès que la billetterie ouvre.</p>
-              </div>
-            </div>
-          </div>
-          <div style="padding: 8px 0;">
-            <div class="sib-input sib-form-block">
-              <div class="form__entry entry_block">
-                <div class="form__label-row ">
-                  <div class="entry__field">
-                    <input class="input " maxlength="200" type="text" id="PRENOM" name="PRENOM" autocomplete="off" placeholder="PRENOM" />
-                  </div>
+          <div class="sib-input sib-form-block">
+            <div class="form__entry entry_block">
+              <div class="form__label-row ">
+                <div class="entry__field">
+                  <input class="input " maxlength="200" type="text" id="PRENOM" name="PRENOM" autocomplete="off" placeholder="PRENOM" />
                 </div>
-                <label class="entry__error entry__error--primary" style="font-size:16px; text-align:left; font-family:system-ui, -apple-system, sans-serif; color:#661d1d; background-color:#ffeded; border-radius:3px; border-color:#ff4949;">
-                </label>
               </div>
+              <label class="entry__error entry__error--primary">
+              </label>
             </div>
           </div>
-          <div style="padding: 8px 0;">
-            <div class="sib-input sib-form-block">
-              <div class="form__entry entry_block">
-                <div class="form__label-row ">
-                  <div class="entry__field">
-                    <input class="input " type="text" id="EMAIL" name="EMAIL" autocomplete="off" placeholder="EMAIL" data-required="true" required />
-                  </div>
+          <div class="sib-input sib-form-block">
+            <div class="form__entry entry_block">
+              <div class="form__label-row ">
+                <div class="entry__field">
+                  <input class="input " type="text" id="EMAIL" name="EMAIL" autocomplete="off" placeholder="EMAIL" data-required="true" required />
                 </div>
-                <label class="entry__error entry__error--primary" style="font-size:16px; text-align:left; font-family:system-ui, -apple-system, sans-serif; color:#661d1d; background-color:#ffeded; border-radius:3px; border-color:#ff4949;">
-                </label>
               </div>
+              <label class="entry__error entry__error--primary">
+              </label>
             </div>
           </div>
-          <div style="padding: 8px 0;">
-            <div class="sib-form-block" style="text-align: left">
-              <button class="sib-form-block__button sib-form-block__button-with-loader" style="font-size:16px; text-align:left; font-weight:700; font-family:system-ui, -apple-system, sans-serif; color:#FFFFFF; background-color:var(--accent); border-radius:5px; border-width:0px;" form="sib-form" type="submit">
-                <svg class="icon clickable__icon progress-indicator__icon sib-hide-loader-icon" viewBox="0 0 512 512" style="">
-                  <path d="M460.116 373.846l-20.823-12.022c-5.541-3.199-7.54-10.159-4.663-15.874 30.137-59.886 28.343-131.652-5.386-189.946-33.641-58.394-94.896-95.833-161.827-99.676C261.028 55.961 256 50.751 256 44.352V20.309c0-6.904 5.808-12.337 12.703-11.982 83.556 4.306 160.163 50.864 202.11 123.677 42.063 72.696 44.079 162.316 6.031 236.832-3.14 6.148-10.75 8.461-16.728 5.01z" />
-                </svg>
-                S&#039;INSCRIRE
-              </button>
-            </div>
+          <div class="sib-form-block">
+            <button class="sib-form-block__button sib-form-block__button-with-loader" form="sib-form" type="submit">
+              <svg class="icon clickable__icon progress-indicator__icon sib-hide-loader-icon" viewBox="0 0 512 512">
+                <path d="M460.116 373.846l-20.823-12.022c-5.541-3.199-7.54-10.159-4.663-15.874 30.137-59.886 28.343-131.652-5.386-189.946-33.641-58.394-94.896-95.833-161.827-99.676C261.028 55.961 256 50.751 256 44.352V20.309c0-6.904 5.808-12.337 12.703-11.982 83.556 4.306 160.163 50.864 202.11 123.677 42.063 72.696 44.079 162.316 6.031 236.832-3.14 6.148-10.75 8.461-16.728 5.01z" />
+              </svg>
+              S&#039;INSCRIRE
+            </button>
           </div>
           <input type="text" name="email_address_check" value="" class="input--hidden">
           <input type="hidden" name="locale" value="fr">

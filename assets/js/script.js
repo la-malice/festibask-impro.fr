@@ -21,43 +21,71 @@
   // Brevo gère automatiquement le masquage du formulaire avec AUTOHIDE = Boolean(1)
   // Le bouton "Fermer" dans le message de succès permet de fermer la popup explicitement
 
-  // Carrousel des matches
-  const carouselContainer = document.getElementById('matchesCarousel');
-  const slides = carouselContainer.querySelectorAll('.match-slide');
-  const dots = document.querySelectorAll('.carousel-dot');
-  const prevBtn = document.querySelector('.carousel-arrow.prev');
-  const nextBtn = document.querySelector('.carousel-arrow.next');
-  let currentSlide = 0;
-  
-  function updateCarousel(){
-    carouselContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
-    dots.forEach((dot,index)=>{
-      dot.classList.toggle('active', index === currentSlide);
+  // Slider jour par jour
+  const daySliderContainer = document.getElementById('daySlider');
+  if (daySliderContainer) {
+    const daySlides = daySliderContainer.querySelectorAll('.day-slide');
+    const dayDots = daySliderContainer.closest('.day-slider')?.querySelectorAll('.carousel-dot');
+    let currentDaySlide = 0;
+    
+    function updateDaySlider(){
+      daySliderContainer.style.transform = `translateX(-${currentDaySlide * 33.333333}%)`;
+      if (dayDots) {
+        dayDots.forEach((dot,index)=>{
+          dot.classList.toggle('active', index === currentDaySlide);
+        });
+      }
+    }
+    
+    function nextDaySlide(){
+      currentDaySlide = (currentDaySlide + 1) % daySlides.length;
+      updateDaySlider();
+    }
+    
+    function prevDaySlide(){
+      currentDaySlide = (currentDaySlide - 1 + daySlides.length) % daySlides.length;
+      updateDaySlider();
+    }
+    
+    // Délégation d'événements pour les chevrons dans chaque slide
+    daySliderContainer.addEventListener('click', (e) => {
+      if (e.target.classList.contains('carousel-arrow')) {
+        if (e.target.classList.contains('next')) {
+          nextDaySlide();
+        } else if (e.target.classList.contains('prev')) {
+          prevDaySlide();
+        }
+      }
     });
+    
+    if (dayDots) {
+      dayDots.forEach((dot,index)=>{
+        dot.addEventListener('click',()=>{
+          currentDaySlide = index;
+          updateDaySlider();
+        });
+      });
+    }
+    
+    // Auto-play optionnel (désactivé par défaut)
+    // setInterval(nextDaySlide, 5000);
   }
-  
-  function nextSlide(){
-    currentSlide = (currentSlide + 1) % slides.length;
-    updateCarousel();
-  }
-  
-  function prevSlide(){
-    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-    updateCarousel();
-  }
-  
-  nextBtn.addEventListener('click',nextSlide);
-  prevBtn.addEventListener('click',prevSlide);
-  
-  dots.forEach((dot,index)=>{
-    dot.addEventListener('click',()=>{
-      currentSlide = index;
-      updateCarousel();
+
+  // Flip pour afficher le pitch du format long
+  document.querySelectorAll('.format-long-block').forEach(block=>{
+    block.addEventListener('click',e=>{
+      e.preventDefault();
+      block.classList.toggle('flipped');
     });
   });
-  
-  // Auto-play optionnel (désactivé par défaut)
-  // setInterval(nextSlide, 5000);
+
+  // Flip pour afficher le pitch du match
+  document.querySelectorAll('.match-block').forEach(block=>{
+    block.addEventListener('click',e=>{
+      e.preventDefault();
+      block.classList.toggle('flipped');
+    });
+  });
 
   // Toggle "Voir plus" / "Voir moins" pour les descriptions d'ateliers
   document.querySelectorAll('.description-toggle').forEach(toggle=>{
