@@ -36,11 +36,11 @@
 <!-- Header (apparition au scroll) -->
 <header class="site" id="siteHeader" aria-label="Navigation principale">
   <div class="bar">
-    <div class="brand">Festibask'impro</div>
+    <div class="brand">Festibask'<span class="brand-impro">impro</span></div>
     <nav class="primary">
       <a href="#valeur">À l'affiche</a>
       <a href="#programme">Programme</a>
-      <a href="#ateliers">Ateliers</a>
+      <a href="#stages">Stages</a>
       <a href="#infos">Infos pratiques</a>
       <a href="#sponsors">Partenaires</a>
     </nav>
@@ -59,27 +59,48 @@
 <!-- HERO -->
 <section class="hero" id="hero">
   <h1 class="sr-only">Festibask'impro — 15–17 mai 2026 · Anglet</h1>
+  <div class="hero-dates">
+    <div class="hero-dates-days">
+      <span>15</span>
+      <span>16</span>
+      <span>17</span>
+    </div>
+    <span class="hero-dates-month">MAI</span>
+    <span class="hero-dates-year">26</span>
+  </div>
   <div class="hero-title">
     <span class="festibask">FestiBask'</span>
     <span class="impro">IMPRO</span>
-    <span class="dates">15-17 MAI 2026</span>
   </div>
-  <div class="container cta-wrap">
-    <div class="cta-card">
-      <button class="btn btn-primary" data-open="notify">Prévenez-moi</button>
-      <a class="btn btn-secondary" href="#programme">Découvrez le programme</a>
-    </div>
-    <p class="small hero-notice">Billetterie à venir. Recevez une alerte dès l'ouverture.</p>
+  <div class="hero-tags">
+    <span>SPECTACLES</span>
+    <span class="hero-tags-separator">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+      </svg>
+    </span>
+    <span>MATCHES</span>
+    <span class="hero-tags-separator">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+      </svg>
+    </span>
+    <span>STAGES</span>
+    <span class="hero-tags-separator">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+      </svg>
+    </span>
+    <span>FUN</span>
   </div>
 </section>
 
 <!-- Proposition de valeur -->
 <section id="valeur" class="section section-bg-1">
   <div class="container">
-    <p class="pill">Festival d'Improvisation à Anglet</p>
     <div class="intro-with-logo">
       <img src="assets/img/logos/logo-la-malice-noir-bleu-tr.png" alt="La Malice" class="intro-logo">
-      <p class="intro-text">Depuis 50 ans, les matchs d'impro ramènent une patinoire sur scène. Nous, à <a href="https://www.instagram.com/lamaliceimprovise" target="_blank" rel="noopener noreferrer" class="intro-link">La Malice</a>, on a mal compris : on a ramené la scène dans une patinoire. Pour nos 10 ans, rendez-vous à la Patinoire de la Barre, à Anglet pour <span class="intro-highlight">3 soirées d'impro exceptionnelles</span>&nbsp;!</p>
+      <p class="intro-text">Depuis 50 ans, les matchs d'impro ramènent une patinoire sur scène. Nous, à <a href="https://www.instagram.com/lamaliceimprovise" target="_blank" rel="noopener noreferrer" class="intro-link">La Malice</a>, on a mal compris : on a ramené la scène dans une patinoire. Pour nos 10 ans, nous créons un <span class="intro-highlight">festival d'improvisation exceptionnel</span> à la Patinoire de la Barre, à Anglet</p>
     </div>
     <!-- Slider jour par jour -->
     <div class="day-slider">
@@ -232,31 +253,22 @@
   </div>
 </section>
 
-<!-- Ateliers -->
-<section id="ateliers" class="section section-bg-5">
+<!-- Stages -->
+<section id="stages" class="section section-bg-5">
   <div class="container">
-    <h2>Ateliers d'impro</h2>
+    <h2>Stages d'impro</h2>
     <p class="small mb-16">Chaque jour des ateliers d'improvisation animés vous sont proposés. Que vous souhaitiez vous initier seul ou en famille, ou que vous souhaitiez vous perfectionner ou prendre une master class, il y aura forcément un atelier pour vous. Nous avons 12 créneaux disponibles et des places limitées.</p>
 
     <div class="ateliers-grid">
       <!-- Stage Initiation Adulte -->
       <article class="atelier-card">
         <div class="header">
-          <div class="instructor-flip-container" data-flip="instructor-1">
-            <div class="instructor-flip-front">
-              <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Sophie Martin">
-              <span class="instructor-name">Sophie Martin</span>
-            </div>
-            <div class="instructor-flip-back">
-              <p class="instructor-bio">Formatrice en improvisation depuis 12 ans, membre de La Malice. Spécialisée dans l'accueil des débutants et la création d'un espace bienveillant pour explorer l'impro.</p>
-            </div>
-          </div>
+          <div class="day-header">Vendredi 15 mai · 10:00</div>
         </div>
         <div class="content">
           <h3>INITIATION à L'IMPRO</h3>
           <p class="description truncated">Découvrez les bases de l'improvisation théâtrale dans une atmosphère bienveillante et ludique. Ce stage d'initiation vous permettra d'explorer votre créativité, de développer votre écoute et votre réactivité, tout en vous amusant. Nous aborderons les fondamentaux : accepter les propositions, construire ensemble, écouter son partenaire, et surtout, oser se lancer. Aucun prérequis nécessaire, juste l'envie de découvrir et de partager un moment convivial autour du jeu théâtral.</p>
           <a href="#" class="description-toggle" data-toggle="description-1">Voir plus</a>
-          <div class="day">Vendredi 15 mai · 10:00</div>
           <div class="meta-info">
             <span class="meta-chip">3H</span>
             <span class="meta-chip">Adultes</span>
@@ -264,8 +276,17 @@
             <span class="meta-chip">Salle 1</span>
             <span class="meta-chip">30€</span>
           </div>
+          <div class="instructor-flip-container" data-flip="instructor-1">
+            <div class="instructor-flip-front">
+              <img src="assets/img/sophie-martin.avif" alt="Sophie Martin">
+              <span class="instructor-name">Sophie Martin</span>
+            </div>
+            <div class="instructor-flip-back">
+              <p class="instructor-bio">Formatrice en improvisation depuis 12 ans, membre de La Malice. Spécialisée dans l'accueil des débutants et la création d'un espace bienveillant pour explorer l'impro.</p>
+            </div>
+          </div>
           <div class="footer">
-            <a class="btn btn-inscription" href="#" aria-disabled="true">Bientôt en ligne</a>
+            <button class="btn btn-inscription" data-open="notify">S'inscrire</button>
           </div>
         </div>
       </article>
@@ -273,21 +294,12 @@
       <!-- Stage Perfectionnement Émotions -->
       <article class="atelier-card">
         <div class="header">
-          <div class="instructor-flip-container" data-flip="instructor-2">
-            <div class="instructor-flip-front">
-              <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Thomas Dubois">
-              <span class="instructor-name">Thomas Dubois</span>
-            </div>
-            <div class="instructor-flip-back">
-              <p class="instructor-bio">Comédien-improvisateur professionnel et coach. Formé aux techniques de l'Actors Studio, il explore depuis 10 ans les liens entre émotions authentiques et jeu improvisé.</p>
-            </div>
-          </div>
+          <div class="day-header">Samedi 16 mai · 14:00</div>
         </div>
         <div class="content">
           <h3>Les émotions au cœur de l'impro</h3>
           <p class="description truncated">Approfondissez votre jeu en travaillant spécifiquement sur l'expression et la gestion des émotions en improvisation. Ce stage de perfectionnement vous permettra d'enrichir votre palette émotionnelle, de créer des personnages plus profonds et authentiques, et de développer votre capacité à faire vivre des émotions sincères sur scène. Nous explorerons différentes techniques pour accéder rapidement aux émotions, les transformer, les amplifier ou les nuancer selon les besoins de la scène. Pour improvisateurs ayant déjà une pratique régulière de l'impro.</p>
           <a href="#" class="description-toggle" data-toggle="description-2">Voir plus</a>
-          <div class="day">Samedi 16 mai · 14:00</div>
           <div class="meta-info">
             <span class="meta-chip">3H</span>
             <span class="meta-chip">Tout public</span>
@@ -295,8 +307,17 @@
             <span class="meta-chip">Salle 2</span>
             <span class="meta-chip">20€</span>
           </div>
+          <div class="instructor-flip-container" data-flip="instructor-2">
+            <div class="instructor-flip-front">
+              <img src="assets/img/thomas-dubois.avif" alt="Thomas Dubois">
+              <span class="instructor-name">Thomas Dubois</span>
+            </div>
+            <div class="instructor-flip-back">
+              <p class="instructor-bio">Comédien-improvisateur professionnel et coach. Formé aux techniques de l'Actors Studio, il explore depuis 10 ans les liens entre émotions authentiques et jeu improvisé.</p>
+            </div>
+          </div>
           <div class="footer">
-            <a class="btn btn-inscription" href="#" aria-disabled="true">Bientôt en ligne</a>
+            <button class="btn btn-inscription" data-open="notify">S'inscrire</button>
           </div>
         </div>
       </article>
@@ -304,21 +325,12 @@
       <!-- Master Class Le jeu Juste, Juste le Jeu -->
       <article class="atelier-card">
         <div class="header">
-          <div class="instructor-flip-container" data-flip="instructor-3">
-            <div class="instructor-flip-front">
-              <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Marc Lefebvre">
-              <span class="instructor-name">Marc Lefebvre</span>
-            </div>
-            <div class="instructor-flip-back">
-              <p class="instructor-bio">Comédien professionnel au théâtre et à la télévision. Membre de la Comédie-Française pendant 8 ans, il enseigne aujourd'hui son approche épurée du jeu, basée sur la simplicité et l'authenticité.</p>
-            </div>
-          </div>
+          <div class="day-header">Dimanche 17 mai · 10:00</div>
         </div>
         <div class="content">
           <h3>Le jeu Juste, Juste le Jeu</h3>
           <p class="description truncated">Une master class exceptionnelle avec un comédien professionnel qui vous transmettra son approche du jeu authentique et épuré. Loin des effets et de la sur-jouer, découvrez comment trouver la justesse dans chaque instant, comment être présent et disponible à ce qui se passe, comment faire confiance au silence et à la simplicité. Cette master class s'adresse aux improvisateurs expérimentés souhaitant approfondir leur art et découvrir une approche plus minimaliste et puissante du jeu. Un moment rare pour questionner sa pratique et explorer de nouvelles voies d'expression scénique.</p>
           <a href="#" class="description-toggle" data-toggle="description-3">Voir plus</a>
-          <div class="day">Dimanche 17 mai · 10:00</div>
           <div class="meta-info">
             <span class="meta-chip">3H</span>
             <span class="meta-chip">Adultes</span>
@@ -326,16 +338,25 @@
             <span class="meta-chip">Salle 1</span>
             <span class="meta-chip">30€</span>
           </div>
+          <div class="instructor-flip-container" data-flip="instructor-3">
+            <div class="instructor-flip-front">
+              <img src="assets/img/marc-lefebvre.avif" alt="Marc Lefebvre">
+              <span class="instructor-name">Marc Lefebvre</span>
+            </div>
+            <div class="instructor-flip-back">
+              <p class="instructor-bio">Comédien professionnel au théâtre et à la télévision. Membre de la Comédie-Française pendant 8 ans, il enseigne aujourd'hui son approche épurée du jeu, basée sur la simplicité et l'authenticité.</p>
+            </div>
+          </div>
           <div class="footer">
-            <a class="btn btn-inscription" href="#" aria-disabled="true">Bientôt en ligne</a>
+            <button class="btn btn-inscription" data-open="notify">S'inscrire</button>
           </div>
         </div>
       </article>
     </div>
 
-    <div class="card mt-18">
+    <div class="card pass-gagnant mt-18">
       <div class="grid grid-2">
-        <div><h3>Proposer un atelier</h3><p>Vous souhaitez animer un atelier pendant le festival ? Envoyez-nous votre proposition (titre, bénéfice, niveau, prérequis, durée, places, bio courte).</p></div>
+        <div><h3 class="pink mb-0">Proposer un stage</h3><p class="mb-0">Vous souhaitez animer un stage pendant le festival ? Envoyez-nous votre proposition (titre, bénéfice, niveau, prérequis, durée, places, bio courte).</p></div>
         <div class="align-self-center"><a class="btn btn-primary" href="#"><!-- TODO: lien formulaire -->Soumettre ma proposition</a></div>
       </div>
     </div>
@@ -354,14 +375,17 @@
         <h3>Vendredi 15 mai</h3>
         <div class="slot">
           <div class="time">09:30</div>
-          <div class="meta">Accueil des participants aux stages</div>
+          <div class="meta">🥐☕ Accueil des participants aux stages</div>
         </div>
         <div class="slot slot-atelier">
           <div class="time">10:00–13:00</div>
           <div class="salles-container">
             <div class="salle-box">
               <div class="salle-label">Salle 1</div>
-              <div class="atelier-name">INITIATION à L'IMPRO</div>
+              <div class="atelier-name">
+                <img src="assets/img/sophie-martin.avif" alt="Sophie Martin" class="instructor-avatar">
+                INITIATION à L'IMPRO
+              </div>
             </div>
             <div class="salle-box">
               <div class="salle-label">Salle 2</div>
@@ -384,32 +408,32 @@
         </div>
         <div class="slot">
           <div class="time">18:30</div>
-          <div class="meta">Ambiance musicale · Installation du public</div>
+          <div class="meta">🎵 Ambiance musicale · Installation du public</div>
         </div>
-        <div class="slot slot-format-long">
+        <div class="slot slot-format-long" style="background-image: url('assets/img/braquage.jpg');">
           <div class="time">19:00</div>
-          <h4>🎭 Création Originale</h4>
+          <h4>Création Originale</h4>
           <div class="meta">1h</div>
         </div>
         <div class="slot">
           <div class="time">20:00</div>
-          <div class="meta">Pause</div>
+          <div class="meta">🍺🥤 Pause</div>
         </div>
-        <div class="slot highlight slot-spectacle">
+        <div class="slot highlight slot-spectacle" style="background-image: url('assets/img/equipe-suisse.jpg');">
           <div class="time">20:30</div>
-          <h4>🇨🇭 Suisse vs La Malice</h4>
+          <h4>Suisse vs La Malice</h4>
           <div class="meta">~75 min</div>
         </div>
         <div class="slot">
           <div class="time">23:00</div>
-          <div class="meta">Fermeture</div>
+          <div class="meta">🚪 Fermeture</div>
         </div>
       </div>
 
       <!-- Samedi -->
       <div class="day card">
         <h3>Samedi 16 mai</h3>
-        <div class="slot"><div class="time">09:30</div><div class="meta">Accueil des participants aux stages</div></div>
+        <div class="slot"><div class="time">09:30</div><div class="meta">🥐☕ Accueil des participants aux stages</div></div>
         <div class="slot slot-atelier">
           <div class="time">10:00–13:00</div>
           <div class="salles-container">
@@ -432,27 +456,33 @@
             </div>
             <div class="salle-box">
               <div class="salle-label">Salle 2</div>
-              <div class="atelier-name">Les émotions au cœur de l'impro</div>
+              <div class="atelier-name">
+                <img src="assets/img/thomas-dubois.avif" alt="Thomas Dubois" class="instructor-avatar">
+                Les émotions au cœur de l'impro
+              </div>
             </div>
           </div>
         </div>
-        <div class="slot"><div class="time">18:30</div><div class="meta">Ambiance musicale · Installation du public</div></div>
-        <div class="slot slot-format-long"><div class="time">19:00</div><h4>⚖️ Commis d'Office</h4><div class="meta">1h</div></div>
-        <div class="slot"><div class="time">20:00</div><div class="meta">Pause</div></div>
-        <div class="slot highlight slot-spectacle"><div class="time">20:30</div><h4>🇫🇷 Équipe de France vs La Malice</h4><div class="meta">~75 min</div></div>
+        <div class="slot"><div class="time">18:30</div><div class="meta">🎵 Ambiance musicale · Installation du public</div></div>
+        <div class="slot slot-format-long" style="background-image: url('assets/img/commis-d-office.jpg');"><div class="time">19:00</div><h4>Commis d'Office</h4><div class="meta">1h</div></div>
+        <div class="slot"><div class="time">20:00</div><div class="meta">🍺🥤 Pause</div></div>
+        <div class="slot highlight slot-spectacle" style="background-image: url('assets/img/241125-MATCH-FRANCE-BELGIQUE-©J-55_BD-1200x470.jpg');"><div class="time">20:30</div><h4>Équipe de France vs La Malice</h4><div class="meta">~75 min</div></div>
         <div class="slot slot-festif"><div class="time">23:00+</div><div class="meta"><strong>🎧 Soirée musicale festive</strong></div></div>
       </div>
 
       <!-- Dimanche -->
       <div class="day card">
         <h3>Dimanche 17 mai</h3>
-        <div class="slot"><div class="time">09:30</div><div class="meta">Accueil des participants aux stages</div></div>
+        <div class="slot"><div class="time">09:30</div><div class="meta">🥐☕ Accueil des participants aux stages</div></div>
         <div class="slot slot-atelier">
           <div class="time">10:00–13:00</div>
           <div class="salles-container">
             <div class="salle-box">
               <div class="salle-label">Salle 1</div>
-              <div class="atelier-name">Le jeu Juste, Juste le Jeu</div>
+              <div class="atelier-name">
+                <img src="assets/img/marc-lefebvre.avif" alt="Marc Lefebvre" class="instructor-avatar">
+                Le jeu Juste, Juste le Jeu
+              </div>
             </div>
             <div class="salle-box">
               <div class="salle-label">Salle 2</div>
@@ -473,11 +503,11 @@
             </div>
           </div>
         </div>
-        <div class="slot"><div class="time">18:30</div><div class="meta">Ambiance musicale · Installation du public</div></div>
-        <div class="slot slot-format-long"><div class="time">19:00</div><h4>🎭 Création Originale</h4><div class="meta">1h</div></div>
-        <div class="slot"><div class="time">20:00</div><div class="meta">Pause</div></div>
-        <div class="slot highlight slot-spectacle"><div class="time">20:30</div><h4>🇧🇪 Belgique vs La Malice</h4><div class="meta">~75 min</div></div>
-        <div class="slot"><div class="time">23:00</div><div class="meta">Fermeture</div></div>
+        <div class="slot"><div class="time">18:30</div><div class="meta">🎵 Ambiance musicale · Installation du public</div></div>
+        <div class="slot slot-format-long" style="background-image: url('assets/img/vous-serez-mieux-a6.jpg');"><div class="time">19:00</div><h4>Création Originale</h4><div class="meta">1h</div></div>
+        <div class="slot"><div class="time">20:00</div><div class="meta">🍺🥤 Pause</div></div>
+        <div class="slot highlight slot-spectacle" style="background-image: url('assets/img/equipe-belgique.jpg');"><div class="time">20:30</div><h4>Belgique vs La Malice</h4><div class="meta">~75 min</div></div>
+        <div class="slot"><div class="time">23:00</div><div class="meta">🚪 Fermeture</div></div>
       </div>
     </div>
 
@@ -487,26 +517,23 @@
 <!-- Tarifs et Billetterie -->
 <section id="tarifs" class="section section-bg-4">
   <div class="container">
-    <h2>Tarifs & Billetterie</h2>
+    <h2>Tarifs</h2>
     <div class="pricing mt-18">
       <div class="price"><h4>Pass 1 jour</h4><div class="value">25 €</div><p class="small">2 spectacles + 1 boisson incluse</p></div>
       <div class="price"><h4>Pass 3 jours</h4><div class="value">60 €</div><p class="small">Accès aux 3 soirées</p></div>
-      <div class="price"><h4>Réductions</h4><div class="value">-40%</div><p class="small">Étudiant·e·s & demandeur·se·s d'emploi</p></div>
+      <div class="price"><h4>Stage</h4><div class="value">30 €</div><p class="small">3h de <a href="#stages">stage d'impro</a></p></div>
     </div>
 
-    <div class="tarifs-encarts mt-18">
-      <div class="card">
-        <div class="grid grid-2">
-          <div>
-            <h3>Billetterie</h3>
-            <p class="mb-12">Ouverture bientôt sur HelloAsso.</p>
-            <div class="early-bird-notice">
-              <p><span>⚡ Early bird</span> — Places à tarif réduit en quantité limitée</p>
-            </div>
-            <p class="small m-0">Inscrivez-vous pour être prévenu·e en premier et ne pas manquer l'occasion.</p>
+    <div class="tarifs-encarts mt-12">
+      <div class="card billetterie-cta">
+        <div class="billetterie-header">
+          <h3>Billetterie</h3>
+          <div class="early-bird-notice">
+            <p><span>⚡ Préventes</span> — Places à tarif réduit en quantité limitée</p>
           </div>
-          <div class="align-self-center"><button class="btn btn-primary" data-open="notify">Prévenez-moi</button></div>
         </div>
+        <p class="billetterie-text">Ouverture bientôt sur HelloAsso. Inscrivez-vous pour être prévenu·e en premier et ne pas manquer l'occasion.</p>
+        <button class="btn btn-primary btn-billetterie" data-open="notify">Prévenez-moi</button>
       </div>
 
       <div class="card pass-gagnant">
@@ -547,13 +574,30 @@
         <li>Accès / parkings / transports : <em>à venir</em>.</li>
         <li>Accessibilité : <em>à venir</em>.</li>
       </ul>
-      <p><a href="https://maps.google.com/?q=Patinoire%20de%20la%20Barre%20Anglet" target="_blank" rel="noopener">Voir sur Google Maps</a></p>
     </div>
 
-    <div class="card">
-      <h3>FAQ</h3>
+    <div>
+      <iframe 
+        src="https://www.google.com/maps?q=Patinoire+de+la+Barre,+299+Avenue+de+l%27Adour,+64600+Anglet,+France&output=embed"
+        width="100%" 
+        height="400" 
+        style="border:0; border-radius: 12px;" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Localisation de la Patinoire de la Barre">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="section section-bg-4">
+  <div class="container">
+    <h2>FAQ</h2>
+    <div class="faq-list">
       <details><summary>Quand la billetterie ouvre-t-elle ?</summary><p>Bientôt — laissez votre e-mail et nous vous préviendrons.</p></details>
-      <details><summary>Des tarifs réduits ?</summary><p>Oui : -40% pour étudiant·e·s et demandeur·se·s d’emploi (justificatif requis).</p></details>
+      <details><summary>Des tarifs réduits ?</summary><p>Oui : -40% pour étudiant·e·s et demandeur·se·s d'emploi (justificatif requis).</p></details>
       <details><summary>La soirée festive est-elle incluse ?</summary><p>Oui, elle suit les spectacles du samedi.</p></details>
       <details><summary>Restauration sur place ?</summary><p>Oui, un espace snacks & boissons est prévu.</p></details>
     </div>
@@ -564,7 +608,7 @@
 <section id="sponsors" class="section section-bg-5">
   <div class="container">
     <h2>Partenaires & sponsors</h2>
-    <p class="small">Merci à nos partenaires. Vous souhaitez nous soutenir ? <a href="#"><!-- TODO: lien -->Devenir sponsor</a>.</p>
+    <p class="small">Merci à nos partenaires.</p>
 
     <!-- DESIGNER : logos sponsors (SVG ou PNG transparent)
          - Orientation horizontale si possible
@@ -576,15 +620,18 @@
       <img class="sponsor" src="assets/img/logos/rtl2-logo.png" alt="RTL2">
       <a href="#sponsors" class="sponsor-placeholder">Votre logo ici</a>
     </div>
+    <p class="small mt-14">Vous souhaitez nous soutenir ? <a href="#"><!-- TODO: lien -->Devenir sponsor</a>.</p>
   </div>
 </section>
 
 <!-- Bloc capture e-mail -->
-<section class="section section-no-padding-top">
-  <div class="container card">
-    <div class="grid grid-2">
-      <div><h3>Soyez les premiers informés</h3><p>Inscrivez-vous pour recevoir un e-mail dès l'ouverture de la billetterie.</p></div>
-      <div class="align-self-center"><button class="btn btn-primary" data-open="notify">Prévenez-moi</button></div>
+<section class="section section-cta">
+  <div class="container">
+    <div class="cta-card">
+      <div class="grid grid-2">
+        <div><h3>Soyez les premiers informés</h3><p>Inscrivez-vous pour recevoir un e-mail dès l'ouverture de la billetterie.</p></div>
+        <div class="align-self-center"><button class="btn btn-primary" data-open="notify">Prévenez-moi</button></div>
+      </div>
     </div>
   </div>
 </section>
@@ -593,7 +640,7 @@
 <footer class="section">
   <div class="container footer-grid">
     <div>
-      <h3>Festibask'impro</h3>
+      <h3>Festibask'<span class="footer-impro">Impro</span></h3>
       <p class="small">15–17 mai 2026 · Patinoire de la Barre, Anglet</p>
       <p class="small">Organisé par <a href="https://www.instagram.com/stories/lamaliceimprovise/" target="_blank" rel="noopener noreferrer" class="footer-link"><strong>La Malice</strong></a>.</p>
     </div>
@@ -602,7 +649,7 @@
       <ul class="small footer-list">
         <li><a href="#valeur">À l'affiche</a></li>
         <li><a href="#programme">Programme</a></li>
-        <li><a href="#ateliers">Ateliers</a></li>
+        <li><a href="#stages">Stages</a></li>
         <li><a href="#infos">Infos pratiques</a></li>
       </ul>
     </div>

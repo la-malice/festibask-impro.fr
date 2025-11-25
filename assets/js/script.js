@@ -109,9 +109,10 @@
   document.querySelectorAll('.instructor-flip-container').forEach(container=>{
     container.addEventListener('click',e=>{
       e.preventDefault();
-      const header = container.closest('.header');
       const isFlipped = container.classList.contains('flipped');
       const back = container.querySelector('.instructor-flip-back');
+      
+      if(!back) return; // Si pas de back, on ne fait rien
       
       if(!isFlipped){
         // On va flip, on calcule la hauteur nécessaire pour la bio
@@ -125,8 +126,7 @@
         const backHeight = tempBack.scrollHeight + 28; // + padding
         document.body.removeChild(tempBack);
         
-        // On applique la hauteur au header et au container
-        header.style.minHeight = backHeight + 'px';
+        // On applique la hauteur au container
         container.style.minHeight = backHeight + 'px';
         // Petit délai pour que la hauteur soit appliquée avant le flip
         setTimeout(()=>{
@@ -136,8 +136,7 @@
         // On revient en arrière, on remet la hauteur minimale
         container.classList.remove('flipped');
         setTimeout(()=>{
-          header.style.minHeight = '76px';
-          container.style.minHeight = '76px';
+          container.style.minHeight = '60px';
         }, 600);
       }
     });
