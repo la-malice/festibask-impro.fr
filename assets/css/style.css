@@ -1523,7 +1523,7 @@ nav.primary a:hover {
   font-family: "Bobby Jones", sans-serif;
   font-size: clamp(1.3rem, 2.2vw, 1.8rem);
   color: var(--blue);
-  margin: 0 0 12px;
+  margin: 0 0 4px;
   font-weight: normal;
   line-height: 1.2;
   transition: color 0.2s;
@@ -1534,7 +1534,7 @@ nav.primary a:hover {
 }
 
 .atelier-card .description {
-  margin: 0 0 8px;
+  margin: 0 0 4px;
   line-height: 1.6;
   color: var(--text);
 }
