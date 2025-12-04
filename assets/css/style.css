@@ -1898,11 +1898,20 @@ nav.primary a:hover {
 /* Cases cliquables dans le programme */
 a.salle-box,
 a.slot-format-long,
-a.slot-spectacle {
+a.slot-spectacle,
+button.slot-format-long,
+button.slot-spectacle {
   display: block;
   text-decoration: none;
   cursor: pointer;
   transition: transform 0.2s ease, opacity 0.2s ease;
+  border: none;
+  background: none;
+  font: inherit;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  text-align: left;
 }
 
 a.salle-box {
@@ -1910,21 +1919,27 @@ a.salle-box {
 }
 
 a.slot-format-long,
-a.slot-spectacle {
+a.slot-spectacle,
+button.slot-format-long,
+button.slot-spectacle {
   color: var(--white);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 a.salle-box:hover,
 a.slot-format-long:hover,
-a.slot-spectacle:hover {
+a.slot-spectacle:hover,
+button.slot-format-long:hover,
+button.slot-spectacle:hover {
   transform: translateY(-2px);
   opacity: 0.9;
 }
 
 a.salle-box:active,
 a.slot-format-long:active,
-a.slot-spectacle:active {
+a.slot-spectacle:active,
+button.slot-format-long:active,
+button.slot-spectacle:active {
   transform: translateY(0);
 }
 
@@ -2246,6 +2261,7 @@ dialog {
 dialog::backdrop {
   background: var(--black-overlay-light);
   backdrop-filter: blur(2px);
+  z-index: 9998;
 }
 
 .modal-card {
@@ -2291,6 +2307,227 @@ dialog::backdrop {
   width: 20px;
   height: 20px;
   display: block;
+}
+
+/* Modal détails spectacle - Mobile first */
+#spectacle-details {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100vh;
+  max-height: 100vh;
+  margin: 0;
+  border-radius: 0;
+  padding: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+}
+
+@media (min-width: 768px) {
+  #spectacle-details {
+    position: fixed;
+    width: auto;
+    max-width: 800px;
+    height: auto;
+    max-height: 90vh;
+    margin: auto;
+    border-radius: 12px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Empêcher le scroll du body quand le modal est ouvert */
+body:has(#spectacle-details[open]) {
+  overflow: hidden;
+}
+
+#spectacle-details .modal-card {
+  width: 100%;
+  height: 100%;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #1a1a1a;
+  border: none;
+}
+
+@media (min-width: 768px) {
+  #spectacle-details .modal-card {
+    height: auto;
+    max-height: 90vh;
+    border-radius: 12px;
+    padding: 18px;
+    overflow: visible;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid var(--blue-border-dark);
+  }
+}
+
+.spectacle-modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.spectacle-modal-content::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+@media (min-width: 768px) {
+  .spectacle-modal-content {
+    gap: 24px;
+    height: auto;
+    overflow: visible;
+    flex-direction: row;
+  }
+}
+
+.spectacle-modal-image {
+  width: 100%;
+  height: 35vh;
+  min-height: 200px;
+  max-height: 35vh;
+  background-size: cover;
+  background-position: center;
+  border-radius: 0;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .spectacle-modal-image {
+    width: 40%;
+    height: auto;
+    min-height: 400px;
+    max-height: none;
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+  }
+}
+
+.spectacle-modal-info {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  min-height: 0; /* Important pour le flex */
+  background: #1a1a1a;
+}
+
+.spectacle-modal-info::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+@media (min-width: 768px) {
+  .spectacle-modal-info {
+    flex: 1;
+    padding: 0;
+    overflow: visible;
+  }
+}
+
+.spectacle-modal-time {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #5A8FA3;
+  margin-bottom: 8px;
+}
+
+.spectacle-modal-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 12px;
+}
+
+.spectacle-modal-title {
+  font-family: "Bobby Jones", sans-serif;
+  font-size: clamp(1.8rem, 6vw, 2.5rem);
+  color: #f84578;
+  margin: 0 0 20px;
+  font-weight: normal;
+  line-height: 1.2;
+}
+
+.spectacle-modal-pitch {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.95);
+  flex: 1;
+}
+
+.spectacle-modal-pitch p {
+  margin: 0;
+}
+
+/* Bouton de fermeture mobile - bien visible */
+#spectacle-details .modal-close {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 30;
+  width: 44px;
+  height: 44px;
+  background: rgba(0, 0, 0, 0.75);
+  color: var(--white);
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+#spectacle-details .modal-close:hover {
+  background: rgba(0, 0, 0, 0.9);
+  color: var(--white);
+  transform: scale(1.05);
+}
+
+#spectacle-details .modal-close:active {
+  transform: scale(0.95);
+}
+
+@media (min-width: 768px) {
+  #spectacle-details .modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    color: var(--muted);
+    border-radius: 6px;
+    box-shadow: none;
+  }
+  
+  #spectacle-details .modal-close:hover {
+    background: var(--blue-bg-light);
+    color: var(--text);
+  }
 }
 
 label {

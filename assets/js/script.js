@@ -72,22 +72,6 @@
     // setInterval(nextDaySlide, 5000);
   }
 
-  // Flip pour afficher le pitch du format long
-  document.querySelectorAll('.format-long-block').forEach(block=>{
-    block.addEventListener('click',e=>{
-      e.preventDefault();
-      block.classList.toggle('flipped');
-    });
-  });
-
-  // Flip pour afficher le pitch du match
-  document.querySelectorAll('.match-block').forEach(block=>{
-    block.addEventListener('click',e=>{
-      e.preventDefault();
-      block.classList.toggle('flipped');
-    });
-  });
-
   // Toggle "Voir plus" / "Voir moins" pour les descriptions d'ateliers
   document.querySelectorAll('.description-toggle').forEach(toggle=>{
     toggle.addEventListener('click',e=>{
@@ -139,6 +123,144 @@
         setTimeout(()=>{
           container.style.minHeight = '60px';
         }, 600);
+      }
+    });
+  });
+
+  // Popup détails spectacle
+  const spectacleDetailsModal = document.getElementById('spectacle-details');
+  const spectacleDetailsContent = document.getElementById('spectacle-details-content');
+  
+  // Données des spectacles (extrait des blocs existants)
+  const spectaclesData = {
+    'spectacle-vendredi-format-long': {
+      type: 'format-long',
+      time: '19:00',
+      label: 'Impro longue',
+      title: 'Braquage',
+      image: 'assets/img/braquage.jpg',
+      pitch: 'Les portes se ferment, le braquage dérape, et soudain tout le monde devient suspect : braqueurs approximatifs, otages imprévisibles, alliances qui se font et se défont. Entre tension, humour qui surgit malgré tout et portraits touchants, on se surprend à s\'attacher à chacun… jusqu\'à ce que tout explose.'
+    },
+    'spectacle-vendredi-match': {
+      type: 'match',
+      time: '21:00',
+      label: 'Match',
+      title: 'La Malice vs Suisse',
+      image: 'assets/img/equipe-suisse.jpg',
+      pitch: 'Le match d\'impro est le format phare par lequel l\'impro s\'est diffusée. Venu du Québec, il emprunte aux codes du Hockey sur glace où 2 équipes de comédiens s\'affrontent sur une patinoire dans des séquences brèves et rythmées sous la surveillance d\'un arbitre implacable&nbsp;!'
+    },
+    'spectacle-samedi-format-long': {
+      type: 'format-long',
+      time: '19:00',
+      label: 'Impro longue',
+      title: 'Commis d\'Office',
+      image: 'assets/img/commis-d-office.jpg',
+      pitch: 'Un jeune avocat commis d\'office reçoit un accusé malheureux qui va se confier et expliquer le long chemin qui l\'a mené jusqu\'à commettre l\'impensable. Pendant 1h nous verrons son parcours, ses errances, ses rencontres jusqu\'à comprendre sa destinée. Saurons-nous s\'il est déclaré coupable ou non ?'
+    },
+    'spectacle-samedi-match': {
+      type: 'match',
+      time: '21:00',
+      label: 'Match',
+      title: 'La Malice vs France',
+      image: 'assets/img/241125-MATCH-FRANCE-BELGIQUE-©J-55_BD-1200x470.jpg',
+      pitch: 'Le match d\'impro est le format phare par lequel l\'impro s\'est diffusée. Venu du Québec, il emprunte aux codes du Hockey sur glace où 2 équipes de comédiens s\'affrontent sur une patinoire dans des séquences brèves et rythmées sous la surveillance d\'un arbitre implacable&nbsp;!'
+    },
+    'spectacle-dimanche-format-long': {
+      type: 'format-long',
+      time: '19:00',
+      label: 'Impro longue',
+      title: 'Promo 2006',
+      image: 'assets/img/promo-2006.avif',
+      pitch: 'Vingt ans après, une ancienne promo se retrouve pour une soirée pleine de secrets, de couples improbables et de souvenirs qui dérapent. Un format joyeux et tendre, où le public choisit l\'école, les liens… et ce qui aurait mieux valu rester enterré.'
+    },
+    'spectacle-dimanche-match': {
+      type: 'match',
+      time: '21:00',
+      label: 'Match',
+      title: 'La Malice vs Belgique',
+      image: 'assets/img/equipe-belgique.jpg',
+      pitch: 'Le match d\'impro est le format phare par lequel l\'impro s\'est diffusée. Venu du Québec, il emprunte aux codes du Hockey sur glace où 2 équipes de comédiens s\'affrontent sur une patinoire dans des séquences brèves et rythmées sous la surveillance d\'un arbitre implacable&nbsp;!'
+    }
+  };
+  
+  function openSpectacleDetails(spectacleId) {
+    const data = spectaclesData[spectacleId];
+    if (!data) return;
+    
+    spectacleDetailsContent.innerHTML = `
+      <div class="spectacle-modal-content">
+        <div class="spectacle-modal-image" style="background-image: url('${data.image}');"></div>
+        <div class="spectacle-modal-info">
+          <div class="spectacle-modal-time">${data.time}</div>
+          <div class="spectacle-modal-label">${data.label}</div>
+          <h3 class="spectacle-modal-title">${data.title}</h3>
+          <div class="spectacle-modal-pitch">
+            <p>${data.pitch}</p>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    // Bloquer le scroll du body
+    document.body.style.overflow = 'hidden';
+    spectacleDetailsModal.showModal();
+  }
+  
+  // Gérer les clics sur les boutons de spectacle
+  document.querySelectorAll('[data-spectacle]').forEach(button => {
+    button.addEventListener('click', (e) => {
+      e.preventDefault();
+      const spectacleId = button.getAttribute('data-spectacle');
+      openSpectacleDetails(spectacleId);
+    });
+  });
+  
+  // Fermer le modal en cliquant à l'extérieur
+  if (spectacleDetailsModal) {
+    spectacleDetailsModal.addEventListener('click', (e) => {
+      const modalCard = spectacleDetailsModal.querySelector('.modal-card');
+      const rect = modalCard.getBoundingClientRect();
+      const inside = rect.top <= e.clientY && e.clientY <= rect.bottom && rect.left <= e.clientX && e.clientX <= rect.right;
+      if (!inside) {
+        spectacleDetailsModal.close();
+        document.body.style.overflow = ''; // Restaurer le scroll
+      }
+    });
+    
+    // Restaurer le scroll quand le modal se ferme
+    spectacleDetailsModal.addEventListener('close', () => {
+      document.body.style.overflow = '';
+    });
+  }
+  
+  // Gérer la fermeture via le bouton
+  const spectacleCloseBtn = spectacleDetailsModal?.querySelector('.modal-close');
+  if (spectacleCloseBtn) {
+    spectacleCloseBtn.addEventListener('click', () => {
+      document.body.style.overflow = '';
+    });
+  }
+
+  // Ouvrir le modal au lieu du flip pour les format-long-block
+  document.querySelectorAll('.format-long-block').forEach(block=>{
+    block.addEventListener('click',e=>{
+      e.preventDefault();
+      // Récupérer l'ID du bloc pour trouver les données
+      const blockId = block.id;
+      if (blockId && spectaclesData && spectaclesData[blockId]) {
+        openSpectacleDetails(blockId);
+      }
+    });
+  });
+
+  // Ouvrir le modal au lieu du flip pour les match-block
+  document.querySelectorAll('.match-block').forEach(block=>{
+    block.addEventListener('click',e=>{
+      e.preventDefault();
+      // Récupérer l'ID du bloc pour trouver les données
+      const blockId = block.id;
+      if (blockId && spectaclesData && spectaclesData[blockId]) {
+        openSpectacleDetails(blockId);
       }
     });
   });

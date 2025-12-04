@@ -499,20 +499,20 @@
           <div class="time">17:30</div>
           <div class="meta">Accueil du public</div>
         </div>
-        <a href="#spectacle-vendredi-format-long" class="slot slot-format-long" style="background-image: url('assets/img/braquage.jpg');">
+        <button data-spectacle="spectacle-vendredi-format-long" class="slot slot-format-long" style="background-image: url('assets/img/braquage.jpg');">
           <div class="time">19:00</div>
           <h4>Braquage</h4>
           <div class="meta">1h</div>
-        </a>
+        </button>
         <div class="slot">
           <div class="time">20:00</div>
           <div class="meta">🍺🥤 Pause</div>
         </div>
-        <a href="#spectacle-vendredi-match" class="slot highlight slot-spectacle" style="background-image: url('assets/img/equipe-suisse.jpg');">
+        <button data-spectacle="spectacle-vendredi-match" class="slot highlight slot-spectacle" style="background-image: url('assets/img/equipe-suisse.jpg');">
           <div class="time">21:00</div>
           <h4>Suisse vs La Malice</h4>
           <div class="meta">~75 min</div>
-        </a>
+        </button>
         <div class="slot">
           <div class="time">23:00</div>
           <div class="meta">🚪 Fermeture</div>
@@ -548,9 +548,9 @@
           </div>
         </div>
         <div class="slot"><div class="time">17:30</div><div class="meta">Accueil du public</div></div>
-        <a href="#spectacle-samedi-format-long" class="slot slot-format-long" style="background-image: url('assets/img/commis-d-office.jpg');"><div class="time">19:00</div><h4>Commis d'Office</h4><div class="meta">1h</div></a>
+        <button data-spectacle="spectacle-samedi-format-long" class="slot slot-format-long" style="background-image: url('assets/img/commis-d-office.jpg');"><div class="time">19:00</div><h4>Commis d'Office</h4><div class="meta">1h</div></button>
         <div class="slot"><div class="time">20:00</div><div class="meta">🍺🥤 Pause</div></div>
-        <a href="#spectacle-samedi-match" class="slot highlight slot-spectacle" style="background-image: url('assets/img/241125-MATCH-FRANCE-BELGIQUE-©J-55_BD-1200x470.jpg');"><div class="time">21:00</div><h4>Équipe de France vs La Malice</h4><div class="meta">~75 min</div></a>
+        <button data-spectacle="spectacle-samedi-match" class="slot highlight slot-spectacle" style="background-image: url('assets/img/241125-MATCH-FRANCE-BELGIQUE-©J-55_BD-1200x470.jpg');"><div class="time">21:00</div><h4>Équipe de France vs La Malice</h4><div class="meta">~75 min</div></button>
         <div class="slot slot-festif"><div class="time">23:00+</div><div class="meta"><strong>🎧 Soirée musicale festive</strong></div></div>
       </div>
 
@@ -583,9 +583,9 @@
           </div>
         </div>
         <div class="slot"><div class="time">17:30</div><div class="meta">Accueil du public</div></div>
-        <a href="#spectacle-dimanche-format-long" class="slot slot-format-long" style="background-image: url('assets/img/promo-2006.avif');"><div class="time">19:00</div><h4>Promo 2006</h4><div class="meta">1h</div></a>
+        <button data-spectacle="spectacle-dimanche-format-long" class="slot slot-format-long" style="background-image: url('assets/img/promo-2006.avif');"><div class="time">19:00</div><h4>Promo 2006</h4><div class="meta">1h</div></button>
         <div class="slot"><div class="time">20:00</div><div class="meta">🍺🥤 Pause</div></div>
-        <a href="#spectacle-dimanche-match" class="slot highlight slot-spectacle" style="background-image: url('assets/img/equipe-belgique.jpg');"><div class="time">21:00</div><h4>Belgique vs La Malice</h4><div class="meta">~75 min</div></a>
+        <button data-spectacle="spectacle-dimanche-match" class="slot highlight slot-spectacle" style="background-image: url('assets/img/equipe-belgique.jpg');"><div class="time">21:00</div><h4>Belgique vs La Malice</h4><div class="meta">~75 min</div></button>
         <div class="slot"><div class="time">23:00</div><div class="meta">🚪 Fermeture</div></div>
       </div>
     </div>
@@ -831,6 +831,21 @@
           <input type="hidden" name="locale" value="fr">
         </form>
       </div>
+    </div>
+  </div>
+</dialog>
+
+<!-- Modal détails spectacle -->
+<dialog id="spectacle-details">
+  <div class="modal-card">
+    <button class="modal-close" onclick="document.getElementById('spectacle-details').close()" aria-label="Fermer" title="Fermer">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    <div id="spectacle-details-content">
+      <!-- Le contenu sera rempli dynamiquement par JavaScript -->
     </div>
   </div>
 </dialog>
