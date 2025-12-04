@@ -1434,7 +1434,7 @@ nav.primary a:hover {
 }
 
 @media (max-width: 768px) {
-  .carousel-arrow {
+  .day-date .carousel-arrow {
     display: none;
   }
 }
