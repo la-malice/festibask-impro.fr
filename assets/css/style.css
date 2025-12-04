@@ -675,6 +675,23 @@ nav.primary a:hover {
   fill: currentColor;
 }
 
+.hero-tag-link {
+  color: var(--white);
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+  display: inline-block;
+}
+
+.hero-tag-link:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+}
+
+.hero-tag-link:active {
+  transform: scale(0.98);
+}
+
 .hero-dates {
   position: absolute;
   top: 24px;
