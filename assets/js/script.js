@@ -5,8 +5,9 @@
   io.observe(hero);
 
   // Burger / drawer mobile
-  const burger=document.getElementById('burger'), drawer=document.getElementById('drawer');
+  const burger=document.getElementById('burger'), drawer=document.getElementById('drawer'), drawerClose=document.getElementById('drawerClose');
   burger.addEventListener('click',()=>drawer.classList.toggle('open'));
+  if(drawerClose) drawerClose.addEventListener('click',()=>drawer.classList.remove('open'));
   drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>drawer.classList.remove('open')));
 
   // Modal open/close
