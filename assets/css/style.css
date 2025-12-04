@@ -264,36 +264,111 @@ img {
 }
 
 .section-bg-3 {
-  background: linear-gradient(to bottom, #030C1F 0%, #1D488B 100%);
+  background: linear-gradient(to bottom, #1D488B 0%, #030C1F 100%);
 }
 
 .section-bg-4 {
   background: linear-gradient(to bottom, #1D488B 0%, #030C1F 100%);
 }
 
-/* FAQ - textes en bleu pour lisibilité */
-#faq details,
-#faq summary,
-#faq p {
+/* FAQ - encart style similaire à CTA */
+.faq-card {
+  background: var(--white-overlay-medium);
+  border: 1px solid var(--blue-border-dark);
+  border-radius: 12px;
+  padding: 24px;
+  backdrop-filter: blur(6px);
+  box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.faq-card h2 {
   color: var(--blue-dark);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin: 0 0 20px 0;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#faq details {
+  background: transparent;
+  border: 1px solid var(--blue-border-light);
+  border-radius: 8px;
+  padding: 14px 18px;
+  transition: all 0.3s ease;
+}
+
+#faq details:hover {
+  border-color: var(--blue-border);
+  box-shadow: var(--shadow-sm);
+}
+
+#faq details[open] {
+  border-color: var(--blue-border-medium);
+  box-shadow: var(--shadow-sm);
 }
 
 #faq summary {
+  color: var(--blue-dark);
   font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  list-style: none;
+  padding: 0;
+  user-select: none;
+}
+
+#faq summary::-webkit-details-marker {
+  display: none;
+}
+
+#faq summary::marker {
+  display: none;
+}
+
+#faq summary::after {
+  content: "+";
+  float: right;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--blue);
+  transition: transform 0.3s ease;
+}
+
+#faq details[open] summary::after {
+  content: "−";
+  transform: rotate(0deg);
+}
+
+#faq p {
+  color: var(--text);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 12px 0 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--blue-border-light);
 }
 
 .section-bg-5 {
   background: linear-gradient(to bottom, #030C1F 0%, #1D488B 100%);
 }
 
-/* Section infos pratiques - dégradé normal (avant l'inversion) */
+/* Section infos pratiques - dégradé inversé */
 #infos.section-bg-5 {
+  background: linear-gradient(to bottom, #030C1F 0%, #1D488B 100%);
+}
+
+/* Section sponsors - dégradé inversé */
+#sponsors.section-bg-5 {
   background: linear-gradient(to bottom, #1D488B 0%, #030C1F 100%);
 }
 
 /* Section CTA - Soyez les premiers informés */
 .section-cta {
-  background: linear-gradient(to bottom, #1D488B 0%, #030C1F 100%);
+  background: linear-gradient(to bottom, #030C1F 0%, #1D488B 100%);
   padding: 60px 0;
 }
 
@@ -2335,10 +2410,37 @@ button.slot-spectacle:active {
   font-size: clamp(1.5rem, 3vw, 2rem);
 }
 
+.billetterie-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (min-width: 800px) {
+  .billetterie-content {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 32px;
+    align-items: center;
+  }
+}
+
 .billetterie-text {
-  margin: 0 0 20px 0;
+  margin: 0;
   color: var(--blue-dark);
   line-height: 1.5;
+}
+
+.billetterie-button-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (min-width: 800px) {
+  .billetterie-button-wrapper {
+    justify-content: center;
+  }
 }
 
 .btn-billetterie {
@@ -2378,7 +2480,7 @@ button.slot-spectacle:active {
 }
 
 .pass-gagnant {
-  background: linear-gradient(135deg, var(--accent-light) 0%, var(--blue-bg) 100%) !important;
+  background: linear-gradient(135deg, rgba(212, 90, 122, 0.18) 0%, rgba(90, 143, 163, 0.18) 100%) !important;
   border-color: rgba(212, 90, 122, 0.3) !important;
   transition: all 0.3s ease;
 }
@@ -2580,7 +2682,6 @@ footer > .container > div > p.small:last-child {
   margin-top: 24px;
   margin-bottom: 0;
   padding-top: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* ============================================

@@ -522,7 +522,7 @@
             </div>
           </div>
           <div class="footer">
-            <p class="waitlist-explanation">C'est complet, mais si une place se libère, on peut vous mettre en liste d'attente.</p>
+            <p class="waitlist-explanation">Ce stage est complet. Mais inscrivez-vous sur liste d'attente et on vous appelle dès qu'une place se libère! 👌</p>
             <button class="btn btn-waitlist" data-open="notify">Entrer en liste d'attente</button>
           </div>
         </div>
@@ -702,8 +702,12 @@
             <p><span>⚡ Préventes</span> — Places à tarif réduit en quantité limitée</p>
           </div>
         </div>
-        <p class="billetterie-text">Ouverture bientôt sur HelloAsso. Inscrivez-vous pour être prévenu·e en premier et ne pas manquer l'occasion.</p>
-        <button class="btn btn-primary btn-billetterie" data-open="notify">Prévenez-moi</button>
+        <div class="billetterie-content">
+          <p class="billetterie-text">Ouverture bientôt sur HelloAsso. Inscrivez-vous pour être prévenu·e en premier et ne pas manquer l'occasion.</p>
+          <div class="billetterie-button-wrapper">
+            <button class="btn btn-primary btn-billetterie" data-open="notify">Prévenez-moi</button>
+          </div>
+        </div>
       </div>
 
       <div class="card pass-gagnant">
@@ -734,42 +738,44 @@
 
 <!-- Infos pratiques -->
 <section id="infos" class="section section-bg-5">
-  <div class="container grid grid-2">
-    <div>
-      <h2>Infos pratiques</h2>
-      <p class="small"><strong>Lieu :</strong> Patinoire de la Barre, Anglet</p>
-      <ul>
-        <li>Snacks & boissons sur place.</li>
-        <li>Zone détente pour prolonger la soirée.</li>
-        <li>Accès / parkings / transports : <em>à venir</em>.</li>
-        <li>Accessibilité : <em>à venir</em>.</li>
-      </ul>
-    </div>
-
-    <div>
-      <iframe 
-        src="https://www.google.com/maps?q=Patinoire+de+la+Barre,+299+Avenue+de+l%27Adour,+64600+Anglet,+France&output=embed"
-        width="100%" 
-        height="400" 
-        style="border:0; border-radius: 12px;" 
-        allowfullscreen="" 
-        loading="lazy" 
-        referrerpolicy="no-referrer-when-downgrade"
-        title="Localisation de la Patinoire de la Barre">
-      </iframe>
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section id="faq" class="section section-bg-4">
   <div class="container">
-    <h2>FAQ</h2>
-    <div class="faq-list">
-      <details><summary>Quand la billetterie ouvre-t-elle ?</summary><p>Bientôt — laissez votre e-mail et nous vous préviendrons.</p></details>
-      <details><summary>Des tarifs réduits ?</summary><p>Oui : -40% pour étudiant·e·s et demandeur·se·s d'emploi (justificatif requis).</p></details>
-      <details><summary>La soirée festive est-elle incluse ?</summary><p>Oui, elle suit les spectacles du samedi.</p></details>
-      <details><summary>Restauration sur place ?</summary><p>Oui, un espace snacks & boissons est prévu.</p></details>
+    <div class="grid grid-2">
+      <div>
+        <h2>Infos pratiques</h2>
+        <p class="small"><strong>Lieu :</strong> Patinoire de la Barre, Anglet</p>
+        <ul>
+          <li>Snacks & boissons sur place.</li>
+          <li>Zone détente pour prolonger la soirée.</li>
+          <li>Accès / parkings / transports : <em>à venir</em>.</li>
+          <li>Accessibilité : <em>à venir</em>.</li>
+        </ul>
+      </div>
+
+      <div>
+        <iframe 
+          src="https://www.google.com/maps?q=Patinoire+de+la+Barre,+299+Avenue+de+l%27Adour,+64600+Anglet,+France&output=embed"
+          width="100%" 
+          height="400" 
+          style="border:0; border-radius: 12px;" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Localisation de la Patinoire de la Barre">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div id="faq" class="mt-32">
+      <div class="faq-card">
+        <h2>FAQ</h2>
+        <div class="faq-list">
+          <details><summary>Quand la billetterie ouvre-t-elle ?</summary><p>Bientôt — laissez votre e-mail et nous vous préviendrons.</p></details>
+          <details><summary>Des tarifs réduits ?</summary><p>Oui : -40% pour étudiant·e·s et demandeur·se·s d'emploi (justificatif requis).</p></details>
+          <details><summary>La soirée festive est-elle incluse ?</summary><p>Oui, elle suit les spectacles du samedi.</p></details>
+          <details><summary>Restauration sur place ?</summary><p>Oui, un espace snacks & boissons est prévu.</p></details>
+        </div>
+      </div>
     </div>
   </div>
 </section>
