@@ -171,6 +171,19 @@
     });
   });
 
+  // Clic sur le tag COMPLET pour afficher/masquer le message explicatif
+  document.querySelectorAll('.complet-tag').forEach(tag=>{
+    tag.addEventListener('click',e=>{
+      e.stopPropagation();
+      const card = tag.closest('.atelier-card');
+      const explanation = card.querySelector('.waitlist-explanation-front');
+      if (explanation) {
+        const isVisible = explanation.style.display !== 'none';
+        explanation.style.display = isVisible ? 'none' : 'block';
+      }
+    });
+  });
+
   // Flip pour afficher la bio de l'intervenant (seulement dans le flip-back)
   document.querySelectorAll('.flip-back .instructor-flip-container').forEach(container=>{
     container.addEventListener('click',e=>{

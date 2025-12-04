@@ -1666,18 +1666,40 @@ nav.primary a:hover {
   text-align: center;
 }
 
+/* Row pour l'intervenant et le bouton sur mobile */
+.atelier-card .flip-back .instructor-button-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
 .atelier-card .flip-back .instructor-flip-container {
   position: relative;
-  width: 100%;
+  flex: 1;
+  min-width: 150px;
   min-height: 60px;
   height: 60px;
   transition: transform 0.6s, height 0.6s;
   transform-style: preserve-3d;
   cursor: pointer;
-  margin-top: 20px;
-  margin-bottom: 12px;
-  padding-top: 16px;
-  border-top: 1px solid var(--blue-border-light);
+  padding-top: 0;
+  border-top: none;
+}
+
+@media (min-width: 768px) {
+  .atelier-card .flip-back .instructor-button-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+  
+  .atelier-card .flip-back .instructor-flip-container {
+    width: 100%;
+  }
 }
 
 .atelier-card .flip-back .instructor-flip-front {
@@ -1804,6 +1826,12 @@ nav.primary a:hover {
   line-height: 1.6;
   color: var(--white);
   margin-top: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Lien "En savoir plus" */
@@ -1823,6 +1851,61 @@ nav.primary a:hover {
 .atelier-card .en-savoir-plus-link:hover {
   color: var(--blue-dark);
   text-decoration: none;
+}
+
+/* Row pour "En savoir plus" et tag "COMPLET" */
+.atelier-card .en-savoir-plus-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+
+/* Tag COMPLET */
+.atelier-card .complet-tag {
+  background: var(--accent);
+  color: var(--white);
+  font-weight: 900;
+  font-size: 0.75rem;
+  padding: 4px 12px;
+  border-radius: 12px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(212, 90, 122, 0.3);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.atelier-card .complet-tag:hover {
+  transform: scale(1.05);
+  box-shadow: 0 3px 8px rgba(212, 90, 122, 0.4);
+}
+
+/* Message explicatif liste d'attente sur le recto */
+.atelier-card .waitlist-explanation-front {
+  font-size: 0.85rem;
+  color: var(--text);
+  margin-top: 12px;
+  margin-bottom: 12px;
+  line-height: 1.5;
+  text-align: center;
+  padding: 10px 12px;
+  background: var(--accent-light);
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 
@@ -1866,6 +1949,42 @@ nav.primary a:hover {
   border-top: 1px solid var(--blue-bg-light);
 }
 
+/* Footer mobile - visible uniquement sur mobile, à côté de l'intervenant */
+.atelier-card .flip-back .footer-mobile {
+  display: block;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+  flex-shrink: 0;
+}
+
+.atelier-card .flip-back .footer-mobile .btn {
+  width: auto;
+  min-width: 140px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .atelier-card .flip-back .footer-mobile {
+    display: none;
+  }
+}
+
+/* Footer desktop - visible uniquement sur desktop, en bas */
+.atelier-card .flip-back .footer-desktop {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .atelier-card .flip-back .footer-desktop {
+    display: block;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+  }
+}
+
 .atelier-card .btn-inscription {
   width: 100%;
   display: flex;
@@ -1882,36 +2001,17 @@ nav.primary a:hover {
   pointer-events: none;
 }
 
-/* Bandeau COMPLET */
-.atelier-card.complet {
-  position: relative;
-}
+/* Bandeau COMPLET - maintenant géré par .complet-tag dans le HTML */
 
-.atelier-card.complet::before {
-  content: "COMPLET";
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: var(--accent);
+/* Explication liste d'attente - uniquement sur le verso */
+.atelier-card .flip-back .waitlist-explanation {
+  font-size: 0.9rem;
   color: var(--white);
-  font-weight: 900;
-  font-size: 0.75rem;
-  padding: 6px 16px;
-  border-bottom-left-radius: 12px;
-  z-index: 10;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  box-shadow: 0 2px 8px rgba(212, 90, 122, 0.3);
-}
-
-/* Explication liste d'attente */
-.atelier-card .waitlist-explanation {
-  font-size: 0.85rem;
-  color: var(--text);
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   line-height: 1.5;
   text-align: center;
   padding: 0 8px;
+  opacity: 0.9;
 }
 
 /* Bouton liste d'attente */
