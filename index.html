@@ -40,8 +40,7 @@
     <nav class="primary">
       <a href="#valeur">À l'affiche</a>
       <a href="#programme">Programme</a>
-      <a href="#stages">Stages</a>
-      <a href="#infos">Infos pratiques</a>
+      <a href="#tarifs">Billetterie</a>
       <a href="#sponsors">Partenaires</a>
     </nav>
     <button class="burger" id="burger" aria-label="Ouvrir le menu"><span></span></button>
@@ -56,10 +55,11 @@
   </button>
   <a href="#valeur">À l'affiche</a>
   <a href="#programme">Programme</a>
-  <a href="#ateliers">Ateliers</a>
-  <a href="#infos">Infos pratiques</a>
+  <a href="#tarifs">Billetterie</a>
   <a href="#sponsors">Partenaires</a>
-  <a href="#" data-open="notify" class="mt-8">Prévenez-moi</a>
+  <div class="drawer-cta">
+    <button class="btn btn-primary" data-open="notify">Prévenez-moi</button>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -259,11 +259,147 @@
   </div>
 </section>
 
+<!-- Programme -->
+<section id="programme" class="section program section-bg-3">
+  <div class="container">
+    <h2>Programme</h2>
+    <p class="small">Chaque journée alterne des <strong>stages d'impro</strong> (matin & après-midi) et une <strong>soirée</strong> en deux temps : <em>format long</em> puis <em>match international</em>.</p>
+
+    <div class="grid grid-3 mt-18">
+      <!-- Vendredi -->
+      <div class="day card">
+        <h3>Vendredi 15 mai</h3>
+        <div class="slot">
+          <div class="time">09:30</div>
+          <div class="meta">🥐☕ Accueil des participants aux stages</div>
+        </div>
+        <div class="slot slot-atelier">
+          <div class="time">11:00–13:00</div>
+          <div class="salles-container">
+            <a href="#atelier-vendredi-11h-initiation" class="salle-box">
+              <div class="salle-label">Salle 1</div>
+              <div class="atelier-name">
+                <img src="assets/img/thomas-dubois.avif" alt="Quentin" class="instructor-avatar">
+                INITIATION À L'IMPRO
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="slot slot-atelier">
+          <div class="time">14:00–16:00</div>
+          <div class="salles-container">
+            <a href="#atelier-vendredi-14h-initiation" class="salle-box">
+              <div class="salle-label">Salle 2</div>
+              <div class="atelier-name">
+                <img src="assets/img/laeti.avif" alt="Laëtitia" class="instructor-avatar">
+                INITIATION À L'IMPRO
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="slot">
+          <div class="time">17:30</div>
+          <div class="meta">Accueil du public</div>
+        </div>
+        <button data-spectacle="spectacle-vendredi-format-long" class="slot slot-format-long" style="background-image: url('assets/img/braquage.jpg');">
+          <div class="time">19:00</div>
+          <h4>Braquage</h4>
+          <div class="meta">1h</div>
+        </button>
+        <div class="slot">
+          <div class="time">20:00</div>
+          <div class="meta">🍺🥤 Pause</div>
+        </div>
+        <button data-spectacle="spectacle-vendredi-match" class="slot highlight slot-spectacle" style="background-image: url('assets/img/equipe-suisse.jpg');">
+          <div class="time">21:00</div>
+          <h4>Suisse vs La Malice</h4>
+          <div class="meta">~75 min</div>
+        </button>
+        <div class="slot">
+          <div class="time">23:00</div>
+          <div class="meta">🚪 Fermeture</div>
+        </div>
+      </div>
+
+      <!-- Samedi -->
+      <div class="day card">
+        <h3>Samedi 16 mai</h3>
+        <div class="slot"><div class="time">09:30</div><div class="meta">🥐☕ Accueil des participants aux stages</div></div>
+        <div class="slot slot-atelier">
+          <div class="time">10:00–13:00</div>
+          <div class="salles-container">
+            <a href="#atelier-samedi-10h-masterclass" class="salle-box">
+              <div class="salle-label">Salle 2</div>
+              <div class="atelier-name">
+                <img src="assets/img/marc-lefebvre.avif" alt="Richard" class="instructor-avatar">
+                MASTER CLASS IMPRO
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="slot slot-atelier">
+          <div class="time">14:00–17:00</div>
+          <div class="salles-container">
+            <a href="#atelier-samedi-14h-masterclass" class="salle-box">
+              <div class="salle-label">Salle 1</div>
+              <div class="atelier-name">
+                <img src="assets/img/aurelie.avif" alt="Aurélie" class="instructor-avatar">
+                MASTER CLASS IMPRO
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="slot"><div class="time">17:30</div><div class="meta">Accueil du public</div></div>
+        <button data-spectacle="spectacle-samedi-format-long" class="slot slot-format-long" style="background-image: url('assets/img/commis-d-office.jpg');"><div class="time">19:00</div><h4>Commis d'Office</h4><div class="meta">1h</div></button>
+        <div class="slot"><div class="time">20:00</div><div class="meta">🍺🥤 Pause</div></div>
+        <button data-spectacle="spectacle-samedi-match" class="slot highlight slot-spectacle" style="background-image: url('assets/img/241125-MATCH-FRANCE-BELGIQUE-©J-55_BD-1200x470.jpg');"><div class="time">21:00</div><h4>Équipe de France vs La Malice</h4><div class="meta">~75 min</div></button>
+        <div class="slot slot-festif"><div class="time">23:00+</div><div class="meta"><strong>🎧 Soirée musicale festive</strong></div></div>
+      </div>
+
+      <!-- Dimanche -->
+      <div class="day card">
+        <h3>Dimanche 17 mai</h3>
+        <div class="slot"><div class="time">09:30</div><div class="meta">🥐☕ Accueil des participants aux stages</div></div>
+        <div class="slot slot-atelier">
+          <div class="time">10:00–11:30</div>
+          <div class="salles-container">
+            <a href="#atelier-dimanche-10h-famille" class="salle-box">
+              <div class="salle-label">Salle 1</div>
+              <div class="atelier-name">
+                <img src="assets/img/sophie-martin.avif" alt="Émilie" class="instructor-avatar">
+                IMPRO EN FAMILLE
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="slot slot-atelier">
+          <div class="time">14:00–15:30</div>
+          <div class="salles-container">
+            <a href="#atelier-dimanche-14h-famille" class="salle-box">
+              <div class="salle-label">Salle 2</div>
+              <div class="atelier-name">
+                <img src="assets/img/anneke.avif" alt="Anneke" class="instructor-avatar">
+                IMPRO EN FAMILLE
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="slot"><div class="time">17:30</div><div class="meta">Accueil du public</div></div>
+        <button data-spectacle="spectacle-dimanche-format-long" class="slot slot-format-long" style="background-image: url('assets/img/promo-2006.avif');"><div class="time">19:00</div><h4>Promo 2006</h4><div class="meta">1h</div></button>
+        <div class="slot"><div class="time">20:00</div><div class="meta">🍺🥤 Pause</div></div>
+        <button data-spectacle="spectacle-dimanche-match" class="slot highlight slot-spectacle" style="background-image: url('assets/img/equipe-belgique.jpg');"><div class="time">21:00</div><h4>Belgique vs La Malice</h4><div class="meta">~75 min</div></button>
+        <div class="slot"><div class="time">23:00</div><div class="meta">🚪 Fermeture</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <!-- Stages -->
 <section id="stages" class="section section-bg-5">
   <div class="container">
     <h2>Stages d'impro</h2>
-    <p class="small mb-16">Chaque jour des ateliers d'improvisation animés vous sont proposés. Que vous souhaitiez vous initier seul ou en famille, ou que vous souhaitiez vous perfectionner ou prendre une master class, il y aura forcément un atelier pour vous. Nous avons 12 créneaux disponibles et des places limitées.</p>
+    <p class="small mb-16">Chaque jour des ateliers d'improvisation animés vous sont proposés. Que vous souhaitiez vous initier seul ou en famille, ou que vous souhaitiez vous perfectionner ou prendre une master class, il y aura forcément un atelier pour vous.</p>
 
     <div class="ateliers-grid">
       <!-- Stage Initiation Adulte -->
@@ -454,142 +590,6 @@
         <div class="align-self-center"><a class="btn btn-primary" href="#"><!-- TODO: lien formulaire -->Soumettre ma proposition</a></div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- Programme -->
-<section id="programme" class="section program section-bg-3">
-  <div class="container">
-    <h2>Programme</h2>
-    <p class="small">Chaque journée alterne des <strong>stages d’impro</strong> (matin & après-midi) et une <strong>soirée</strong> en deux temps : <em>format long</em> puis <em>match international</em>.</p>
-
-    <div class="grid grid-3 mt-18">
-      <!-- Vendredi -->
-      <div class="day card">
-        <h3>Vendredi 15 mai</h3>
-        <div class="slot">
-          <div class="time">09:30</div>
-          <div class="meta">🥐☕ Accueil des participants aux stages</div>
-        </div>
-        <div class="slot slot-atelier">
-          <div class="time">11:00–13:00</div>
-          <div class="salles-container">
-            <a href="#atelier-vendredi-11h-initiation" class="salle-box">
-              <div class="salle-label">Salle 1</div>
-              <div class="atelier-name">
-                <img src="assets/img/thomas-dubois.avif" alt="Quentin" class="instructor-avatar">
-                INITIATION À L'IMPRO
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="slot slot-atelier">
-          <div class="time">14:00–16:00</div>
-          <div class="salles-container">
-            <a href="#atelier-vendredi-14h-initiation" class="salle-box">
-              <div class="salle-label">Salle 2</div>
-              <div class="atelier-name">
-                <img src="assets/img/laeti.avif" alt="Laëtitia" class="instructor-avatar">
-                INITIATION À L'IMPRO
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="slot">
-          <div class="time">17:30</div>
-          <div class="meta">Accueil du public</div>
-        </div>
-        <button data-spectacle="spectacle-vendredi-format-long" class="slot slot-format-long" style="background-image: url('assets/img/braquage.jpg');">
-          <div class="time">19:00</div>
-          <h4>Braquage</h4>
-          <div class="meta">1h</div>
-        </button>
-        <div class="slot">
-          <div class="time">20:00</div>
-          <div class="meta">🍺🥤 Pause</div>
-        </div>
-        <button data-spectacle="spectacle-vendredi-match" class="slot highlight slot-spectacle" style="background-image: url('assets/img/equipe-suisse.jpg');">
-          <div class="time">21:00</div>
-          <h4>Suisse vs La Malice</h4>
-          <div class="meta">~75 min</div>
-        </button>
-        <div class="slot">
-          <div class="time">23:00</div>
-          <div class="meta">🚪 Fermeture</div>
-        </div>
-      </div>
-
-      <!-- Samedi -->
-      <div class="day card">
-        <h3>Samedi 16 mai</h3>
-        <div class="slot"><div class="time">09:30</div><div class="meta">🥐☕ Accueil des participants aux stages</div></div>
-        <div class="slot slot-atelier">
-          <div class="time">10:00–13:00</div>
-          <div class="salles-container">
-            <a href="#atelier-samedi-10h-masterclass" class="salle-box">
-              <div class="salle-label">Salle 2</div>
-              <div class="atelier-name">
-                <img src="assets/img/marc-lefebvre.avif" alt="Richard" class="instructor-avatar">
-                MASTER CLASS IMPRO
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="slot slot-atelier">
-          <div class="time">14:00–17:00</div>
-          <div class="salles-container">
-            <a href="#atelier-samedi-14h-masterclass" class="salle-box">
-              <div class="salle-label">Salle 1</div>
-              <div class="atelier-name">
-                <img src="assets/img/aurelie.avif" alt="Aurélie" class="instructor-avatar">
-                MASTER CLASS IMPRO
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="slot"><div class="time">17:30</div><div class="meta">Accueil du public</div></div>
-        <button data-spectacle="spectacle-samedi-format-long" class="slot slot-format-long" style="background-image: url('assets/img/commis-d-office.jpg');"><div class="time">19:00</div><h4>Commis d'Office</h4><div class="meta">1h</div></button>
-        <div class="slot"><div class="time">20:00</div><div class="meta">🍺🥤 Pause</div></div>
-        <button data-spectacle="spectacle-samedi-match" class="slot highlight slot-spectacle" style="background-image: url('assets/img/241125-MATCH-FRANCE-BELGIQUE-©J-55_BD-1200x470.jpg');"><div class="time">21:00</div><h4>Équipe de France vs La Malice</h4><div class="meta">~75 min</div></button>
-        <div class="slot slot-festif"><div class="time">23:00+</div><div class="meta"><strong>🎧 Soirée musicale festive</strong></div></div>
-      </div>
-
-      <!-- Dimanche -->
-      <div class="day card">
-        <h3>Dimanche 17 mai</h3>
-        <div class="slot"><div class="time">09:30</div><div class="meta">🥐☕ Accueil des participants aux stages</div></div>
-        <div class="slot slot-atelier">
-          <div class="time">10:00–11:30</div>
-          <div class="salles-container">
-            <a href="#atelier-dimanche-10h-famille" class="salle-box">
-              <div class="salle-label">Salle 1</div>
-              <div class="atelier-name">
-                <img src="assets/img/sophie-martin.avif" alt="Émilie" class="instructor-avatar">
-                IMPRO EN FAMILLE
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="slot slot-atelier">
-          <div class="time">14:00–15:30</div>
-          <div class="salles-container">
-            <a href="#atelier-dimanche-14h-famille" class="salle-box">
-              <div class="salle-label">Salle 2</div>
-              <div class="atelier-name">
-                <img src="assets/img/anneke.avif" alt="Anneke" class="instructor-avatar">
-                IMPRO EN FAMILLE
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="slot"><div class="time">17:30</div><div class="meta">Accueil du public</div></div>
-        <button data-spectacle="spectacle-dimanche-format-long" class="slot slot-format-long" style="background-image: url('assets/img/promo-2006.avif');"><div class="time">19:00</div><h4>Promo 2006</h4><div class="meta">1h</div></button>
-        <div class="slot"><div class="time">20:00</div><div class="meta">🍺🥤 Pause</div></div>
-        <button data-spectacle="spectacle-dimanche-match" class="slot highlight slot-spectacle" style="background-image: url('assets/img/equipe-belgique.jpg');"><div class="time">21:00</div><h4>Belgique vs La Malice</h4><div class="meta">~75 min</div></button>
-        <div class="slot"><div class="time">23:00</div><div class="meta">🚪 Fermeture</div></div>
-      </div>
-    </div>
-
   </div>
 </section>
 

@@ -695,6 +695,24 @@ nav.primary a:hover {
   margin-top: 60px;
 }
 
+.drawer-cta {
+  margin-top: 24px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid rgba(90, 143, 163, 0.2);
+}
+
+.drawer-cta .btn {
+  width: 100%;
+  max-width: 280px;
+  padding: 16px 24px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(212, 90, 122, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
 @media (min-width: 900px) {
   .burger {
     display: none;
