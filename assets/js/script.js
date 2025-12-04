@@ -68,6 +68,75 @@
       });
     }
     
+    // Détection du swipe pour mobile
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchEndX = 0;
+    let touchEndY = 0;
+    let isSwiping = false;
+    const swipeThreshold = 50; // Distance minimale en pixels pour déclencher un swipe
+    
+    const daySlider = daySliderContainer.closest('.day-slider');
+    
+    if (daySlider) {
+      daySlider.addEventListener('touchstart', (e) => {
+        const touch = e.touches[0];
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
+        isSwiping = false;
+      }, { passive: true });
+      
+      daySlider.addEventListener('touchmove', (e) => {
+        if (!touchStartX) return;
+        
+        const touch = e.touches[0];
+        const deltaX = Math.abs(touch.clientX - touchStartX);
+        const deltaY = Math.abs(touch.clientY - touchStartY);
+        
+        // Si le mouvement est principalement horizontal, on considère que c'est un swipe
+        if (deltaX > deltaY && deltaX > 10) {
+          isSwiping = true;
+          // Empêcher le scroll vertical pendant un swipe horizontal
+          e.preventDefault();
+        }
+      }, { passive: false });
+      
+      daySlider.addEventListener('touchend', (e) => {
+        if (!touchStartX || !isSwiping) {
+          touchStartX = 0;
+          touchStartY = 0;
+          return;
+        }
+        
+        const touch = e.changedTouches[0];
+        touchEndX = touch.clientX;
+        touchEndY = touch.clientY;
+        
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = touchEndY - touchStartY;
+        const absDeltaX = Math.abs(deltaX);
+        const absDeltaY = Math.abs(deltaY);
+        
+        // Vérifier que c'est un swipe horizontal valide
+        if (absDeltaX > swipeThreshold && absDeltaX > absDeltaY) {
+          if (deltaX > 0) {
+            // Swipe vers la droite = slide précédent
+            prevDaySlide();
+          } else {
+            // Swipe vers la gauche = slide suivant
+            nextDaySlide();
+          }
+        }
+        
+        // Réinitialiser
+        touchStartX = 0;
+        touchStartY = 0;
+        touchEndX = 0;
+        touchEndY = 0;
+        isSwiping = false;
+      }, { passive: true });
+    }
+    
     // Auto-play optionnel (désactivé par défaut)
     // setInterval(nextDaySlide, 5000);
   }
