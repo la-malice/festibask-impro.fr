@@ -114,7 +114,7 @@
           </div>
           
           <!-- Format long -->
-          <div class="format-long-block">
+          <div id="spectacle-vendredi-format-long" class="format-long-block">
             <img src="assets/img/braquage.jpg" alt="Braquage" class="format-long-image">
             <div class="format-long-overlay">
               <div class="format-long-time">19:00</div>
@@ -128,7 +128,7 @@
           </div>
           
           <!-- Match -->
-          <div class="match-block">
+          <div id="spectacle-vendredi-match" class="match-block">
             <img src="assets/img/equipe-suisse.jpg" alt="La Malice vs Suisse" class="match-image">
             <div class="match-teams-overlay">
               <div class="match-team-logo">
@@ -160,7 +160,7 @@
           </div>
           
           <!-- Format long -->
-          <div class="format-long-block">
+          <div id="spectacle-samedi-format-long" class="format-long-block">
             <img src="assets/img/commis-d-office.jpg" alt="Commis d'Office" class="format-long-image">
             <div class="format-long-overlay">
               <div class="format-long-time">19:00</div>
@@ -174,7 +174,7 @@
           </div>
           
           <!-- Match -->
-          <div class="match-block">
+          <div id="spectacle-samedi-match" class="match-block">
             <img src="assets/img/241125-MATCH-FRANCE-BELGIQUE-©J-55_BD-1200x470.jpg" alt="La Malice vs Équipe de France" class="match-image">
             <div class="match-teams-overlay">
               <div class="match-team-logo">
@@ -206,7 +206,7 @@
           </div>
           
           <!-- Format long -->
-          <div class="format-long-block">
+          <div id="spectacle-dimanche-format-long" class="format-long-block">
             <img src="assets/img/promo-2006.avif" alt="Promo 2006" class="format-long-image">
             <div class="format-long-overlay">
               <div class="format-long-time">19:00</div>
@@ -220,7 +220,7 @@
           </div>
           
           <!-- Match -->
-          <div class="match-block">
+          <div id="spectacle-dimanche-match" class="match-block">
             <img src="assets/img/equipe-belgique.jpg" alt="La Malice vs Belgique" class="match-image">
             <div class="match-teams-overlay">
               <div class="match-team-logo">
@@ -261,7 +261,7 @@
 
     <div class="ateliers-grid">
       <!-- Stage Initiation Adulte -->
-      <article class="atelier-card">
+      <article id="atelier-vendredi-10h-initiation" class="atelier-card">
         <div class="header">
           <div class="day-header">Vendredi 15 mai · 10:00</div>
         </div>
@@ -291,7 +291,7 @@
       </article>
 
       <!-- Masterclass Perfectionnement -->
-      <article class="atelier-card">
+      <article id="atelier-samedi-10h-masterclass" class="atelier-card">
         <div class="header">
           <div class="day-header">Samedi 16 mai · 10:00</div>
         </div>
@@ -321,7 +321,7 @@
       </article>
 
       <!-- Impro en Famille -->
-      <article class="atelier-card">
+      <article id="atelier-dimanche-10h-famille" class="atelier-card complet">
         <div class="header">
           <div class="day-header">Dimanche 17 mai · 10:00</div>
         </div>
@@ -345,13 +345,14 @@
             </div>
           </div>
           <div class="footer">
-            <button class="btn btn-inscription" data-open="notify">S'inscrire</button>
+            <p class="waitlist-explanation">C'est complet, mais si une place se libère, on peut vous mettre en liste d'attente.</p>
+            <button class="btn btn-waitlist" data-open="notify">Entrer en liste d'attente</button>
           </div>
         </div>
       </article>
 
       <!-- Stage Initiation Adulte - Après-midi -->
-      <article class="atelier-card">
+      <article id="atelier-vendredi-14h-initiation" class="atelier-card">
         <div class="header">
           <div class="day-header">Vendredi 15 mai · 14:00</div>
         </div>
@@ -381,7 +382,7 @@
       </article>
 
       <!-- Masterclass Perfectionnement - Après-midi -->
-      <article class="atelier-card">
+      <article id="atelier-samedi-14h-masterclass" class="atelier-card">
         <div class="header">
           <div class="day-header">Samedi 16 mai · 14:00</div>
         </div>
@@ -411,7 +412,7 @@
       </article>
 
       <!-- Impro en Famille - Après-midi -->
-      <article class="atelier-card">
+      <article id="atelier-dimanche-14h-famille" class="atelier-card">
         <div class="header">
           <div class="day-header">Dimanche 17 mai · 14:00</div>
         </div>
@@ -467,45 +468,45 @@
         <div class="slot slot-atelier">
           <div class="time">10:00–13:00</div>
           <div class="salles-container">
-            <div class="salle-box">
+            <a href="#atelier-vendredi-10h-initiation" class="salle-box">
               <div class="salle-label">Salle 1</div>
               <div class="atelier-name">
                 <img src="assets/img/thomas-dubois.avif" alt="Quentin" class="instructor-avatar">
                 INITIATION À L'IMPRO
               </div>
-            </div>
+            </a>
           </div>
         </div>
         <div class="slot slot-atelier">
           <div class="time">14:00–16:00</div>
           <div class="salles-container">
-            <div class="salle-box">
+            <a href="#atelier-vendredi-14h-initiation" class="salle-box">
               <div class="salle-label">Salle 2</div>
               <div class="atelier-name">
                 <img src="assets/img/laeti.avif" alt="Laëtitia" class="instructor-avatar">
                 INITIATION À L'IMPRO
               </div>
-            </div>
+            </a>
           </div>
         </div>
         <div class="slot">
           <div class="time">18:30</div>
           <div class="meta">🎵 Ambiance musicale · Installation du public</div>
         </div>
-        <div class="slot slot-format-long" style="background-image: url('assets/img/braquage.jpg');">
+        <a href="#spectacle-vendredi-format-long" class="slot slot-format-long" style="background-image: url('assets/img/braquage.jpg');">
           <div class="time">19:00</div>
           <h4>Braquage</h4>
           <div class="meta">1h</div>
-        </div>
+        </a>
         <div class="slot">
           <div class="time">20:00</div>
           <div class="meta">🍺🥤 Pause</div>
         </div>
-        <div class="slot highlight slot-spectacle" style="background-image: url('assets/img/equipe-suisse.jpg');">
+        <a href="#spectacle-vendredi-match" class="slot highlight slot-spectacle" style="background-image: url('assets/img/equipe-suisse.jpg');">
           <div class="time">20:30</div>
           <h4>Suisse vs La Malice</h4>
           <div class="meta">~75 min</div>
-        </div>
+        </a>
         <div class="slot">
           <div class="time">23:00</div>
           <div class="meta">🚪 Fermeture</div>
@@ -519,31 +520,31 @@
         <div class="slot slot-atelier">
           <div class="time">10:00–13:00</div>
           <div class="salles-container">
-            <div class="salle-box">
+            <a href="#atelier-samedi-10h-masterclass" class="salle-box">
               <div class="salle-label">Salle 2</div>
               <div class="atelier-name">
                 <img src="assets/img/marc-lefebvre.avif" alt="Richard" class="instructor-avatar">
                 MASTER CLASS IMPRO
               </div>
-            </div>
+            </a>
           </div>
         </div>
         <div class="slot slot-atelier">
           <div class="time">14:00–17:00</div>
           <div class="salles-container">
-            <div class="salle-box">
+            <a href="#atelier-samedi-14h-masterclass" class="salle-box">
               <div class="salle-label">Salle 1</div>
               <div class="atelier-name">
                 <img src="assets/img/aurelie.avif" alt="Aurélie" class="instructor-avatar">
                 MASTER CLASS IMPRO
               </div>
-            </div>
+            </a>
           </div>
         </div>
         <div class="slot"><div class="time">18:30</div><div class="meta">🎵 Ambiance musicale · Installation du public</div></div>
-        <div class="slot slot-format-long" style="background-image: url('assets/img/commis-d-office.jpg');"><div class="time">19:00</div><h4>Commis d'Office</h4><div class="meta">1h</div></div>
+        <a href="#spectacle-samedi-format-long" class="slot slot-format-long" style="background-image: url('assets/img/commis-d-office.jpg');"><div class="time">19:00</div><h4>Commis d'Office</h4><div class="meta">1h</div></a>
         <div class="slot"><div class="time">20:00</div><div class="meta">🍺🥤 Pause</div></div>
-        <div class="slot highlight slot-spectacle" style="background-image: url('assets/img/241125-MATCH-FRANCE-BELGIQUE-©J-55_BD-1200x470.jpg');"><div class="time">20:30</div><h4>Équipe de France vs La Malice</h4><div class="meta">~75 min</div></div>
+        <a href="#spectacle-samedi-match" class="slot highlight slot-spectacle" style="background-image: url('assets/img/241125-MATCH-FRANCE-BELGIQUE-©J-55_BD-1200x470.jpg');"><div class="time">20:30</div><h4>Équipe de France vs La Malice</h4><div class="meta">~75 min</div></a>
         <div class="slot slot-festif"><div class="time">23:00+</div><div class="meta"><strong>🎧 Soirée musicale festive</strong></div></div>
       </div>
 
@@ -554,31 +555,31 @@
         <div class="slot slot-atelier">
           <div class="time">10:00–11:30</div>
           <div class="salles-container">
-            <div class="salle-box">
+            <a href="#atelier-dimanche-10h-famille" class="salle-box">
               <div class="salle-label">Salle 1</div>
               <div class="atelier-name">
                 <img src="assets/img/sophie-martin.avif" alt="Émilie" class="instructor-avatar">
                 IMPRO EN FAMILLE
               </div>
-            </div>
+            </a>
           </div>
         </div>
         <div class="slot slot-atelier">
           <div class="time">14:00–15:30</div>
           <div class="salles-container">
-            <div class="salle-box">
+            <a href="#atelier-dimanche-14h-famille" class="salle-box">
               <div class="salle-label">Salle 2</div>
               <div class="atelier-name">
                 <img src="assets/img/anneke.avif" alt="Anneke" class="instructor-avatar">
                 IMPRO EN FAMILLE
               </div>
-            </div>
+            </a>
           </div>
         </div>
         <div class="slot"><div class="time">18:30</div><div class="meta">🎵 Ambiance musicale · Installation du public</div></div>
-        <div class="slot slot-format-long" style="background-image: url('assets/img/promo-2006.avif');"><div class="time">19:00</div><h4>Promo 2006</h4><div class="meta">1h</div></div>
+        <a href="#spectacle-dimanche-format-long" class="slot slot-format-long" style="background-image: url('assets/img/promo-2006.avif');"><div class="time">19:00</div><h4>Promo 2006</h4><div class="meta">1h</div></a>
         <div class="slot"><div class="time">20:00</div><div class="meta">🍺🥤 Pause</div></div>
-        <div class="slot highlight slot-spectacle" style="background-image: url('assets/img/equipe-belgique.jpg');"><div class="time">20:30</div><h4>Belgique vs La Malice</h4><div class="meta">~75 min</div></div>
+        <a href="#spectacle-dimanche-match" class="slot highlight slot-spectacle" style="background-image: url('assets/img/equipe-belgique.jpg');"><div class="time">20:30</div><h4>Belgique vs La Malice</h4><div class="meta">~75 min</div></a>
         <div class="slot"><div class="time">23:00</div><div class="meta">🚪 Fermeture</div></div>
       </div>
     </div>
@@ -593,7 +594,7 @@
     <div class="pricing mt-18">
       <div class="price"><h4>Pass 1 jour</h4><div class="value">25 €</div><p class="small">2 spectacles + 1 boisson incluse</p></div>
       <div class="price"><h4>Pass 3 jours</h4><div class="value">60 €</div><p class="small">Accès aux 3 soirées</p></div>
-      <div class="price"><h4>Stage</h4><div class="value">30 €</div><p class="small">3h de <a href="#stages">stage d'impro</a></p></div>
+      <div class="price"><h4>Stage</h4><div class="value"><span class="value-prefix">à partir de</span> 20 €</div><p class="small">1 <a href="#stages">stage d'impro à choisir</a></p></div>
     </div>
 
     <div class="tarifs-encarts mt-12">

@@ -1610,6 +1610,56 @@ nav.primary a:hover {
   pointer-events: none;
 }
 
+/* Bandeau COMPLET */
+.atelier-card.complet {
+  position: relative;
+}
+
+.atelier-card.complet::before {
+  content: "COMPLET";
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: var(--accent);
+  color: var(--white);
+  font-weight: 900;
+  font-size: 0.75rem;
+  padding: 6px 16px;
+  border-bottom-left-radius: 12px;
+  z-index: 10;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(212, 90, 122, 0.3);
+}
+
+/* Explication liste d'attente */
+.atelier-card .waitlist-explanation {
+  font-size: 0.85rem;
+  color: var(--text);
+  margin-bottom: 12px;
+  line-height: 1.5;
+  text-align: center;
+  padding: 0 8px;
+}
+
+/* Bouton liste d'attente */
+.atelier-card .btn-waitlist {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  background: var(--accent);
+  color: var(--white);
+  border-color: var(--accent);
+}
+
+.atelier-card .btn-waitlist:hover {
+  background: var(--accent-dark);
+  border-color: var(--accent-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(212, 90, 122, 0.3);
+}
+
 /* ============================================
    PROGRAMME
    ============================================ */
@@ -1758,6 +1808,39 @@ nav.primary a:hover {
   box-shadow: var(--shadow-sm);
 }
 
+/* Cases cliquables dans le programme */
+a.salle-box,
+a.slot-format-long,
+a.slot-spectacle {
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+a.salle-box {
+  color: inherit;
+}
+
+a.slot-format-long,
+a.slot-spectacle {
+  color: var(--white);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+a.salle-box:hover,
+a.slot-format-long:hover,
+a.slot-spectacle:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+a.salle-box:active,
+a.slot-format-long:active,
+a.slot-spectacle:active {
+  transform: translateY(0);
+}
+
 /* ============================================
    TARIFS
    ============================================ */
@@ -1792,6 +1875,13 @@ nav.primary a:hover {
   font-size: clamp(2.2rem, 4vw, 3.5rem);
   color: var(--accent);
   line-height: 1.1;
+}
+
+.price .value .value-prefix {
+  font-size: 0.4em;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.2em;
 }
 
 .price:nth-of-type(2) .value {
