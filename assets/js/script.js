@@ -196,6 +196,18 @@
     });
   });
 
+  // Flip pour afficher les détails des tarifs
+  document.querySelectorAll('.price-flip-container').forEach(container=>{
+    container.addEventListener('click',e=>{
+      // Empêcher le flip si on clique sur un lien
+      if(e.target.tagName === 'A' || e.target.closest('a')) {
+        return;
+      }
+      e.preventDefault();
+      container.classList.toggle('flipped');
+    });
+  });
+
   // Popup détails spectacle
   const spectacleDetailsModal = document.getElementById('spectacle-details');
   const spectacleDetailsContent = document.getElementById('spectacle-details-content');
@@ -324,26 +336,40 @@
     });
   }
 
-  // Ouvrir le modal au lieu du flip pour les format-long-block
+  // Flip pour afficher le pitch du format long (desktop) ou modal (mobile)
   document.querySelectorAll('.format-long-block').forEach(block=>{
     block.addEventListener('click',e=>{
       e.preventDefault();
-      // Récupérer l'ID du bloc pour trouver les données
-      const blockId = block.id;
-      if (blockId && spectaclesData && spectaclesData[blockId]) {
-        openSpectacleDetails(blockId);
+      const isMobile = window.innerWidth < 768;
+      
+      if (isMobile) {
+        // Mobile : ouvrir la modal
+        const blockId = block.id;
+        if (blockId && spectaclesData && spectaclesData[blockId]) {
+          openSpectacleDetails(blockId);
+        }
+      } else {
+        // Desktop : flip pour afficher le pitch
+        block.classList.toggle('flipped');
       }
     });
   });
 
-  // Ouvrir le modal au lieu du flip pour les match-block
+  // Flip pour afficher le pitch du match (desktop) ou modal (mobile)
   document.querySelectorAll('.match-block').forEach(block=>{
     block.addEventListener('click',e=>{
       e.preventDefault();
-      // Récupérer l'ID du bloc pour trouver les données
-      const blockId = block.id;
-      if (blockId && spectaclesData && spectaclesData[blockId]) {
-        openSpectacleDetails(blockId);
+      const isMobile = window.innerWidth < 768;
+      
+      if (isMobile) {
+        // Mobile : ouvrir la modal
+        const blockId = block.id;
+        if (blockId && spectaclesData && spectaclesData[blockId]) {
+          openSpectacleDetails(blockId);
+        }
+      } else {
+        // Desktop : flip pour afficher le pitch
+        block.classList.toggle('flipped');
       }
     });
   });
