@@ -1795,6 +1795,7 @@ nav.primary a:hover {
 .program .day {
   display: grid;
   gap: 8px;
+  align-content: start;
 }
 
 .program .day.card {
@@ -1802,6 +1803,11 @@ nav.primary a:hover {
   background: var(--white-overlay-light);
   backdrop-filter: blur(4px);
   box-shadow: var(--shadow-sm);
+}
+
+.program .day.card h3 {
+  margin: 0 0 8px 0;
+  text-align: center;
 }
 
 .slot {
@@ -1815,6 +1821,7 @@ nav.primary a:hover {
   border-radius: 6px;
   padding: 10px 12px;
   transition: background 0.2s;
+  min-height: 60px;
 }
 
 .slot .time {
@@ -1833,77 +1840,177 @@ nav.primary a:hover {
 .slot-atelier {
   background: var(--blue-bg);
   border-left-color: var(--blue);
+  min-height: 80px;
 }
 
 .slot-format-long {
-  background: var(--yellow-bg);
-  border-left-color: var(--yellow);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: rgba(248, 214, 120, 0.25) !important;
+  border-left: none;
   position: relative;
-  color: var(--white);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  color: var(--text);
+  padding: 0 !important;
+  padding-left: 0 !important;
+  display: flex !important;
+  align-items: stretch;
+  overflow: hidden;
+  min-height: 170px;
+  height: 170px;
+  gap: 0;
 }
 
 .slot-format-long::before {
   content: '';
   position: absolute;
-  top: 0;
   left: 0;
-  right: 0;
+  top: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 0;
-}
-
-.slot-format-long > * {
-  position: relative;
+  width: 3px;
+  background: linear-gradient(to bottom, var(--yellow), rgba(248, 214, 120, 0.5));
   z-index: 1;
 }
 
+.slot-format-long .slot-content {
+  flex: 1;
+  padding: 14px 16px;
+  padding-left: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+}
+
+.slot-format-long .slot-content h4 {
+  margin: 0;
+  line-height: 1.2;
+}
+
+.slot-format-long .slot-image {
+  width: 140px;
+  height: 170px;
+  object-fit: cover;
+  flex-shrink: 0;
+  display: block;
+}
+
+@media (min-width: 800px) {
+  .slot-format-long .slot-image {
+    width: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .slot-format-long,
+  .slot-spectacle {
+    height: 170px;
+    min-height: 170px;
+  }
+  
+  .slot-format-long .slot-image,
+  .slot-spectacle .slot-image {
+    height: 170px;
+  }
+  
+  .slot-format-long .slot-content,
+  .slot-spectacle .slot-content {
+    padding: 12px 14px;
+    padding-left: 12px;
+    gap: 4px;
+  }
+  
+  .slot-format-long .slot-content h4,
+  .slot-spectacle .slot-content h4 {
+    margin: 0;
+    line-height: 1.2;
+  }
+}
+
 .slot-spectacle {
-  background: var(--accent-light);
-  border-left-color: var(--accent);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: rgba(212, 90, 122, 0.20) !important;
+  border-left: none;
   position: relative;
-  color: var(--white);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  color: var(--text);
+  padding: 0 !important;
+  padding-left: 0 !important;
+  display: flex !important;
+  align-items: stretch;
+  overflow: hidden;
+  min-height: 170px;
+  height: 170px;
+  gap: 0;
 }
 
 .slot-spectacle::before {
   content: '';
   position: absolute;
-  top: 0;
   left: 0;
-  right: 0;
+  top: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 0;
-}
-
-.slot-spectacle > * {
-  position: relative;
+  width: 3px;
+  background: linear-gradient(to bottom, var(--accent), rgba(212, 90, 122, 0.5));
   z-index: 1;
 }
 
+.slot-spectacle .slot-content {
+  flex: 1;
+  padding: 14px 16px;
+  padding-left: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+}
+
+.slot-spectacle .slot-content h4 {
+  margin: 0;
+  line-height: 1.2;
+}
+
+.slot-spectacle .slot-image {
+  width: 140px;
+  height: 170px;
+  object-fit: cover;
+  flex-shrink: 0;
+  display: block;
+}
+
+@media (min-width: 800px) {
+  .slot-spectacle .slot-image {
+    width: 180px;
+  }
+}
+
 .slot-festif {
-  background: rgba(212, 90, 122, 0.15);
-  border-left-color: var(--accent);
-  border-left-width: 4px;
+  background: rgba(138, 43, 226, 0.20);
+  border-left: none;
+  position: relative;
+}
+
+.slot-festif::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(to bottom, rgba(138, 43, 226, 0.9), rgba(138, 43, 226, 0.5));
+  z-index: 1;
+}
+
+.slot-festif .time,
+.slot-festif .meta {
+  color: var(--text);
+  font-weight: 600;
 }
 
 .salles-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 8px;
   margin-top: 4px;
 }
 
 .salle-box {
-  background: rgba(255, 255, 255, 0.4);
+  background: transparent;
   border: 1px solid var(--blue-border-medium);
   border-radius: 6px;
   padding: 8px 10px;
@@ -1948,12 +2055,21 @@ button.slot-spectacle {
   cursor: pointer;
   transition: transform 0.2s ease, opacity 0.2s ease;
   border: none;
-  background: none;
   font: inherit;
-  padding: 0;
   margin: 0;
   width: 100%;
   text-align: left;
+}
+
+a.salle-box {
+  padding: 0;
+}
+
+a.slot-format-long,
+a.slot-spectacle,
+button.slot-format-long,
+button.slot-spectacle {
+  padding: 0;
 }
 
 a.salle-box {
@@ -1964,8 +2080,7 @@ a.slot-format-long,
 a.slot-spectacle,
 button.slot-format-long,
 button.slot-spectacle {
-  color: var(--white);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  color: inherit;
 }
 
 a.salle-box:hover,

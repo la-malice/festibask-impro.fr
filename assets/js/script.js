@@ -280,7 +280,21 @@
     button.addEventListener('click', (e) => {
       e.preventDefault();
       const spectacleId = button.getAttribute('data-spectacle');
-      openSpectacleDetails(spectacleId);
+      
+      // Sur desktop : scroll vers l'ancre, sur mobile : ouvrir la modal
+      const isMobile = window.innerWidth < 768;
+      
+      if (isMobile) {
+        // Mobile : ouvrir la modal
+        openSpectacleDetails(spectacleId);
+      } else {
+        // Desktop : scroll vers l'élément correspondant dans la section "valeur"
+        const targetElement = document.getElementById(spectacleId);
+        if (targetElement) {
+          // Scroll en douceur vers l'élément
+          targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
     });
   });
   
