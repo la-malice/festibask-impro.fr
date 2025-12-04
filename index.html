@@ -64,6 +64,38 @@
   "image": [
     "https://festibask-impro.fr/assets/img/hero-festival-impro-anglet.jpg"
   ],
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "Pass 1 jour",
+      "url": "https://festibask-impro.fr/#pass-1j",
+      "price": "25",
+      "priceCurrency": "EUR",
+      "description": "2 spectacles + 1 boisson incluse",
+      "validFrom": "2025-12-01",
+      "availability": "https://schema.org/InStock"
+    },
+    {
+      "@type": "Offer",
+      "name": "Pass 3 jours",
+      "url": "https://festibask-impro.fr/#pass-3j",
+      "price": "60",
+      "priceCurrency": "EUR",
+      "description": "Accès aux 3 soirées du festival",
+      "validFrom": "2025-12-01",
+      "availability": "https://schema.org/InStock"
+    },
+    {
+      "@type": "Offer",
+      "name": "Stage d'improvisation",
+      "url": "https://festibask-impro.fr/#stage",
+      "price": "20",
+      "priceCurrency": "EUR",
+      "description": "1 stage d'impro à choisir",
+      "validFrom": "2025-12-01",
+      "availability": "https://schema.org/InStock"
+    }
+  ],
   "organizer": {
     "@type": "Organization",
     "name": "La Malice – Théâtre d'improvisation",
@@ -817,7 +849,7 @@
   <div class="container">
     <h2>Réserver mes billets</h2>
     <div class="pricing mt-18">
-      <div class="price">
+      <div class="price" id="pass-1j">
         <div class="price-flip-container">
           <div class="price-flip-front">
             <h4>Pass 1 jour</h4>
@@ -837,7 +869,7 @@
           </div>
         </div>
       </div>
-      <div class="price">
+      <div class="price" id="pass-3j">
         <div class="price-flip-container">
           <div class="price-flip-front">
             <h4>Pass 3 jours</h4>
@@ -857,7 +889,7 @@
           </div>
         </div>
       </div>
-      <div class="price">
+      <div class="price" id="stage">
         <div class="price-flip-container">
           <div class="price-flip-front">
             <h4>Stage</h4>
