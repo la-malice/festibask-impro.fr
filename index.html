@@ -130,43 +130,77 @@
     text-decoration: underline;
     color: var(--blue);
   }
-  /* Section À propos - texte clair sur fond bleu foncé */
-  #a-propos p,
-  #a-propos ul,
-  #a-propos li {
+  /* Style réutilisable pour texte blanc sur fond sombre - À adapter facilement lors de l'application de la charte graphique */
+  .section-bg-3 p,
+  .section-bg-3 .small,
+  .section-bg-3 strong,
+  .section-bg-3 em,
+  .section-bg-5 p,
+  .section-bg-5 .small,
+  .section-bg-5 ul,
+  .section-bg-5 li,
+  .section-bg-5 .intro-text,
+  .section-bg-5 strong,
+  .section-bg-5 em {
+    color: var(--white);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  /* Exclure les éléments dans les cartes (fond clair) */
+  .section-bg-3 .day.card p,
+  .section-bg-3 .day.card .small,
+  .section-bg-3 .day.card .meta,
+  .section-bg-3 .day.card strong,
+  .section-bg-3 .day.card em,
+  .section-bg-5 .day.card p,
+  .section-bg-5 .day.card .small,
+  .section-bg-5 .day.card .meta,
+  .section-bg-5 .day.card strong,
+  .section-bg-5 .day.card em {
+    color: inherit;
+  }
+  
+  /* Titres sur fond sombre */
+  .section-bg-3 h2,
+  .section-bg-5 h2 {
+    color: var(--accent-pink);
+  }
+  .section-bg-3 h3,
+  .section-bg-5 h3 {
     color: var(--white);
   }
-  #a-propos .intro-text {
-    color: var(--white);
+  /* Exclure les titres dans les cartes (fond clair) */
+  .section-bg-3 .atelier-card h3,
+  .section-bg-5 .atelier-card h3,
+  .section-bg-3 .card h3,
+  .section-bg-5 .card h3 {
+    color: var(--blue-dark);
   }
-  #a-propos .intro-link {
+  
+  /* Liens sur fond sombre */
+  .section-bg-3 .intro-link,
+  .section-bg-5 .intro-link {
     color: #4AA5E1;
   }
-  #a-propos .intro-link:hover {
+  .section-bg-3 .intro-link:hover,
+  .section-bg-5 .intro-link:hover {
     color: #6BB5E8;
   }
+  
+  /* Section À propos - styles spécifiques */
   #a-propos .intro-highlight {
-    color: var(--accent-pink);
-  }
-  /* Section Sponsors - texte clair sur fond bleu foncé */
-  #sponsors h2 {
-    color: var(--accent-pink);
-  }
-  #sponsors p,
-  #sponsors .sponsor-intro {
     color: var(--white);
+    font-size: 1rem;
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: 0.3px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    opacity: 0.95;
   }
-  #sponsors .small {
-    color: var(--white);
-  }
+  
+  /* Section Sponsors - styles spécifiques */
   #sponsors .sponsor-intro strong {
     color: var(--white);
-  }
-  #sponsors .intro-link {
-    color: #4AA5E1;
-  }
-  #sponsors .intro-link:hover {
-    color: #6BB5E8;
   }
 </style>
 <link rel="stylesheet" href="https://sibforms.com/forms/end-form/build/sib-styles.css">
@@ -1070,10 +1104,6 @@
     <p class="intro-highlight" style="font-style: italic; margin-top: 2rem;">
       Bienvenue dans un festival où rien n'est prévu… et où tout peut arriver.
     </p>
-
-    <p style="margin-top: 1.5rem;">
-      <a href="#sponsors" class="intro-link">→ Vous êtes partenaire ou mécène ? Découvrez comment nous rejoindre.</a>
-    </p>
   </div>
 </section>
 
@@ -1081,7 +1111,10 @@
 <section id="sponsors" class="section section-bg-5">
   <div class="container">
     <h2>Partenaires & sponsors</h2>
-    <p class="small">Merci à nos partenaires adorés ❤️! Ils ont fait le choix de nous accompagner dans l'aventure, rejoignez-les!</p>
+    <p class="small">
+      Merci à nos partenaires adorés ❤️ ! Ils ont fait le choix de nous accompagner dans l'aventure.
+      <br>Vous souhaitez nous rejoindre ? Toutes les infos sont ci-dessous.
+    </p>
 
     <!-- DESIGNER : logos sponsors (SVG ou PNG transparent)
          - Orientation horizontale si possible
