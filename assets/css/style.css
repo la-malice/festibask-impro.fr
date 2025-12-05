@@ -361,14 +361,19 @@ img {
   background: linear-gradient(to bottom, #030C1F 0%, #1D488B 100%);
 }
 
-/* Section sponsors - dégradé inversé */
+/* Section sponsors - dégradé normal */
 #sponsors.section-bg-5 {
+  background: linear-gradient(to bottom, #030C1F 0%, #1D488B 100%);
+}
+
+/* Section À propos - dégradé inversé */
+#a-propos.section-bg-5 {
   background: linear-gradient(to bottom, #1D488B 0%, #030C1F 100%);
 }
 
-/* Section CTA - Soyez les premiers informés */
+/* Section CTA - Soyez les premiers informés - dégradé inversé */
 .section-cta {
-  background: linear-gradient(to bottom, #030C1F 0%, #1D488B 100%);
+  background: linear-gradient(to bottom, #1D488B 0%, #030C1F 100%);
   padding: 60px 0;
 }
 
