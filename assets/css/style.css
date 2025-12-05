@@ -3087,15 +3087,8 @@ body:has(#spectacle-details[open]) {
   gap: 0;
   height: 100%;
   width: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
-}
-
-.spectacle-modal-content::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  overflow: hidden; /* Pas de scroll sur le conteneur principal */
+  position: relative;
 }
 
 @media (min-width: 768px) {
@@ -3104,6 +3097,11 @@ body:has(#spectacle-details[open]) {
     height: auto;
     overflow: visible;
     flex-direction: row;
+    scrollbar-width: none; /* Masquer la scrollbar sur desktop */
+  }
+  
+  .spectacle-modal-content::-webkit-scrollbar {
+    display: none; /* Masquer la scrollbar sur desktop */
   }
 }
 
@@ -3134,19 +3132,72 @@ body:has(#spectacle-details[open]) {
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  overflow-y: scroll !important; /* Scroll uniquement sur la zone de texte */
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
   min-height: 0; /* Important pour le flex */
   background: #1a1a1a;
+  /* Scrollbar visible sur mobile */
+  scrollbar-width: auto; /* Firefox */
+  scrollbar-color: rgba(255, 255, 255, 0.9) rgba(0, 0, 0, 0.6); /* Firefox - très visible */
+  position: relative;
+}
+
+/* Indicateur de scroll en bas - seulement si scrollable */
+.spectacle-modal-info::after {
+  content: '';
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background: linear-gradient(to top, rgba(26, 26, 26, 0.95) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 10;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.spectacle-modal-info.has-scroll::after {
+  opacity: 1;
 }
 
 .spectacle-modal-info::-webkit-scrollbar {
-  display: none;
-  width: 0;
-  height: 0;
+  width: 16px !important; /* Chrome, Safari, Opera - très épaisse et forcée */
+  -webkit-appearance: none;
+  display: block !important; /* Forcer l'affichage */
+}
+
+.spectacle-modal-info::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.6) !important;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  -webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
+.spectacle-modal-info::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-radius: 8px;
+  border: 2px solid rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+  min-height: 40px; /* Taille minimale pour la visibilité */
+}
+
+.spectacle-modal-info::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 1) !important;
+}
+
+.spectacle-modal-info::-webkit-scrollbar-thumb:active {
+  background: rgba(255, 255, 255, 1) !important;
+}
+
+/* Forcer la scrollbar sur iOS/Safari mobile */
+@supports (-webkit-overflow-scrolling: touch) {
+  .spectacle-modal-info {
+    -webkit-overflow-scrolling: touch;
+    padding-right: 4px;
+  }
 }
 
 @media (min-width: 768px) {
@@ -3187,10 +3238,49 @@ body:has(#spectacle-details[open]) {
   line-height: 1.8;
   color: rgba(255, 255, 255, 0.95);
   flex: 1;
+  padding-bottom: 60px; /* Espace en bas pour éviter que le texte soit coupé et montrer qu'on peut scroller */
+  margin-bottom: 20px; /* Marge supplémentaire */
 }
 
 .spectacle-modal-pitch p {
   margin: 0;
+}
+
+/* Indicateur de scroll en bas du contenu */
+.spectacle-modal-scroll-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  text-align: center;
+  animation: bounce 2s infinite;
+  margin-top: auto;
+  padding-bottom: 40px;
+}
+
+.spectacle-modal-scroll-indicator svg {
+  width: 24px;
+  height: 24px;
+  opacity: 0.7;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Masquer l'indicateur sur desktop */
+@media (min-width: 768px) {
+  .spectacle-modal-scroll-indicator {
+    display: none;
+  }
 }
 
 /* Bouton de fermeture mobile - bien visible */

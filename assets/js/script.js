@@ -303,6 +303,13 @@
           <div class="spectacle-modal-pitch">
             <p>${data.pitch}</p>
           </div>
+          <div class="spectacle-modal-scroll-indicator" style="display: none;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <polyline points="19 12 12 19 5 12"></polyline>
+            </svg>
+            <span>Faites défiler pour voir la suite</span>
+          </div>
         </div>
       </div>
     `;
@@ -310,6 +317,54 @@
     // Bloquer le scroll du body
     document.body.style.overflow = 'hidden';
     spectacleDetailsModal.showModal();
+    
+    // Vérifier si le contenu dépasse et afficher l'indicateur seulement si nécessaire
+    setTimeout(() => {
+      const modalInfo = spectacleDetailsContent.querySelector('.spectacle-modal-info');
+      const scrollIndicator = spectacleDetailsContent.querySelector('.spectacle-modal-scroll-indicator');
+      
+      if (modalInfo && scrollIndicator) {
+        // Vérifier si le contenu est scrollable (dépasse la hauteur visible)
+        const isScrollable = modalInfo.scrollHeight > modalInfo.clientHeight;
+        
+        if (isScrollable) {
+          // Ajouter une classe pour forcer la scrollbar et l'indicateur
+          modalInfo.classList.add('has-scroll');
+          scrollIndicator.style.display = 'flex';
+          
+          // Forcer la scrollbar à être visible en ajoutant un style inline
+          modalInfo.style.overflowY = 'scroll';
+          
+          // Masquer l'indicateur quand on arrive en bas
+          const handleScroll = () => {
+            const isAtBottom = modalInfo.scrollHeight - modalInfo.scrollTop <= modalInfo.clientHeight + 10;
+            if (isAtBottom) {
+              scrollIndicator.style.display = 'none';
+            } else {
+              scrollIndicator.style.display = 'flex';
+            }
+          };
+          
+          modalInfo.addEventListener('scroll', handleScroll);
+          
+          // Vérifier aussi au redimensionnement
+          window.addEventListener('resize', () => {
+            const stillScrollable = modalInfo.scrollHeight > modalInfo.clientHeight;
+            if (stillScrollable) {
+              modalInfo.classList.add('has-scroll');
+              scrollIndicator.style.display = 'flex';
+            } else {
+              modalInfo.classList.remove('has-scroll');
+              scrollIndicator.style.display = 'none';
+            }
+          });
+        } else {
+          modalInfo.classList.remove('has-scroll');
+          scrollIndicator.style.display = 'none';
+          modalInfo.style.overflowY = 'hidden';
+        }
+      }
+    }, 100);
   }
   
   // Gérer les clics sur les boutons de spectacle
