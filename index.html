@@ -130,6 +130,44 @@
     text-decoration: underline;
     color: var(--blue);
   }
+  /* Section À propos - texte clair sur fond bleu foncé */
+  #a-propos p,
+  #a-propos ul,
+  #a-propos li {
+    color: var(--white);
+  }
+  #a-propos .intro-text {
+    color: var(--white);
+  }
+  #a-propos .intro-link {
+    color: #4AA5E1;
+  }
+  #a-propos .intro-link:hover {
+    color: #6BB5E8;
+  }
+  #a-propos .intro-highlight {
+    color: var(--accent-pink);
+  }
+  /* Section Sponsors - texte clair sur fond bleu foncé */
+  #sponsors h2 {
+    color: var(--accent-pink);
+  }
+  #sponsors p,
+  #sponsors .sponsor-intro {
+    color: var(--white);
+  }
+  #sponsors .small {
+    color: var(--white);
+  }
+  #sponsors .sponsor-intro strong {
+    color: var(--white);
+  }
+  #sponsors .intro-link {
+    color: #4AA5E1;
+  }
+  #sponsors .intro-link:hover {
+    color: #6BB5E8;
+  }
 </style>
 <link rel="stylesheet" href="https://sibforms.com/forms/end-form/build/sib-styles.css">
 </head>
@@ -206,10 +244,7 @@
 <!-- Proposition de valeur -->
 <section id="valeur" class="section section-bg-1">
   <div class="container">
-    <div class="intro-with-logo">
-      <img src="assets/img/logos/logo-la-malice-noir-bleu-tr.png" alt="La Malice" class="intro-logo">
-      <p class="intro-text">Depuis 50 ans, les matchs d'impro ramènent une patinoire sur scène. Nous, à <a href="https://www.instagram.com/lamaliceimprovise" target="_blank" rel="noopener noreferrer" class="intro-link">La Malice</a>, on a mal compris : on a ramené la scène dans une patinoire. Pour nos 10 ans, nous créons un <span class="intro-highlight">festival d'improvisation exceptionnel</span> à la Patinoire de la Barre, à Anglet</p>
-    </div>
+    <h2>À l'affiche</h2>
     <!-- Slider jour par jour -->
     <div class="day-slider">
       <div class="day-slider-container" id="daySlider">
@@ -1000,6 +1035,48 @@
   </div>
 </section>
 
+<!-- À propos du Festibask'Impro -->
+<section id="a-propos" class="section section-bg-5">
+  <div class="container">
+    <h2>À propos du Festibask'Impro</h2>
+
+    <p>Depuis 50 ans, les matchs d'impro ramènent une patinoire sur scène. Nous, à 
+      <a href="https://www.instagram.com/lamaliceimprovise" target="_blank" rel="noopener noreferrer" class="intro-link">La Malice</a>, 
+      on a mal compris : on a ramené <strong>la scène dans une patinoire</strong>. Et tant qu'à faire, la plus emblématique : la Patinoire de la Barre, à Anglet. 
+      Un lieu mythique rarement préparé à autant de rires, d'émotion et de chaos créatif.
+    </p>
+
+    <div class="intro-with-logo">
+      <img src="assets/img/logos/logo-la-malice-noir-bleu-tr.png" alt="La Malice" class="intro-logo">
+      <div>
+        <p class="intro-text">
+          Le Festibask'Impro, c'est 10 ans de jeu condensés dans un festival : des formats originaux, des rencontres improbables, une troupe reconnue, 
+          et une passion intacte pour l'improvisation théâtrale. Voici notre ADN :
+        </p>
+        <ul>
+          <li>La créativité sans filtre</li>
+          <li>Le plaisir du jeu</li>
+          <li>La générosité du spectacle vivant</li>
+          <li>L'ouverture aux autres troupes (locales, nationales, internationales)</li>
+          <li>Le goût des événements festifs et populaires</li>
+        </ul>
+      </div>
+    </div>
+
+    <p>
+      Notre ambition : faire du Festibask'Impro le rendez-vous incontournable de l'impro sur la Côte Basque, un événement culturel joyeux, accessible et fédérateur.
+    </p>
+
+    <p class="intro-highlight" style="font-style: italic; margin-top: 2rem;">
+      Bienvenue dans un festival où rien n'est prévu… et où tout peut arriver.
+    </p>
+
+    <p style="margin-top: 1.5rem;">
+      <a href="#sponsors" class="intro-link">→ Vous êtes partenaire ou mécène ? Découvrez comment nous rejoindre.</a>
+    </p>
+  </div>
+</section>
+
 <!-- Sponsors -->
 <section id="sponsors" class="section section-bg-5">
   <div class="container">
@@ -1016,7 +1093,22 @@
       <img class="sponsor" src="assets/img/logos/rtl2-logo.png" alt="RTL2">
       <a href="plaquette-sponsoring-festibak-impro-2026.pdf" download class="sponsor-placeholder">Votre logo ici</a>
     </div>
-    <p class="small mt-14">Vous aimez l'improvisation ? Vous souhaitez associer votre image à celle du Festibask'Impro ? Ou tout simplement nous donner un coup de pouce ?  Téléchargez la brochure partenaire 👇<br><a href="plaquette-sponsoring-festibak-impro-2026.pdf" download>Soutenez-nous</a></p>
+
+    <p class="sponsor-intro">
+      Soutenir le Festibask'Impro, c'est associer votre image à un événement culturel majeur, 
+      ambitieux et joyeux au cœur du Pays Basque.  
+      Plus de 30 bénévoles mobilisés, des artistes reconnus, un public fidèle, et une visibilité forte 
+      autour d'un festival unique en France : une scène installée dans une patinoire !
+    </p>
+
+    <p class="sponsor-intro">
+      En devenant partenaire, vous renforcez votre ancrage local, valorisez votre marque auprès d'un 
+      public large et intergénérationnel, et participez à l'essor d'un festival appelé à devenir 
+      <a href="#a-propos" class="intro-link"><strong>le rendez-vous improvisation de la Côte Basque</strong></a>. 
+      → Vous souhaitez devenir sponsor ou mécène ?
+    </p>
+
+    <p class="small mt-14"><a href="plaquette-sponsoring-festibak-impro-2026.pdf" download>Téléchargez la brochure partenaire 👇</a></p>
   </div>
 </section>
 
@@ -1044,7 +1136,6 @@
       </p>
     </div>
     <div>
-      <h4>Liens</h4>
       <ul class="small footer-list">
         <li><a href="#valeur">À l'affiche</a></li>
         <li><a href="#programme">Programme</a></li>
@@ -1054,10 +1145,12 @@
       </ul>
     </div>
     <div>
-      <h4>Contact</h4>
-      <p class="small">Email : <a href="mailto:arteateou@gmail.com">arteateou@gmail.com</a></p>
-      <p class="small"><a href="plaquette-sponsoring-festibak-impro-2026.pdf" download>Soutenez-nous</a></p>
-      <p class="small"><a href="festibask-impro-mentions-legales.pdf" download>Mentions légales</a></p>
+      <ul class="small footer-list">
+        <li><a href="mailto:arteateou+festibask@gmail.com">Contactez-nous</a></li>
+        <li><a href="#a-propos">À propos</a></li>
+        <li><a href="#sponsors">Devenir partenaire</a></li>
+        <li><a href="festibask-impro-mentions-legales.pdf" download>Mentions légales</a></li>
+      </ul>
     </div>
   </div>
   <p class="footer-copyright">© 2025-2026 Arteateou</p>
