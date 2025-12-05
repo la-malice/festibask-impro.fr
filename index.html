@@ -176,6 +176,13 @@
   .section-bg-5 .card h3 {
     color: var(--blue-dark);
   }
+  /* Réduire la taille des h3 dans les slots du programme pour économiser l'espace */
+  .program .slot-content h3 {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    line-height: 1.2;
+    margin: 0;
+    font-weight: 700;
+  }
   
   /* Liens sur fond sombre */
   .section-bg-3 .intro-link,
@@ -476,7 +483,7 @@
           <div class="slot-content">
             <div class="time">19:00</div>
             <h3>Braquage</h3>
-            <div class="meta">1h</div>
+            <div class="meta">1H</div>
           </div>
           <img src="assets/img/braquage.jpg" alt="Braquage" class="slot-image">
         </button>
@@ -531,7 +538,7 @@
           <div class="slot-content">
             <div class="time">19:00</div>
             <h3>Commis d'Office</h3>
-            <div class="meta">1h</div>
+            <div class="meta">1H</div>
           </div>
           <img src="assets/img/commis-d-office.jpg" alt="Commis d'Office" class="slot-image">
         </button>
@@ -581,7 +588,7 @@
           <div class="slot-content">
             <div class="time">19:00</div>
             <h3>Promo 2006</h3>
-            <div class="meta">1h</div>
+            <div class="meta">1H</div>
           </div>
           <img src="assets/img/promo-2006.avif" alt="Promo 2006" class="slot-image">
         </button>
