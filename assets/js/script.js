@@ -261,7 +261,7 @@
       label: 'Impro longue',
       title: 'Commis d\'Office',
       image: 'assets/img/commis-d-office.jpg',
-      pitch: 'Un jeune avocat commis d\'office reçoit un accusé malheureux qui va se confier et expliquer le long chemin qui l\'a mené jusqu\'à commettre l\'impensable. Pendant 1h nous verrons son parcours, ses errances, ses rencontres jusqu\'à comprendre sa destinée. Saurons-nous s\'il est déclaré coupable ou non ?'
+      pitch: 'L\'un·e est accusé·e<br>L\'autre est avocat·e<br>L\'un·e est coupable<br>L\'autre devra trouver des circonstances atténuante.<br>Venez découvrir son histoire, son passé son crime et les raisons qui l\'ont poussées à commettre l\'irréparable'
     },
     'spectacle-samedi-match': {
       type: 'match',
