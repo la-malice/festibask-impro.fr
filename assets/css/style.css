@@ -247,10 +247,19 @@ img {
   .intro-logo {
     width: 100px;
     height: 100px;
+    margin: 0 auto;
+  }
+  
+  .intro-with-logo > div {
+    text-align: left;
   }
   
   .intro-text {
-    text-align: center;
+    text-align: left;
+  }
+  
+  .intro-with-logo ul {
+    text-align: left;
   }
 }
 
