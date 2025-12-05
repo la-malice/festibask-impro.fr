@@ -398,3 +398,235 @@
       }
     });
   });
+
+  // Tooltips explicatifs pour "format long" et "match"
+  const tooltipTexts = {
+    'format-long': 'Le format long est du théâtre d\'improvisation où rien n\'est écrit : une histoire unique se crée sous vos yeux à partir d\'un simple cadre, souvent inspiré par le public. On y suit des personnages touchants, des moments suspendus et cette tension délicieuse du jeu en équilibre permanent.',
+    'match': 'Le match d\'impro est le format phare par lequel l\'impro s\'est diffusée. Venu du Québec, il emprunte aux codes du Hockey sur glace où 2 équipes de comédiens s\'affrontent sur une patinoire dans des séquences brèves et rythmées sous la surveillance d\'un arbitre implacable !'
+  };
+
+  let activeTooltip = null;
+  let tooltipOverlay = null;
+
+  // Créer l'overlay pour mobile
+  function createTooltipOverlay() {
+    if (!tooltipOverlay) {
+      tooltipOverlay = document.createElement('div');
+      tooltipOverlay.className = 'tooltip-overlay';
+      document.body.appendChild(tooltipOverlay);
+    }
+    return tooltipOverlay;
+  }
+
+  // Créer ou récupérer le popup de tooltip
+  function getOrCreateTooltipPopup(tooltipId) {
+    let popup = document.getElementById(`tooltip-${tooltipId}`);
+    if (!popup) {
+      popup = document.createElement('div');
+      popup.id = `tooltip-${tooltipId}`;
+      popup.className = 'tooltip-popup';
+      popup.setAttribute('role', 'tooltip');
+      popup.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(popup);
+    }
+    return popup;
+  }
+
+  // Calculer la position optimale du tooltip
+  function calculateTooltipPosition(trigger, popup) {
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) {
+      return 'fixed'; // Sur mobile, on utilise position fixed centré
+    }
+
+    const triggerRect = trigger.getBoundingClientRect();
+    const popupRect = popup.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    const scrollY = window.scrollY;
+    const scrollX = window.scrollX;
+
+    // Position par défaut : en dessous
+    let position = 'bottom';
+    let top = triggerRect.bottom + scrollY + 12;
+    let left = triggerRect.left + scrollX + (triggerRect.width / 2);
+
+    // Vérifier si on dépasse en bas
+    if (triggerRect.bottom + popupRect.height + 12 > viewportHeight) {
+      // Essayer en haut
+      if (triggerRect.top - popupRect.height - 12 >= 0) {
+        position = 'top';
+        top = triggerRect.top + scrollY - popupRect.height - 12;
+      } else {
+        // Si pas assez de place en haut, garder en bas mais ajuster
+        top = viewportHeight + scrollY - popupRect.height - 20;
+      }
+    }
+
+    // Vérifier si on dépasse à droite
+    if (left + popupRect.width / 2 > viewportWidth + scrollX) {
+      left = viewportWidth + scrollX - popupRect.width / 2 - 16;
+    }
+    // Vérifier si on dépasse à gauche
+    if (left - popupRect.width / 2 < scrollX) {
+      left = scrollX + popupRect.width / 2 + 16;
+    }
+
+    return { position, top, left };
+  }
+
+  // Afficher le tooltip
+  function showTooltip(trigger, tooltipId) {
+    // Fermer le tooltip actif s'il y en a un
+    if (activeTooltip && activeTooltip !== trigger) {
+      hideTooltip(activeTooltip);
+    }
+
+    const text = tooltipTexts[tooltipId];
+    if (!text) return;
+
+    const popup = getOrCreateTooltipPopup(tooltipId);
+    popup.textContent = text;
+    popup.setAttribute('aria-hidden', 'false');
+
+    const isMobile = window.innerWidth < 768;
+
+    if (isMobile) {
+      // Mobile : position fixed centré avec overlay
+      const overlay = createTooltipOverlay();
+      overlay.classList.add('show');
+      popup.style.position = 'fixed';
+      popup.style.left = '50%';
+      popup.style.top = '50%';
+      popup.style.transform = 'translate(-50%, -50%) scale(0.95)';
+      popup.style.maxWidth = 'calc(100vw - 32px)';
+      popup.style.width = 'calc(100vw - 32px)';
+      popup.className = 'tooltip-popup';
+      
+      // Afficher avec animation
+      requestAnimationFrame(() => {
+        popup.classList.add('show');
+        popup.style.transform = 'translate(-50%, -50%) scale(1)';
+      });
+    } else {
+      // Desktop : d'abord rendre le popup (même invisible) pour obtenir ses dimensions
+      popup.style.visibility = 'hidden';
+      popup.style.display = 'block';
+      popup.style.position = 'absolute';
+      popup.style.top = '0';
+      popup.style.left = '0';
+      popup.className = 'tooltip-popup';
+      
+      // Calculer la position après que le popup soit rendu
+      requestAnimationFrame(() => {
+        const pos = calculateTooltipPosition(trigger, popup);
+        popup.style.top = `${pos.top}px`;
+        popup.style.left = `${pos.left}px`;
+        popup.style.transform = 'translateX(-50%) translateY(-8px)';
+        popup.style.visibility = 'visible';
+        popup.className = `tooltip-popup tooltip-${pos.position}`;
+        
+        // Afficher avec animation
+        requestAnimationFrame(() => {
+          popup.classList.add('show');
+          popup.style.transform = pos.position === 'top' 
+            ? 'translateX(-50%) translateY(0)' 
+            : 'translateX(-50%) translateY(0)';
+        });
+      });
+    }
+
+    activeTooltip = trigger;
+  }
+
+  // Masquer le tooltip
+  function hideTooltip(trigger) {
+    if (!activeTooltip && !trigger) return;
+
+    const tooltipId = trigger ? trigger.getAttribute('data-tooltip') : (activeTooltip ? activeTooltip.getAttribute('data-tooltip') : null);
+    if (!tooltipId) return;
+
+    const popup = getOrCreateTooltipPopup(tooltipId);
+    popup.classList.remove('show');
+    popup.setAttribute('aria-hidden', 'true');
+
+    if (tooltipOverlay) {
+      tooltipOverlay.classList.remove('show');
+    }
+
+    activeTooltip = null;
+  }
+
+  // Initialiser les tooltips
+  document.querySelectorAll('.tooltip[data-tooltip]').forEach(trigger => {
+    const tooltipId = trigger.getAttribute('data-tooltip');
+    const isMobile = window.innerWidth < 768;
+
+    if (isMobile) {
+      // Mobile : clic pour ouvrir/fermer
+      trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (activeTooltip === trigger) {
+          hideTooltip(trigger);
+        } else {
+          showTooltip(trigger, tooltipId);
+        }
+      });
+    } else {
+      // Desktop : hover pour afficher
+      trigger.addEventListener('mouseenter', () => {
+        showTooltip(trigger, tooltipId);
+      });
+
+      trigger.addEventListener('mouseleave', () => {
+        hideTooltip(trigger);
+      });
+
+      // Support clavier (focus)
+      trigger.addEventListener('focus', () => {
+        showTooltip(trigger, tooltipId);
+      });
+
+      trigger.addEventListener('blur', () => {
+        hideTooltip(trigger);
+      });
+    }
+  });
+
+  // Fermer au clic extérieur (mobile)
+  document.addEventListener('click', (e) => {
+    if (activeTooltip && window.innerWidth < 768) {
+      const popup = document.querySelector('.tooltip-popup.show');
+      const overlay = document.querySelector('.tooltip-overlay.show');
+      if (popup && !popup.contains(e.target) && !activeTooltip.contains(e.target)) {
+        hideTooltip(activeTooltip);
+      }
+      if (overlay && overlay === e.target) {
+        hideTooltip(activeTooltip);
+      }
+    }
+  });
+
+  // Fermer avec Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && activeTooltip) {
+      hideTooltip(activeTooltip);
+    }
+  });
+
+  // Réinitialiser les tooltips au redimensionnement
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      if (activeTooltip) {
+        const tooltipId = activeTooltip.getAttribute('data-tooltip');
+        hideTooltip(activeTooltip);
+        // Réafficher si on était sur desktop et qu'on reste sur desktop
+        if (window.innerWidth >= 768 && document.activeElement === activeTooltip) {
+          showTooltip(activeTooltip, tooltipId);
+        }
+      }
+    }, 250);
+  });
