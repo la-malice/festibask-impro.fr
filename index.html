@@ -131,6 +131,10 @@
     color: var(--blue);
   }
   /* Style réutilisable pour texte blanc sur fond sombre - À adapter facilement lors de l'application de la charte graphique */
+  .section-bg-1 p,
+  .section-bg-1 .small,
+  .section-bg-1 strong,
+  .section-bg-1 em,
   .section-bg-3 p,
   .section-bg-3 .small,
   .section-bg-3 strong,
@@ -161,10 +165,12 @@
   }
   
   /* Titres sur fond sombre */
+  .section-bg-1 h2,
   .section-bg-3 h2,
   .section-bg-5 h2 {
     color: var(--accent-pink);
   }
+  .section-bg-1 h3,
   .section-bg-3 h3,
   .section-bg-5 h3 {
     color: var(--white);
@@ -286,6 +292,7 @@
 <section id="valeur" class="section section-bg-1">
   <div class="container">
     <h2>À l'affiche</h2>
+    <p class="small">Trois jours de festival, avec chaque soir un spectacle format long suivi d'un match d'improvisation théâtrale pour vous embarquer dans une atmosphère pleine d'élan, de surprises et d'énergie partagée.</p>
     <!-- Slider jour par jour -->
     <div class="day-slider">
       <div class="day-slider-container" id="daySlider">
