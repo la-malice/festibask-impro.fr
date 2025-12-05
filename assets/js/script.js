@@ -19,6 +19,15 @@
     if(!inside) dlg.close();
   });
 
+  // Modal waitlist open/close
+  const dlgWaitlist = document.getElementById('waitlist');
+  document.querySelectorAll('[data-open="waitlist"]').forEach(b => b.addEventListener('click', () => dlgWaitlist.showModal()));
+  dlgWaitlist.addEventListener('click', e => {
+    const r = dlgWaitlist.querySelector('.modal-card').getBoundingClientRect();
+    const inside = r.top <= e.clientY && e.clientY <= r.bottom && r.left <= e.clientX && e.clientX <= r.right;
+    if (!inside) dlgWaitlist.close();
+  });
+
   // Brevo gère automatiquement le masquage du formulaire avec AUTOHIDE = Boolean(1)
   // Le bouton "Fermer" dans le message de succès permet de fermer la popup explicitement
 
