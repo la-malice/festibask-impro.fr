@@ -191,9 +191,6 @@ img {
 }
 
 .intro-with-logo {
-  display: flex;
-  align-items: center;
-  gap: 32px;
   margin: 20px 0;
   max-width: 1000px;
   margin-left: auto;
@@ -201,19 +198,43 @@ img {
 }
 
 .intro-logo {
-  width: 120px;
-  height: 120px;
+  width: 140px;
+  height: 140px;
   object-fit: contain;
+  display: block;
   flex-shrink: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.intro-with-logo a:has(.intro-logo) {
+  float: left;
+  shape-outside: circle(50%);
+  margin: 0 24px 16px 0;
+  text-decoration: none;
+  display: block;
+}
+
+.intro-with-logo a:has(.intro-logo):hover .intro-logo {
+  opacity: 0.85;
+  transform: scale(1.05);
 }
 
 .intro-text {
-  margin: 0;
+  margin: 0 0 1.2em 0;
   font-size: clamp(1.1rem, 2vw, 1.3rem);
-  line-height: 1.4;
+  line-height: 1.6;
   text-align: left;
-  flex: 1;
   color: var(--blue-dark);
+}
+
+.intro-with-logo .intro-text:first-of-type {
+  margin-top: 0;
+}
+
+.intro-with-logo::after {
+  content: "";
+  display: table;
+  clear: both;
 }
 
 .intro-link {
@@ -238,27 +259,16 @@ img {
 }
 
 @media (max-width: 768px) {
-  .intro-with-logo {
-    flex-direction: column;
-    gap: 20px;
-    text-align: center;
-  }
-  
   .intro-logo {
     width: 100px;
     height: 100px;
-    margin: 0 auto;
-  }
-  
-  .intro-with-logo > div {
-    text-align: left;
+    float: none;
+    display: block;
+    margin: 20px auto;
+    shape-outside: none;
   }
   
   .intro-text {
-    text-align: left;
-  }
-  
-  .intro-with-logo ul {
     text-align: left;
   }
 }
