@@ -409,6 +409,15 @@ img {
 
 .section-cta h3 {
   color: var(--blue);
+  white-space: nowrap;
+}
+
+@media (max-width: 799px) {
+  .section-cta h3 {
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
 }
 
 .section-cta p {
@@ -421,10 +430,25 @@ img {
   font-weight: 700;
 }
 
+.section-cta .grid-2 {
+  grid-template-columns: max-content 1fr;
+  gap: 32px;
+  align-items: center;
+}
+
 @media (max-width: 799px) {
+  .section-cta .cta-card {
+    padding: 20px 16px;
+  }
+  
   .section-cta .align-self-center {
     display: flex;
     justify-content: center;
+  }
+  
+  .section-cta .grid-2 {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 }
 
