@@ -168,7 +168,7 @@ img {
 }
 
 .section h2 {
-  font-family: "Bobby Jones", sans-serif;
+  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: clamp(2.5rem, 5vw, 4rem);
   color: var(--accent-dark);
   font-weight: normal;
@@ -177,7 +177,7 @@ img {
 }
 
 .section h3 {
-  font-family: "Bobby Jones", sans-serif;
+  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: clamp(1.8rem, 3.5vw, 2.5rem);
   color: var(--blue-dark);
   font-weight: normal;
@@ -254,7 +254,7 @@ img {
 }
 
 .intro-highlight {
-  font-family: "Bobby Jones", sans-serif;
+  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: clamp(1.3rem, 2.5vw, 1.6rem);
   color: var(--accent-dark);
   font-weight: normal;
@@ -654,7 +654,7 @@ header .bar {
 }
 
 .brand {
-  font-family: "Bobby Jones", sans-serif;
+  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: clamp(1.2rem, 2.5vw, 1.8rem);
   color: var(--accent);
   font-weight: normal;
@@ -829,18 +829,102 @@ nav.primary a:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 24px 0 48px;
+  justify-content: flex-start;
+  padding: 12px 0 100px;
   background: linear-gradient(to bottom, #1B3D91 0%, #030C1F 100%);
   border-bottom: 1px solid var(--blue-border-light);
 }
 
 @media (max-width: 768px) {
   .hero {
-    padding: 60px 0 48px;
+    padding: 12px 0 120px;
     min-height: 100vh;
     justify-content: flex-start;
   }
+}
+
+.hero-date-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+  margin-bottom: clamp(20px, 4vw, 32px);
+  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
+  text-align: center;
+}
+
+.hero-presenter {
+  font-size: clamp(0.85rem, 1.6vw, 1rem);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.4em;
+}
+
+.hero-presenter-name {
+  font-weight: 800;
+  color: #12B4E3;
+}
+
+.hero-presenter-text {
+  font-weight: 600;
+}
+
+.hero-date-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.25em, 1.5vw, 0.6em);
+  color: #FFFFFF;
+  line-height: 1;
+  width: fit-content;
+  min-width: clamp(280px, 50vw, 450px);
+}
+
+.hero-date-day {
+  font-weight: 600;
+  font-size: clamp(2.8rem, 6.3vw, 3.8rem);
+  font-stretch: condensed;
+  letter-spacing: -0.02em;
+}
+
+.hero-date-separator {
+  font-weight: 600;
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+}
+
+.hero-date-month {
+  font-weight: 600;
+  font-size: clamp(2.8rem, 6.3vw, 3.8rem);
+  margin-left: clamp(0.4em, 2vw, 0.8em);
+  font-stretch: condensed;
+  letter-spacing: -0.02em;
+}
+
+.hero-date-location {
+  margin-top: 2px;
+  font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.25em, 1.5vw, 0.6em);
+  width: fit-content;
+  min-width: clamp(280px, 50vw, 450px);
+}
+
+.hero-location-separator {
+  opacity: 0.7;
 }
 
 .hero > .container {
@@ -854,27 +938,27 @@ nav.primary a:hover {
 }
 
 .hero-tags {
-  position: absolute;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
-  font-family: "Bobby Jones", sans-serif;
+  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: clamp(16px, 3vw, 24px);
   font-weight: bold;
   color: var(--white);
   z-index: 10;
   padding: 0 16px;
   box-sizing: border-box;
+  margin-top: auto;
+  margin-bottom: 24px;
 }
 
 @media (max-width: 768px) {
   .hero-tags {
-    bottom: 100px;
-    position: absolute;
-    margin-top: 0;
+    position: relative;
+    margin-top: auto;
+    margin-bottom: 24px;
     font-size: clamp(14px, 3.5vw, 20px);
     gap: 10px;
     padding: 0 20px;
@@ -919,7 +1003,7 @@ nav.primary a:hover {
   position: absolute;
   top: 24px;
   right: clamp(16px, 8vw, 80px);
-  font-family: "Bobby Jones", sans-serif;
+  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-weight: normal;
   z-index: 10;
   display: flex;
@@ -1031,55 +1115,33 @@ nav.primary a:hover {
 
 @media (max-width: 768px) {
   .hero-title {
-    padding: 0 110px 0 16px;
+    padding: 0 32px 0 16px;
     margin-top: 12px;
     margin-bottom: 8px;
   }
 }
 
-.hero-title .festibask {
-  font-family: "Bobby Jones", sans-serif;
-  font-size: clamp(58px, 11.5vw, 165px);
-  color: var(--accent);
-  font-weight: normal;
+.hero-logo {
+  max-width: 100%;
+  height: auto;
   display: block;
-  margin: 0;
-  white-space: nowrap;
-  text-align: center;
+  margin: 0 auto clamp(24px, 4vw, 40px);
+  width: clamp(500px, 90vw, 1200px);
+  max-height: clamp(220px, 45vh, 500px);
+  object-fit: contain;
 }
 
-@media (max-width: 1200px) {
-  .hero-title .festibask {
-    font-size: clamp(48px, 10vw, 140px);
-  }
-}
-
-.hero-title .impro {
-  font-family: "Bobby Jones", sans-serif;
-  font-size: clamp(85px, 17vw, 285px);
-  color: var(--blue);
-  font-weight: normal;
-  display: block;
-  margin: 0;
-  line-height: 0.9;
-  white-space: nowrap;
-  text-align: center;
-}
-
-@media (max-width: 1200px) {
-  .hero-title .impro {
-    font-size: clamp(70px, 15vw, 240px);
+@media (max-width: 768px) {
+  .hero-logo {
+    width: clamp(380px, 95vw, 900px);
+    max-height: clamp(180px, 40vh, 400px);
+    margin-bottom: clamp(20px, 3vw, 32px);
   }
 }
 
 @media (min-width: 1024px) {
   .hero-title {
     width: auto;
-  }
-  
-  .hero-title .festibask,
-  .hero-title .impro {
-    text-align: center;
   }
 }
 
@@ -1089,7 +1151,7 @@ nav.primary a:hover {
   align-items: center;
   justify-content: center;
   gap: clamp(8px, 2vw, 16px);
-  margin: clamp(16px, 3vw, 32px) auto 0;
+  margin: 0 auto clamp(20px, 3vw, 32px);
   z-index: 10;
   flex-wrap: wrap;
   width: 100%;
@@ -1119,7 +1181,7 @@ nav.primary a:hover {
 }
 
 .countdown-number {
-  font-family: "Bobby Jones", sans-serif;
+  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: clamp(28px, 5.5vw, 56px);
   font-weight: normal;
   color: var(--white);
@@ -1152,7 +1214,7 @@ nav.primary a:hover {
 }
 
 .countdown-separator {
-  font-family: "Bobby Jones", sans-serif;
+  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: clamp(20px, 4.5vw, 42px);
   font-weight: normal;
   color: #12B4E3;
@@ -1285,7 +1347,7 @@ nav.primary a:hover {
 }
 
 .day-date {
-  font-family: "Bobby Jones", sans-serif;
+  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: clamp(2rem, 5vw, 3rem);
   color: var(--blue);
   font-weight: normal;
@@ -1420,7 +1482,7 @@ nav.primary a:hover {
 
 .format-long-pitch h4,
 .format-long-pitch h3 {
-  font-family: "Bobby Jones", sans-serif;
+  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: clamp(1.2rem, 2.5vw, 1.8rem);
   color: var(--white);
   margin: 0 0 12px;
@@ -1453,7 +1515,7 @@ nav.primary a:hover {
 }
 
 .format-long-title {
-  font-family: "Bobby Jones", sans-serif;
+  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: clamp(1.8rem, 4vw, 2.8rem);
   color: var(--white);
   margin: 0;
@@ -1551,7 +1613,7 @@ nav.primary a:hover {
 .match-pitch h4,
 .match-pitch h3,
 .match-pitch h2 {
-  font-family: "Bobby Jones", sans-serif;
+  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: clamp(1.2rem, 2.5vw, 1.8rem);
   color: var(--white);
   margin: 0 0 12px;
@@ -1584,7 +1646,7 @@ nav.primary a:hover {
 }
 
 .match-label {
-  font-family: "Bobby Jones", sans-serif;
+  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: clamp(1.8rem, 4vw, 2.8rem);
   font-weight: normal;
   color: var(--white);
@@ -1631,7 +1693,7 @@ nav.primary a:hover {
 }
 
 .match-vs {
-  font-family: "Bobby Jones", sans-serif;
+  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: normal;
   color: var(--white);
@@ -1998,7 +2060,7 @@ nav.primary a:hover {
 }
 
 .atelier-card h3 {
-  font-family: "Bobby Jones", sans-serif;
+  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: clamp(1.3rem, 2.2vw, 1.8rem);
   color: var(--blue-accent);
   margin: 12px 0 0 0;
@@ -2662,7 +2724,7 @@ button.slot-spectacle:active {
 }
 
 .price-flip-back h4 {
-  font-family: "Bobby Jones", sans-serif;
+  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: clamp(1.3rem, 2.5vw, 1.8rem);
   color: var(--white);
   margin: 0 0 16px;
@@ -3435,7 +3497,7 @@ body:has(#spectacle-details[open]) {
 }
 
 .spectacle-modal-title {
-  font-family: "Bobby Jones", sans-serif;
+  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: clamp(1.8rem, 6vw, 2.5rem);
   color: #EE573F;
   margin: 0 0 20px;
