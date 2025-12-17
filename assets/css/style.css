@@ -2052,7 +2052,7 @@ nav.primary a:hover {
 
 .day-header {
   font-size: clamp(1rem, 2vw, 1.3rem);
-  color: var(--blue);
+  color: var(--blue-dark);
   font-weight: 900;
   margin-bottom: 0;
   text-transform: uppercase;
@@ -2448,6 +2448,8 @@ nav.primary a:hover {
   margin: 0 0 8px 0;
   text-align: center;
   color: var(--blue);
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  line-height: 1.2;
 }
 
 .slot {
@@ -2519,9 +2521,12 @@ nav.primary a:hover {
   justify-content: center;
 }
 
-.slot-format-long .slot-content h4 {
+.program .slot-format-long .slot-content h3,
+.program .slot-format-long .slot-content h4 {
   margin: 0;
   line-height: 1.2;
+  color: var(--blue-dark) !important;
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem) !important;
 }
 
 .slot-format-long .slot-image {
@@ -2557,10 +2562,18 @@ nav.primary a:hover {
     gap: 4px;
   }
   
+  .slot-format-long .slot-content h3,
   .slot-format-long .slot-content h4,
+  .slot-spectacle .slot-content h3,
   .slot-spectacle .slot-content h4 {
     margin: 0;
     line-height: 1.2;
+  }
+  
+  .program .slot-spectacle .slot-content h3,
+  .program .slot-spectacle .slot-content h4 {
+    color: var(--blue-dark) !important;
+    font-size: clamp(0.9rem, 1.8vw, 1.1rem) !important;
   }
 }
 
@@ -2600,9 +2613,12 @@ nav.primary a:hover {
   justify-content: center;
 }
 
-.slot-spectacle .slot-content h4 {
+.program .slot-spectacle .slot-content h3,
+.program .slot-spectacle .slot-content h4 {
   margin: 0;
   line-height: 1.2;
+  color: var(--blue-dark) !important;
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem) !important;
 }
 
 .slot-spectacle .slot-image {
@@ -2892,6 +2908,17 @@ button.slot-spectacle:active {
   left: 0;
   color: var(--white);
   font-weight: bold;
+}
+
+.price-flip-front a {
+  color: var(--muted);
+  text-decoration: underline;
+  text-decoration-color: var(--muted);
+}
+
+.price-flip-front a:hover {
+  color: var(--text);
+  text-decoration-color: var(--text);
 }
 
 .price-flip-back a {
