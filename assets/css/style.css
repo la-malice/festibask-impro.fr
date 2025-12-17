@@ -433,9 +433,10 @@ footer.section {
   background: #030C1F;
 }
 
+footer.section h3,
 footer h3,
 footer h4 {
-  color: var(--white);
+  color: var(--accent) !important;
   margin-top: 0;
   margin-bottom: 6px;
 }
@@ -470,7 +471,7 @@ footer .footer-link:hover {
 
 
 footer .footer-impro {
-  color: var(--white);
+  color: var(--blue);
 }
 
 /* Texte sur fond dégradé - utiliser la même couleur que intro-text */
@@ -655,12 +656,12 @@ header .bar {
 .brand {
   font-family: "Bobby Jones", sans-serif;
   font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-  color: #12B4E3;
+  color: var(--accent);
   font-weight: normal;
 }
 
 .brand-impro {
-  color: var(--white);
+  color: var(--blue);
 }
 
 nav.primary {
@@ -1039,7 +1040,7 @@ nav.primary a:hover {
 .hero-title .festibask {
   font-family: "Bobby Jones", sans-serif;
   font-size: clamp(58px, 11.5vw, 165px);
-  color: #12B4E3;
+  color: var(--accent);
   font-weight: normal;
   display: block;
   margin: 0;
@@ -1056,7 +1057,7 @@ nav.primary a:hover {
 .hero-title .impro {
   font-family: "Bobby Jones", sans-serif;
   font-size: clamp(85px, 17vw, 285px);
-  color: var(--white);
+  color: var(--blue);
   font-weight: normal;
   display: block;
   margin: 0;
@@ -3116,6 +3117,7 @@ footer > .container > div > p.small:last-child {
   margin-top: auto;
   margin-bottom: 0;
   padding-top: 16px;
+  color: var(--blue) !important;
 }
 
 .footer-logo {
