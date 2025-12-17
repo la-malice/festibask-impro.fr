@@ -1131,6 +1131,7 @@ nav.primary a:hover {
   margin: 0 auto;
   padding: 0;
   box-sizing: border-box;
+  gap: clamp(20px, 4vw, 40px);
 }
 
 @media (max-width: 1024px) {
@@ -1148,7 +1149,24 @@ nav.primary a:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: clamp(24px, 5vw, 32px);
   }
+}
+
+@media (min-width: 1024px) {
+  .hero-title {
+    width: auto;
+    flex-direction: row;
+    align-items: center;
+    gap: clamp(32px, 5vw, 60px);
+  }
+}
+
+.hero-logo-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .hero-logo {
@@ -1171,11 +1189,65 @@ nav.primary a:hover {
     box-sizing: border-box;
     display: block;
   }
+  
+  .hero-logo-wrapper {
+    width: 100%;
+  }
 }
 
 @media (min-width: 1024px) {
-  .hero-title {
-    width: auto;
+  .hero-logo {
+    margin: 0;
+    width: clamp(500px, 50vw, 800px);
+    max-height: clamp(200px, 40vh, 450px);
+  }
+  
+  .hero-logo-wrapper {
+    flex: 1;
+    max-width: 60%;
+  }
+}
+
+/* Conteneur vidéo YouTube */
+.hero-video-container {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  background: #000;
+  aspect-ratio: 9 / 16; /* Format portrait */
+}
+
+.hero-video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  /* Zoom pour masquer les bandes noires de YouTube et épouser exactement la vidéo */
+  transform: scale(1.15);
+  transform-origin: center center;
+}
+
+@media (max-width: 768px) {
+  .hero-video-container {
+    width: min(80vw, 280px);
+    max-width: 280px;
+    margin: 0 auto;
+    max-height: 400px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-video-container {
+    width: clamp(160px, 18vw, 280px);
+    max-width: 280px;
+    max-height: clamp(280px, 32vh, 450px);
+    flex: 0 0 auto;
   }
 }
 
@@ -1185,7 +1257,7 @@ nav.primary a:hover {
   align-items: center;
   justify-content: center;
   gap: clamp(8px, 2vw, 16px);
-  margin: 0 auto clamp(20px, 3vw, 32px);
+  margin: clamp(60px, 8vw, 100px) auto clamp(8px, 1.5vw, 16px);
   z-index: 10;
   flex-wrap: wrap;
   width: 100%;
@@ -1222,14 +1294,14 @@ nav.primary a:hover {
 
 .countdown-number {
   font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
-  font-size: clamp(28px, 5.5vw, 56px);
+  font-size: clamp(24px, 4.5vw, 48px);
   font-weight: normal;
   color: var(--white);
   background: rgba(238, 87, 63, 0.2);
   border: 2px solid var(--accent);
   border-radius: 12px;
-  padding: clamp(10px, 2vw, 16px) clamp(14px, 2.5vw, 24px);
-  min-width: clamp(65px, 11vw, 110px);
+  padding: clamp(8px, 1.5vw, 12px) clamp(12px, 2vw, 20px);
+  min-width: clamp(55px, 9vw, 90px);
   text-align: center;
   box-shadow: 0 4px 12px rgba(238, 87, 63, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(4px);
@@ -1243,7 +1315,7 @@ nav.primary a:hover {
 }
 
 .countdown-label {
-  font-size: clamp(9px, 1.6vw, 13px);
+  font-size: clamp(8px, 1.4vw, 11px);
   font-weight: 600;
   color: var(--white);
   text-transform: uppercase;
@@ -1255,10 +1327,10 @@ nav.primary a:hover {
 
 .countdown-separator {
   font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
-  font-size: clamp(20px, 4.5vw, 42px);
+  font-size: clamp(18px, 4vw, 36px);
   font-weight: normal;
   color: #12B4E3;
-  margin-bottom: clamp(18px, 3.5vw, 35px);
+  margin-bottom: clamp(15px, 3vw, 28px);
   opacity: 0.8;
 }
 

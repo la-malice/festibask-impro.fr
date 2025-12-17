@@ -41,6 +41,33 @@
   updateCountdown();
   setInterval(updateCountdown, 1000);
 
+  // Autoplay vidéo YouTube au scroll
+  const heroVideoContainer = document.getElementById('heroVideoContainer');
+  const heroVideo = document.getElementById('heroVideo');
+  let videoHasPlayed = false;
+
+  if (heroVideoContainer && heroVideo) {
+    // IntersectionObserver pour détecter quand la vidéo entre dans le viewport
+    const videoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.5 && !videoHasPlayed) {
+          // La vidéo est visible à au moins 50% - ajouter autoplay à l'URL
+          const currentSrc = heroVideo.src;
+          if (!currentSrc.includes('autoplay=1')) {
+            const separator = currentSrc.includes('?') ? '&' : '?';
+            heroVideo.src = currentSrc + separator + 'autoplay=1';
+            videoHasPlayed = true;
+          }
+        }
+      });
+    }, {
+      threshold: [0, 0.5, 1.0],
+      rootMargin: '0px'
+    });
+
+    videoObserver.observe(heroVideoContainer);
+  }
+
   // Burger / drawer mobile
   const burger=document.getElementById('burger'), drawer=document.getElementById('drawer'), drawerClose=document.getElementById('drawerClose');
   burger.addEventListener('click',()=>drawer.classList.toggle('open'));

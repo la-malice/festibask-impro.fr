@@ -1,0 +1,14 @@
+{
+  "name": "festibask-impro-server",
+  "version": "1.0.0",
+  "description": "Serveur HTTP simple pour tester le site en local",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "serve": "node server.js"
+  },
+  "keywords": ["server", "http", "local"],
+  "author": "",
+  "license": "ISC"
+}
+
