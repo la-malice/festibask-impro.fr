@@ -1100,24 +1100,29 @@ nav.primary a:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
-  padding: 0 clamp(16px, 8vw, 120px) 0 clamp(16px, 8vw, 120px);
+  padding: 0;
   box-sizing: border-box;
 }
 
 @media (max-width: 1024px) {
   .hero-title {
-    padding: 0 clamp(12px, 6vw, 100px) 0 clamp(12px, 6vw, 100px);
+    padding: 0;
   }
 }
 
 @media (max-width: 768px) {
   .hero-title {
-    padding: 0 32px 0 16px;
-    margin-top: 12px;
-    margin-bottom: 8px;
+    padding: 0;
+    margin: 12px auto 8px;
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 
@@ -1133,9 +1138,13 @@ nav.primary a:hover {
 
 @media (max-width: 768px) {
   .hero-logo {
-    width: clamp(380px, 95vw, 900px);
-    max-height: clamp(180px, 40vh, 400px);
-    margin-bottom: clamp(20px, 3vw, 32px);
+    width: 100%;
+    max-width: 100%;
+    max-height: clamp(250px, 50vh, 500px);
+    margin: 0 auto clamp(32px, 5vw, 48px);
+    padding: 0 16px;
+    box-sizing: border-box;
+    display: block;
   }
 }
 
@@ -1165,11 +1174,14 @@ nav.primary a:hover {
 
 @media (max-width: 768px) {
   .hero-countdown {
-    margin: 8px auto 0;
+    margin: clamp(40px, 8vw, 60px) auto 0;
     position: relative;
     left: 50%;
     transform: translateX(-50%);
     width: calc(100% - 32px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 
@@ -1238,7 +1250,7 @@ nav.primary a:hover {
   }
   
   .hero-title {
-    padding: 0 80px 0 16px;
+    padding: 0 16px;
   }
   
   .hero-dates {
