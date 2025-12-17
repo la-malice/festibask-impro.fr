@@ -4,6 +4,43 @@
   const io = new IntersectionObserver(es=>es.forEach(e=> header.classList.toggle('show', !e.isIntersecting)), {threshold:0.01});
   io.observe(hero);
 
+  // Countdown timer
+  const countdownDays = document.getElementById('countdown-days');
+  const countdownHours = document.getElementById('countdown-hours');
+  const countdownMinutes = document.getElementById('countdown-minutes');
+  const countdownSeconds = document.getElementById('countdown-seconds');
+  
+  // Date cible: 15 mai 2026 à 10:30 (lancement du festival)
+  const targetDate = new Date('2026-05-15T10:30:00').getTime();
+  
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+    
+    if (distance < 0) {
+      // Le festival a commencé ou est terminé
+      countdownDays.textContent = '00';
+      countdownHours.textContent = '00';
+      countdownMinutes.textContent = '00';
+      countdownSeconds.textContent = '00';
+      return;
+    }
+    
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+    countdownDays.textContent = String(days).padStart(2, '0');
+    countdownHours.textContent = String(hours).padStart(2, '0');
+    countdownMinutes.textContent = String(minutes).padStart(2, '0');
+    countdownSeconds.textContent = String(seconds).padStart(2, '0');
+  }
+  
+  // Mettre à jour immédiatement puis toutes les secondes
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
   // Burger / drawer mobile
   const burger=document.getElementById('burger'), drawer=document.getElementById('drawer'), drawerClose=document.getElementById('drawerClose');
   burger.addEventListener('click',()=>drawer.classList.toggle('open'));
