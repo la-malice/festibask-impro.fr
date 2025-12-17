@@ -995,7 +995,7 @@ nav.primary a:hover {
 }
 
 .hero-tags-separator {
-  color: var(--blue);
+  color: var(--accent);
   display: inline-flex;
   align-items: center;
   justify-content: center;
