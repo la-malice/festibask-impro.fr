@@ -72,14 +72,23 @@
   const daySliderContainer = document.getElementById('daySlider');
   if (daySliderContainer) {
     const daySlides = daySliderContainer.querySelectorAll('.day-slide');
-    const dayDots = daySliderContainer.closest('.day-slider')?.querySelectorAll('.carousel-dot');
+    const daySlider = daySliderContainer.closest('.day-slider');
+    const dayDots = daySlider?.querySelectorAll('.carousel-dot');
+    const dayTabs = daySlider?.querySelectorAll('.day-tab');
     let currentDaySlide = 0;
     
     function updateDaySlider(){
       daySliderContainer.style.transform = `translateX(-${currentDaySlide * 33.333333}%)`;
+      // Mettre à jour les dots
       if (dayDots) {
         dayDots.forEach((dot,index)=>{
           dot.classList.toggle('active', index === currentDaySlide);
+        });
+      }
+      // Mettre à jour les tabs
+      if (dayTabs) {
+        dayTabs.forEach((tab,index)=>{
+          tab.classList.toggle('active', index === currentDaySlide);
         });
       }
     }
@@ -105,9 +114,20 @@
       }
     });
     
+    // Gestion des clics sur les dots
     if (dayDots) {
       dayDots.forEach((dot,index)=>{
         dot.addEventListener('click',()=>{
+          currentDaySlide = index;
+          updateDaySlider();
+        });
+      });
+    }
+    
+    // Gestion des clics sur les tabs
+    if (dayTabs) {
+      dayTabs.forEach((tab,index)=>{
+        tab.addEventListener('click',()=>{
           currentDaySlide = index;
           updateDaySlider();
         });
@@ -121,8 +141,6 @@
     let touchEndY = 0;
     let isSwiping = false;
     const swipeThreshold = 50; // Distance minimale en pixels pour déclencher un swipe
-    
-    const daySlider = daySliderContainer.closest('.day-slider');
     
     if (daySlider) {
       daySlider.addEventListener('touchstart', (e) => {

@@ -1786,7 +1786,7 @@ nav.primary a:hover {
   }
   
   .day-date {
-    gap: 12px;
+    display: none; /* Masqué sur mobile, remplacé par les tabs en haut */
   }
   
   /* Sur mobile, le pitch prend toute la place */
@@ -1805,13 +1805,104 @@ nav.primary a:hover {
   }
 }
 
-.day-slider .carousel-nav {
+/* Day tabs - Navigation par onglets pour mobile */
+.day-tabs {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-top: 16px;
-  margin-bottom: 8px;
+  gap: 8px;
+  margin-top: 0;
+  margin-bottom: 24px;
   padding: 0 16px;
+  flex-wrap: wrap;
+}
+
+.day-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  background: var(--white-overlay-light);
+  border: 2px solid var(--blue-border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+  box-shadow: var(--shadow-sm);
+  min-width: 100px;
+  flex: 1;
+  max-width: 140px;
+  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
+}
+
+.day-tab:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--blue);
+  background: var(--white-overlay-medium);
+}
+
+.day-tab.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: var(--white);
+  box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.day-tab-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--blue);
+  transition: color 0.3s ease;
+}
+
+.day-tab.active .day-tab-name {
+  color: var(--white);
+}
+
+.day-tab-date {
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-top: 2px;
+  color: var(--muted);
+  transition: color 0.3s ease;
+}
+
+.day-tab.active .day-tab-date {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Ajustements pour desktop */
+@media (min-width: 769px) {
+  .day-tabs {
+    margin-bottom: 32px;
+    gap: 12px;
+  }
+  
+  .day-tab {
+    min-width: 120px;
+    max-width: 160px;
+    padding: 12px 20px;
+  }
+  
+  .day-tab-name {
+    font-size: 1rem;
+  }
+  
+  .day-tab-date {
+    font-size: 0.85rem;
+  }
+  
+  /* Masquer les dates avec chevrons sur desktop aussi */
+  .day-date {
+    display: none;
+  }
+}
+
+.day-slider .carousel-nav {
+  display: none; /* Masqué partout, remplacé par les tabs */
 }
 
 .carousel-dot {
