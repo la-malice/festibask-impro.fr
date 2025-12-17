@@ -84,8 +84,18 @@ body {
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: 18px;
   line-height: 1.6;
-  background-image: radial-gradient(circle at 20% 50%, rgba(238, 87, 63, 0.05) 0%, transparent 50%),
+  background-image: 
+    /* Texture aquarelle */
+    url('../img/texture-festibask.jpg'),
+    /* Gradients radiaux existants */
+    radial-gradient(circle at 20% 50%, rgba(238, 87, 63, 0.05) 0%, transparent 50%),
     radial-gradient(circle at 80% 80%, rgba(18, 180, 227, 0.05) 0%, transparent 50%);
+  background-size: cover, 100% 100%, 100% 100%;
+  background-position: center, center, center;
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-attachment: fixed;
+  background-blend-mode: overlay, normal, normal;
+  position: relative;
 }
 
 a {
@@ -278,18 +288,114 @@ img {
 /* Backgrounds de sections */
 .section-bg-1 {
   background: linear-gradient(to bottom, #030C1F 0%, #1B3D91 100%);
+  position: relative;
+}
+
+.section-bg-1::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../img/texture-festibask.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  opacity: 1;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.section-bg-1 > * {
+  position: relative;
+  z-index: 1;
 }
 
 .section-bg-2 {
   background: linear-gradient(to bottom, #1B3D91 0%, #030C1F 100%);
+  position: relative;
+}
+
+.section-bg-2::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../img/texture-festibask.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  opacity: 1;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.section-bg-2 > * {
+  position: relative;
+  z-index: 1;
 }
 
 .section-bg-3 {
   background: linear-gradient(to bottom, #1B3D91 0%, #030C1F 100%);
+  position: relative;
+}
+
+.section-bg-3::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../img/texture-festibask.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  opacity: 1;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.section-bg-3 > * {
+  position: relative;
+  z-index: 1;
 }
 
 .section-bg-4 {
   background: linear-gradient(to bottom, #1B3D91 0%, #030C1F 100%);
+  position: relative;
+}
+
+.section-bg-4::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../img/texture-festibask.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  opacity: 1;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.section-bg-4 > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* FAQ - encart style similaire à CTA */
@@ -375,6 +481,30 @@ img {
 
 .section-bg-5 {
   background: linear-gradient(to bottom, #030C1F 0%, #1B3D91 100%);
+  position: relative;
+}
+
+.section-bg-5::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../img/texture-festibask.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  opacity: 1;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.section-bg-5 > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* Section infos pratiques - dégradé inversé */
@@ -396,6 +526,30 @@ img {
 .section-cta {
   background: linear-gradient(to bottom, #1B3D91 0%, #030C1F 100%);
   padding: 60px 0;
+  position: relative;
+}
+
+.section-cta::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../img/texture-festibask.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  opacity: 1;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.section-cta > * {
+  position: relative;
+  z-index: 1;
 }
 
 .section-cta .cta-card {
@@ -857,6 +1011,29 @@ nav.primary a:hover {
   padding: 12px 0 80px;
   background: linear-gradient(to bottom, #1B3D91 0%, #030C1F 100%);
   border-bottom: 1px solid var(--blue-border-light);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../img/texture-festibask.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  opacity: 0.95;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero > * {
+  position: relative;
+  z-index: 1;
 }
 
 @media (max-width: 768px) {
