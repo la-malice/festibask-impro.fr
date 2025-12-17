@@ -359,7 +359,7 @@
       time: '21:00',
       label: 'Match',
       title: 'La Malice vs France',
-      image: 'assets/img/241125-MATCH-FRANCE-BELGIQUE-©J-55_BD-1200x470.jpg',
+      image: 'assets/img/equipe-de-france.webp',
       pitch: 'Le match d\'impro est le format phare par lequel l\'impro s\'est diffusée. Venu du Québec, il emprunte aux codes du Hockey sur glace où 2 équipes de comédiens s\'affrontent sur une patinoire dans des séquences brèves et rythmées sous la surveillance d\'un arbitre implacable&nbsp;!'
     },
     'spectacle-dimanche-format-long': {
