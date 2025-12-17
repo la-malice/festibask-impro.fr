@@ -874,7 +874,7 @@ nav.primary a:hover {
   justify-content: center;
   gap: 10px;
   margin-top: 8px;
-  margin-bottom: clamp(20px, 4vw, 32px);
+  margin-bottom: clamp(32px, 5vw, 48px);
   font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   text-align: center;
 }
@@ -974,15 +974,15 @@ nav.primary a:hover {
   z-index: 10;
   padding: 0 16px;
   box-sizing: border-box;
-  margin-top: clamp(20px, 4vw, 40px);
-  margin-bottom: clamp(40px, 8vw, 80px);
+  margin-top: clamp(32px, 5vw, 48px);
+  margin-bottom: clamp(16px, 3vw, 24px);
 }
 
 @media (max-width: 768px) {
   .hero-tags {
     position: relative;
-    margin-top: clamp(16px, 4vw, 24px);
-    margin-bottom: clamp(32px, 6vw, 48px);
+    margin-top: clamp(24px, 5vw, 32px);
+    margin-bottom: clamp(12px, 2.5vw, 20px);
     font-size: clamp(14px, 3.2vw, 20px);
     gap: 8px;
     padding: 0 12px;
@@ -1174,8 +1174,8 @@ nav.primary a:hover {
   height: auto;
   display: block;
   margin: 0 auto clamp(24px, 4vw, 40px);
-  width: clamp(500px, 90vw, 1200px);
-  max-height: clamp(220px, 45vh, 500px);
+  width: clamp(600px, 108vw, 1440px);
+  max-height: clamp(264px, 54vh, 600px);
   object-fit: contain;
 }
 
@@ -1183,7 +1183,7 @@ nav.primary a:hover {
   .hero-logo {
     width: 100%;
     max-width: 100%;
-    max-height: clamp(250px, 50vh, 500px);
+    max-height: clamp(300px, 60vh, 600px);
     margin: 0 auto clamp(32px, 5vw, 48px);
     padding: 0 16px;
     box-sizing: border-box;
@@ -1198,8 +1198,8 @@ nav.primary a:hover {
 @media (min-width: 1024px) {
   .hero-logo {
     margin: 0;
-    width: clamp(500px, 50vw, 800px);
-    max-height: clamp(200px, 40vh, 450px);
+    width: clamp(600px, 60vw, 960px);
+    max-height: clamp(240px, 48vh, 540px);
   }
   
   .hero-logo-wrapper {
@@ -1229,24 +1229,24 @@ nav.primary a:hover {
   height: 100%;
   border: none;
   /* Zoom pour masquer les bandes noires de YouTube et épouser exactement la vidéo */
-  transform: scale(1.15);
+  transform: scale(1.6);
   transform-origin: center center;
 }
 
 @media (max-width: 768px) {
   .hero-video-container {
-    width: min(80vw, 280px);
-    max-width: 280px;
+    width: min(96vw, 336px);
+    max-width: 336px;
     margin: 0 auto;
-    max-height: 400px;
+    max-height: 480px;
   }
 }
 
 @media (min-width: 1024px) {
   .hero-video-container {
-    width: clamp(160px, 18vw, 280px);
-    max-width: 280px;
-    max-height: clamp(280px, 32vh, 450px);
+    width: clamp(192px, 21.6vw, 336px);
+    max-width: 336px;
+    max-height: clamp(336px, 38.4vh, 540px);
     flex: 0 0 auto;
   }
 }
@@ -1257,7 +1257,7 @@ nav.primary a:hover {
   align-items: center;
   justify-content: center;
   gap: clamp(8px, 2vw, 16px);
-  margin-top: clamp(20px, 4vw, 40px);
+  margin-top: clamp(8px, 2vw, 16px);
   margin-bottom: clamp(8px, 2vh, 16px);
   z-index: 10;
   flex-wrap: wrap;
@@ -1272,7 +1272,7 @@ nav.primary a:hover {
 
 @media (max-width: 768px) {
   .hero-countdown {
-    margin-top: clamp(16px, 3vw, 24px);
+    margin-top: clamp(6px, 1.5vw, 12px);
     margin-bottom: clamp(6px, 1.5vh, 12px);
     position: relative;
     left: auto;
