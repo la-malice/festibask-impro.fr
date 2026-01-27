@@ -2905,6 +2905,8 @@ nav.primary a:hover {
   color: var(--white);
   margin: 0;
   transition: color 0.2s;
+  /* Masquer temporairement les noms des animateurs fictifs */
+  display: none;
 }
 
 .atelier-card .flip-back .instructor-bio {
@@ -2975,6 +2977,7 @@ nav.primary a:hover {
 }
 
 /* Lien "En savoir plus" */
+/* Désactiver temporairement le clic sur les cartes d'ateliers */
 .atelier-card .en-savoir-plus-link {
   display: inline-block;
   color: var(--blue);
@@ -2985,7 +2988,10 @@ nav.primary a:hover {
   text-decoration: none;
   border-bottom: none;
   transition: color 0.2s;
-  cursor: pointer;
+  /* Désactiver temporairement le clic */
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: default;
 }
 
 .atelier-card .en-savoir-plus-link:hover {

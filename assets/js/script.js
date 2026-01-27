@@ -264,34 +264,36 @@
   }
 
   // Toggle "En savoir plus" pour flip les cartes d'ateliers (même système que les cartes tarifs)
-  document.querySelectorAll('.en-savoir-plus-link').forEach(link=>{
-    link.addEventListener('click',e=>{
-      e.preventDefault();
-      e.stopPropagation();
-      const flipContainer = link.closest('.flip-container');
-      if (flipContainer) {
-        flipContainer.classList.add('flipped');
-      }
-    });
-  });
+  // DÉSACTIVÉ TEMPORAIREMENT - Les cartes restent en face recto uniquement
+  // document.querySelectorAll('.en-savoir-plus-link').forEach(link=>{
+  //   link.addEventListener('click',e=>{
+  //     e.preventDefault();
+  //     e.stopPropagation();
+  //     const flipContainer = link.closest('.flip-container');
+  //     if (flipContainer) {
+  //       flipContainer.classList.add('flipped');
+  //     }
+  //   });
+  // });
 
   // Clic sur le verso pour revenir au recto
-  document.querySelectorAll('.atelier-card .flip-back').forEach(flipBack=>{
-    flipBack.addEventListener('click',e=>{
-      // Ne pas flip si on clique sur l'intervenant (qui a son propre flip)
-      if (e.target.closest('.instructor-flip-container')) {
-        return;
-      }
-      // Ne pas flip si on clique sur le bouton d'inscription
-      if (e.target.closest('.btn-inscription, .btn-waitlist')) {
-        return;
-      }
-      const flipContainer = flipBack.closest('.flip-container');
-      if (flipContainer && flipContainer.classList.contains('flipped')) {
-        flipContainer.classList.remove('flipped');
-      }
-    });
-  });
+  // DÉSACTIVÉ TEMPORAIREMENT - Les cartes restent en face recto uniquement
+  // document.querySelectorAll('.atelier-card .flip-back').forEach(flipBack=>{
+  //   flipBack.addEventListener('click',e=>{
+  //     // Ne pas flip si on clique sur l'intervenant (qui a son propre flip)
+  //     if (e.target.closest('.instructor-flip-container')) {
+  //       return;
+  //     }
+  //     // Ne pas flip si on clique sur le bouton d'inscription
+  //     if (e.target.closest('.btn-inscription, .btn-waitlist')) {
+  //       return;
+  //     }
+  //     const flipContainer = flipBack.closest('.flip-container');
+  //     if (flipContainer && flipContainer.classList.contains('flipped')) {
+  //       flipContainer.classList.remove('flipped');
+  //     }
+  //   });
+  // });
 
   // Clic sur le tag COMPLET pour afficher/masquer le message explicatif
   document.querySelectorAll('.complet-tag').forEach(tag=>{
@@ -307,41 +309,42 @@
   });
 
   // Flip pour afficher la bio de l'intervenant (seulement dans le flip-back)
-  document.querySelectorAll('.flip-back .instructor-flip-container').forEach(container=>{
-    container.addEventListener('click',e=>{
-      e.preventDefault();
-      const isFlipped = container.classList.contains('flipped');
-      const back = container.querySelector('.instructor-flip-back');
-      
-      if(!back) return; // Si pas de back, on ne fait rien
-      
-      if(!isFlipped){
-        // On va flip, on calcule la hauteur nécessaire pour la bio
-        // On fait une copie temporaire pour mesurer
-        const tempBack = back.cloneNode(true);
-        tempBack.style.position = 'absolute';
-        tempBack.style.visibility = 'hidden';
-        tempBack.style.transform = 'none';
-        tempBack.style.width = back.offsetWidth + 'px';
-        document.body.appendChild(tempBack);
-        const backHeight = tempBack.scrollHeight + 28; // + padding
-        document.body.removeChild(tempBack);
-        
-        // On applique la hauteur au container
-        container.style.minHeight = backHeight + 'px';
-        // Petit délai pour que la hauteur soit appliquée avant le flip
-        setTimeout(()=>{
-          container.classList.add('flipped');
-        }, 10);
-      } else {
-        // On revient en arrière, on remet la hauteur minimale
-        container.classList.remove('flipped');
-        setTimeout(()=>{
-          container.style.minHeight = '60px';
-        }, 600);
-      }
-    });
-  });
+  // DÉSACTIVÉ TEMPORAIREMENT - Les cartes restent en face recto uniquement
+  // document.querySelectorAll('.flip-back .instructor-flip-container').forEach(container=>{
+  //   container.addEventListener('click',e=>{
+  //     e.preventDefault();
+  //     const isFlipped = container.classList.contains('flipped');
+  //     const back = container.querySelector('.instructor-flip-back');
+  //     
+  //     if(!back) return; // Si pas de back, on ne fait rien
+  //     
+  //     if(!isFlipped){
+  //       // On va flip, on calcule la hauteur nécessaire pour la bio
+  //       // On fait une copie temporaire pour mesurer
+  //       const tempBack = back.cloneNode(true);
+  //       tempBack.style.position = 'absolute';
+  //       tempBack.style.visibility = 'hidden';
+  //       tempBack.style.transform = 'none';
+  //       tempBack.style.width = back.offsetWidth + 'px';
+  //       document.body.appendChild(tempBack);
+  //       const backHeight = tempBack.scrollHeight + 28; // + padding
+  //       document.body.removeChild(tempBack);
+  //       
+  //       // On applique la hauteur au container
+  //       container.style.minHeight = backHeight + 'px';
+  //       // Petit délai pour que la hauteur soit appliquée avant le flip
+  //       setTimeout(()=>{
+  //         container.classList.add('flipped');
+  //       }, 10);
+  //     } else {
+  //       // On revient en arrière, on remet la hauteur minimale
+  //       container.classList.remove('flipped');
+  //       setTimeout(()=>{
+  //         container.style.minHeight = '60px';
+  //       }, 600);
+  //     }
+  //   });
+  // });
 
   // Flip pour afficher les détails des tarifs
   document.querySelectorAll('.price-flip-container').forEach(container=>{
