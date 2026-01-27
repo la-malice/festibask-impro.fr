@@ -545,6 +545,39 @@
     });
   });
 
+  // Appliquer l'image en background sur mobile pour les matchs
+  function applyMatchBackgroundOnMobile() {
+    if (window.innerWidth <= 768) {
+      document.querySelectorAll('.match-block').forEach(block => {
+        const img = block.querySelector('.match-image');
+        if (img) {
+          // Utiliser getAttribute pour obtenir le src original, puis encoder l'URL
+          const src = img.getAttribute('src');
+          if (src) {
+            // Encoder l'URL pour gérer les caractères spéciaux
+            const encodedSrc = encodeURI(src);
+            block.style.backgroundImage = `url("${encodedSrc}")`;
+            block.style.backgroundSize = 'cover';
+            block.style.backgroundPosition = 'center';
+            block.style.backgroundRepeat = 'no-repeat';
+          }
+        }
+      });
+    } else {
+      // Retirer le background sur desktop
+      document.querySelectorAll('.match-block').forEach(block => {
+        block.style.backgroundImage = '';
+        block.style.backgroundSize = '';
+        block.style.backgroundPosition = '';
+        block.style.backgroundRepeat = '';
+      });
+    }
+  }
+
+  // Appliquer au chargement et au redimensionnement
+  applyMatchBackgroundOnMobile();
+  window.addEventListener('resize', applyMatchBackgroundOnMobile);
+
   // Tooltips explicatifs pour "format long" et "match"
   const tooltipTexts = {
     'format-long': 'Le format long est du théâtre d\'improvisation où rien n\'est écrit : une histoire unique se crée sous vos yeux à partir d\'un simple cadre, souvent inspiré par le public. On y suit des personnages touchants, des moments suspendus et cette tension délicieuse du jeu en équilibre permanent.',

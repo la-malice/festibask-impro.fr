@@ -1802,6 +1802,10 @@ nav.primary a:hover {
   
   .match-block::after {
     opacity: 1;
+    top: 8px;
+    right: 8px;
+    font-size: 0.7rem;
+    padding: 4px 10px;
   }
 }
 
@@ -2218,11 +2222,18 @@ nav.primary a:hover {
   }
   
   .match-image-wrapper {
-    max-width: 45%;
+    display: none;
   }
   
-  .match-image {
-    height: 260px;
+  .match-block {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  .match-block::before {
+    width: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.7) 100%);
   }
   
   .format-long-overlay,
@@ -2242,19 +2253,32 @@ nav.primary a:hover {
   }
   
   .match-team-logo img {
-    width: 90px;
-    height: 90px;
+    width: 80px;
+    height: 80px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
   }
   
   .match-vs {
-    font-size: 1.2rem;
-    padding: 0 8px;
+    font-size: 1.1rem;
+    padding: 0 6px;
+    text-shadow: 0 3px 8px rgba(0, 0, 0, 0.9);
   }
   
   .match-teams-overlay {
     top: 18px;
-    left: 18px;
-    gap: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    gap: 12px;
+    flex-wrap: nowrap;
+    max-width: calc(100% - 36px);
+    padding: 0 18px;
+    box-sizing: border-box;
+  }
+  
+  .match-time,
+  .match-label-small,
+  .match-label {
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
   }
   
   .day-date .carousel-arrow {
@@ -2274,6 +2298,13 @@ nav.primary a:hover {
   
   .match-pitch {
     right: 0;
+  }
+  
+  .match-photo-credit {
+    bottom: 12px;
+    right: 12px;
+    font-size: 0.65rem;
+    background: rgba(0, 0, 0, 0.8);
   }
   
   .format-long-block.flipped .format-long-image {
