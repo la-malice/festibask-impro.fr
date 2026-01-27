@@ -2198,6 +2198,241 @@ nav.primary a:hover {
   display: none;
 }
 
+/* Match slider - Bios des joueurs */
+.match-slider-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10;
+  transition: opacity 0.4s ease;
+}
+
+.match-block.slider-active .match-slider-container {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.match-block.slider-active .match-image-wrapper,
+.match-block.slider-active .match-teams-overlay,
+.match-block.slider-active .match-overlay {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.match-slider-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.match-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.match-slide-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.match-slide-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 50%, transparent 100%);
+  color: var(--white);
+  z-index: 2;
+}
+
+.match-slide-name {
+  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 600;
+  color: var(--white);
+  margin: 0 0 8px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  line-height: 1.2;
+}
+
+.match-slide-role {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent-pink);
+  margin-bottom: 12px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.match-slide-bio {
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  line-height: 1.6;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  max-width: 600px;
+}
+
+.match-slide-credit {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  margin: 16px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.match-slider-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.7);
+  color: var(--white);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 15;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease, transform 0.2s ease;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.match-slider-close:hover {
+  background: rgba(0, 0, 0, 0.9);
+  transform: scale(1.1);
+}
+
+.match-slider-close:active {
+  transform: scale(0.95);
+}
+
+/* Indicateurs de navigation (dots) */
+.match-slider-dots {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 12;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 0 12px;
+}
+
+.match-slider-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.match-slider-dot:hover {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(255, 255, 255, 0.9);
+  transform: scale(1.2);
+}
+
+.match-slider-dot.active {
+  background: var(--white);
+  border-color: var(--white);
+  width: 12px;
+  height: 12px;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+}
+
+.match-slider-dot:active {
+  transform: scale(0.9);
+}
+
+/* Responsive pour mobile */
+@media (max-width: 768px) {
+  .match-slide-overlay {
+    padding: 20px 16px;
+  }
+
+  .match-slide-name {
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+    margin-bottom: 6px;
+  }
+
+  .match-slide-role {
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+  }
+
+  .match-slide-bio {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .match-slider-close {
+    top: 8px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+  
+  .match-slider-dots {
+    bottom: 12px;
+    gap: 6px;
+  }
+  
+  .match-slider-dot {
+    width: 8px;
+    height: 8px;
+  }
+  
+  .match-slider-dot.active {
+    width: 10px;
+    height: 10px;
+  }
+  
+  /* S'assurer que le slider est visible même quand l'image-wrapper est masqué */
+  .match-block.slider-active .match-slider-container {
+    display: block;
+  }
+  
+  /* Le slider doit couvrir toute la zone du match-block sur mobile */
+  .match-block.slider-active {
+    background-image: none !important;
+  }
+}
+
 .match-vs {
   font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: clamp(1.5rem, 3vw, 2rem);

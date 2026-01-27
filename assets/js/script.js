@@ -1,3 +1,34 @@
+  // Données des joueurs de l'Équipe de France
+  const edfPlayers = [
+    {
+      name: 'Olivier Descargues',
+      role: 'Coach',
+      image: 'assets/img/edf-olivier.png',
+      bio: 'Improvisateur depuis 1987, membre historique de l\'Équipe de France, triple champion du monde. Coach de l\'équipe depuis 2015. Cofondateur de la Ligue Majeure, créateur et interprète de nombreux spectacles de référence.'
+    },
+    {
+      name: 'Félix Philippart',
+      image: 'assets/img/edf-felix.JPEG',
+      bio: 'Formé à Caen puis à Paris, improvisateur professionnel et pilier de l\'Équipe de France depuis 2021. Il joue dans de nombreux spectacles et enseigne le théâtre à la Manufacture de l\'Acteur. Représente Caen.'
+    },
+    {
+      name: 'Igor Potoczny',
+      image: 'assets/img/edf-igor.jpeg',
+      bio: 'Improvisateur parmi les plus titrés de France, membre de l\'Équipe de France depuis 1997. Triple champion du monde, habitué des scènes internationales, notamment au festival Juste pour Rire à Montréal. Représente Niort.'
+    },
+    {
+      name: 'Cécile Giroud',
+      role: 'Capitaine',
+      image: 'assets/img/edf-cecile.jpeg',
+      bio: 'Comédienne, humoriste et musicienne. Figure majeure de l\'impro française, multiple championne du monde. Capitaine de l\'Équipe de France, reconnue pour sa polyvalence, son énergie collective et son sens du jeu. Représente Lyon.'
+    },
+    {
+      name: 'Aurélie Desert',
+      image: 'assets/img/edf-aurelie.jpeg',
+      bio: 'Comédienne, chanteuse et auteure, formée au théâtre et à l\'improvisation à Bordeaux. Membre de l\'Équipe de France depuis 2018, elle évolue entre scène, rue et formats improvisés. Représente Bordeaux.'
+    }
+  ];
+
   // Révéler le header quand le hero sort du viewport
   const hero = document.getElementById('hero');
   const header = document.getElementById('siteHeader');
@@ -526,15 +557,290 @@
     });
   });
 
+  // Fonction pour initialiser le slider de bios des joueurs
+  function initMatchSlider(matchBlock, players, originalImageSrc) {
+    // Vérifier si le slider existe déjà
+    let sliderContainer = matchBlock.querySelector('.match-slider-container');
+    
+    if (!sliderContainer) {
+      // Créer la structure du slider
+      sliderContainer = document.createElement('div');
+      sliderContainer.className = 'match-slider-container';
+      
+      const sliderTrack = document.createElement('div');
+      sliderTrack.className = 'match-slider-track';
+      
+      // Slide 1 : Image originale avec titre, description et crédit photo
+      const originalSlide = document.createElement('div');
+      originalSlide.className = 'match-slide';
+      
+      const originalImage = document.createElement('img');
+      originalImage.className = 'match-slide-image';
+      originalImage.src = originalImageSrc;
+      originalImage.alt = 'Match d\'improvisation';
+      
+      const originalOverlay = document.createElement('div');
+      originalOverlay.className = 'match-slide-overlay';
+      
+      // Titre
+      const title = document.createElement('div');
+      title.className = 'match-slide-name';
+      title.textContent = 'L\'Équipe de France';
+      
+      // Description avec crédit photo intégré
+      const pitch = document.createElement('div');
+      pitch.className = 'match-slide-bio';
+      pitch.textContent = 'Champions du monde, artistes reconnus et figures majeures de l\'improvisation professionnelle. Une équipe d\'excellence réunissant expérience, créativité et intensité scénique, au service de spectacles uniques et exigeants. Photo : © J.DUFRESNE';
+      
+      originalOverlay.appendChild(title);
+      originalOverlay.appendChild(pitch);
+      originalSlide.appendChild(originalImage);
+      originalSlide.appendChild(originalOverlay);
+      sliderTrack.appendChild(originalSlide);
+      
+      // Slides suivants : Joueurs
+      players.forEach(player => {
+        const playerSlide = document.createElement('div');
+        playerSlide.className = 'match-slide';
+        
+        const playerImage = document.createElement('img');
+        playerImage.className = 'match-slide-image';
+        playerImage.src = player.image;
+        playerImage.alt = player.name;
+        
+        const playerOverlay = document.createElement('div');
+        playerOverlay.className = 'match-slide-overlay';
+        
+        const playerName = document.createElement('div');
+        playerName.className = 'match-slide-name';
+        playerName.textContent = player.name;
+        
+        playerOverlay.appendChild(playerName);
+        
+        if (player.role) {
+          const playerRole = document.createElement('div');
+          playerRole.className = 'match-slide-role';
+          playerRole.textContent = player.role;
+          playerOverlay.appendChild(playerRole);
+        }
+        
+        const playerBio = document.createElement('div');
+        playerBio.className = 'match-slide-bio';
+        playerBio.textContent = player.bio;
+        playerOverlay.appendChild(playerBio);
+        
+        playerSlide.appendChild(playerImage);
+        playerSlide.appendChild(playerOverlay);
+        sliderTrack.appendChild(playerSlide);
+      });
+      
+      // Bouton de fermeture
+      const closeButton = document.createElement('button');
+      closeButton.className = 'match-slider-close';
+      closeButton.setAttribute('aria-label', 'Fermer le slider');
+      closeButton.innerHTML = '×';
+      closeButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeMatchSlider(matchBlock);
+      });
+      
+      // Créer les points de navigation (dots)
+      const dotsContainer = document.createElement('div');
+      dotsContainer.className = 'match-slider-dots';
+      const totalSlides = 1 + players.length; // 1 slide original + slides joueurs
+      
+      for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'match-slider-dot';
+        if (i === 0) dot.classList.add('active');
+        dot.setAttribute('aria-label', `Aller au slide ${i + 1}`);
+        dot.setAttribute('data-slide', i);
+        dot.addEventListener('click', (e) => {
+          e.stopPropagation();
+          goToSlide(matchBlock, i);
+        });
+        dotsContainer.appendChild(dot);
+      }
+      
+      sliderContainer.appendChild(sliderTrack);
+      sliderContainer.appendChild(closeButton);
+      sliderContainer.appendChild(dotsContainer);
+      matchBlock.appendChild(sliderContainer);
+    }
+    
+    // Activer le slider
+    matchBlock.classList.add('slider-active');
+    
+    // Initialiser l'auto-défilement
+    startSliderAutoPlay(matchBlock);
+  }
+  
+  // Fonction pour aller à un slide spécifique
+  function goToSlide(matchBlock, slideIndex) {
+    const sliderTrack = matchBlock.querySelector('.match-slider-track');
+    if (!sliderTrack) return;
+    
+    const slides = sliderTrack.querySelectorAll('.match-slide');
+    if (slideIndex < 0 || slideIndex >= slides.length) return;
+    
+    // Mettre à jour la position
+    sliderTrack.style.transform = `translateX(-${slideIndex * 100}%)`;
+    
+    // Mettre à jour les dots actifs
+    const dots = matchBlock.querySelectorAll('.match-slider-dot');
+    dots.forEach((dot, index) => {
+      dot.classList.toggle('active', index === slideIndex);
+    });
+    
+    // Réinitialiser l'auto-défilement à partir de ce slide
+    matchBlock._currentSlide = slideIndex;
+    
+    // Redémarrer l'auto-défilement
+    if (matchBlock._sliderInterval) {
+      clearInterval(matchBlock._sliderInterval);
+    }
+    startSliderAutoPlay(matchBlock);
+  }
+  
+  // Fonction pour démarrer l'auto-défilement
+  function startSliderAutoPlay(matchBlock) {
+    // Nettoyer l'ancien timer s'il existe
+    if (matchBlock._sliderInterval) {
+      clearInterval(matchBlock._sliderInterval);
+      matchBlock._sliderInterval = null;
+    }
+    
+    // Supprimer les anciens event listeners s'ils existent
+    if (matchBlock._sliderMouseEnterHandler) {
+      matchBlock.removeEventListener('mouseenter', matchBlock._sliderMouseEnterHandler);
+      matchBlock.removeEventListener('mouseleave', matchBlock._sliderMouseLeaveHandler);
+    }
+    
+    const sliderTrack = matchBlock.querySelector('.match-slider-track');
+    if (!sliderTrack) return;
+    
+    const slides = sliderTrack.querySelectorAll('.match-slide');
+    if (slides.length === 0) return;
+    
+    // Utiliser le slide actuel ou commencer à 0
+    let currentSlide = matchBlock._currentSlide !== undefined ? matchBlock._currentSlide : 0;
+    const totalSlides = slides.length;
+    
+    // Fonction pour passer au slide suivant
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % totalSlides;
+      matchBlock._currentSlide = currentSlide;
+      sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+      
+      // Mettre à jour les dots actifs
+      const dots = matchBlock.querySelectorAll('.match-slider-dot');
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSlide);
+      });
+    }
+    
+    // Démarrer l'auto-défilement (4 secondes par slide)
+    matchBlock._sliderInterval = setInterval(nextSlide, 4000);
+    
+    // Pause au survol (desktop uniquement)
+    if (window.innerWidth >= 768) {
+      matchBlock._sliderMouseEnterHandler = () => {
+        if (matchBlock._sliderInterval) {
+          clearInterval(matchBlock._sliderInterval);
+          matchBlock._sliderInterval = null;
+        }
+      };
+      
+      matchBlock._sliderMouseLeaveHandler = () => {
+        if (!matchBlock._sliderInterval) {
+          matchBlock._sliderInterval = setInterval(nextSlide, 4000);
+        }
+      };
+      
+      matchBlock.addEventListener('mouseenter', matchBlock._sliderMouseEnterHandler);
+      matchBlock.addEventListener('mouseleave', matchBlock._sliderMouseLeaveHandler);
+    }
+  }
+  
+  // Fonction pour fermer le slider
+  function closeMatchSlider(matchBlock) {
+    matchBlock.classList.remove('slider-active');
+    
+    // Nettoyer le timer
+    if (matchBlock._sliderInterval) {
+      clearInterval(matchBlock._sliderInterval);
+      matchBlock._sliderInterval = null;
+    }
+    
+    // Supprimer les event listeners
+    if (matchBlock._sliderMouseEnterHandler) {
+      matchBlock.removeEventListener('mouseenter', matchBlock._sliderMouseEnterHandler);
+      matchBlock.removeEventListener('mouseleave', matchBlock._sliderMouseLeaveHandler);
+      matchBlock._sliderMouseEnterHandler = null;
+      matchBlock._sliderMouseLeaveHandler = null;
+    }
+    
+    // Réinitialiser la position du slider
+    const sliderTrack = matchBlock.querySelector('.match-slider-track');
+    if (sliderTrack) {
+      sliderTrack.style.transform = 'translateX(0)';
+    }
+    
+    // Réinitialiser le slide actuel
+    matchBlock._currentSlide = 0;
+    
+    // Réinitialiser les dots
+    const dots = matchBlock.querySelectorAll('.match-slider-dot');
+    dots.forEach((dot, index) => {
+      dot.classList.toggle('active', index === 0);
+    });
+  }
+
   // Flip pour afficher le pitch du match (desktop) ou modal (mobile)
   document.querySelectorAll('.match-block').forEach(block=>{
     block.addEventListener('click',e=>{
+      // Si on clique sur le bouton de fermeture, ne pas gérer ici
+      if (e.target.closest('.match-slider-close')) {
+        return;
+      }
+      
+      // Si le slider est actif, le fermer
+      if (block.classList.contains('slider-active')) {
+        closeMatchSlider(block);
+        return;
+      }
+      
       e.preventDefault();
       const isMobile = window.innerWidth < 768;
       
-      if (isMobile) {
-        // Mobile : ouvrir la modal
-        const blockId = block.id;
+      // Vérifier si c'est le match France vs La Malice
+      const blockId = block.id;
+      const isFranceMatch = blockId === 'spectacle-samedi-match';
+      
+      if (isFranceMatch && edfPlayers && edfPlayers.length > 0) {
+        // Récupérer l'image originale et le crédit photo
+        const originalImage = block.querySelector('.match-image');
+        const photoCreditEl = block.querySelector('.match-photo-credit');
+        // Utiliser getAttribute pour obtenir le src original, puis encoder l'URL
+        let originalImageSrc = '';
+        if (originalImage) {
+          const src = originalImage.getAttribute('src');
+          originalImageSrc = src ? encodeURI(src) : '';
+        } else {
+          // Sur mobile, l'image peut être en background, récupérer depuis le style
+          const bgImage = window.getComputedStyle(block).backgroundImage;
+          if (bgImage && bgImage !== 'none') {
+            // Extraire l'URL de la background-image
+            const match = bgImage.match(/url\(["']?([^"']+)["']?\)/);
+            if (match && match[1]) {
+              originalImageSrc = match[1];
+            }
+          }
+        }
+        // Initialiser le slider
+        initMatchSlider(block, edfPlayers, originalImageSrc);
+      } else if (isMobile) {
+        // Mobile : ouvrir la modal pour les autres matchs
         if (blockId && spectaclesData && spectaclesData[blockId]) {
           openSpectacleDetails(blockId);
         }
