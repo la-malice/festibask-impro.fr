@@ -652,6 +652,50 @@ footer .footer-impro {
   color: var(--blue);
 }
 
+/* Logo dans le footer */
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.footer-logo-img {
+  display: block;
+  height: clamp(40px, 5vw, 60px);
+  width: auto;
+  max-width: 250px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.footer-brand-text {
+  display: block;
+}
+
+/* Fallback : masquer le logo si besoin, afficher le texte */
+.footer-logo-hidden .footer-logo-img {
+  display: none;
+}
+
+.footer-logo-hidden .footer-brand-text {
+  display: block;
+}
+
+/* Par défaut, masquer le texte si le logo est présent */
+.footer-brand:has(.footer-logo-img) .footer-brand-text {
+  display: none;
+}
+
+/* Si on veut afficher les deux en même temps (pour test) */
+.footer-show-both .footer-logo-img {
+  display: block;
+}
+
+.footer-show-both .footer-brand-text {
+  display: block;
+}
+
 /* Texte sur fond dégradé - utiliser la même couleur que intro-text */
 .section-bg-1 .small,
 .section-bg-2 .small,
@@ -842,6 +886,49 @@ header .bar {
   color: var(--blue-dark);
 }
 
+/* Logo dans le header */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-logo {
+  display: block;
+  height: clamp(32px, 4vw, 48px);
+  width: auto;
+  max-width: 200px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.brand-text {
+  display: block;
+}
+
+/* Fallback : masquer le logo si besoin, afficher le texte */
+.brand-logo-hidden .brand-logo {
+  display: none;
+}
+
+.brand-logo-hidden .brand-text {
+  display: block;
+}
+
+/* Par défaut, masquer le texte si le logo est présent */
+.brand:has(.brand-logo) .brand-text {
+  display: none;
+}
+
+/* Si on veut afficher les deux en même temps (pour test) */
+.brand-show-both .brand-logo {
+  display: block;
+}
+
+.brand-show-both .brand-text {
+  display: block;
+}
+
 nav.primary {
   display: none;
   gap: 18px;
@@ -995,6 +1082,14 @@ nav.primary a:hover {
   
   nav.primary {
     display: flex;
+  }
+}
+
+/* Ajustements mobile pour le header */
+@media (max-width: 768px) {
+  .brand-logo {
+    height: clamp(28px, 5vw, 36px);
+    max-width: 150px;
   }
 }
 
@@ -3602,6 +3697,20 @@ footer > .container > div > p.small:last-child {
   margin-top: 24px;
   margin-bottom: 0;
   padding-top: 16px;
+}
+
+/* Ajustements mobile pour le footer */
+@media (max-width: 768px) {
+  .footer-logo-img {
+    height: clamp(32px, 6vw, 48px);
+    max-width: 180px;
+  }
+  
+  .footer-brand {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
 }
 
 /* ============================================
