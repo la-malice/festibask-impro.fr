@@ -2980,8 +2980,8 @@ nav.primary a:hover {
 /* Désactiver temporairement le clic sur les cartes d'ateliers */
 .atelier-card .en-savoir-plus-link {
   display: inline-block;
-  color: var(--blue);
-  font-weight: 600;
+  color: var(--blue-accent);
+  font-weight: 700;
   font-size: 0.95rem;
   margin-top: 8px;
   margin-bottom: 0;
@@ -2995,7 +2995,7 @@ nav.primary a:hover {
 }
 
 .atelier-card .en-savoir-plus-link:hover {
-  color: var(--blue);
+  color: var(--blue-accent);
   text-decoration: none;
 }
 
@@ -3197,7 +3197,8 @@ nav.primary a:hover {
 .program .day.card h3 {
   margin: 0 0 8px 0;
   text-align: center;
-  color: var(--blue);
+  color: var(--blue-dark);
+  font-weight: 900;
   font-size: clamp(1.2rem, 2.5vw, 1.6rem);
   line-height: 1.2;
 }
@@ -3424,8 +3425,8 @@ nav.primary a:hover {
 }
 
 .salle-box .salle-label {
-  font-weight: 700;
-  color: var(--blue);
+  font-weight: 800;
+  color: var(--blue-accent);
   font-size: 0.85rem;
   margin-bottom: 4px;
   text-transform: uppercase;
