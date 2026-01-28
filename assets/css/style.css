@@ -3994,7 +3994,7 @@ button.slot-spectacle:active {
   display: flex !important;
   transition: opacity 0.2s ease;
   width: 100%;
-  max-width: 110px;
+  max-width: 220px;
   margin: -30px auto 0;
   padding-left: 0;
   justify-content: center;
@@ -4029,7 +4029,7 @@ button.slot-spectacle:active {
   opacity: 1 !important;
   height: auto;
   width: 100%;
-  max-width: 110px;
+  max-width: 220px;
   object-fit: contain;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
 }
