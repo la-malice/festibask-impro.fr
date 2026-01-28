@@ -533,10 +533,26 @@
   <div class="container">
     <h2>Programme</h2>
     <p class="small">Chaque journée alterne des <strong>stages d'impro</strong> (matin & après-midi) et une <strong>soirée</strong> en deux temps : <em>format long</em> puis <em>match international</em>.</p>
+    
+    <!-- Switcher jour par jour -->
+    <div class="day-tabs" id="programmeDayTabs">
+      <button class="day-tab active" data-day="0" aria-label="Vendredi 15 mai">
+        <span class="day-tab-name">Vendredi</span>
+        <span class="day-tab-date">15 mai</span>
+      </button>
+      <button class="day-tab" data-day="1" aria-label="Samedi 16 mai">
+        <span class="day-tab-name">Samedi</span>
+        <span class="day-tab-date">16 mai</span>
+      </button>
+      <button class="day-tab" data-day="2" aria-label="Dimanche 17 mai">
+        <span class="day-tab-name">Dimanche</span>
+        <span class="day-tab-date">17 mai</span>
+      </button>
+    </div>
 
     <div class="grid grid-3 mt-18">
       <!-- Vendredi -->
-      <div class="day card">
+      <div class="day card" data-day="0">
         <h3>Vendredi 15 mai</h3>
         <div class="slot">
           <div class="time">10:30</div>
@@ -597,7 +613,7 @@
       </div>
 
       <!-- Samedi -->
-      <div class="day card">
+      <div class="day card" data-day="1">
         <h3>Samedi 16 mai</h3>
         <div class="slot"><div class="time">09:30</div><div class="meta">🥐☕ Accueil des stages d'impro</div></div>
         <div class="slot slot-atelier">
@@ -647,7 +663,7 @@
       </div>
 
       <!-- Dimanche -->
-      <div class="day card">
+      <div class="day card" data-day="2">
         <h3>Dimanche 17 mai</h3>
         <div class="slot"><div class="time">09:30</div><div class="meta">🥐☕ Accueil des stages d'impro</div></div>
         <div class="slot slot-atelier">

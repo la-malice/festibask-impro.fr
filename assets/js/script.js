@@ -149,6 +149,8 @@
           tab.classList.toggle('active', index === currentDaySlide);
         });
       }
+      // Synchroniser avec le programme
+      updateProgramDayHighlight(currentDaySlide);
     }
     
     function nextDaySlide(){
@@ -261,6 +263,51 @@
     
     // Auto-play optionnel (désactivé par défaut)
     // setInterval(nextDaySlide, 5000);
+    
+    // Initialiser avec le premier jour (vendredi) pour synchroniser le programme
+    updateDaySlider();
+  }
+
+  // Fonction pour mettre en avant le jour sélectionné dans le programme
+  function updateProgramDayHighlight(dayIndex) {
+    const programDayCards = document.querySelectorAll('.program .day.card');
+    const programmeDayTabs = document.querySelectorAll('#programmeDayTabs .day-tab');
+    
+    // Mettre à jour les cartes
+    programDayCards.forEach((card, index) => {
+      if (index === dayIndex) {
+        card.classList.add('active');
+      } else {
+        card.classList.remove('active');
+      }
+    });
+    
+    // Mettre à jour les tabs du programme
+    if (programmeDayTabs) {
+      programmeDayTabs.forEach((tab, index) => {
+        tab.classList.toggle('active', index === dayIndex);
+      });
+    }
+  }
+
+  // Gestion du switcher du programme
+  const programmeDayTabs = document.querySelectorAll('#programmeDayTabs .day-tab');
+  if (programmeDayTabs) {
+    programmeDayTabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => {
+        // Mettre à jour uniquement le programme (pas de scroll vers "à l'affiche")
+        updateProgramDayHighlight(index);
+        
+        // Synchroniser aussi les tabs "à l'affiche" visuellement
+        const daySlider = document.getElementById('daySlider')?.closest('.day-slider');
+        const dayTabsAffiche = daySlider?.querySelectorAll('.day-tab');
+        if (dayTabsAffiche) {
+          dayTabsAffiche.forEach((tabAffiche, tabIndex) => {
+            tabAffiche.classList.toggle('active', tabIndex === index);
+          });
+        }
+      });
+    });
   }
 
   // Flip des cartes d'ateliers
