@@ -279,8 +279,8 @@
   // 2) Clic n'importe où sur le recto (hors boutons) → montre le verso
   document.querySelectorAll('.atelier-card .flip-container .flip-front').forEach(front => {
     front.addEventListener('click', e => {
-      // Ne pas interférer avec les boutons d'inscription / liste d'attente ou le tag COMPLET
-      if (e.target.closest('.btn-inscription, .btn-waitlist, .complet-tag, a')) {
+      // Ne pas interférer avec les boutons d'inscription / liste d'attente ou les liens
+      if (e.target.closest('.btn-inscription, .btn-waitlist, a')) {
         return;
       }
       const flipContainer = front.closest('.flip-container');
@@ -308,15 +308,14 @@
     });
   });
 
-  // Clic sur le tag COMPLET pour afficher/masquer le message explicatif
-  document.querySelectorAll('.complet-tag').forEach(tag=>{
-    tag.addEventListener('click',e=>{
+  // Clic sur le tag COMPLET pour flip la carte et afficher le verso
+  document.querySelectorAll('.complet-tag').forEach(tag => {
+    tag.addEventListener('click', e => {
+      e.preventDefault();
       e.stopPropagation();
-      const card = tag.closest('.atelier-card');
-      const explanation = card.querySelector('.waitlist-explanation-front');
-      if (explanation) {
-        const isVisible = explanation.style.display !== 'none';
-        explanation.style.display = isVisible ? 'none' : 'block';
+      const flipContainer = tag.closest('.flip-container');
+      if (flipContainer) {
+        flipContainer.classList.add('flipped');
       }
     });
   });
