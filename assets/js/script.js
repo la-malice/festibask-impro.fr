@@ -1176,3 +1176,201 @@
       }
     }, 250);
   });
+
+  // ============================================
+  // MODE PLEIN ÉCRAN POUR LE PROGRAMME
+  // ============================================
+  const programFullscreenBtn = document.getElementById('programFullscreenBtn');
+  const programFullscreenContainer = document.getElementById('programFullscreenContainer');
+  const programFullscreenClose = document.getElementById('programFullscreenClose');
+  const programFullscreenGrid = document.getElementById('programFullscreenGrid');
+  const originalProgramGrid = document.querySelector('#programme .grid.grid-3');
+
+  // Fonction pour obtenir l'élément en plein écran (avec préfixes navigateurs)
+  function getFullscreenElement() {
+    return document.fullscreenElement || 
+           document.webkitFullscreenElement || 
+           document.mozFullScreenElement || 
+           document.msFullscreenElement || 
+           null;
+  }
+
+  // Fonction pour entrer en mode plein écran
+  function requestFullscreen(element) {
+    if (element.requestFullscreen) {
+      return element.requestFullscreen();
+    } else if (element.webkitRequestFullscreen) {
+      return element.webkitRequestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+      return element.mozRequestFullScreen();
+    } else if (element.msRequestFullscreen) {
+      return element.msRequestFullscreen();
+    }
+    return Promise.reject(new Error('Fullscreen API not supported'));
+  }
+
+  // Fonction pour sortir du mode plein écran
+  function exitFullscreen() {
+    if (document.exitFullscreen) {
+      return document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      return document.webkitExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      return document.mozCancelFullScreen();
+    } else if (document.msExitFullscreen) {
+      return document.msExitFullscreen();
+    }
+    return Promise.reject(new Error('Fullscreen API not supported'));
+  }
+
+  // Fonction pour copier le contenu de la grille originale dans le conteneur plein écran
+  function copyProgramToFullscreen() {
+    if (!originalProgramGrid || !programFullscreenGrid) return;
+    
+    // Copier le contenu HTML de la grille originale
+    programFullscreenGrid.innerHTML = originalProgramGrid.innerHTML;
+    
+    // Préserver l'état actif du jour sélectionné
+    const activeDayIndex = Array.from(document.querySelectorAll('#programmeDayTabs .day-tab')).findIndex(
+      tab => tab.classList.contains('active')
+    );
+    
+    if (activeDayIndex >= 0) {
+      const fullscreenDayCards = programFullscreenGrid.querySelectorAll('.day.card');
+      fullscreenDayCards.forEach((card, index) => {
+        if (index === activeDayIndex) {
+          card.classList.add('active');
+        } else {
+          card.classList.remove('active');
+        }
+      });
+    }
+  }
+
+  // Fonction pour ouvrir le mode plein écran
+  function openProgramFullscreen() {
+    if (!programFullscreenContainer || !originalProgramGrid) return;
+    
+    // Copier le contenu avant d'afficher
+    copyProgramToFullscreen();
+    
+    // Afficher le conteneur
+    programFullscreenContainer.style.display = 'flex';
+    
+    // Entrer en mode plein écran du navigateur
+    requestFullscreen(document.documentElement).catch(err => {
+      console.warn('Erreur lors de l\'entrée en mode plein écran:', err);
+      // Si le plein écran échoue, on affiche quand même le conteneur en overlay
+    });
+    
+    // Bloquer le scroll du body
+    document.body.style.overflow = 'hidden';
+  }
+
+  // Fonction pour fermer le mode plein écran
+  function closeProgramFullscreen() {
+    if (!programFullscreenContainer) return;
+    
+    // Sortir du mode plein écran du navigateur
+    if (getFullscreenElement()) {
+      exitFullscreen().catch(err => {
+        console.warn('Erreur lors de la sortie du mode plein écran:', err);
+      });
+    }
+    
+    // Masquer le conteneur
+    programFullscreenContainer.style.display = 'none';
+    
+    // Restaurer le scroll du body
+    document.body.style.overflow = '';
+  }
+
+  // Gérer les événements de changement de plein écran
+  function handleFullscreenChange() {
+    const isFullscreen = !!getFullscreenElement();
+    
+    if (!isFullscreen && programFullscreenContainer.style.display === 'flex') {
+      // Si on sort du plein écran mais que le conteneur est encore affiché, le fermer
+      closeProgramFullscreen();
+    }
+  }
+
+  // Écouter les événements de changement de plein écran (avec préfixes)
+  document.addEventListener('fullscreenchange', handleFullscreenChange);
+  document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+  document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+  document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+  // Gérer le clic sur le bouton plein écran
+  if (programFullscreenBtn) {
+    programFullscreenBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openProgramFullscreen();
+    });
+  }
+
+  // Gérer le clic sur le bouton de fermeture
+  if (programFullscreenClose) {
+    programFullscreenClose.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeProgramFullscreen();
+    });
+  }
+
+  // Gérer la touche Escape pour fermer
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && programFullscreenContainer && programFullscreenContainer.style.display === 'flex') {
+      closeProgramFullscreen();
+    }
+  });
+
+  // Fonction pour mettre à jour le jour actif en plein écran
+  function updateFullscreenActiveDay(dayIndex) {
+    if (!programFullscreenGrid) return;
+    
+    const fullscreenDayCards = programFullscreenGrid.querySelectorAll('.day.card');
+    fullscreenDayCards.forEach((card, index) => {
+      if (index === dayIndex) {
+        card.classList.add('active');
+      } else {
+        card.classList.remove('active');
+      }
+    });
+    
+    // Synchroniser aussi avec les tabs de la vue normale
+    const programmeDayTabs = document.querySelectorAll('#programmeDayTabs .day-tab');
+    programmeDayTabs.forEach((tab, index) => {
+      tab.classList.toggle('active', index === dayIndex);
+    });
+    
+    // Synchroniser avec les cartes de la vue normale
+    const normalDayCards = document.querySelectorAll('#programme .day.card');
+    normalDayCards.forEach((card, index) => {
+      if (index === dayIndex) {
+        card.classList.add('active');
+      } else {
+        card.classList.remove('active');
+      }
+    });
+  }
+
+  // Gérer les clics sur les cartes jour en plein écran pour changer de jour actif
+  if (programFullscreenContainer) {
+    programFullscreenContainer.addEventListener('click', (e) => {
+      // Vérifier si on clique sur une carte jour (mais pas sur les éléments interactifs à l'intérieur)
+      const dayCard = e.target.closest('.day.card');
+      if (dayCard && programFullscreenContainer.style.display === 'flex') {
+        // Ne pas changer de jour si on clique sur un bouton, lien ou élément interactif
+        if (e.target.closest('button, a, [data-spectacle]')) {
+          return;
+        }
+        
+        const dayCards = programFullscreenGrid.querySelectorAll('.day.card');
+        const dayIndex = Array.from(dayCards).indexOf(dayCard);
+        
+        if (dayIndex >= 0) {
+          updateFullscreenActiveDay(dayIndex);
+        }
+      }
+    });
+  }

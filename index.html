@@ -531,7 +531,14 @@
 <!-- Programme -->
 <section id="programme" class="section program section-bg-3">
   <div class="container">
-    <h2>Programme</h2>
+    <div class="program-header">
+      <h2>Programme</h2>
+      <button class="btn-fullscreen" id="programFullscreenBtn" aria-label="Afficher le programme en plein écran" title="Plein écran">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+        </svg>
+      </button>
+    </div>
     <p class="small">Chaque journée alterne des <strong>stages d'impro</strong> (matin & après-midi) et une <strong>soirée</strong> en deux temps : <em>format long</em> puis <em>match international</em>.</p>
     
     <!-- Switcher jour par jour -->
@@ -590,7 +597,7 @@
           <div class="slot-content">
             <div class="time">19:00</div>
             <h3>Braquage</h3>
-            <div class="meta">1H</div>
+            <div class="meta">LONG FORM · 1H</div>
           </div>
           <img src="assets/img/braquage.jpg" alt="Braquage" class="slot-image">
         </button>
@@ -602,7 +609,7 @@
           <div class="slot-content">
             <div class="time">21:00</div>
             <h3>Belgique vs La Malice</h3>
-            <div class="meta">1H20</div>
+            <div class="meta">MATCH · 1H20</div>
           </div>
           <img src="assets/img/equipe-belgique.jpg" alt="Belgique vs La Malice" class="slot-image">
         </button>
@@ -645,7 +652,7 @@
           <div class="slot-content">
             <div class="time">19:00</div>
             <h3>Commis d'Office</h3>
-            <div class="meta">1H</div>
+            <div class="meta">LONG FORM · 1H</div>
           </div>
           <img src="assets/img/commis-d-office.jpg" alt="Commis d'Office" class="slot-image">
         </button>
@@ -654,7 +661,7 @@
           <div class="slot-content">
             <div class="time">21:00</div>
             <h3>Équipe de France vs La Malice</h3>
-            <div class="meta">1H20</div>
+            <div class="meta">MATCH · 1H20</div>
           </div>
           <img src="assets/img/231202 MATCH COLISEE ©J.DUFRESNE (86).jpeg" alt="Match d'improvisation : Équipe de France d'improvisation vs La Malice" class="slot-image">
         </button>
@@ -695,7 +702,7 @@
           <div class="slot-content">
             <div class="time">19:00</div>
             <h3>Promo 2006</h3>
-            <div class="meta">1H</div>
+            <div class="meta">LONG FORM · 1H</div>
           </div>
           <img src="assets/img/promo-2006.avif" alt="Promo 2006" class="slot-image">
         </button>
@@ -704,7 +711,7 @@
           <div class="slot-content">
             <div class="time">21:00</div>
             <h3>Suisse vs La Malice</h3>
-            <div class="meta">1H20</div>
+            <div class="meta">MATCH · 1H20</div>
           </div>
           <img src="assets/img/equipe-suisse.jpg" alt="Suisse vs La Malice" class="slot-image">
         </button>
@@ -714,6 +721,21 @@
 
   </div>
 </section>
+
+<!-- Conteneur plein écran pour le programme -->
+<div id="programFullscreenContainer" class="program-fullscreen" style="display: none;">
+  <button class="program-fullscreen-close" id="programFullscreenClose" aria-label="Fermer le mode plein écran" title="Fermer">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+  <div class="program-fullscreen-content">
+    <div class="grid grid-3" id="programFullscreenGrid">
+      <!-- Le contenu sera copié dynamiquement depuis la grille originale -->
+    </div>
+  </div>
+</div>
 
 <!-- Stages -->
 <section id="stages" class="section section-bg-5">
