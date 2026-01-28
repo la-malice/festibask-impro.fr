@@ -3789,7 +3789,7 @@ button.slot-spectacle:active {
   align-items: center;
   justify-content: flex-start;
   padding: 20px;
-  overflow-y: auto;
+  overflow-y: hidden;
   overflow-x: hidden;
 }
 
@@ -3803,11 +3803,12 @@ button.slot-spectacle:active {
   gap: 16px;
   align-items: start;
   padding-top: 60px;
-  padding-bottom: 30px;
+  padding-bottom: 10px;
   padding-left: 0;
   padding-right: 0;
   min-height: fit-content;
   overflow: visible;
+  max-height: 100vh;
 }
 
 .program-fullscreen .grid.grid-3 {
@@ -3993,7 +3994,7 @@ button.slot-spectacle:active {
   display: flex !important;
   transition: opacity 0.2s ease;
   width: 100%;
-  max-width: 120px;
+  max-width: 110px;
   margin: -30px auto 0;
   padding-left: 0;
   justify-content: center;
@@ -4001,6 +4002,21 @@ button.slot-spectacle:active {
   align-self: start;
   flex-shrink: 0;
   min-height: 50px;
+}
+
+.program-fullscreen-logo-malice {
+  grid-column: 3;
+  grid-row: 2;
+  margin-top: -60px;
+  max-width: 120px;
+  align-self: end;
+}
+
+.program-fullscreen-logo-malice .program-fullscreen-logo-img {
+  max-width: 120px;
+  height: auto;
+  width: auto;
+  object-fit: contain;
 }
 
 .program-fullscreen-logo:hover {
@@ -4013,7 +4029,7 @@ button.slot-spectacle:active {
   opacity: 1 !important;
   height: auto;
   width: 100%;
-  max-width: 120px;
+  max-width: 110px;
   object-fit: contain;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
 }
@@ -4076,13 +4092,28 @@ button.slot-spectacle:active {
     grid-column: 1;
     grid-row: 2;
     width: 100%;
-    max-width: 100px;
+    max-width: 90px;
     margin: -20px auto 20px;
     justify-content: center;
   }
   
-  .program-fullscreen-logo-img {
+  .program-fullscreen-logo-malice {
+    grid-column: 1;
+    grid-row: 3;
+    margin-top: -40px;
     max-width: 100px;
+    align-self: end;
+  }
+  
+  .program-fullscreen-logo-malice .program-fullscreen-logo-img {
+    max-width: 100px;
+    height: auto;
+    width: auto;
+    object-fit: contain;
+  }
+  
+  .program-fullscreen-logo-img {
+    max-width: 90px;
   }
   
   .program-fullscreen .day.card {
