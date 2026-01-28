@@ -321,43 +321,42 @@
     });
   });
 
-  // Flip pour afficher la bio de l'intervenant (seulement dans le flip-back)
-  // DÉSACTIVÉ TEMPORAIREMENT - Les cartes restent en face recto uniquement
-  // document.querySelectorAll('.flip-back .instructor-flip-container').forEach(container=>{
-  //   container.addEventListener('click',e=>{
-  //     e.preventDefault();
-  //     const isFlipped = container.classList.contains('flipped');
-  //     const back = container.querySelector('.instructor-flip-back');
-  //     
-  //     if(!back) return; // Si pas de back, on ne fait rien
-  //     
-  //     if(!isFlipped){
-  //       // On va flip, on calcule la hauteur nécessaire pour la bio
-  //       // On fait une copie temporaire pour mesurer
-  //       const tempBack = back.cloneNode(true);
-  //       tempBack.style.position = 'absolute';
-  //       tempBack.style.visibility = 'hidden';
-  //       tempBack.style.transform = 'none';
-  //       tempBack.style.width = back.offsetWidth + 'px';
-  //       document.body.appendChild(tempBack);
-  //       const backHeight = tempBack.scrollHeight + 28; // + padding
-  //       document.body.removeChild(tempBack);
-  //       
-  //       // On applique la hauteur au container
-  //       container.style.minHeight = backHeight + 'px';
-  //       // Petit délai pour que la hauteur soit appliquée avant le flip
-  //       setTimeout(()=>{
-  //         container.classList.add('flipped');
-  //       }, 10);
-  //     } else {
-  //       // On revient en arrière, on remet la hauteur minimale
-  //       container.classList.remove('flipped');
-  //       setTimeout(()=>{
-  //         container.style.minHeight = '60px';
-  //       }, 600);
-  //     }
-  //   });
-  // });
+  // Flip pour afficher la bio de l'intervenant (seulement pour Laëtitia - instructor-4)
+  document.querySelectorAll('.flip-back .instructor-flip-container[data-flip="instructor-4"]').forEach(container=>{
+    container.addEventListener('click',e=>{
+      e.preventDefault();
+      const isFlipped = container.classList.contains('flipped');
+      const back = container.querySelector('.instructor-flip-back');
+      
+      if(!back) return; // Si pas de back, on ne fait rien
+      
+      if(!isFlipped){
+        // On va flip, on calcule la hauteur nécessaire pour la bio
+        // On fait une copie temporaire pour mesurer
+        const tempBack = back.cloneNode(true);
+        tempBack.style.position = 'absolute';
+        tempBack.style.visibility = 'hidden';
+        tempBack.style.transform = 'none';
+        tempBack.style.width = back.offsetWidth + 'px';
+        document.body.appendChild(tempBack);
+        const backHeight = tempBack.scrollHeight + 28; // + padding
+        document.body.removeChild(tempBack);
+        
+        // On applique la hauteur au container
+        container.style.minHeight = backHeight + 'px';
+        // Petit délai pour que la hauteur soit appliquée avant le flip
+        setTimeout(()=>{
+          container.classList.add('flipped');
+        }, 10);
+      } else {
+        // On revient en arrière, on remet la hauteur minimale
+        container.classList.remove('flipped');
+        setTimeout(()=>{
+          container.style.minHeight = '60px';
+        }, 600);
+      }
+    });
+  });
 
   // Flip pour afficher les détails des tarifs
   document.querySelectorAll('.price-flip-container').forEach(container=>{

@@ -2747,7 +2747,7 @@ nav.primary a:hover {
   position: relative;
   width: 100%;
   flex: 1;
-  min-height: 300px;
+  min-height: 350px;
   transition: transform 0.6s;
   transform-style: preserve-3d;
   cursor: pointer;
@@ -2812,9 +2812,10 @@ nav.primary a:hover {
   flex-direction: row;
   align-items: center;
   gap: 12px;
-  margin-top: 16px;
+  margin-top: 24px;
   margin-bottom: 12px;
   flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
 .atelier-card .flip-back .instructor-flip-container {
@@ -2935,6 +2936,10 @@ nav.primary a:hover {
   flex-direction: column;
 }
 
+.atelier-card .flip-back .content {
+  min-height: 0;
+}
+
 .atelier-card h3 {
   font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: clamp(1.3rem, 2.2vw, 1.8rem);
@@ -2963,16 +2968,12 @@ nav.primary a:hover {
 }
 
 .atelier-card .flip-back .description {
-  margin: 0 0 16px;
+  margin: 0 0 24px;
   line-height: 1.6;
   color: var(--white);
   margin-top: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  flex: 0 1 auto;
+  min-height: 0;
 }
 
 /* Lien "En savoir plus" */
@@ -3062,6 +3063,7 @@ nav.primary a:hover {
   flex-direction: column;
   height: 100%;
   box-sizing: border-box;
+  position: relative;
 }
 
 .atelier-card .meta-info {
@@ -3148,7 +3150,33 @@ nav.primary a:hover {
 
 /* Bandeau COMPLET - maintenant géré par .complet-tag dans le HTML */
 
-/* Explication liste d'attente - uniquement sur le verso */
+/* Overlay pour les stages complets sur le verso */
+.atelier-card.complet .flip-back .complet-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 90px; /* Laisser de la place pour le footer et le bouton en bas */
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.atelier-card.complet .flip-back .waitlist-explanation-overlay {
+  font-size: 1rem;
+  color: var(--white);
+  line-height: 1.6;
+  text-align: center;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Explication liste d'attente - uniquement sur le verso (ancien style, gardé pour compatibilité) */
 .atelier-card .flip-back .waitlist-explanation {
   font-size: 0.9rem;
   color: var(--white);
