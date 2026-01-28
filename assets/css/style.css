@@ -3039,6 +3039,11 @@ nav.primary a:hover {
   line-height: 1.5rem;
 }
 
+/* Masquer "En savoir plus" si la carte est complète */
+.atelier-card.complet .en-savoir-plus-link {
+  display: none;
+}
+
 .atelier-card .en-savoir-plus-link:hover {
   color: var(--accent);
   text-decoration: none;
@@ -3054,8 +3059,9 @@ nav.primary a:hover {
 }
 
 /* Tag COMPLET */
+/* Masqué par défaut, affiché seulement si classe complet */
 .atelier-card .complet-tag {
-  display: inline-block;
+  display: none;
   background: var(--accent);
   color: var(--white);
   font-weight: 900;
@@ -3076,6 +3082,11 @@ nav.primary a:hover {
   box-sizing: border-box;
 }
 
+/* Afficher le badge COMPLET si la carte a la classe complet */
+.atelier-card.complet .complet-tag {
+  display: inline-block;
+}
+
 .atelier-card .complet-tag:hover {
   transform: scale(1.05);
   box-shadow: 0 3px 8px rgba(238, 87, 63, 0.4);
@@ -3083,6 +3094,7 @@ nav.primary a:hover {
 
 /* Message explicatif liste d'attente sur le recto */
 .atelier-card .waitlist-explanation-front {
+  display: none; /* Masqué par défaut */
   font-size: 0.85rem;
   color: var(--text);
   margin-top: 12px;
@@ -3165,6 +3177,16 @@ nav.primary a:hover {
   white-space: nowrap;
 }
 
+/* Masquer btn-inscription dans footer-mobile si complet */
+.atelier-card.complet .flip-back .footer-mobile .btn-inscription {
+  display: none;
+}
+
+/* Afficher btn-waitlist dans footer-mobile si complet */
+.atelier-card.complet .flip-back .footer-mobile .btn-waitlist {
+  display: flex;
+}
+
 @media (min-width: 768px) {
   .atelier-card .flip-back .footer-mobile {
     display: none;
@@ -3185,6 +3207,16 @@ nav.primary a:hover {
   }
 }
 
+/* Masquer btn-inscription dans footer-desktop si complet */
+.atelier-card.complet .flip-back .footer-desktop .btn-inscription {
+  display: none;
+}
+
+/* Afficher btn-waitlist dans footer-desktop si complet */
+.atelier-card.complet .flip-back .footer-desktop .btn-waitlist {
+  display: flex;
+}
+
 .atelier-card .btn-inscription {
   width: 100%;
   display: flex;
@@ -3193,6 +3225,11 @@ nav.primary a:hover {
   background: var(--blue);
   color: var(--white);
   border-color: var(--blue);
+}
+
+/* Masquer le bouton d'inscription si la carte est complète */
+.atelier-card.complet .btn-inscription {
+  display: none;
 }
 
 .atelier-card .btn-inscription[aria-disabled="true"] {
@@ -3204,7 +3241,9 @@ nav.primary a:hover {
 /* Bandeau COMPLET - maintenant géré par .complet-tag dans le HTML */
 
 /* Overlay pour les stages complets sur le verso */
-.atelier-card.complet .flip-back .complet-overlay {
+/* Masqué par défaut */
+.atelier-card .flip-back .complet-overlay {
+  display: none;
   position: absolute;
   top: 0;
   left: 0;
@@ -3212,12 +3251,16 @@ nav.primary a:hover {
   bottom: 90px; /* Laisser de la place pour le footer et le bouton en bas */
   background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(4px);
-  display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10;
   border-radius: 12px;
   padding: 20px;
+}
+
+/* Afficher l'overlay si la carte est complète */
+.atelier-card.complet .flip-back .complet-overlay {
+  display: flex;
 }
 
 .atelier-card.complet .flip-back .waitlist-explanation-overlay {
@@ -3242,13 +3285,18 @@ nav.primary a:hover {
 
 /* Bouton liste d'attente */
 .atelier-card .btn-waitlist {
+  display: none; /* Masqué par défaut */
   width: 100%;
-  display: flex;
   justify-content: center;
   text-align: center;
   background: var(--accent);
   color: var(--white);
   border-color: var(--accent);
+}
+
+/* Afficher le bouton liste d'attente si la carte est complète */
+.atelier-card.complet .btn-waitlist {
+  display: flex;
 }
 
 .atelier-card .btn-waitlist:hover {
