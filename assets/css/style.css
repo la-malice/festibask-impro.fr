@@ -2905,8 +2905,7 @@ nav.primary a:hover {
   color: var(--white);
   margin: 0;
   transition: color 0.2s;
-  /* Masquer temporairement les noms des animateurs fictifs */
-  display: none;
+  display: block;
 }
 
 .atelier-card .flip-back .instructor-bio {

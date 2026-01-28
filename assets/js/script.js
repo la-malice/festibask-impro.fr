@@ -263,37 +263,50 @@
     // setInterval(nextDaySlide, 5000);
   }
 
-  // Toggle "En savoir plus" pour flip les cartes d'ateliers (même système que les cartes tarifs)
-  // DÉSACTIVÉ TEMPORAIREMENT - Les cartes restent en face recto uniquement
-  // document.querySelectorAll('.en-savoir-plus-link').forEach(link=>{
-  //   link.addEventListener('click',e=>{
-  //     e.preventDefault();
-  //     e.stopPropagation();
-  //     const flipContainer = link.closest('.flip-container');
-  //     if (flipContainer) {
-  //       flipContainer.classList.add('flipped');
-  //     }
-  //   });
-  // });
+  // Flip des cartes d'ateliers
+  // 1) Clic sur "En savoir plus" → montre le verso
+  document.querySelectorAll('.en-savoir-plus-link').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      const flipContainer = link.closest('.flip-container');
+      if (flipContainer) {
+        flipContainer.classList.add('flipped');
+      }
+    });
+  });
 
-  // Clic sur le verso pour revenir au recto
-  // DÉSACTIVÉ TEMPORAIREMENT - Les cartes restent en face recto uniquement
-  // document.querySelectorAll('.atelier-card .flip-back').forEach(flipBack=>{
-  //   flipBack.addEventListener('click',e=>{
-  //     // Ne pas flip si on clique sur l'intervenant (qui a son propre flip)
-  //     if (e.target.closest('.instructor-flip-container')) {
-  //       return;
-  //     }
-  //     // Ne pas flip si on clique sur le bouton d'inscription
-  //     if (e.target.closest('.btn-inscription, .btn-waitlist')) {
-  //       return;
-  //     }
-  //     const flipContainer = flipBack.closest('.flip-container');
-  //     if (flipContainer && flipContainer.classList.contains('flipped')) {
-  //       flipContainer.classList.remove('flipped');
-  //     }
-  //   });
-  // });
+  // 2) Clic n'importe où sur le recto (hors boutons) → montre le verso
+  document.querySelectorAll('.atelier-card .flip-container .flip-front').forEach(front => {
+    front.addEventListener('click', e => {
+      // Ne pas interférer avec les boutons d'inscription / liste d'attente ou le tag COMPLET
+      if (e.target.closest('.btn-inscription, .btn-waitlist, .complet-tag, a')) {
+        return;
+      }
+      const flipContainer = front.closest('.flip-container');
+      if (flipContainer) {
+        flipContainer.classList.add('flipped');
+      }
+    });
+  });
+
+  // 3) Clic sur le verso pour revenir au recto
+  document.querySelectorAll('.atelier-card .flip-back').forEach(flipBack => {
+    flipBack.addEventListener('click', e => {
+      // Ne pas flip si on clique sur l'intervenant (qui a son propre flip)
+      if (e.target.closest('.instructor-flip-container')) {
+        return;
+      }
+      // Ne pas flip si on clique sur le bouton d'inscription
+      if (e.target.closest('.btn-inscription, .btn-waitlist')) {
+        return;
+      }
+      const flipContainer = flipBack.closest('.flip-container');
+      if (flipContainer && flipContainer.classList.contains('flipped')) {
+        flipContainer.classList.remove('flipped');
+      }
+    });
+  });
 
   // Clic sur le tag COMPLET pour afficher/masquer le message explicatif
   document.querySelectorAll('.complet-tag').forEach(tag=>{
@@ -376,8 +389,8 @@
       type: 'match',
       time: '21:00',
       label: 'Match',
-      title: 'La Malice vs Suisse',
-      image: 'assets/img/equipe-suisse.jpg',
+      title: 'La Malice vs Belgique',
+      image: 'assets/img/equipe-belgique.jpg',
       pitch: 'Le match d\'impro est le format phare par lequel l\'impro s\'est diffusée. Venu du Québec, il emprunte aux codes du Hockey sur glace où 2 équipes de comédiens s\'affrontent sur une patinoire dans des séquences brèves et rythmées sous la surveillance d\'un arbitre implacable&nbsp;!'
     },
     'spectacle-samedi-format-long': {
@@ -408,8 +421,8 @@
       type: 'match',
       time: '21:00',
       label: 'Match',
-      title: 'La Malice vs Belgique',
-      image: 'assets/img/equipe-belgique.jpg',
+      title: 'La Malice vs Suisse',
+      image: 'assets/img/equipe-suisse.jpg',
       pitch: 'Le match d\'impro est le format phare par lequel l\'impro s\'est diffusée. Venu du Québec, il emprunte aux codes du Hockey sur glace où 2 équipes de comédiens s\'affrontent sur une patinoire dans des séquences brèves et rythmées sous la surveillance d\'un arbitre implacable&nbsp;!'
     }
   };
