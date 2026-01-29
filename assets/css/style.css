@@ -65,13 +65,6 @@
 /* ============================================
    RESET & BASE
    ============================================ */
-@font-face {
-  font-family: "Bobby Jones";
-  src: url("../fonts/Bobby Jones Soft.otf") format("opentype");
-  font-weight: normal;
-  font-style: normal;
-}
-
 * {
   box-sizing: border-box;
 }
