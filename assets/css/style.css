@@ -176,6 +176,12 @@ img {
   margin: 0 0 8px;
 }
 
+h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: normal;
+  margin: 0;
+}
+
 .section h2 {
   font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: clamp(2.5rem, 5vw, 4rem);
