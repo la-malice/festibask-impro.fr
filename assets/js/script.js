@@ -72,7 +72,7 @@
   updateCountdown();
   setInterval(updateCountdown, 1000);
 
-  // Autoplay vidéo YouTube au scroll
+  // Autoplay vidéo hero au scroll
   const heroVideoContainer = document.getElementById('heroVideoContainer');
   const heroVideo = document.getElementById('heroVideo');
   let videoHasPlayed = false;
@@ -82,13 +82,9 @@
     const videoObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting && entry.intersectionRatio >= 0.5 && !videoHasPlayed) {
-          // La vidéo est visible à au moins 50% - ajouter autoplay à l'URL
-          const currentSrc = heroVideo.src;
-          if (!currentSrc.includes('autoplay=1')) {
-            const separator = currentSrc.includes('?') ? '&' : '?';
-            heroVideo.src = currentSrc + separator + 'autoplay=1';
-            videoHasPlayed = true;
-          }
+          heroVideo.muted = true;
+          heroVideo.play().catch(() => {});
+          videoHasPlayed = true;
         }
       });
     }, {

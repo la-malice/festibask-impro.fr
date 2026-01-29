@@ -1493,13 +1493,15 @@ nav.primary a:hover {
   aspect-ratio: 9 / 16; /* Format portrait */
 }
 
-.hero-video-container iframe {
+.hero-video-container iframe,
+.hero-video-container video {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   border: none;
+  object-fit: cover;
 }
 
 @media (max-width: 768px) {
