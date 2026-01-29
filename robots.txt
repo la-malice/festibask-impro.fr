@@ -1,8 +1,4 @@
 User-agent: *
+Allow: /
 
-Disallow: /
-
-
-
-
-
+Sitemap: https://festibask-impro.fr/sitemap.xml

@@ -427,7 +427,7 @@
       time: '19:00',
       label: 'Impro longue',
       title: 'Braquage',
-      image: 'assets/img/braquage.jpg',
+      image: 'assets/img/braquage-800.avif',
       pitch: 'Les portes se ferment, le braquage dérape, et soudain tout le monde devient suspect : braqueurs approximatifs, otages imprévisibles, alliances qui se font et se défont. Entre tension, humour qui surgit malgré tout et portraits touchants, on se surprend à s\'attacher à chacun… jusqu\'à ce que tout explose.'
     },
     'spectacle-vendredi-match': {
@@ -451,7 +451,7 @@
       time: '21:00',
       label: 'Match',
       title: 'La Malice vs France',
-      image: 'assets/img/231202 MATCH COLISEE ©J.DUFRESNE (86).jpeg',
+      image: 'assets/img/231202 MATCH COLISEE ©J.DUFRESNE (86).avif',
       pitch: 'Le match d\'impro est le format phare par lequel l\'impro s\'est diffusée. Venu du Québec, il emprunte aux codes du Hockey sur glace où 2 équipes de comédiens s\'affrontent sur une patinoire dans des séquences brèves et rythmées sous la surveillance d\'un arbitre implacable&nbsp;!'
     },
     'spectacle-dimanche-format-long': {
@@ -916,18 +916,19 @@
   function applyMatchBackgroundOnMobile() {
     if (window.innerWidth <= 768) {
       document.querySelectorAll('.match-block').forEach(block => {
-        const img = block.querySelector('.match-image');
-        if (img) {
-          // Utiliser getAttribute pour obtenir le src original, puis encoder l'URL
-          const src = img.getAttribute('src');
-          if (src) {
-            // Encoder l'URL pour gérer les caractères spéciaux
-            const encodedSrc = encodeURI(src);
-            block.style.backgroundImage = `url("${encodedSrc}")`;
-            block.style.backgroundSize = 'cover';
-            block.style.backgroundPosition = 'center';
-            block.style.backgroundRepeat = 'no-repeat';
-          }
+        let src;
+        if (block.id === 'spectacle-samedi-match') {
+          src = 'assets/img/231202 MATCH COLISEE ©J.DUFRESNE (86)-mobile.avif';
+        } else {
+          const img = block.querySelector('.match-image');
+          src = img ? img.getAttribute('src') : null;
+        }
+        if (src) {
+          const encodedSrc = encodeURI(src);
+          block.style.backgroundImage = `url("${encodedSrc}")`;
+          block.style.backgroundSize = 'cover';
+          block.style.backgroundPosition = 'center';
+          block.style.backgroundRepeat = 'no-repeat';
         }
       });
     } else {
