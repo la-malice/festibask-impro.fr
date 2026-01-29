@@ -78,13 +78,29 @@
   let videoHasPlayed = false;
 
   if (heroVideoContainer && heroVideo) {
-    // IntersectionObserver pour détecter quand la vidéo entre dans le viewport
+    // Chargement différé : ne charger la vidéo que quand le hero est visible (allège le premier chargement)
     const videoObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting && entry.intersectionRatio >= 0.5 && !videoHasPlayed) {
-          heroVideo.muted = true;
-          heroVideo.play().catch(() => {});
           videoHasPlayed = true;
+          const startLoad = () => {
+            if (!heroVideo.src && heroVideo.dataset.src) {
+              heroVideo.muted = true;
+              heroVideo.src = heroVideo.dataset.src;
+              heroVideo.load();
+              heroVideo.addEventListener('loadeddata', () => {
+                heroVideo.play().catch(() => {});
+              }, { once: true });
+            } else if (heroVideo.src) {
+              heroVideo.muted = true;
+              heroVideo.play().catch(() => {});
+            }
+          };
+          if (typeof requestIdleCallback !== 'undefined') {
+            requestIdleCallback(startLoad, { timeout: 400 });
+          } else {
+            setTimeout(startLoad, 300);
+          }
         }
       });
     }, {
