@@ -91,6 +91,12 @@ body {
   position: relative;
 }
 
+@media (max-width: 839px) {
+  body {
+    padding-bottom: 72px;
+  }
+}
+
 a {
   color: var(--blue);
   text-decoration: none;
@@ -1435,6 +1441,7 @@ nav.primary a:hover {
 }
 
 .hero-logo {
+  aspect-ratio: 1000 / 607;
   max-width: 100%;
   height: auto;
   display: block;
@@ -4794,6 +4801,7 @@ footer > .container > div > p.small:last-child {
 }
 
 .sticky-cta .btn {
+  min-height: 48px;
   box-shadow: 0 4px 16px rgba(238, 87, 63, 0.3), 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
