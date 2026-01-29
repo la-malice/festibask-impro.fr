@@ -427,7 +427,7 @@
       time: '19:00',
       label: 'Impro longue',
       title: 'Braquage',
-      image: 'assets/img/braquage-800.avif',
+      image: 'assets/img/long/braquage-800.avif',
       pitch: 'Les portes se ferment, le braquage dérape, et soudain tout le monde devient suspect : braqueurs approximatifs, otages imprévisibles, alliances qui se font et se défont. Entre tension, humour qui surgit malgré tout et portraits touchants, on se surprend à s\'attacher à chacun… jusqu\'à ce que tout explose.'
     },
     'spectacle-vendredi-match': {
@@ -443,7 +443,7 @@
       time: '19:00',
       label: 'Impro longue',
       title: 'Commis d\'Office',
-      image: 'assets/img/commis-d-office.jpg',
+      image: 'assets/img/long/commis-d-office.jpg',
       pitch: 'L\'un·e est accusé·e<br>L\'autre est avocat·e<br>L\'un·e est coupable<br>L\'autre devra trouver des circonstances atténuante.<br>Venez découvrir son histoire, son passé son crime et les raisons qui l\'ont poussées à commettre l\'irréparable'
     },
     'spectacle-samedi-match': {
@@ -451,7 +451,7 @@
       time: '21:00',
       label: 'Match',
       title: 'La Malice vs France',
-      image: 'assets/img/231202 MATCH COLISEE ©J.DUFRESNE (86).avif',
+      image: 'assets/img/long/edf-colisee.avif',
       pitch: 'Le match d\'impro est le format phare par lequel l\'impro s\'est diffusée. Venu du Québec, il emprunte aux codes du Hockey sur glace où 2 équipes de comédiens s\'affrontent sur une patinoire dans des séquences brèves et rythmées sous la surveillance d\'un arbitre implacable&nbsp;!'
     },
     'spectacle-dimanche-format-long': {
@@ -459,7 +459,7 @@
       time: '19:00',
       label: 'Impro longue',
       title: 'Promo 2006',
-      image: 'assets/img/promo-2006.avif',
+      image: 'assets/img/long/promo-2006.avif',
       pitch: 'Vingt ans après, une ancienne promo se retrouve pour une soirée pleine de secrets, de couples improbables et de souvenirs qui dérapent. Un format joyeux et tendre, où le public choisit l\'école, les liens… et ce qui aurait mieux valu rester enterré.'
     },
     'spectacle-dimanche-match': {
@@ -918,7 +918,7 @@
       document.querySelectorAll('.match-block').forEach(block => {
         let src;
         if (block.id === 'spectacle-samedi-match') {
-          src = 'assets/img/231202 MATCH COLISEE ©J.DUFRESNE (86)-mobile.avif';
+          src = 'assets/img/long/edf-colisee-mobile.avif';
         } else {
           const img = block.querySelector('.match-image');
           src = img ? img.getAttribute('src') : null;
