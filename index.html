@@ -122,8 +122,68 @@
 }
 </script>
 <link rel="icon" href="festival-2026/favicon.png">
-<link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hubot+Sans:wght@400;600;800&display=swap">
+<!-- Critical CSS (above-the-fold) -->
+<style>
+:root{--bg:#F5F1E8;--bg2:#E8E0D3;--card:#F9F6F0;--text:#2C2C2C;--muted:#6B6B6B;--white:#FFF;--accent:#EE573F;--accent-light:rgba(238,87,63,.08);--accent-dark:#D14A35;--accent-pink:#EE573F;--blue:#12B4E3;--blue-accent:#0B7A9E;--blue-dark:#0D7FA5;--blue-border:rgba(18,180,227,.2);--blue-border-light:rgba(18,180,227,.15);--shadow-sm:0 1px 4px rgba(0,0,0,.08);--shadow-md:0 2px 8px rgba(0,0,0,.1);--white-overlay:rgba(255,255,255,.6);--white-overlay-medium:rgba(255,255,255,.75);--black-overlay:rgba(0,0,0,.5);}
+@font-face{font-family:"Bobby Jones";src:url("assets/fonts/Bobby Jones Soft.otf") format("opentype");font-weight:normal;font-style:normal;}
+*{box-sizing:border-box;}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;font-size:18px;line-height:1.6;background-image:url('assets/img/image-fond-01_4000px.avif'),radial-gradient(circle at 20% 50%,rgba(238,87,63,.05) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(18,180,227,.05) 0%,transparent 50%);background-size:cover,100% 100%,100% 100%;background-position:center;background-repeat:no-repeat;background-attachment:fixed;background-blend-mode:overlay,normal,normal;position:relative;}
+a{color:var(--blue);text-decoration:none;}
+a:hover{text-decoration:underline;opacity:.8;}
+img{max-width:100%;height:auto;display:block;}
+.container{width:min(1120px,100%);margin-inline:auto;padding:0 16px;}
+.section{padding:56px 0;}
+.sr-only{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap;}
+header.site{position:fixed;inset-inline:0;top:0;z-index:40;background:rgba(3,12,31,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--blue-border-light);transform:translateY(-100%);transition:transform .35s;box-shadow:var(--shadow-sm);}
+header.site.show{transform:translateY(0);}
+header .bar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;}
+.brand{font-family:"Hubot Sans",system-ui,sans-serif;font-size:clamp(1.2rem,2.5vw,1.8rem);color:var(--accent);font-weight:normal;display:flex;align-items:center;gap:8px;}
+.brand-impro{color:var(--blue-dark);}
+.brand-logo{display:block;height:clamp(32px,4vw,48px);width:auto;max-width:200px;object-fit:contain;flex-shrink:0;}
+.brand-text{display:block;}
+.brand:has(.brand-logo) .brand-text{display:none;}
+nav.primary{display:none;gap:18px;}
+nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
+.burger{display:inline-flex;align-items:center;justify-content:center;cursor:pointer;min-width:44px;min-height:44px;padding:8px;background:transparent;border:none;}
+.burger span{width:22px;height:2px;background:var(--white);border-radius:2px;box-shadow:0 6px 0 var(--white),0 -6px 0 var(--white);}
+.drawer{position:fixed;top:0;right:0;width:min(92vw,360px);height:100vh;background:rgba(3,12,31,.95);border-left:1px solid var(--blue-border-light);transform:translateX(100%);transition:transform .3s;z-index:50;display:flex;flex-direction:column;backdrop-filter:blur(8px);}
+.drawer.open{transform:translateX(0);}
+.drawer-close{position:absolute;top:12px;right:12px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;color:var(--white);}
+.drawer a{display:block;padding:16px 20px;border-bottom:1px solid rgba(90,143,163,.2);color:var(--white);text-decoration:none;font-weight:600;}
+@media (min-width:900px){.burger{display:none;}nav.primary{display:flex;}}
+.hero{position:relative;min-height:72vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:12px 0 80px;background:linear-gradient(to bottom,#1B3D91 0%,#030C1F 100%);border-bottom:1px solid var(--blue-border-light);}
+.hero::before{content:'';position:absolute;inset:0;background-image:url('assets/img/image-fond-01_4000px.avif');background-size:cover;background-position:center;opacity:.95;mix-blend-mode:overlay;pointer-events:none;z-index:0;}
+.hero>*{position:relative;z-index:1;}
+.hero-date-block{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:8px;margin-bottom:clamp(32px,5vw,48px);font-family:"Hubot Sans",system-ui,sans-serif;text-align:center;}
+.hero-presenter{font-size:clamp(.85rem,1.6vw,1rem);letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.9);display:flex;align-items:baseline;gap:.4em;}
+.hero-presenter-name{font-weight:800;color:#12B4E3;}
+.hero-date-main{display:flex;align-items:center;justify-content:center;gap:clamp(.25em,1.5vw,.6em);color:#FFF;line-height:1;min-width:clamp(280px,50vw,450px);}
+.hero-date-day{font-weight:600;font-size:clamp(2.8rem,6.3vw,3.8rem);letter-spacing:-.02em;}
+.hero-date-separator{font-weight:600;font-size:clamp(1.8rem,4vw,2.4rem);opacity:.7;}
+.hero-date-month{font-weight:600;font-size:clamp(2.8rem,6.3vw,3.8rem);margin-left:clamp(.4em,2vw,.8em);letter-spacing:-.02em;}
+.hero-date-location{margin-top:2px;font-size:clamp(1.1rem,2.2vw,1.4rem);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.92);display:flex;align-items:center;gap:clamp(.25em,1.5vw,.6em);}
+.hero-title{text-align:center;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:0;gap:clamp(20px,4vw,40px);}
+.hero-logo-wrapper{display:flex;align-items:center;justify-content:center;}
+.hero-logo{max-width:100%;height:auto;display:block;margin:0 auto clamp(24px,4vw,40px);width:clamp(600px,108vw,1440px);max-height:clamp(264px,54vh,600px);object-fit:contain;}
+.hero-video-container{position:relative;width:100%;max-width:100%;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.3);background:#000;aspect-ratio:9/16;}
+.hero-video-container video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.hero-tags{display:flex;align-items:center;justify-content:center;gap:12px;font-family:"Hubot Sans",system-ui,sans-serif;font-size:clamp(18px,3.5vw,28px);font-weight:bold;color:var(--white);z-index:10;padding:0 16px;margin-top:clamp(32px,5vw,48px);margin-bottom:clamp(16px,3vw,24px);}
+.hero-tag-link{color:var(--white);text-decoration:none;cursor:pointer;}
+.hero-countdown{display:flex;align-items:center;justify-content:center;gap:clamp(8px,2vw,16px);margin-top:clamp(8px,2vw,16px);z-index:10;flex-wrap:wrap;width:100%;padding:0 16px;}
+.countdown-item{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.countdown-number{font-family:"Hubot Sans",system-ui,sans-serif;font-size:clamp(24px,4.5vw,48px);font-weight:normal;color:var(--white);background:rgba(238,87,63,.2);border:2px solid var(--accent);border-radius:12px;padding:clamp(8px,1.5vw,12px) clamp(12px,2vw,20px);min-width:clamp(55px,9vw,90px);text-align:center;}
+.countdown-label{font-size:clamp(8px,1.4vw,11px);font-weight:600;color:var(--white);text-transform:uppercase;letter-spacing:.5px;opacity:.9;}
+.countdown-separator{font-family:"Hubot Sans",system-ui,sans-serif;font-size:clamp(18px,4vw,36px);font-weight:normal;color:#12B4E3;margin-bottom:clamp(15px,3vw,28px);opacity:.8;}
+@media (max-width:768px){.hero{min-height:100vh;padding:12px 0 90px;}.hero-logo{width:100%;max-height:clamp(300px,60vh,600px);}.hero-video-container{width:min(96vw,336px);max-width:336px;margin:0 auto;}}
+@media (min-width:1024px){.hero{min-height:auto;aspect-ratio:16/9;}.hero-title{flex-direction:row;}.hero-logo{margin:0;width:clamp(600px,60vw,960px);}.hero-logo-wrapper{flex:1;max-width:60%;}.hero-video-container{width:clamp(192px,21.6vw,336px);max-width:336px;}}
+</style>
+<link rel="preload" href="assets/css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="assets/css/style.css"></noscript>
+<!-- Google Fonts: preconnect + async load -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Hubot+Sans:wght@400;600;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hubot+Sans:wght@400;600;800&display=swap"></noscript>
 <!-- Brevo Form Styles -->
 <style>
   #sib-container input:-ms-input-placeholder {
@@ -229,7 +289,7 @@
     color: var(--white);
   }
 </style>
-<link rel="stylesheet" href="https://sibforms.com/forms/end-form/build/sib-styles.css">
+<!-- Sibforms CSS loaded on first modal open (see script.js) -->
 </head>
 <body>
 

@@ -101,9 +101,21 @@
   if(drawerClose) drawerClose.addEventListener('click',()=>drawer.classList.remove('open'));
   drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>drawer.classList.remove('open')));
 
+  // Load Sibforms CSS on first modal open (deferred from head for PageSpeed)
+  function ensureSibStylesLoaded() {
+    if (document.querySelector('link[href*="sib-styles.css"]')) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://sibforms.com/forms/end-form/build/sib-styles.css';
+    document.head.appendChild(link);
+  }
+
   // Modal open/close
   const dlg=document.getElementById('notify');
-  document.querySelectorAll('[data-open="notify"]').forEach(b=>b.addEventListener('click',()=>dlg.showModal()));
+  document.querySelectorAll('[data-open="notify"]').forEach(b=>b.addEventListener('click',()=>{
+    ensureSibStylesLoaded();
+    dlg.showModal();
+  }));
   dlg.addEventListener('click',e=>{
     const r=dlg.querySelector('.modal-card').getBoundingClientRect();
     const inside=r.top<=e.clientY && e.clientY<=r.bottom && r.left<=e.clientX && e.clientX<=r.right;
@@ -112,7 +124,10 @@
 
   // Modal waitlist open/close
   const dlgWaitlist = document.getElementById('waitlist');
-  document.querySelectorAll('[data-open="waitlist"]').forEach(b => b.addEventListener('click', () => dlgWaitlist.showModal()));
+  document.querySelectorAll('[data-open="waitlist"]').forEach(b => b.addEventListener('click', () => {
+    ensureSibStylesLoaded();
+    dlgWaitlist.showModal();
+  }));
   dlgWaitlist.addEventListener('click', e => {
     const r = dlgWaitlist.querySelector('.modal-card').getBoundingClientRect();
     const inside = r.top <= e.clientY && e.clientY <= r.bottom && r.left <= e.clientX && e.clientX <= r.right;
