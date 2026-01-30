@@ -742,12 +742,13 @@ footer .footer-impro {
 }
 
 .btn-primary {
-  background: var(--accent);
+  background: var(--accent-dark);
   color: var(--white);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .btn-primary:hover {
+  background: var(--accent);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(238, 87, 63, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
@@ -4292,8 +4293,8 @@ button.slot-spectacle:active {
   position: relative;
 }
 
-.price h4,
-.price-flip-front h4 {
+.price h3,
+.price-flip-front h3 {
   font-size: clamp(1.3rem, 2.5vw, 1.8rem);
   font-weight: 700;
   margin: 0 0 8px;
@@ -4381,7 +4382,7 @@ button.slot-spectacle:active {
   z-index: 2;
 }
 
-.price-flip-back h4 {
+.price-flip-back h3 {
   font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: clamp(1.3rem, 2.5vw, 1.8rem);
   color: var(--white);

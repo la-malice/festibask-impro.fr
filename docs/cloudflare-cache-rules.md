@@ -20,6 +20,8 @@ Référence des règles à configurer dans Cloudflare pour optimiser le cache (S
 | 6 | URI Path | contains | `assets/img/logos`      |
 | 7 | URI Path | contains | `festival-2026/headliners` |
 | 8 | URI Path | contains | `assets/video`         |
+| 9 | URI Path | contains | `equipe-belgique`      |
+| 10 | URI Path | contains | `equipe-suisse`       |
 
 **Then :**
 
@@ -49,9 +51,31 @@ Couvre : polices (`assets/fonts/`), favicon à la racine (`/favicon.ico`, `/favi
 
 ---
 
-## À ne pas modifier
+## Règle optionnelle — Cache 7 jours (CSS et JS)
 
-- `style.css`, `script.js` : pas de règle (mises à jour fréquentes).
+Pour améliorer le score Lighthouse Performance (desktop et mobile) sans retarder trop les mises à jour :
+
+**Nom :** `Cache 7j - CSS et JS`
+
+**When incoming requests match** (Custom filter expression, Or) :
+
+| # | Field    | Operator | Value                    |
+|---|----------|----------|---------------------------|
+| 1 | URI Path | contains | `assets/css/style.css`   |
+| 2 | URI Path | contains | `assets/js/script.js`     |
+
+**Then :**
+
+- Cache eligibility : **Eligible for cache**
+- **Browser TTL** : **Override** → **604800** secondes (7 jours)
+
+Lors des déploiements, invalidation manuelle du cache Cloudflare ou versioning (query string / nom de fichier) si besoin pour forcer le rechargement.
+
+---
+
+## À ne pas modifier (par défaut)
+
+- `style.css`, `script.js` : pas de règle si vous privilégiez des mises à jour immédiates. Sinon, utiliser la règle optionnelle « Cache 7j » ci-dessus.
 
 ---
 
@@ -60,13 +84,19 @@ Couvre : polices (`assets/fonts/`), favicon à la racine (`/favicon.ico`, `/favi
 Les variantes d’images utilisées pour PageSpeed (équipes Belgique/Suisse, EDF Colisée, poster hero, fond 1920px) sont couvertes par la règle « Cache 30j » dès que le chemin correspond :
 
 - **hero-video-poster** (contains) → `hero-video-poster-336w.avif`, `hero-video-poster-672w.avif`
-- **image-fond-01** (contains) → `image-fond-01_1920px.avif`
+- **image-fond-01** (contains) → `image-fond-01_1920px.avif`, `image-fond-01_4000px.avif`
 - **assets/img/long/** (contains) → `edf-colisee-442w.avif`, etc.
-
-Pour les images équipes (`equipe-belgique-320w`, `equipe-suisse-640w`, etc.), ajouter à la règle 1 une condition **URI Path contains** `equipe-belgique` et une condition **URI Path contains** `equipe-suisse` si vous souhaitez les mettre en cache 30 jours.
+- **equipe-belgique** (contains) → `equipe-belgique-320w.avif`, `equipe-belgique-640w.avif`, `equipe-belgique-320w.jpg`, `equipe-belgique-640w.jpg`, etc.
+- **equipe-suisse** (contains) → `equipe-suisse-320w.avif`, `equipe-suisse-640w.avif`, `equipe-suisse-320w.jpg`, `equipe-suisse-640w.jpg`, etc.
 
 ---
 
 ## Vidéo hero (teaser)
 
 La vidéo hero (`assets/video/teaser-festibask-placeholder.mp4`) n’est **pas chargée au premier coup d’œil** : seule la vignette (poster) s’affiche ; la vidéo est chargée uniquement au clic sur le bouton play. L’impact des règles de cache sur ce MP4 est donc réduit pour l’audit PageSpeed initial. La règle « Cache 30j » pour `assets/video` reste utile pour les utilisateurs qui cliquent sur play.
+
+---
+
+## Legacy JavaScript (Lighthouse)
+
+Lighthouse peut signaler ~11 KiB d’« ancien JavaScript ». Le fichier first-party `assets/js/script.js` utilise déjà une syntaxe moderne (ES6+). Le signalement concerne en général les scripts **tiers** (Sibforms `main.js`, Brevo, Wonderpush, etc.) dont le code n’est pas modifiable. Conserver leur chargement asynchrone / différé (Sibforms chargé à l’ouverture du modal) pour ne pas dégrader le premier rendu.
