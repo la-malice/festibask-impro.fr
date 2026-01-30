@@ -1818,17 +1818,34 @@ nav.primary a:hover {
   flex: 0 0 auto;
 }
 
-/* Format long block */
+/* Format long block — même principe que match : image à droite, texte à gauche */
 .format-long-block {
   position: relative;
   width: 100%;
-  height: 280px;
+  height: 320px;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: var(--shadow-lg);
   margin-bottom: 8px;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease, height 0.3s ease;
+  background: linear-gradient(to bottom, #030C1F 0%, #1B3D91 100%);
+}
+
+.format-long-block::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% - min(50%, 442px));
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(3, 12, 31, 0.95) 0%, rgba(27, 61, 145, 0.95) 100%);
+  z-index: 0;
+}
+
+.format-long-block.flipped::before {
+  width: calc(100% - 33.333%);
+  background: #000;
 }
 
 .format-long-block:hover {
@@ -1876,23 +1893,42 @@ nav.primary a:hover {
   }
 }
 
-.format-long-image {
-  width: 100%;
-  height: 280px;
-  object-fit: cover;
+.format-long-image-wrapper {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: auto;
+  max-width: 50%;
+  z-index: 2;
+}
+
+.format-long-image-wrapper picture {
   display: block;
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+}
+
+.format-long-image {
+  height: 100%;
+  width: auto;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  background-color: #030C1F;
 }
 
 .format-long-overlay {
   position: absolute;
   bottom: 0;
   left: 0;
-  right: 0;
+  width: calc(100% - min(50%, 442px));
   padding: 24px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.5) 50%, transparent 100%);
+  background: transparent;
   color: var(--white);
-  backdrop-filter: blur(2px);
   transition: opacity 0.3s ease;
+  z-index: 2;
 }
 
 .format-long-block.flipped .format-long-overlay {
@@ -1924,14 +1960,8 @@ nav.primary a:hover {
   pointer-events: auto;
 }
 
-.format-long-block.flipped .format-long-image {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 33.333%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 2;
+.format-long-block.flipped .format-long-image-wrapper {
+  max-width: 33.333%;
 }
 
 .format-long-pitch h4,
@@ -2514,8 +2544,16 @@ nav.primary a:hover {
     gap: 12px;
   }
   
-  .format-long-image {
-    height: 220px;
+  .format-long-block::before {
+    width: 50%;
+  }
+  
+  .format-long-image-wrapper {
+    max-width: 50%;
+  }
+  
+  .format-long-overlay {
+    width: 50%;
   }
   
   .match-image-wrapper {
@@ -2604,10 +2642,8 @@ nav.primary a:hover {
     background: rgba(0, 0, 0, 0.8);
   }
   
-  .format-long-block.flipped .format-long-image {
-    width: 100%;
-    height: auto;
-    position: static;
+  .format-long-block.flipped .format-long-image-wrapper {
+    max-width: 33.333%;
   }
 }
 

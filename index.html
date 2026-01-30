@@ -454,10 +454,12 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
           
           <!-- Format long -->
           <div id="spectacle-vendredi-format-long" class="format-long-block">
-            <picture>
-              <source type="image/avif" srcset="assets/img/long/braquage-400.avif 400w, assets/img/long/braquage-800.avif 800w" sizes="(max-width: 768px) 100vw, 50vw">
-              <img src="assets/img/long/braquage.jpg" alt="Braquage" class="format-long-image">
-            </picture>
+            <div class="format-long-image-wrapper">
+              <picture>
+                <source type="image/avif" srcset="assets/img/long/braquage-400.avif 400w, assets/img/long/braquage-800.avif 800w" sizes="(max-width: 768px) 50vw, 442px">
+                <img src="assets/img/long/braquage.jpg" alt="Braquage" class="format-long-image" width="442" height="320">
+              </picture>
+            </div>
             <div class="format-long-overlay">
               <div class="format-long-time">19:00</div>
               <div class="format-long-label">Impro longue</div>
@@ -513,7 +515,9 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
           
           <!-- Format long -->
           <div id="spectacle-samedi-format-long" class="format-long-block">
-            <img src="assets/img/long/commis-d-office.jpg" alt="Commis d'Office" class="format-long-image">
+            <div class="format-long-image-wrapper">
+              <img src="assets/img/long/commis-d-office.jpg" alt="Commis d'Office" class="format-long-image" width="442" height="320">
+            </div>
             <div class="format-long-overlay">
               <div class="format-long-time">19:00</div>
               <div class="format-long-label">Impro longue</div>
@@ -571,7 +575,9 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
           
           <!-- Format long -->
           <div id="spectacle-dimanche-format-long" class="format-long-block">
-            <img src="assets/img/long/promo-2006.avif" alt="Promo 2006" class="format-long-image">
+            <div class="format-long-image-wrapper">
+              <img src="assets/img/long/promo-2006.avif" alt="Promo 2006" class="format-long-image" width="442" height="320">
+            </div>
             <div class="format-long-overlay">
               <div class="format-long-time">19:00</div>
               <div class="format-long-label">Impro longue</div>
