@@ -28,13 +28,19 @@ Référence des règles à configurer dans Cloudflare pour optimiser le cache (S
 
 ---
 
-## Règle 2 — Cache 1 an (fonts)
+## Règle 2 — Cache 1 an (fonts et favicons)
 
-**Nom :** `Cache 1 an - Fonts`
+**Nom :** `Cache 1 an - Fonts et favicons`
 
-**When incoming requests match :**
+**When incoming requests match** (Custom filter expression, toutes les conditions en **Or**) :
 
-- URI Path **contains** `assets/fonts`
+| # | Field    | Operator | Value                    |
+|---|----------|----------|---------------------------|
+| 1 | URI Path | contains | `assets/fonts`            |
+| 2 | URI Path | contains | `favicon`                  |
+| 3 | URI Path | contains | `apple-touch-icon`         |
+
+Couvre : polices (`assets/fonts/`), favicon à la racine (`/favicon.ico`, `/favicon.svg`, `/apple-touch-icon.png`) et tout le dossier `assets/favicon/`.
 
 **Then :**
 
