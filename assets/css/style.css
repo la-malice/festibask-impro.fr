@@ -1578,6 +1578,8 @@ nav.primary a:hover {
     margin: 0 auto;
     min-height: 480px;
     max-height: 480px;
+    height: 480px;
+    aspect-ratio: auto;
   }
 }
 

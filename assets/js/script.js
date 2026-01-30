@@ -107,11 +107,6 @@
     heroVideo.addEventListener('ended', () => {
       showPlayOverlay();
     });
-
-    // Poster responsive : 672w sur écrans Retina (2x)
-    if (window.devicePixelRatio >= 2) {
-      heroVideo.poster = 'assets/img/hero-video-poster-672w.avif';
-    }
   }
 
   // Burger / drawer mobile
