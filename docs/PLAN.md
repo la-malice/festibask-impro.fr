@@ -9,6 +9,13 @@ Site in production; content and minor improvements as needed. No formal slices i
 | Slice | Goal | Status |
 |-------|------|--------|
 | — | Marketing site live (hero, programme, stages, tarifs, témoignages, modals, deploy) | Done |
+| Fullscreen programme — animations and auto-schedule | Add per-block animation/carousel when an event is selected in fullscreen, and time-based auto-schedule on show days; keep existing layout and day/event selection unchanged. No animation during shows. | Planned |
+
+See [Slices (detail)](#slices-detail) below for full behaviour.
+
+## Slices (detail)
+
+- **Fullscreen programme — animations and auto-schedule:** [docs/slices/fullscreen-programme-animations.md](slices/fullscreen-programme-animations.md)
 
 ## Tasks
 
