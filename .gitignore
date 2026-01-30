@@ -1,3 +1,9 @@
 # Fichiers système macOS
 .DS_Store
 **/.DS_Store
+
+# Dependencies
+node_modules/
+
+# Build output (sources stay in repo; only dist/ is deployed)
+dist/

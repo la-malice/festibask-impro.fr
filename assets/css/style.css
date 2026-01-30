@@ -4712,6 +4712,15 @@ button.slot-spectacle:active {
   object-fit: contain;
 }
 
+/* Logos partenaires : img a la classe .sponsor (pas de wrapper) → cibler img pour ratio et largeur max */
+.sponsors-list img.sponsor {
+  height: 128px;
+  width: auto;
+  max-width: 200px;
+  object-fit: contain;
+  display: block;
+}
+
 .sponsor-placeholder {
   background: rgba(3, 12, 31, 0.4);
   border: 1px solid var(--accent);
