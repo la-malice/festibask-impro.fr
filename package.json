@@ -6,12 +6,14 @@
   "scripts": {
     "start": "node server.js",
     "serve": "node server.js",
+    "dev": "vite",
     "build": "node scripts/copy-to-dist.js && purgecss --config purgecss.config.js && postcss dist/assets/css/style.css -o dist/assets/css/style.css && terser assets/js/script.js -o dist/assets/js/script.js"
   },
   "keywords": ["server", "http", "local"],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "vite": "^6.0.0",
     "cssnano": "^7.0.0",
     "postcss": "^8.4.0",
     "postcss-cli": "^11.0.0",

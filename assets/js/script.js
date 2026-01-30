@@ -1420,3 +1420,173 @@
       }
     });
   }
+
+  // Témoignages carousel (chargé depuis JSON)
+  const testimonialsSection = document.getElementById('temoignages');
+  if (testimonialsSection) {
+    const track = testimonialsSection.querySelector('.testimonials-track');
+    const prevBtn = testimonialsSection.querySelector('.testimonials-prev');
+    const nextBtn = testimonialsSection.querySelector('.testimonials-next');
+    const dotsContainer = testimonialsSection.querySelector('.testimonials-dots');
+
+    function buildTestimonialCard(item) {
+      const article = document.createElement('article');
+      article.className = 'testimonial-card';
+      const inner = document.createElement('div');
+      inner.className = 'testimonial-card-inner';
+
+      const photo = document.createElement('div');
+      photo.className = 'testimonial-photo';
+      if (item.imageAvif128 && item.imageAvif256) {
+        const picture = document.createElement('picture');
+        const source = document.createElement('source');
+        source.type = 'image/avif';
+        source.srcset = item.imageAvif128 + ' 128w, ' + item.imageAvif256 + ' 256w';
+        source.sizes = '64px';
+        const img = document.createElement('img');
+        img.src = item.image;
+        img.alt = 'Photo de ' + (item.name || '');
+        img.width = 128;
+        img.height = 128;
+        img.loading = 'lazy';
+        picture.appendChild(source);
+        picture.appendChild(img);
+        photo.appendChild(picture);
+      } else {
+        const img = document.createElement('img');
+        img.src = item.image;
+        img.alt = 'Photo de ' + (item.name || '');
+        img.width = 128;
+        img.height = 128;
+        img.loading = 'lazy';
+        photo.appendChild(img);
+      }
+      inner.appendChild(photo);
+
+      const body = document.createElement('div');
+      body.className = 'testimonial-body';
+      const nameEl = document.createElement('p');
+      nameEl.className = 'testimonial-name';
+      nameEl.textContent = item.name || '';
+      body.appendChild(nameEl);
+      const roleEl = document.createElement('p');
+      roleEl.className = 'testimonial-role';
+      roleEl.textContent = item.role || '';
+      body.appendChild(roleEl);
+      const quote = document.createElement('blockquote');
+      quote.className = 'testimonial-quote';
+      const quoteP = document.createElement('p');
+      quoteP.textContent = item.quote || '';
+      quote.appendChild(quoteP);
+      body.appendChild(quote);
+      if (item.signature) {
+        const sig = document.createElement('p');
+        sig.className = 'testimonial-signature';
+        sig.textContent = item.signature;
+        body.appendChild(sig);
+      }
+      inner.appendChild(body);
+      article.appendChild(inner);
+      return article;
+    }
+
+    function initCarousel() {
+      const cards = testimonialsSection.querySelectorAll('.testimonial-card');
+      const dots = testimonialsSection.querySelectorAll('.testimonials-dot');
+      if (cards.length === 0 || !track) return;
+
+      function getCardWidth() {
+        const card = cards[0];
+        const gap = parseFloat(getComputedStyle(track).gap) || 20;
+        return card.offsetWidth + gap;
+      }
+
+      function updateButtons() {
+        if (!prevBtn || !nextBtn) return;
+        const maxScroll = track.scrollWidth - track.clientWidth;
+        prevBtn.disabled = track.scrollLeft <= 0;
+        nextBtn.disabled = maxScroll <= 0 || track.scrollLeft >= maxScroll - 1;
+        prevBtn.setAttribute('aria-disabled', prevBtn.disabled);
+        nextBtn.setAttribute('aria-disabled', nextBtn.disabled);
+      }
+
+      function updateActiveDot() {
+        if (dots.length === 0) return;
+        const gap = parseFloat(getComputedStyle(track).gap) || 20;
+        const scrollLeft = track.scrollLeft;
+        let index = 0;
+        let acc = 0;
+        for (let i = 0; i < cards.length; i++) {
+          acc += cards[i].offsetWidth + gap;
+          if (scrollLeft < acc - cards[i].offsetWidth / 2) {
+            index = i;
+            break;
+          }
+          index = i;
+        }
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('active', i === index);
+          dot.setAttribute('aria-selected', i === index);
+        });
+      }
+
+      if (prevBtn && track) {
+        prevBtn.addEventListener('click', () => {
+          track.scrollBy({ left: -getCardWidth(), behavior: 'smooth' });
+        });
+      }
+      if (nextBtn && track) {
+        nextBtn.addEventListener('click', () => {
+          track.scrollBy({ left: getCardWidth(), behavior: 'smooth' });
+        });
+      }
+      track.addEventListener('scroll', () => {
+        updateButtons();
+        updateActiveDot();
+      });
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+          const card = cards[index];
+          if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+        });
+      });
+      updateButtons();
+      updateActiveDot();
+    }
+
+    const temoignagesUrl = new URL('assets/data/temoignages.json', document.documentElement.baseURI || window.location.href).href;
+    fetch(temoignagesUrl)
+      .then(res => res.ok ? res.json() : [])
+      .then(data => {
+        const list = Array.isArray(data) ? data : [];
+        if (list.length === 0) {
+          testimonialsSection.style.display = 'none';
+          return;
+        }
+        list.forEach(item => {
+          if (item.name && item.role && item.quote && item.image) {
+            track.appendChild(buildTestimonialCard(item));
+          }
+        });
+        const count = track.children.length;
+        if (count === 0) {
+          testimonialsSection.style.display = 'none';
+          return;
+        }
+        for (let i = 0; i < count; i++) {
+          const dot = document.createElement('button');
+          dot.type = 'button';
+          dot.className = 'testimonials-dot' + (i === 0 ? ' active' : '');
+          dot.setAttribute('role', 'tab');
+          dot.setAttribute('aria-label', 'Témoignage ' + (i + 1));
+          dot.setAttribute('aria-selected', i === 0);
+          dot.setAttribute('data-index', String(i));
+          dotsContainer.appendChild(dot);
+        }
+        testimonialsSection.classList.add('is-visible');
+        initCarousel();
+      })
+      .catch(() => {
+        testimonialsSection.style.display = 'none';
+      });
+  }
