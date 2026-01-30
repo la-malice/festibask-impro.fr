@@ -53,3 +53,9 @@ Couvre : polices (`assets/fonts/`), favicon à la racine (`/favicon.ico`, `/favi
 
 - `equipe-belgique`, `equipe-suisse` : pas de règle (cache court, photos à venir).
 - `style.css`, `script.js` : pas de règle (mises à jour fréquentes).
+
+---
+
+## Vidéo hero (teaser)
+
+La vidéo hero (`assets/video/teaser-festibask-placeholder.mp4`) n’est **pas chargée au premier coup d’œil** : seule la vignette (poster) s’affiche ; la vidéo est chargée uniquement au clic sur le bouton play. L’impact des règles de cache sur ce MP4 est donc réduit pour l’audit PageSpeed initial. La règle « Cache 30j » pour `assets/video` reste utile pour les utilisateurs qui cliquent sur play.

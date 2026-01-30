@@ -72,43 +72,41 @@
   updateCountdown();
   setInterval(updateCountdown, 1000);
 
-  // Autoplay vidéo hero au scroll
+  // Vidéo hero : chargement au clic uniquement (poster affiché, MP4 chargé seulement si l’utilisateur clique)
   const heroVideoContainer = document.getElementById('heroVideoContainer');
   const heroVideo = document.getElementById('heroVideo');
-  let videoHasPlayed = false;
+  const heroVideoPlayOverlay = document.getElementById('heroVideoPlayOverlay');
 
-  if (heroVideoContainer && heroVideo) {
-    // Chargement différé : ne charger la vidéo que quand le hero est visible (allège le premier chargement)
-    const videoObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.5 && !videoHasPlayed) {
-          videoHasPlayed = true;
-          const startLoad = () => {
-            if (!heroVideo.src && heroVideo.dataset.src) {
-              heroVideo.muted = true;
-              heroVideo.src = heroVideo.dataset.src;
-              heroVideo.load();
-              heroVideo.addEventListener('loadeddata', () => {
-                heroVideo.play().catch(() => {});
-              }, { once: true });
-            } else if (heroVideo.src) {
-              heroVideo.muted = true;
-              heroVideo.play().catch(() => {});
-            }
-          };
-          if (typeof requestIdleCallback !== 'undefined') {
-            requestIdleCallback(startLoad, { timeout: 400 });
-          } else {
-            setTimeout(startLoad, 300);
-          }
-        }
-      });
-    }, {
-      threshold: [0, 0.5, 1.0],
-      rootMargin: '0px'
+  if (heroVideoContainer && heroVideo && heroVideoPlayOverlay) {
+    function hidePlayOverlay() {
+      heroVideoPlayOverlay.classList.add('hidden');
+    }
+
+    function showPlayOverlay() {
+      heroVideoPlayOverlay.classList.remove('hidden');
+    }
+
+    function startVideo() {
+      if (!heroVideo.src && heroVideo.dataset.src) {
+        heroVideo.muted = true;
+        heroVideo.src = heroVideo.dataset.src;
+        heroVideo.load();
+        heroVideo.addEventListener('loadeddata', () => {
+          heroVideo.play().catch(() => {});
+          hidePlayOverlay();
+        }, { once: true });
+      } else if (heroVideo.src) {
+        heroVideo.muted = true;
+        heroVideo.play().catch(() => {});
+        hidePlayOverlay();
+      }
+    }
+
+    heroVideoPlayOverlay.addEventListener('click', startVideo);
+
+    heroVideo.addEventListener('ended', () => {
+      showPlayOverlay();
     });
-
-    videoObserver.observe(heroVideoContainer);
   }
 
   // Burger / drawer mobile

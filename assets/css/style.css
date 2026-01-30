@@ -1510,6 +1510,65 @@ nav.primary a:hover {
   object-fit: cover;
 }
 
+/* Overlay play : affiché tant que la vidéo n’est pas lancée (chargement au clic) */
+.hero-video-play-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.hero-video-play-overlay:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.hero-video-play-overlay:active {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.hero-video-play-overlay:focus {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.hero-video-play-overlay-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  min-width: 72px;
+  height: 72px;
+  min-height: 72px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--blue-dark);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.hero-video-play-overlay:hover .hero-video-play-overlay-icon {
+  background: #fff;
+  transform: scale(1.05);
+}
+
+.hero-video-play-overlay:active .hero-video-play-overlay-icon {
+  transform: scale(0.98);
+}
+
+.hero-video-play-overlay.hidden {
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
 @media (max-width: 768px) {
   .hero-video-container {
     width: min(96vw, 336px);
