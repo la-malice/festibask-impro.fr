@@ -107,6 +107,11 @@
     heroVideo.addEventListener('ended', () => {
       showPlayOverlay();
     });
+
+    // Poster responsive : 672w sur écrans Retina (2x)
+    if (window.devicePixelRatio >= 2) {
+      heroVideo.poster = 'assets/img/hero-video-poster-672w.avif';
+    }
   }
 
   // Burger / drawer mobile
@@ -480,7 +485,7 @@
       time: '21:00',
       label: 'Match',
       title: 'La Malice vs Belgique',
-      image: 'assets/img/equipe-belgique.jpg',
+      image: 'assets/img/equipe-belgique-640w.avif',
       pitch: 'Le match d\'impro est le format phare par lequel l\'impro s\'est diffusée. Venu du Québec, il emprunte aux codes du Hockey sur glace où 2 équipes de comédiens s\'affrontent sur une patinoire dans des séquences brèves et rythmées sous la surveillance d\'un arbitre implacable&nbsp;!'
     },
     'spectacle-samedi-format-long': {
@@ -512,7 +517,7 @@
       time: '21:00',
       label: 'Match',
       title: 'La Malice vs Suisse',
-      image: 'assets/img/equipe-suisse.jpg',
+      image: 'assets/img/equipe-suisse-640w.avif',
       pitch: 'Le match d\'impro est le format phare par lequel l\'impro s\'est diffusée. Venu du Québec, il emprunte aux codes du Hockey sur glace où 2 équipes de comédiens s\'affrontent sur une patinoire dans des séquences brèves et rythmées sous la surveillance d\'un arbitre implacable&nbsp;!'
     }
   };
@@ -966,7 +971,7 @@
           src = 'assets/img/long/edf-colisee-mobile.avif';
         } else {
           const img = block.querySelector('.match-image');
-          src = img ? img.getAttribute('src') : null;
+          src = img ? (img.currentSrc || img.getAttribute('src')) : null;
         }
         if (src) {
           const encodedSrc = encodeURI(src);

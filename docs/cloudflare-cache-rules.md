@@ -51,8 +51,19 @@ Couvre : polices (`assets/fonts/`), favicon à la racine (`/favicon.ico`, `/favi
 
 ## À ne pas modifier
 
-- `equipe-belgique`, `equipe-suisse` : pas de règle (cache court, photos à venir).
 - `style.css`, `script.js` : pas de règle (mises à jour fréquentes).
+
+---
+
+## Images responsives (variantes 320w, 442w, poster hero, fond)
+
+Les variantes d’images utilisées pour PageSpeed (équipes Belgique/Suisse, EDF Colisée, poster hero, fond 1920px) sont couvertes par la règle « Cache 30j » dès que le chemin correspond :
+
+- **hero-video-poster** (contains) → `hero-video-poster-336w.avif`, `hero-video-poster-672w.avif`
+- **image-fond-01** (contains) → `image-fond-01_1920px.avif`
+- **assets/img/long/** (contains) → `edf-colisee-442w.avif`, etc.
+
+Pour les images équipes (`equipe-belgique-320w`, `equipe-suisse-640w`, etc.), ajouter à la règle 1 une condition **URI Path contains** `equipe-belgique` et une condition **URI Path contains** `equipe-suisse` si vous souhaitez les mettre en cache 30 jours.
 
 ---
 

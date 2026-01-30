@@ -37,9 +37,9 @@
 <meta name="ICBM" content="43.501, -1.513">
 <link rel="canonical" href="https://festibask-impro.fr">
 <!-- Preload critical resources (logo non préchargé : srcset responsive, le navigateur choisit 400/700/1000w) -->
-<link rel="preload" href="assets/img/hero-video-poster.avif" as="image" fetchpriority="high">
+<link rel="preload" href="assets/img/hero-video-poster-336w.avif" as="image" fetchpriority="high">
 <link rel="preload" href="assets/img/long/braquage.jpg" as="image">
-<link rel="preload" href="assets/img/equipe-belgique.jpg" as="image">
+<link rel="preload" href="assets/img/equipe-belgique-320w.avif" as="image">
 <!-- OpenGraph -->
 <meta property="og:title" content="Festibask'Impro – Festival d'improvisation à Anglet">
 <meta property="og:description" content="Spectacles, matchs internationaux, ateliers et animations. Festibask'Impro : le rendez-vous impro d'Anglet et de la Côte basque.">
@@ -134,7 +134,7 @@
 <style>
 :root{--bg:#F5F1E8;--bg2:#E8E0D3;--card:#F9F6F0;--text:#2C2C2C;--muted:#6B6B6B;--white:#FFF;--accent:#EE573F;--accent-light:rgba(238,87,63,.08);--accent-dark:#D14A35;--accent-pink:#EE573F;--blue:#12B4E3;--blue-accent:#0B7A9E;--blue-dark:#0D7FA5;--blue-border:rgba(18,180,227,.2);--blue-border-light:rgba(18,180,227,.15);--shadow-sm:0 1px 4px rgba(0,0,0,.08);--shadow-md:0 2px 8px rgba(0,0,0,.1);--white-overlay:rgba(255,255,255,.6);--white-overlay-medium:rgba(255,255,255,.75);--black-overlay:rgba(0,0,0,.5);}
 *{box-sizing:border-box;}
-html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;font-size:18px;line-height:1.6;background-image:url('assets/img/image-fond-01_4000px.avif'),radial-gradient(circle at 20% 50%,rgba(238,87,63,.05) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(18,180,227,.05) 0%,transparent 50%);background-size:cover,100% 100%,100% 100%;background-position:center;background-repeat:no-repeat;background-attachment:fixed;background-blend-mode:overlay,normal,normal;position:relative;}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;font-size:18px;line-height:1.6;background-image:url('assets/img/image-fond-01_1920px.avif'),radial-gradient(circle at 20% 50%,rgba(238,87,63,.05) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(18,180,227,.05) 0%,transparent 50%);background-size:cover,100% 100%,100% 100%;background-position:center;background-repeat:no-repeat;background-attachment:fixed;background-blend-mode:overlay,normal,normal;position:relative;}
 a{color:var(--blue);text-decoration:none;}
 a:hover{text-decoration:underline;opacity:.8;}
 img{max-width:100%;height:auto;display:block;}
@@ -160,7 +160,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
 .drawer a{display:block;padding:16px 20px;border-bottom:1px solid rgba(90,143,163,.2);color:var(--white);text-decoration:none;font-weight:600;}
 @media (min-width:900px){.burger{display:none;}nav.primary{display:flex;}}
 .hero{position:relative;min-height:72vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:12px 0 80px;background:linear-gradient(to bottom,#1B3D91 0%,#030C1F 100%);border-bottom:1px solid var(--blue-border-light);}
-.hero::before{content:'';position:absolute;inset:0;background-image:url('assets/img/image-fond-01_4000px.avif');background-size:cover;background-position:center;opacity:.95;mix-blend-mode:overlay;pointer-events:none;z-index:0;}
+.hero::before{content:'';position:absolute;inset:0;background-image:url('assets/img/image-fond-01_1920px.avif');background-size:cover;background-position:center;opacity:.95;mix-blend-mode:overlay;pointer-events:none;z-index:0;}
 .hero>*{position:relative;z-index:1;}
 .hero-date-block{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:8px;margin-bottom:clamp(32px,5vw,48px);font-family:"Hubot Sans",system-ui,sans-serif;text-align:center;}
 .hero-presenter{font-size:clamp(.85rem,1.6vw,1rem);letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.9);display:flex;align-items:baseline;gap:.4em;}
@@ -368,7 +368,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
       <video
         id="heroVideo"
         data-src="assets/video/teaser-festibask-placeholder.mp4"
-        poster="assets/img/hero-video-poster.avif"
+        poster="assets/img/hero-video-poster-336w.avif"
         muted
         playsinline
         loop
@@ -473,8 +473,11 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
           <div id="spectacle-vendredi-match" class="match-block">
             <div class="match-gap-filler"></div>
             <div class="match-image-wrapper">
-              <img src="assets/img/equipe-belgique.jpg" alt="Belgique vs La Malice" class="match-image">
-              <div class="match-image-blur"></div>
+              <picture>
+                <source type="image/avif" srcset="assets/img/equipe-belgique-320w.avif 320w, assets/img/equipe-belgique-640w.avif 640w" sizes="(max-width: 768px) 50vw, 442px">
+                <source type="image/jpeg" srcset="assets/img/equipe-belgique-320w.jpg 320w, assets/img/equipe-belgique-640w.jpg 640w" sizes="(max-width: 768px) 50vw, 442px">
+                <img src="assets/img/equipe-belgique-320w.jpg" alt="Belgique vs La Malice" class="match-image" width="320" height="320">
+              </picture>
             </div>
             <div class="match-teams-overlay">
               <div class="match-team-logo">
@@ -526,8 +529,10 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
           <div id="spectacle-samedi-match" class="match-block">
             <div class="match-gap-filler"></div>
             <div class="match-image-wrapper">
-              <img src="assets/img/long/edf-colisee.avif" alt="Match d'improvisation : Équipe de France d'improvisation vs La Malice" class="match-image">
-              <div class="match-image-blur"></div>
+              <picture>
+                <source type="image/avif" srcset="assets/img/long/edf-colisee-442w.avif 442w, assets/img/long/edf-colisee.avif 640w" sizes="(max-width: 768px) 50vw, 442px">
+                <img src="assets/img/long/edf-colisee.avif" alt="Match d'improvisation : Équipe de France d'improvisation vs La Malice" class="match-image" width="442" height="320">
+              </picture>
             </div>
             <div class="match-teams-overlay">
               <div class="match-team-logo">
@@ -582,8 +587,11 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
           <div id="spectacle-dimanche-match" class="match-block">
             <div class="match-gap-filler"></div>
             <div class="match-image-wrapper">
-              <img src="assets/img/equipe-suisse.jpg" alt="Suisse vs La Malice" class="match-image">
-              <div class="match-image-blur"></div>
+              <picture>
+                <source type="image/avif" srcset="assets/img/equipe-suisse-320w.avif 320w, assets/img/equipe-suisse-640w.avif 640w" sizes="(max-width: 768px) 50vw, 442px">
+                <source type="image/jpeg" srcset="assets/img/equipe-suisse-320w.jpg 320w, assets/img/equipe-suisse-640w.jpg 640w" sizes="(max-width: 768px) 50vw, 442px">
+                <img src="assets/img/equipe-suisse-320w.jpg" alt="Suisse vs La Malice" class="match-image" width="320" height="320">
+              </picture>
             </div>
             <div class="match-teams-overlay">
               <div class="match-team-logo">
@@ -705,7 +713,11 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
             <h3>Belgique vs La Malice</h3>
             <div class="meta">MATCH · 1H20</div>
           </div>
-          <img src="assets/img/equipe-belgique.jpg" alt="Belgique vs La Malice" class="slot-image">
+          <picture>
+            <source type="image/avif" srcset="assets/img/equipe-belgique-320w.avif 320w, assets/img/equipe-belgique-640w.avif 640w" sizes="(min-width: 800px) 180px, 140px">
+            <source type="image/jpeg" srcset="assets/img/equipe-belgique-320w.jpg 320w, assets/img/equipe-belgique-640w.jpg 640w" sizes="(min-width: 800px) 180px, 140px">
+            <img src="assets/img/equipe-belgique-320w.jpg" alt="Belgique vs La Malice" class="slot-image" width="140" height="170">
+          </picture>
         </button>
         <div class="slot">
           <div class="time">23:00</div>
@@ -757,7 +769,10 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
             <h3>Équipe de France vs La Malice</h3>
             <div class="meta">MATCH · 1H20</div>
           </div>
-          <img src="assets/img/long/edf-colisee.avif" alt="Match d'improvisation : Équipe de France d'improvisation vs La Malice" class="slot-image">
+          <picture>
+            <source type="image/avif" srcset="assets/img/long/edf-colisee-442w.avif 442w, assets/img/long/edf-colisee.avif 640w" sizes="(min-width: 800px) 180px, 140px">
+            <img src="assets/img/long/edf-colisee.avif" alt="Match d'improvisation : Équipe de France d'improvisation vs La Malice" class="slot-image" width="140" height="170">
+          </picture>
         </button>
         <div class="slot slot-festif"><div class="time">23:00+</div><div class="meta"><strong>🎧 Soirée musicale festive</strong></div></div>
         <div class="slot"><div class="time">Fin de soirée</div><div class="meta">bonne nuit 😴</div></div>
@@ -807,7 +822,11 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
             <h3>Suisse vs La Malice</h3>
             <div class="meta">MATCH · 1H20</div>
           </div>
-          <img src="assets/img/equipe-suisse.jpg" alt="Suisse vs La Malice" class="slot-image">
+          <picture>
+            <source type="image/avif" srcset="assets/img/equipe-suisse-320w.avif 320w, assets/img/equipe-suisse-640w.avif 640w" sizes="(min-width: 800px) 180px, 140px">
+            <source type="image/jpeg" srcset="assets/img/equipe-suisse-320w.jpg 320w, assets/img/equipe-suisse-640w.jpg 640w" sizes="(min-width: 800px) 180px, 140px">
+            <img src="assets/img/equipe-suisse-320w.jpg" alt="Suisse vs La Malice" class="slot-image" width="140" height="170">
+          </picture>
         </button>
         <div class="slot"><div class="time">23:00</div><div class="meta">merci!! à l'année prochaine ?</div></div>
       </div>
