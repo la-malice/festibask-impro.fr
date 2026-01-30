@@ -1444,6 +1444,8 @@ nav.primary a:hover {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  aspect-ratio: 1000 / 607;
+  min-height: 0;
 }
 
 .hero-logo {
@@ -1574,6 +1576,7 @@ nav.primary a:hover {
     width: min(96vw, 336px);
     max-width: 336px;
     margin: 0 auto;
+    min-height: 480px;
     max-height: 480px;
   }
 }

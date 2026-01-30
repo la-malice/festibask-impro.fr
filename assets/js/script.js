@@ -964,7 +964,7 @@
 
   // Appliquer l'image en background sur mobile pour les matchs
   function applyMatchBackgroundOnMobile() {
-    if (window.innerWidth <= 768) {
+    if (window.matchMedia('(max-width: 768px)').matches) {
       document.querySelectorAll('.match-block').forEach(block => {
         let src;
         if (block.id === 'spectacle-samedi-match') {
@@ -992,9 +992,9 @@
     }
   }
 
-  // Appliquer au chargement et au redimensionnement
+  // Appliquer au chargement et au franchissement du breakpoint
   applyMatchBackgroundOnMobile();
-  window.addEventListener('resize', applyMatchBackgroundOnMobile);
+  window.matchMedia('(max-width: 768px)').addEventListener('change', applyMatchBackgroundOnMobile);
 
   // Tooltips explicatifs pour "format long" et "match"
   const tooltipTexts = {
@@ -1157,7 +1157,7 @@
   // Initialiser les tooltips
   document.querySelectorAll('.tooltip[data-tooltip]').forEach(trigger => {
     const tooltipId = trigger.getAttribute('data-tooltip');
-    const isMobile = window.innerWidth < 768;
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
     if (isMobile) {
       // Mobile : clic pour ouvrir/fermer
@@ -1193,7 +1193,7 @@
 
   // Fermer au clic extérieur (mobile)
   document.addEventListener('click', (e) => {
-    if (activeTooltip && window.innerWidth < 768) {
+    if (activeTooltip && window.matchMedia('(max-width: 768px)').matches) {
       const popup = document.querySelector('.tooltip-popup.show');
       const overlay = document.querySelector('.tooltip-overlay.show');
       if (popup && !popup.contains(e.target) && !activeTooltip.contains(e.target)) {
