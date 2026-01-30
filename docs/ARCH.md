@@ -1,0 +1,74 @@
+# Architecture
+
+## Purpose
+
+High-level structure and technology choices of the Festibask'Impro static site. Single-page, no backend; build outputs to `dist/` for GitHub Pages.
+
+## High-Level Overview
+
+Single-page static site: one `index.html`, CSS and JS in `assets/`. Build step copies files, then runs PurgeCSS (CSS), PostCSS (cssnano), and Terser (JS) on outputs in `dist/`. No bundler for HTML; Vite used only for dev server. Deployment: GitHub Actions builds and uploads `dist/` as GitHub Pages artifact.
+
+```
+Sources (index.html, assets/) → copy-to-dist → dist/
+                                         → PurgeCSS → dist/assets/css/style.css
+                                         → PostCSS (cssnano) → same
+                                         → Terser(assets/js/script.js) → dist/assets/js/script.js
+CI: checkout → npm ci → npm run build → upload dist → deploy Pages
+```
+
+## Components
+
+| Component | Responsibility | Location / Tech |
+|-----------|----------------|-----------------|
+| **Markup** | Structure and content; critical CSS inline; preloads; meta, OG, Schema.org | index.html |
+| **Styles** | Layout, theme, components; PurgeCSS scans index.html + script.js | assets/css/style.css |
+| **Scripts** | Header, countdown, video, nav, modals, sliders, carousel, tooltips, fullscreen | assets/js/script.js |
+| **Data** | Testimonials (carousel) | assets/data/temoignages.json |
+| **Copy build** | Copy index.html, CNAME, favicons, robots, sitemap, sw.js, assets, festival-2026, PDFs to dist/ | scripts/copy-to-dist.js |
+| **PurgeCSS** | Remove unused CSS for dist; safelist dynamic classes | purgecss.config.js |
+| **PostCSS** | Minify CSS (cssnano) | postcss.config.js |
+| **Terser** | Minify JS (invoked in npm run build on source script.js → dist) | npm script |
+| **PWA / Brevo** | Service worker loads Brevo by query key | sw.js (root) |
+| **CI/CD** | Build and deploy to GitHub Pages | .github/workflows/pages.yml |
+
+## Technology Stack
+
+- **Build:** Node; npm scripts. copy-to-dist.js (Node), then PurgeCSS CLI, PostCSS CLI, Terser CLI. No Vite in build.
+- **Dev:** Vite (root, port 8000, open browser); serves index.html and assets as-is.
+- **Front-end:** Vanilla HTML/CSS/JS; no framework. Google Fonts (Hubot Sans) loaded async.
+- **Data:** Static JSON (temoignages); EDF players and spectacle data in script.js.
+- **Deploy:** GitHub Actions (ubuntu-latest, Node 20); artifact `dist/` → deploy-pages. Environment: github-pages.
+
+## Execution Model
+
+- **Development:** `npm run dev` → Vite serves at http://localhost:8000; no build. JSON and assets served from repo.
+- **Production:** User requests site URL; server (GitHub Pages) serves files from `dist/`. Single document; no routing. JS fetches `temoignages.json` (relative to document base); modals load Sibforms/Brevo when opened.
+- **Service worker:** sw.js is copied to dist root; loads Brevo SDK with key from query string. [UNCERTAIN] Whether it is registered in production; no cache strategy in the observed snippet.
+
+## Dependencies
+
+- **Internal:** index.html references assets/css, assets/js, assets/img, assets/data, assets/video; script.js fetches temoignages.json and manipulates DOM; no internal modules.
+- **External:** Brevo (cdn.brevo.com/js/sdk-loader.js), Sibforms (forms, styles, main.js), Google Fonts. No npm runtime deps; devDependencies: vite, postcss, postcss-cli, cssnano, purgecss, terser.
+
+## Key Files and Directories
+
+| Path | Role |
+|------|------|
+| index.html | Single entry; all sections, modals, inline critical CSS |
+| assets/css/style.css | Full stylesheet; source for PurgeCSS/PostCSS |
+| assets/js/script.js | All client logic; source for Terser |
+| assets/data/temoignages.json | Testimonials array for carousel |
+| assets/img/, assets/video/, assets/fonts/, assets/favicon/ | Static assets |
+| scripts/copy-to-dist.js | Copies site files into dist/ |
+| purgecss.config.js | Content: index.html, script.js; output: dist/assets/css/style.css; safelist for dynamic classes |
+| postcss.config.js | cssnano for dist CSS |
+| vite.config.js | Dev server only (root, port 8000) |
+| .github/workflows/pages.yml | Build on push to main; deploy Pages from dist |
+| sw.js | Service worker; Brevo init from query |
+| docs/temoignages-carousel.md | Documented schema for temoignages.json |
+
+## Assumptions and Uncertainties
+
+- [ASSUMPTION] Production is served from `dist/` (or equivalent) after GitHub Actions build.
+- [UNCERTAIN] Whether sw.js is registered in production; registration not found in index.html snippet.
+- [UNCERTAIN] CNAME, apple-touch-icon.png, brevo-frame.html: referenced in copy-to-dist; presence in repo may vary (copy skips missing entries).
