@@ -3291,20 +3291,15 @@ nav.primary a:hover {
   opacity: 0.9;
 }
 
-/* Bouton liste d'attente */
+/* Bouton "Ça m'intéresse!" (liste d'attente / intérêt stage) */
 .atelier-card .btn-waitlist {
-  display: none; /* Masqué par défaut */
+  display: flex;
   width: 100%;
   justify-content: center;
   text-align: center;
   background: var(--accent);
   color: var(--white);
   border-color: var(--accent);
-}
-
-/* Afficher le bouton liste d'attente si la carte est complète */
-.atelier-card.complet .btn-waitlist {
-  display: flex;
 }
 
 .atelier-card .btn-waitlist:hover {

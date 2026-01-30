@@ -126,11 +126,28 @@
     document.head.appendChild(link);
   }
 
+  // Load Sibforms main.js on first modal open (deferred for PageSpeed)
+  function ensureSibScriptLoaded() {
+    const url = 'https://sibforms.com/forms/end-form/build/main.js';
+    const existing = document.querySelector('script[src*="sibforms.com/forms/end-form/build/main.js"]');
+    if (existing) return Promise.resolve();
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = url;
+      script.onload = () => resolve();
+      script.onerror = () => resolve();
+      document.body.appendChild(script);
+    });
+  }
+
   // Modal open/close
   const dlg=document.getElementById('notify');
   document.querySelectorAll('[data-open="notify"]').forEach(b=>b.addEventListener('click',()=>{
     ensureSibStylesLoaded();
+    ensureSibScriptLoaded().then(() => {
+    dlgWaitlist.close();
     dlg.showModal();
+  });
   }));
   dlg.addEventListener('click',e=>{
     const r=dlg.querySelector('.modal-card').getBoundingClientRect();
@@ -142,7 +159,10 @@
   const dlgWaitlist = document.getElementById('waitlist');
   document.querySelectorAll('[data-open="waitlist"]').forEach(b => b.addEventListener('click', () => {
     ensureSibStylesLoaded();
+    ensureSibScriptLoaded().then(() => {
+    dlg.close();
     dlgWaitlist.showModal();
+  });
   }));
   dlgWaitlist.addEventListener('click', e => {
     const r = dlgWaitlist.querySelector('.modal-card').getBoundingClientRect();
