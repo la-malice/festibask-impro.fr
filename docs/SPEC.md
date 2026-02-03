@@ -6,12 +6,12 @@ Static marketing site for **Festibask'Impro**, the improvisation theatre festiva
 
 ## Scope
 
-- **In scope:** Single-page layout with hero (logo, dates, countdown, teaser video); section “À l’affiche” (spectacles by day: format long + match); programme (three days, fullscreen mode); stages/ateliers (flip cards, registration/waitlist); tarifs (flip cards); FAQ; à propos; témoignages carousel (from JSON); sponsors; newsletter and waitlist modals (Brevo/Sibforms); legal/contact/footer.
+- **In scope:** Single-page layout with hero (logo, dates, countdown, teaser video, bandes doodles décoratives, liens hero-tags); section “À l’affiche” (spectacles by day: format long + match); programme (three days, fullscreen mode); stages/ateliers (flip cards, registration/waitlist); tarifs (flip cards); FAQ; à propos; témoignages carousel (from JSON); sponsors; newsletter and waitlist modals (Brevo/Sibforms); legal/contact/footer.
 - **Out of scope:** Ticketing, user accounts, backend CMS, server-side rendering. No routing; single HTML document. Google Analytics is commented out in code; Brevo and Sibforms are the active third-party integrations.
 
 ## Main Capabilities
 
-1. **Hero:** Logo, dates (15–17 mai), location (Patinoire de la Barre, Anglet), countdown to 2026-05-15 10:30; teaser video (poster by default, play on click). Source is either **YouTube** (video ID via `data-hero-video="youtube"` and `data-hero-youtube-id` on `#heroVideoContainer`) or **self-hosted** (MP4 from `data-src`, poster, captions from `assets/video/teaser-festibask-captions.vtt`); anchors to #valeur, #programme, #stages.
+1. **Hero:** Logo, dates (15–17 mai), location (Patinoire de la Barre, Anglet), countdown to 2026-05-15 10:30; teaser video (poster by default, play on click). Deux bandes décoratives doodles (images `doodles-top.avif` au-dessus du logo, `doodles-bottom.avif` sous les liens hero-tags), intégrées dans la même cellule que le logo et que les liens. Liens hero-tags : SPECTACLES, MATCHES, STAGES (ancres #valeur, #programme, #stages). Source vidéo : **YouTube** (video ID via `data-hero-video="youtube"` et `data-hero-youtube-id` sur `#heroVideoContainer`) ou **self-hosted** (MP4 depuis `data-src`, poster, sous-titres `assets/video/teaser-festibask-captions.vtt`).
 2. **Spectacles (“À l’affiche”):** Day slider (Vendredi / Samedi / Dimanche); for each day: one “format long” block and one “match” block. Desktop: flip to show pitch; mobile: modal for spectacle details. Match France (Samedi) opens EDF player slider; other matches flip or open modal.
 3. **Programme:** Tabs by day; grid of day cards; fullscreen mode; sync with “À l’affiche” day selection.
 4. **Stages:** Atelier cards (flip for details, instructor bio where applicable); “En savoir plus” / “COMPLET” trigger flip; registration and waitlist buttons open Sibforms modals.
