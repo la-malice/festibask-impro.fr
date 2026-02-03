@@ -2905,6 +2905,24 @@ nav.primary a:hover {
   border-color: var(--blue-border);
 }
 
+/* Surbrillance par jour : mêmes ombre et lisière que le programme (.program .day.card) */
+#stages .atelier-card {
+  opacity: 0.6;
+  box-shadow: var(--shadow-sm);
+  transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#stages .atelier-card.active {
+  opacity: 1;
+  transform: scale(1.03);
+  box-shadow: var(--shadow-md);
+  background: rgba(255, 255, 255, 0.85);
+}
+
+#stages .atelier-card .header {
+  cursor: pointer;
+}
+
 /* Flip container - même style que les cartes tarifs */
 .atelier-card .flip-container {
   position: relative;
@@ -3481,6 +3499,11 @@ nav.primary a:hover {
   opacity: 0.6;
   transform: scale(1);
   transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.program .day.card:hover {
+  opacity: 0.85;
 }
 
 .program .day.card.active {

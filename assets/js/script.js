@@ -347,7 +347,7 @@
     const programDayCards = document.querySelectorAll('.program .day.card');
     const programmeDayTabs = document.querySelectorAll('#programmeDayTabs .day-tab');
     
-    // Mettre à jour les cartes
+    // Mettre à jour les cartes du programme
     programDayCards.forEach((card, index) => {
       if (index === dayIndex) {
         card.classList.add('active');
@@ -362,6 +362,18 @@
         tab.classList.toggle('active', index === dayIndex);
       });
     }
+    
+    // Mettre en surbrillance les stages du jour
+    updateStagesDayHighlight(dayIndex);
+  }
+
+  // Fonction pour mettre en surbrillance les stages du jour sélectionné
+  function updateStagesDayHighlight(dayIndex) {
+    const atelierCards = document.querySelectorAll('#stages .atelier-card');
+    atelierCards.forEach((card) => {
+      const cardDay = parseInt(card.getAttribute('data-day'), 10);
+      card.classList.toggle('active', !Number.isNaN(cardDay) && cardDay === dayIndex);
+    });
   }
 
   // Gestion du switcher du programme
@@ -383,6 +395,43 @@
       });
     });
   }
+
+  // Clic sur une colonne de jour dans le programme pour la mettre en surbrillance
+  document.querySelectorAll('#programme .day.card').forEach((card) => {
+    card.addEventListener('click', (e) => {
+      // Ne pas changer de jour si on clique sur un lien ou un bouton (spectacle, atelier, etc.)
+      if (e.target.closest('a, button')) return;
+      const dayIndex = parseInt(card.getAttribute('data-day'), 10);
+      if (Number.isNaN(dayIndex)) return;
+      updateProgramDayHighlight(dayIndex);
+      // Synchroniser les tabs "à l'affiche"
+      const daySlider = document.getElementById('daySlider')?.closest('.day-slider');
+      const dayTabsAffiche = daySlider?.querySelectorAll('.day-tab');
+      if (dayTabsAffiche) {
+        dayTabsAffiche.forEach((tabAffiche, tabIndex) => {
+          tabAffiche.classList.toggle('active', tabIndex === dayIndex);
+        });
+      }
+    });
+  });
+
+  // Clic sur l'en-tête d'un stage pour mettre en surbrillance les stages de ce jour (et synchroniser tous les switchers)
+  document.querySelectorAll('#stages .atelier-card .header').forEach((header) => {
+    header.addEventListener('click', () => {
+      const card = header.closest('.atelier-card');
+      if (!card) return;
+      const dayIndex = parseInt(card.getAttribute('data-day'), 10);
+      if (Number.isNaN(dayIndex)) return;
+      updateProgramDayHighlight(dayIndex);
+      const daySlider = document.getElementById('daySlider')?.closest('.day-slider');
+      const dayTabsAffiche = daySlider?.querySelectorAll('.day-tab');
+      if (dayTabsAffiche) {
+        dayTabsAffiche.forEach((tabAffiche, tabIndex) => {
+          tabAffiche.classList.toggle('active', tabIndex === dayIndex);
+        });
+      }
+    });
+  });
 
   // Flip des cartes d'ateliers
   // 1) Clic sur "En savoir plus" → montre le verso
