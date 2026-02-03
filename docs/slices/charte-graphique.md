@@ -1,6 +1,21 @@
 # Charte graphique – variables CSS
 
-Référence des variables CSS utilisées pour aligner le site sur la charte graphique Festi'Bask Impro (typos Hubot Sans, palette 6 couleurs).
+**Normative (source de vérité design).** Toute proposition ou implémentation de design (couleurs, typos, composants visuels) doit respecter cette charte. Voir AGENTS.md et docs/ADR/0001-charte-graphique.md.
+
+Référence des variables CSS et recommandations d’usage pour aligner le site sur la charte graphique Festi'Bask Impro (typos Hubot Sans, palette 6 couleurs).
+
+## Palette – codes couleurs (hex)
+
+| Nom charte | Hex | Variable CSS | Rôle |
+|------------|-----|--------------|------|
+| Navy | **#21254e** | `--navy` | Fond sombre, dégradés hero/header |
+| Bleu charte | **#21428f** | `--blue-charte` | Bleu moyen, dégradés |
+| Cyan | **#01b3e4** | `--cyan` | Accent bleu (liens, boutons principaux) |
+| Corail | **#e95842** | `--coral` / `--accent` | Accent principal (brand, countdown, badge COMPLET) |
+| Orange | **#f0853a** | `--orange` | Touche (À propos, bouton liste d'attente) |
+| Rose | **#df1279** | `--pink` | Titres sections, matchs programme |
+
+**theme-color** (meta) : #21254e.
 
 ## Typographie (Hubot Sans)
 
