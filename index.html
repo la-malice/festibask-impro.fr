@@ -890,6 +890,22 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
     <h2>Stages d'impro</h2>
     <p class="small mb-16">Chaque jour des ateliers d'improvisation animés vous sont proposés. Que vous souhaitiez vous initier seul ou en famille, ou que vous souhaitiez vous perfectionner ou prendre une master class, il y aura forcément un atelier pour vous.</p>
 
+    <!-- Switcher jour par jour (synchronisé avec À l'affiche et Programme) -->
+    <div class="day-tabs" id="stagesDayTabs">
+      <button class="day-tab active" data-day="0" aria-label="Vendredi 15 mai">
+        <span class="day-tab-name">Vendredi</span>
+        <span class="day-tab-date">15 mai</span>
+      </button>
+      <button class="day-tab" data-day="1" aria-label="Samedi 16 mai">
+        <span class="day-tab-name">Samedi</span>
+        <span class="day-tab-date">16 mai</span>
+      </button>
+      <button class="day-tab" data-day="2" aria-label="Dimanche 17 mai">
+        <span class="day-tab-name">Dimanche</span>
+        <span class="day-tab-date">17 mai</span>
+      </button>
+    </div>
+
     <div class="ateliers-grid">
       <!-- Stage Initiation Adulte -->
       <!-- CTA stages : actuellement "Ça m'intéresse!" → waitlist. Quand la billetterie ouvrira : "S'inscrire" → billetterie (notify), et remettre "Entrer en liste d'attente" (waitlist) pour les stages complets. -->

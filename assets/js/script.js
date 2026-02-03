@@ -200,7 +200,8 @@
   // Brevo gère automatiquement le masquage du formulaire avec AUTOHIDE = Boolean(1)
   // Le bouton "Fermer" dans le message de succès permet de fermer la popup explicitement
 
-  // Slider jour par jour
+  // Slider jour par jour — setCurrentDay permet à Programme et Stages de synchroniser le slider
+  let setCurrentDay = function() {};
   const daySliderContainer = document.getElementById('daySlider');
   if (daySliderContainer) {
     const daySlides = daySliderContainer.querySelectorAll('.day-slide');
@@ -208,6 +209,10 @@
     const dayDots = daySlider?.querySelectorAll('.carousel-dot');
     const dayTabs = daySlider?.querySelectorAll('.day-tab');
     let currentDaySlide = 0;
+    setCurrentDay = function(dayIndex) {
+      currentDaySlide = dayIndex;
+      updateDaySlider();
+    };
     
     function updateDaySlider(){
       daySliderContainer.style.transform = `translateX(-${currentDaySlide * 33.333333}%)`;
@@ -342,11 +347,12 @@
     updateDaySlider();
   }
 
-  // Fonction pour mettre en avant le jour sélectionné dans le programme
+  // Fonction pour mettre en avant le jour sélectionné dans le programme (et stages)
   function updateProgramDayHighlight(dayIndex) {
     const programDayCards = document.querySelectorAll('.program .day.card');
     const programmeDayTabs = document.querySelectorAll('#programmeDayTabs .day-tab');
-    
+    const stagesDayTabs = document.querySelectorAll('#stagesDayTabs .day-tab');
+
     // Mettre à jour les cartes du programme
     programDayCards.forEach((card, index) => {
       if (index === dayIndex) {
@@ -355,14 +361,21 @@
         card.classList.remove('active');
       }
     });
-    
+
     // Mettre à jour les tabs du programme
     if (programmeDayTabs) {
       programmeDayTabs.forEach((tab, index) => {
         tab.classList.toggle('active', index === dayIndex);
       });
     }
-    
+
+    // Mettre à jour les tabs des stages
+    if (stagesDayTabs) {
+      stagesDayTabs.forEach((tab, index) => {
+        tab.classList.toggle('active', index === dayIndex);
+      });
+    }
+
     // Mettre en surbrillance les stages du jour
     updateStagesDayHighlight(dayIndex);
   }
@@ -376,42 +389,34 @@
     });
   }
 
-  // Gestion du switcher du programme
+  // Gestion du switcher du programme (synchronise À l'affiche, Programme, Stages)
   const programmeDayTabs = document.querySelectorAll('#programmeDayTabs .day-tab');
   if (programmeDayTabs) {
     programmeDayTabs.forEach((tab, index) => {
       tab.addEventListener('click', () => {
-        // Mettre à jour uniquement le programme (pas de scroll vers "à l'affiche")
-        updateProgramDayHighlight(index);
-        
-        // Synchroniser aussi les tabs "à l'affiche" visuellement
-        const daySlider = document.getElementById('daySlider')?.closest('.day-slider');
-        const dayTabsAffiche = daySlider?.querySelectorAll('.day-tab');
-        if (dayTabsAffiche) {
-          dayTabsAffiche.forEach((tabAffiche, tabIndex) => {
-            tabAffiche.classList.toggle('active', tabIndex === index);
-          });
-        }
+        setCurrentDay(index);
       });
     });
   }
 
-  // Clic sur une colonne de jour dans le programme pour la mettre en surbrillance
+  // Gestion du switcher des stages (synchronise À l'affiche, Programme, Stages)
+  const stagesDayTabs = document.querySelectorAll('#stagesDayTabs .day-tab');
+  if (stagesDayTabs) {
+    stagesDayTabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => {
+        setCurrentDay(index);
+      });
+    });
+  }
+
+  // Clic sur une colonne de jour dans le programme pour la mettre en surbrillance (sync tous les switchers)
   document.querySelectorAll('#programme .day.card').forEach((card) => {
     card.addEventListener('click', (e) => {
       // Ne pas changer de jour si on clique sur un lien ou un bouton (spectacle, atelier, etc.)
       if (e.target.closest('a, button')) return;
       const dayIndex = parseInt(card.getAttribute('data-day'), 10);
       if (Number.isNaN(dayIndex)) return;
-      updateProgramDayHighlight(dayIndex);
-      // Synchroniser les tabs "à l'affiche"
-      const daySlider = document.getElementById('daySlider')?.closest('.day-slider');
-      const dayTabsAffiche = daySlider?.querySelectorAll('.day-tab');
-      if (dayTabsAffiche) {
-        dayTabsAffiche.forEach((tabAffiche, tabIndex) => {
-          tabAffiche.classList.toggle('active', tabIndex === dayIndex);
-        });
-      }
+      setCurrentDay(dayIndex);
     });
   });
 
@@ -422,14 +427,7 @@
       if (!card) return;
       const dayIndex = parseInt(card.getAttribute('data-day'), 10);
       if (Number.isNaN(dayIndex)) return;
-      updateProgramDayHighlight(dayIndex);
-      const daySlider = document.getElementById('daySlider')?.closest('.day-slider');
-      const dayTabsAffiche = daySlider?.querySelectorAll('.day-tab');
-      if (dayTabsAffiche) {
-        dayTabsAffiche.forEach((tabAffiche, tabIndex) => {
-          tabAffiche.classList.toggle('active', tabIndex === dayIndex);
-        });
-      }
+      setCurrentDay(dayIndex);
     });
   });
 

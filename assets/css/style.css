@@ -3112,6 +3112,19 @@ nav.primary a:hover {
   background: rgba(255, 255, 255, 0.85);
 }
 
+@media (max-width: 768px) {
+  /* Sur mobile, masquer les stages des jours non sélectionnés (comportement identique au programme) */
+  #stages .atelier-card:not(.active) {
+    display: none;
+  }
+
+  #stages .atelier-card.active {
+    display: flex;
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 #stages .atelier-card .header {
   cursor: pointer;
 }
