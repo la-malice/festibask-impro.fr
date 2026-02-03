@@ -1,5 +1,5 @@
 /* ============================================
-   CHARTE DE COULEUR - Variables CSS
+   CHARTE DE COULEUR - Variables CSS (charte graphique Festi'Bask Impro)
    ============================================ */
 :root {
   /* Couleurs principales */
@@ -10,25 +10,36 @@
   --muted: #6B6B6B;
   --white: #FFFFFF;
   
-  /* Couleurs d'accent */
-  --accent: #EE573F;
-  --accent-light: rgba(238, 87, 63, 0.08);
-  --accent-dark: #D14A35;
-  --accent-pink: #EE573F;
+  /* Charte graphique - 3 principales */
+  --navy: #21254e;
+  --blue-charte: #21428f;
+  --cyan: #01b3e4;
   
-  /* Couleurs bleues */
-  --blue: #12B4E3;
-  --blue-accent: #0B7A9E;
-  --blue-dark: #0D7FA5;
-  --blue-medium: #0F9BC7;
-  --blue-light: #12B4E3;
-  --blue-border: rgba(18, 180, 227, 0.2);
-  --blue-border-light: rgba(18, 180, 227, 0.15);
-  --blue-border-medium: rgba(18, 180, 227, 0.25);
-  --blue-border-dark: rgba(18, 180, 227, 0.3);
-  --blue-bg: rgba(18, 180, 227, 0.08);
-  --blue-bg-light: rgba(18, 180, 227, 0.1);
-  --blue-bg-medium: rgba(18, 180, 227, 0.12);
+  /* Charte graphique - touches d'accent */
+  --coral: #e95842;
+  --orange: #f0853a;
+  --orange-dark: #d97328;
+  --pink: #df1279;
+  
+  /* Couleurs d'accent (accent principal = coral charte) */
+  --accent: #e95842;
+  --accent-light: rgba(233, 88, 66, 0.08);
+  --accent-dark: #c94a36;
+  --accent-pink: #e95842;
+  
+  /* Couleurs bleues / cyan (alignées charte) */
+  --blue: #01b3e4;
+  --blue-accent: #0199c4;
+  --blue-dark: #017a9e;
+  --blue-medium: #0199c4;
+  --blue-light: #01b3e4;
+  --blue-border: rgba(1, 179, 228, 0.2);
+  --blue-border-light: rgba(1, 179, 228, 0.15);
+  --blue-border-medium: rgba(1, 179, 228, 0.25);
+  --blue-border-dark: rgba(1, 179, 228, 0.3);
+  --blue-bg: rgba(1, 179, 228, 0.08);
+  --blue-bg-light: rgba(1, 179, 228, 0.1);
+  --blue-bg-medium: rgba(1, 179, 228, 0.12);
   
   /* Couleurs jaunes */
   --yellow: #F8D678;
@@ -60,6 +71,25 @@
   --hero-image-desktop: var(--hero-image);
   --hero-position-mobile: center 50%;
   --hero-position-desktop: center 45%;
+  
+  /* Typographie charte - Hubot Sans */
+  --font-heading: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
+  --font-body: system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
+  /* Titre 1 : titre principal */
+  --titre-1-size: clamp(2.5rem, 5vw, 4rem);
+  --titre-1-weight: 800;
+  /* Titre 2 : sous-titre section */
+  --titre-2-size: clamp(2rem, 4vw, 3rem);
+  --titre-2-weight: 700;
+  /* Titre 3 : sous-titre bloc */
+  --titre-3-size: clamp(1.5rem, 3vw, 2.25rem);
+  --titre-3-weight: 600;
+  /* Text : corps */
+  --text-size: 1.125rem;
+  --text-weight: 400;
+  /* Description : légende, secondaire */
+  --description-size: 1rem;
+  --description-weight: 400;
 }
 
 /* ============================================
@@ -74,15 +104,15 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
-  font-size: 18px;
+  font-family: var(--font-body);
+  font-size: var(--text-size);
   line-height: 1.6;
   background-image: 
     /* Texture aquarelle */
     url('../img/image-fond-01_1920px.avif'),
-    /* Gradients radiaux existants */
-    radial-gradient(circle at 20% 50%, rgba(238, 87, 63, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(18, 180, 227, 0.05) 0%, transparent 50%);
+    /* Gradients radiaux charte (coral / cyan) */
+    radial-gradient(circle at 20% 50%, rgba(233, 88, 66, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(1, 179, 228, 0.05) 0%, transparent 50%);
   background-size: cover, 100% 100%, 100% 100%;
   background-position: center, center, center;
   background-repeat: no-repeat, no-repeat, no-repeat;
@@ -164,38 +194,71 @@ img {
 .flex { display: flex; }
 .hidden { display: none; }
 
-/* Typographie */
+/* Typographie charte - Description (légende, secondaire) */
 .small {
-  font-size: 1rem;
+  font-size: var(--description-size);
+  font-weight: var(--description-weight);
   color: var(--muted);
 }
 
 .headline {
+  font-family: var(--font-heading);
   font-size: clamp(1.4rem, 2.6vw, 2rem);
   font-weight: 900;
   margin: 0 0 8px;
 }
 
+/* Classes utilitaires typo charte (Titre 1, Titre 2, Titre 3, Text, Description) */
+.titre-1 {
+  font-family: var(--font-heading);
+  font-size: var(--titre-1-size);
+  font-weight: var(--titre-1-weight);
+}
+.titre-2 {
+  font-family: var(--font-heading);
+  font-size: var(--titre-2-size);
+  font-weight: var(--titre-2-weight);
+}
+.titre-3 {
+  font-family: var(--font-heading);
+  font-size: var(--titre-3-size);
+  font-weight: var(--titre-3-weight);
+}
+.text-charte {
+  font-family: var(--font-body);
+  font-size: var(--text-size);
+  font-weight: var(--text-weight);
+}
+.description-charte {
+  font-family: var(--font-body);
+  font-size: var(--description-size);
+  font-weight: var(--description-weight);
+}
+
+/* Titre 1 - titre principal (charte Hubot Sans) */
 h1 {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: normal;
+  font-family: var(--font-heading);
+  font-size: var(--titre-1-size);
+  font-weight: var(--titre-1-weight);
   margin: 0;
 }
 
+/* Titre 2 - sous-titre section (charte) */
 .section h2 {
-  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-family: var(--font-heading);
+  font-size: var(--titre-2-size);
   color: var(--accent-dark);
-  font-weight: normal;
+  font-weight: var(--titre-2-weight);
   margin: 0 0 16px;
   line-height: 1.1;
 }
 
+/* Titre 3 - sous-titre bloc (charte) */
 .section h3 {
-  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
-  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  font-family: var(--font-heading);
+  font-size: var(--titre-3-size);
   color: var(--blue-dark);
-  font-weight: normal;
+  font-weight: var(--titre-3-weight);
 }
 
 .section h3.pink {
@@ -292,7 +355,7 @@ h1 {
 
 /* Backgrounds de sections */
 .section-bg-1 {
-  background: linear-gradient(to bottom, #030C1F 0%, #1B3D91 100%);
+  background: linear-gradient(to bottom, var(--navy) 0%, var(--blue-charte) 100%);
   position: relative;
 }
 
@@ -320,7 +383,7 @@ h1 {
 }
 
 .section-bg-2 {
-  background: linear-gradient(to bottom, #1B3D91 0%, #030C1F 100%);
+  background: linear-gradient(to bottom, var(--blue-charte) 0%, var(--navy) 100%);
   position: relative;
 }
 
@@ -348,7 +411,7 @@ h1 {
 }
 
 .section-bg-3 {
-  background: linear-gradient(to bottom, #1B3D91 0%, #030C1F 100%);
+  background: linear-gradient(to bottom, var(--blue-charte) 0%, var(--navy) 100%);
   position: relative;
 }
 
@@ -376,7 +439,7 @@ h1 {
 }
 
 .section-bg-4 {
-  background: linear-gradient(to bottom, #1B3D91 0%, #030C1F 100%);
+  background: linear-gradient(to bottom, var(--blue-charte) 0%, var(--navy) 100%);
   position: relative;
 }
 
@@ -485,7 +548,7 @@ h1 {
 }
 
 .section-bg-5 {
-  background: linear-gradient(to bottom, #030C1F 0%, #1B3D91 100%);
+  background: linear-gradient(to bottom, var(--navy) 0%, var(--blue-charte) 100%);
   position: relative;
 }
 
@@ -514,22 +577,22 @@ h1 {
 
 /* Section infos pratiques - dégradé inversé */
 #infos.section-bg-5 {
-  background: linear-gradient(to bottom, #030C1F 0%, #1B3D91 100%);
+  background: linear-gradient(to bottom, var(--navy) 0%, var(--blue-charte) 100%);
 }
 
 /* Section sponsors - dégradé normal */
 #sponsors.section-bg-5 {
-  background: linear-gradient(to bottom, #030C1F 0%, #1B3D91 100%);
+  background: linear-gradient(to bottom, var(--navy) 0%, var(--blue-charte) 100%);
 }
 
 /* Section À propos - dégradé inversé */
 #a-propos.section-bg-5 {
-  background: linear-gradient(to bottom, #1B3D91 0%, #030C1F 100%);
+  background: linear-gradient(to bottom, var(--blue-charte) 0%, var(--navy) 100%);
 }
 
 /* Section CTA - Soyez les premiers informés - dégradé inversé */
 .section-cta {
-  background: linear-gradient(to bottom, #1B3D91 0%, #030C1F 100%);
+  background: linear-gradient(to bottom, var(--blue-charte) 0%, var(--navy) 100%);
   padding: 60px 0;
   position: relative;
 }
@@ -613,7 +676,7 @@ h1 {
 
 /* Footer - couleur pleine */
 footer.section {
-  background: #030C1F;
+  background: var(--navy);
 }
 
 footer.section h3,
@@ -742,15 +805,17 @@ footer .footer-impro {
 }
 
 .btn-primary {
-  background: var(--accent-dark);
+  background: var(--blue-dark);
   color: var(--white);
+  border-color: var(--blue-dark);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .btn-primary:hover {
-  background: var(--accent);
+  background: var(--blue);
+  border-color: var(--blue);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(238, 87, 63, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(1, 179, 228, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .btn-secondary {
@@ -862,7 +927,7 @@ header.site {
   inset-inline: 0;
   top: 0;
   z-index: 40;
-  background: rgba(3, 12, 31, 0.85);
+  background: rgba(33, 37, 78, 0.85);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--blue-border-light);
   transform: translateY(-100%);
@@ -997,7 +1062,7 @@ nav.primary a:hover {
   right: 0;
   width: min(92vw, 360px);
   height: 100vh;
-  background: rgba(3, 12, 31, 0.95);
+  background: rgba(33, 37, 78, 0.95);
   border-left: 1px solid var(--blue-border-light);
   transform: translateX(100%);
   transition: transform 0.3s;
@@ -1086,7 +1151,7 @@ nav.primary a:hover {
   font-size: 1.1rem;
   font-weight: 700;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(238, 87, 63, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(233, 88, 66, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 @media (min-width: 900px) {
@@ -1118,7 +1183,7 @@ nav.primary a:hover {
   align-items: center;
   justify-content: flex-start;
   padding: 12px 0 80px;
-  background: linear-gradient(to bottom, #1B3D91 0%, #030C1F 100%);
+  background: linear-gradient(to bottom, var(--blue-charte) 0%, var(--navy) 100%);
   border-bottom: 1px solid var(--blue-border-light);
 }
 
@@ -1178,7 +1243,7 @@ nav.primary a:hover {
 
 .hero-presenter-name {
   font-weight: 800;
-  color: #12B4E3;
+  color: var(--cyan);
 }
 
 .hero-presenter-text {
@@ -1326,7 +1391,7 @@ nav.primary a:hover {
   display: flex;
   align-items: stretch;
   gap: 0;
-  background: rgba(3, 12, 31, 0.6);
+  background: rgba(33, 37, 78, 0.6);
   border-radius: 8px;
   padding: 6px;
   backdrop-filter: blur(4px);
@@ -1367,7 +1432,7 @@ nav.primary a:hover {
   min-height: 100%;
   flex: 0 0 auto;
   align-self: stretch;
-  background: rgba(3, 12, 31, 0.8);
+  background: rgba(33, 37, 78, 0.8);
   border-radius: 6px 0 0 6px;
   padding: 10px 14px;
   box-sizing: border-box;
@@ -1395,7 +1460,7 @@ nav.primary a:hover {
 }
 
 .hero-dates-year {
-  color: #12B4E3;
+  color: var(--cyan);
   font-size: clamp(38px, 10vw, 100px);
   font-weight: bold;
   line-height: 1;
@@ -1694,7 +1759,7 @@ nav.primary a:hover {
   font-size: clamp(10px, 1.8vw, 18px);
   font-weight: normal;
   color: var(--white);
-  background: rgba(238, 87, 63, 0.2);
+  background: rgba(233, 88, 66, 0.2);
   border: 1px solid var(--accent);
   border-radius: 6px;
   padding: 2px 4px;
@@ -1703,14 +1768,14 @@ nav.primary a:hover {
   max-width: 72px;
   box-sizing: border-box;
   text-align: center;
-  box-shadow: 0 2px 8px rgba(238, 87, 63, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 8px rgba(233, 88, 66, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(4px);
   transition: all 0.3s ease;
 }
 
 .countdown-number:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(238, 87, 63, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: 0 6px 16px rgba(233, 88, 66, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
   border-color: var(--accent-dark);
 }
 
@@ -1730,7 +1795,7 @@ nav.primary a:hover {
   font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: clamp(10px, 1.5vw, 14px);
   font-weight: normal;
-  color: #12B4E3;
+  color: var(--cyan);
   margin-bottom: 14px;
   opacity: 0.8;
   flex-shrink: 0;
@@ -1809,7 +1874,7 @@ nav.primary a:hover {
   .hero {
     min-height: auto;
     aspect-ratio: 16/9;
-    background: linear-gradient(to bottom, #1B3D91 0%, #030C1F 100%);
+    background: linear-gradient(to bottom, var(--blue-charte) 0%, var(--navy) 100%);
   }
   
   .hero .cta-wrap {
@@ -1901,7 +1966,7 @@ nav.primary a:hover {
   left: 0;
   width: calc(100% - min(50%, 442px) - 24px);
   bottom: 0;
-  background: linear-gradient(to right, rgba(3, 12, 31, 0.75) 0%, rgba(27, 61, 145, 0.4) 65%, transparent 100%);
+  background: linear-gradient(to right, rgba(33, 37, 78, 0.75) 0%, rgba(33, 66, 143, 0.4) 65%, transparent 100%);
   z-index: 0;
 }
 
@@ -1978,7 +2043,7 @@ nav.primary a:hover {
   object-fit: cover;
   object-position: center;
   display: block;
-  background-color: #030C1F;
+  background-color: var(--navy);
 }
 
 .format-long-overlay {
@@ -2093,7 +2158,7 @@ nav.primary a:hover {
   left: 0;
   width: calc(100% - min(50%, 442px) - 24px);
   bottom: 0;
-  background: linear-gradient(to right, rgba(3, 12, 31, 0.75) 0%, rgba(27, 61, 145, 0.4) 65%, transparent 100%);
+  background: linear-gradient(to right, rgba(33, 37, 78, 0.75) 0%, rgba(33, 66, 143, 0.4) 65%, transparent 100%);
   z-index: 0;
 }
 
@@ -2152,7 +2217,7 @@ nav.primary a:hover {
   object-fit: cover;
   object-position: center;
   display: block;
-  background-color: #030C1F;
+  background-color: var(--navy);
 }
 
 .match-overlay {
@@ -3370,7 +3435,7 @@ nav.primary a:hover {
   border-radius: 12px;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  box-shadow: 0 2px 6px rgba(238, 87, 63, 0.3);
+  box-shadow: 0 2px 6px rgba(233, 88, 66, 0.3);
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
   margin-top: 8px;
@@ -3389,7 +3454,7 @@ nav.primary a:hover {
 
 .atelier-card .complet-tag:hover {
   transform: scale(1.05);
-  box-shadow: 0 3px 8px rgba(238, 87, 63, 0.4);
+  box-shadow: 0 3px 8px rgba(233, 88, 66, 0.4);
 }
 
 /* Message explicatif liste d'attente sur le recto */
@@ -3584,22 +3649,22 @@ nav.primary a:hover {
   opacity: 0.9;
 }
 
-/* Bouton "Ça m'intéresse!" (liste d'attente / intérêt stage) */
+/* Bouton "Ça m'intéresse!" (liste d'attente) – orange charte */
 .atelier-card .btn-waitlist {
   display: flex;
   width: 100%;
   justify-content: center;
   text-align: center;
-  background: var(--accent);
+  background: var(--orange);
   color: var(--white);
-  border-color: var(--accent);
+  border-color: var(--orange);
 }
 
 .atelier-card .btn-waitlist:hover {
-  background: var(--accent-dark);
-  border-color: var(--accent-dark);
+  background: var(--orange-dark);
+  border-color: var(--orange-dark);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(238, 87, 63, 0.3);
+  box-shadow: 0 4px 12px rgba(240, 133, 58, 0.35);
 }
 
 /* ============================================
@@ -3661,7 +3726,7 @@ nav.primary a:hover {
   border-left: 3px solid var(--accent);
   padding-left: 12px;
   border-left-style: solid;
-  border-image: linear-gradient(to bottom, var(--accent), rgba(238, 87, 63, 0.5)) 1;
+  border-image: linear-gradient(to bottom, var(--accent), rgba(233, 88, 66, 0.5)) 1;
   background: transparent;
   border-radius: 6px;
   padding: 10px 12px;
@@ -3886,7 +3951,7 @@ nav.primary a:hover {
   top: 0;
   bottom: 0;
   width: 3px;
-  background: linear-gradient(to bottom, var(--accent), rgba(238, 87, 63, 0.5));
+  background: linear-gradient(to bottom, var(--accent), rgba(233, 88, 66, 0.5));
   z-index: 1;
 }
 
@@ -4097,7 +4162,7 @@ button.slot-spectacle:active {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(3, 12, 31, 0.95);
+  background: rgba(33, 37, 78, 0.95);
   backdrop-filter: blur(8px);
   z-index: 9999;
   display: flex;
@@ -4681,7 +4746,7 @@ button.slot-spectacle:active {
 .price:hover .price-flip-front::after {
   opacity: 1;
   transform: translateY(calc(-50% - 2px));
-  background: rgba(238, 87, 63, 0.1);
+  background: rgba(233, 88, 66, 0.1);
   border-color: var(--accent-dark);
   color: var(--accent-dark);
 }
@@ -4773,14 +4838,14 @@ button.slot-spectacle:active {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  box-shadow: 0 4px 12px rgba(238, 87, 63, 0.3);
+  box-shadow: 0 4px 12px rgba(1, 179, 228, 0.35);
   transition: all 0.3s ease;
   display: inline-block;
 }
 
 .btn-billetterie:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(238, 87, 63, 0.4);
+  box-shadow: 0 6px 16px rgba(1, 179, 228, 0.45);
 }
 
 .early-bird-notice {
@@ -4803,8 +4868,8 @@ button.slot-spectacle:active {
 }
 
 .pass-gagnant {
-  background: rgba(3, 12, 31, 0.4) !important;
-  border-color: rgba(18, 180, 227, 0.3) !important;
+  background: rgba(33, 37, 78, 0.4) !important;
+  border-color: rgba(1, 179, 228, 0.3) !important;
   transition: all 0.3s ease;
   position: relative;
   backdrop-filter: blur(4px);
@@ -4822,8 +4887,8 @@ button.slot-spectacle:active {
 .pass-gagnant:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
-  border-color: rgba(18, 180, 227, 0.4) !important;
-  background: rgba(3, 12, 31, 0.5) !important;
+  border-color: rgba(1, 179, 228, 0.4) !important;
+  background: rgba(33, 37, 78, 0.5) !important;
 }
 
 .pass-gagnant h3 {
@@ -4865,7 +4930,7 @@ button.slot-spectacle:active {
 }
 
 .pass-gagnant .btn-secondary:hover {
-  background: rgba(238, 87, 63, 0.1);
+  background: rgba(233, 88, 66, 0.1);
   border-color: var(--accent-dark);
   color: var(--accent-dark);
   transform: translateY(-1px);
@@ -4934,7 +4999,7 @@ button.slot-spectacle:active {
 }
 
 .sponsor-placeholder {
-  background: rgba(3, 12, 31, 0.4);
+  background: rgba(33, 37, 78, 0.4);
   border: 1px solid var(--accent);
   height: 128px;
   border-radius: 8px;
@@ -4955,12 +5020,12 @@ button.slot-spectacle:active {
 }
 
 .sponsor-placeholder:hover {
-  background: rgba(3, 12, 31, 0.6);
+  background: rgba(33, 37, 78, 0.6);
   border-color: var(--accent-dark);
   color: var(--blue-dark);
   text-decoration: none;
   transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(238, 87, 63, 0.2), inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(233, 88, 66, 0.2), inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 719px) {
@@ -4986,7 +5051,7 @@ button.slot-spectacle:active {
   font-weight: 700;
   text-decoration: none;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(238, 87, 63, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 6px rgba(233, 88, 66, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   letter-spacing: 0.2px;
   margin-top: 32px;
@@ -5002,7 +5067,7 @@ button.slot-spectacle:active {
 #sponsors .small a:hover {
   background: var(--accent-dark);
   transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(238, 87, 63, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 10px rgba(233, 88, 66, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
   text-decoration: none;
 }
 
@@ -5312,7 +5377,7 @@ footer > .container > div > p.small:last-child {
 
 .sticky-cta .btn {
   min-height: 48px;
-  box-shadow: 0 4px 16px rgba(238, 87, 63, 0.3), 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(233, 88, 66, 0.3), 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 @media (min-width: 840px) {
@@ -5478,7 +5543,7 @@ body:has(#spectacle-details[open]) {
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-color: #030C1F;
+  background-color: var(--navy);
   border-radius: 0;
   flex-shrink: 0;
 }
@@ -5578,7 +5643,7 @@ body:has(#spectacle-details[open]) {
 .spectacle-modal-time {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #12B4E3;
+  color: var(--cyan);
   margin-bottom: 8px;
 }
 
@@ -5594,7 +5659,7 @@ body:has(#spectacle-details[open]) {
 .spectacle-modal-title {
   font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: clamp(1.8rem, 6vw, 2.5rem);
-  color: #EE573F;
+  color: var(--accent);
   margin: 0 0 20px;
   font-weight: normal;
   line-height: 1.2;
@@ -5854,7 +5919,7 @@ input:focus {
 #sib-container .sib-form-block__button:hover,
 #sib-container-waitlist .sib-form-block__button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(238, 87, 63, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(233, 88, 66, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 #sib-container .sib-form-block__button .sib-hide-loader-icon,

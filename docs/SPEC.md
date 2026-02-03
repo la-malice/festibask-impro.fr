@@ -33,6 +33,7 @@ Static marketing site for **Festibask'Impro**, the improvisation theatre festiva
 - **Inputs:** User visits URL; testimonials from local JSON; form submissions to Brevo/Sibforms (external).
 - **Outputs:** HTML/CSS/JS and static assets served to the browser; form data sent to Brevo.
 - **External dependencies:** Brevo (tracker + forms), Sibforms (form UI), Google Fonts (Hubot Sans). [UNCERTAIN] Apple touch icon path (root vs assets/favicon) may vary by deploy.
+- **Charte graphique:** Typography and colors are aligned with the Festi'Bask Impro graphic charter: Hubot Sans (Titre 1/2/3, Text, Description) and a 6-color palette (navy, blue-charte, cyan; coral, orange, pink). Variables and usage are documented in docs/slices/charte-graphique.md.
 
 ## Assumptions and Uncertainties
 

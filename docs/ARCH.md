@@ -35,7 +35,7 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 
 - **Build:** Node; npm scripts. copy-to-dist.js (Node), then PurgeCSS CLI, PostCSS CLI, Terser CLI. No Vite in build.
 - **Dev:** Vite (root, port 8000, open browser); serves index.html and assets as-is.
-- **Front-end:** Vanilla HTML/CSS/JS; no framework. Google Fonts (Hubot Sans) loaded async.
+- **Front-end:** Vanilla HTML/CSS/JS; no framework. Google Fonts (Hubot Sans) loaded async. Styles follow the graphic charter (Hubot Sans hierarchy, 6-color palette); see docs/slices/charte-graphique.md.
 - **Data:** Static JSON (temoignages); EDF players and spectacle data in script.js.
 - **Deploy:** GitHub Actions (ubuntu-latest, Node 20); artifact `dist/` → deploy-pages. Environment: github-pages.
 
