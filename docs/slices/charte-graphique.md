@@ -52,6 +52,8 @@ Classes utilitaires : `.titre-1`, `.titre-2`, `.titre-3`, `.text-charte`, `.desc
 | `--orange` | #f0853a | Phrase d'accroche section À propos (`.intro-highlight`) ; bouton « Ça m'intéresse! » (liste d'attente stages). |
 | `--pink` | #df1279 | Titres h2 de toutes les sections sur fond sombre. |
 
+Fond des cartes intervenant (flip bio, stages) : **navy** (`--navy`).
+
 Boutons : **principal** (Prévenez-moi, billetterie) = **cyan** ; **inscription** aux stages = **cyan** ; **liste d'attente** (« Ça m'intéresse! ») = **orange**.
 
 Variables dérivées : `--accent` et `--accent-pink` = coral ; `--blue`, `--blue-border`, etc. = cyan.

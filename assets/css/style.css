@@ -3218,8 +3218,8 @@ nav.primary a:hover {
   position: relative;
   flex: 1;
   min-width: 150px;
-  min-height: 60px;
-  height: 60px;
+  min-height: 116px;
+  height: 116px;
   transition: transform 0.6s, height 0.6s;
   transform-style: preserve-3d;
   cursor: pointer;
@@ -3245,10 +3245,10 @@ nav.primary a:hover {
   top: 0;
   left: 0;
   width: 100%;
-  min-height: 60px;
+  min-height: 116px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   padding: 0;
 }
 
@@ -3259,13 +3259,13 @@ nav.primary a:hover {
   top: 0;
   left: 0;
   width: 100%;
-  min-height: 60px;
+  min-height: 116px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 12px;
   padding: 12px;
-  background: #0a5a6e; /* fond opaque, pas de transparence */
+  background: var(--navy); /* fond carte intervenant (charte) */
   border-radius: 8px;
 }
 
@@ -3277,8 +3277,8 @@ nav.primary a:hover {
 }
 
 .atelier-card .flip-back .instructor-flip-back-header img {
-  width: 48px;
-  height: 48px;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
@@ -3292,6 +3292,25 @@ nav.primary a:hover {
   margin: 0;
 }
 
+.atelier-card .instructor-name-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-start;
+}
+
+.atelier-card .instructor-insta {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  transition: color 0.2s, text-decoration 0.2s;
+}
+
+.atelier-card .instructor-insta:hover {
+  color: var(--white);
+  text-decoration: underline;
+}
+
 .atelier-card .flip-back .instructor-flip-container.flipped {
   transform: rotateY(180deg);
   height: auto;
@@ -3303,7 +3322,7 @@ nav.primary a:hover {
   min-height: auto;
   height: auto;
   padding: 14px 18px;
-  background: #0a5a6e; /* fond opaque quand déplié */
+  background: var(--navy); /* fond carte intervenant déplié (charte) */
 }
 
 .atelier-card .flip-back .instructor-flip-container.flipped .instructor-flip-front {
@@ -3311,8 +3330,8 @@ nav.primary a:hover {
 }
 
 .atelier-card .flip-back .instructor-flip-front img {
-  width: 48px;
-  height: 48px;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
@@ -3336,6 +3355,13 @@ nav.primary a:hover {
   margin: 0;
   line-height: 1.5;
   flex: 1;
+}
+
+.atelier-card .flip-back .instructor-photo-credit {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 8px 0 0;
+  line-height: 1.3;
 }
 
 .atelier-card .flip-back:hover .instructor-flip-container:not(.flipped) {
@@ -3363,11 +3389,11 @@ nav.primary a:hover {
 
 .atelier-card h3 {
   font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
-  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+  font-size: clamp(1rem, 1.7vw, 1.35rem);
   color: var(--blue-accent);
   margin: 12px 0 0 0;
   font-weight: normal;
-  line-height: 1.2;
+  line-height: 1.25;
   transition: color 0.2s;
   text-align: center;
 }
@@ -3411,8 +3437,8 @@ nav.primary a:hover {
   position: relative;
   margin-top: 12px;
   margin-bottom: 0;
-  min-height: 60px;
-  height: 60px;
+  min-height: 116px;
+  height: 116px;
   transition: transform 0.6s, height 0.6s;
   transform-style: preserve-3d;
   cursor: pointer;
@@ -3425,10 +3451,10 @@ nav.primary a:hover {
   top: 0;
   left: 0;
   width: 100%;
-  min-height: 60px;
+  min-height: 116px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
   padding: 6px 0;
 }
 
@@ -3439,13 +3465,13 @@ nav.primary a:hover {
   top: 0;
   left: 0;
   width: 100%;
-  min-height: 60px;
+  min-height: 116px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 12px;
   padding: 12px;
-  background: #0a5a6e;
+  background: var(--navy);
   border-radius: 8px;
 }
 
@@ -3457,8 +3483,8 @@ nav.primary a:hover {
 }
 
 .atelier-card .flip-front .instructor-flip-back-header img {
-  width: 48px;
-  height: 48px;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
@@ -3472,6 +3498,26 @@ nav.primary a:hover {
   margin: 0;
 }
 
+/* Recto : fond gris → texte sombre pour lisibilité */
+.atelier-card .flip-front .instructor-flip-front .instructor-insta {
+  color: var(--blue);
+}
+
+.atelier-card .flip-front .instructor-flip-front .instructor-insta:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+/* Carte stage atténuée (pas en surbrillance) : @ Instagram plus foncé pour contraste */
+#stages .atelier-card:not(.active) .flip-front .instructor-flip-front .instructor-insta {
+  color: var(--blue-charte);
+}
+
+#stages .atelier-card:not(.active) .flip-front .instructor-flip-front .instructor-insta:hover {
+  color: var(--navy);
+  text-decoration: underline;
+}
+
 .atelier-card .flip-front .instructor-flip-container.flipped {
   transform: rotateY(180deg);
   height: auto;
@@ -3483,7 +3529,7 @@ nav.primary a:hover {
   min-height: auto;
   height: auto;
   padding: 14px 18px;
-  background: #0a5a6e;
+  background: var(--navy);
 }
 
 .atelier-card .flip-front .instructor-flip-container.flipped .instructor-flip-front {
@@ -3498,6 +3544,13 @@ nav.primary a:hover {
   flex: 1;
 }
 
+.atelier-card .flip-front .instructor-flip-back .instructor-photo-credit {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 8px 0 0;
+  line-height: 1.3;
+}
+
 .atelier-card .instructor-avatar-small {
   width: 40px;
   height: 40px;
@@ -3505,6 +3558,13 @@ nav.primary a:hover {
   object-fit: cover;
   border: 2px solid var(--blue-border);
   flex-shrink: 0;
+}
+
+/* Photo intervenant agrandie dans le flip (recto et verso de la carte stage) */
+.atelier-card .flip-front .instructor-flip-front .instructor-avatar-small {
+  width: 96px;
+  height: 96px;
+  border: 2px solid rgba(255, 255, 255, 0.8);
 }
 
 .atelier-card .instructor-name-small {

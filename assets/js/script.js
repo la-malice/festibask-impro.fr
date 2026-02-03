@@ -409,15 +409,24 @@
     });
   }
 
-  // Clic sur une colonne de jour dans le programme pour la mettre en surbrillance (sync tous les switchers)
+  // Clic sur une colonne de jour dans le programme : si colonne atténuée → surbrillance uniquement ; si déjà en surbrillance → flip/lien sur les slots
   document.querySelectorAll('#programme .day.card').forEach((card) => {
     card.addEventListener('click', (e) => {
-      // Ne pas changer de jour si on clique sur un lien ou un bouton (spectacle, atelier, etc.)
-      if (e.target.closest('a, button')) return;
       const dayIndex = parseInt(card.getAttribute('data-day'), 10);
       if (Number.isNaN(dayIndex)) return;
+
+      const isActive = card.classList.contains('active');
+      if (!isActive) {
+        // Colonne atténuée : tout clic met en surbrillance, on n'exécute pas le flip ni le lien du slot (capture pour bloquer avant les slots)
+        e.preventDefault();
+        e.stopPropagation();
+        setCurrentDay(dayIndex);
+        return;
+      }
+      // Colonne déjà en surbrillance : ne pas consommer le clic sur lien/bouton (laisser flip ou navigation)
+      if (e.target.closest('a, button')) return;
       setCurrentDay(dayIndex);
-    });
+    }, true);
   });
 
   // Clic sur l'en-tête d'un stage pour mettre en surbrillance les stages de ce jour (et synchroniser tous les switchers)
@@ -431,7 +440,19 @@
     });
   });
 
-  // Flip des cartes d'ateliers
+  // Section stages : si la carte n'est pas en surbrillance (jour non sélectionné), tout clic ne fait que sélectionner le jour (pas de flip)
+  document.querySelectorAll('#stages .atelier-card').forEach((card) => {
+    card.addEventListener('click', (e) => {
+      if (!card.classList.contains('active')) {
+        e.preventDefault();
+        e.stopPropagation();
+        const dayIndex = parseInt(card.getAttribute('data-day'), 10);
+        if (!Number.isNaN(dayIndex)) setCurrentDay(dayIndex);
+      }
+    }, true);
+  });
+
+  // Flip des cartes d'ateliers (ne s'exécute que si la carte est déjà en surbrillance, grâce au listener ci‑dessus en capture)
   // 1) Clic sur "En savoir plus" → montre le verso
   document.querySelectorAll('.en-savoir-plus-link').forEach(link => {
     link.addEventListener('click', e => {
