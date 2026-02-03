@@ -41,6 +41,18 @@ Boutons : **principal** (Prévenez-moi, billetterie) = **cyan** ; **inscription*
 
 Variables dérivées : `--accent` et `--accent-pink` = coral ; `--blue`, `--blue-border`, etc. = cyan.
 
+## Programme – convention liserets (couleurs par type de créneau)
+
+| Variable | Couleur | Usage |
+|----------|---------|--------|
+| `--programme-slot-stage` | orange | Stages / ateliers (`.slot-atelier`) |
+| `--programme-slot-long` | cyan | Format long (`.slot-format-long`) |
+| `--programme-slot-match` | pink | Matchs (`.slot-spectacle`) |
+| `--programme-slot-other` | navy | Autres (accueil, pause, fin de soirée – `.slot` sans sous-classe) |
+| `--programme-slot-festif` | blue-charte | Soirée festif (`.slot-festif`) |
+
+Liseret gauche = 3px (4px pour festif), dégradé vers transparent en bas.
+
 ## Fichiers
 
 - Variables définies dans `assets/css/style.css` (`:root`) et reflétées dans le critical CSS de `index.html`.
