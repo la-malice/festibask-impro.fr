@@ -1187,7 +1187,7 @@ nav.primary a:hover {
 
 .hero-date-main {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: center;
   gap: clamp(0.25em, 1.5vw, 0.6em);
   color: #FFFFFF;
@@ -1203,20 +1203,30 @@ nav.primary a:hover {
   letter-spacing: -0.02em;
 }
 
-.hero-date-separator {
-  font-weight: 600;
-  font-size: clamp(1.8rem, 4vw, 2.4rem);
-  opacity: 0.7;
-  display: flex;
-  align-items: center;
-}
-
 .hero-date-month {
   font-weight: 600;
   font-size: clamp(2.8rem, 6.3vw, 3.8rem);
-  margin-left: clamp(0.4em, 2vw, 0.8em);
+  margin-left: 0.15em;
   font-stretch: condensed;
   letter-spacing: -0.02em;
+}
+
+.hero-date-year {
+  font-weight: 300;
+  font-size: clamp(2.8rem, 6.3vw, 3.8rem);
+  margin-left: 0.3em;
+  color: #FFFFFF;
+  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
+  font-stretch: condensed;
+  letter-spacing: -0.02em;
+}
+
+.hero-date-separator {
+  font-weight: 400;
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
 }
 
 .hero-date-location {
@@ -1260,19 +1270,15 @@ nav.primary a:hover {
   z-index: 10;
   padding: 0 16px;
   box-sizing: border-box;
-  margin-top: clamp(32px, 5vw, 48px);
-  margin-bottom: clamp(16px, 3vw, 24px);
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 @media (max-width: 768px) {
   .hero-tags {
-    position: relative;
-    margin-top: clamp(24px, 5vw, 32px);
-    margin-bottom: clamp(12px, 2.5vw, 20px);
     font-size: clamp(14px, 3.2vw, 20px);
     gap: 8px;
     padding: 0 12px;
-    width: calc(100% - 24px);
     flex-wrap: nowrap;
     justify-content: center;
     z-index: 50;
@@ -1404,47 +1410,79 @@ nav.primary a:hover {
   box-sizing: border-box;
 }
 
-.hero-title {
-  text-align: center;
-  z-index: 10;
-  line-height: 1.1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+/* Grille 2×2 : [ logo | vidéo ] [ tags | décompte ] — tags et décompte à la même hauteur */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto auto auto;
+  gap: clamp(24px, 4vw, 40px);
+  align-items: start;
+  justify-items: center;
   width: 100%;
-  max-width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0;
+  padding: 0 16px;
   box-sizing: border-box;
-  gap: clamp(20px, 4vw, 40px);
+  z-index: 10;
 }
 
-@media (max-width: 1024px) {
-  .hero-title {
-    padding: 0;
-  }
+.hero-logo-wrapper {
+  grid-column: 1;
+  grid-row: 1;
 }
 
-@media (max-width: 768px) {
-  .hero-title {
-    padding: 0;
-    margin: 12px auto 8px;
-    width: 100%;
-    max-width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: clamp(24px, 5vw, 32px);
-  }
+.hero-tags {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.hero-video-container {
+  grid-column: 1;
+  grid-row: 3;
+}
+
+.hero-countdown {
+  grid-column: 1;
+  grid-row: 4;
 }
 
 @media (min-width: 1024px) {
-  .hero-title {
-    width: auto;
-    flex-direction: row;
-    align-items: center;
-    gap: clamp(32px, 5vw, 60px);
+  .hero-grid {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    gap: clamp(24px, 4vw, 40px) clamp(32px, 5vw, 60px);
+    align-items: start;
+    justify-items: center;
+  }
+
+  .hero-logo-wrapper {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+    align-self: start;
+    max-width: 85%;
+  }
+
+  .hero-tags {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: start;
+    align-self: start;
+  }
+
+  .hero-video-container {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: start;
+    align-self: start;
+    max-width: 336px;
+  }
+
+  .hero-countdown {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: start;
+    align-self: start;
   }
 }
 
@@ -1485,15 +1523,11 @@ nav.primary a:hover {
 }
 
 @media (min-width: 1024px) {
-  .hero-logo {
+  .hero-grid .hero-logo-wrapper .hero-logo {
     margin: 0;
-    width: clamp(600px, 60vw, 960px);
-    max-height: clamp(240px, 48vh, 540px);
-  }
-  
-  .hero-logo-wrapper {
-    flex: 1;
-    max-width: 60%;
+    width: 100%;
+    max-width: clamp(720px, 74vw, 1200px);
+    max-height: clamp(436px, 68vh, 728px);
   }
 }
 
@@ -1607,39 +1641,42 @@ nav.primary a:hover {
   }
 }
 
-/* Countdown */
+/* Countdown : une ligne dans la largeur de la vidéo (336px) */
 .hero-countdown {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(8px, 2vw, 16px);
-  margin-top: clamp(8px, 2vw, 16px);
-  margin-bottom: clamp(8px, 2vh, 16px);
+  gap: 2px;
+  margin-top: clamp(8px, 1.5vw, 16px);
+  margin-bottom: 0;
   z-index: 10;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   width: 100%;
-  max-width: 100%;
+  max-width: 336px;
   box-sizing: border-box;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 0 16px;
+  padding: 0 4px;
 }
 
 @media (max-width: 768px) {
   .hero-countdown {
-    margin-top: clamp(6px, 1.5vw, 12px);
-    margin-bottom: clamp(6px, 1.5vh, 12px);
-    position: relative;
-    left: auto;
-    transform: none;
+    margin-top: clamp(12px, 2vw, 20px);
+    margin-bottom: 0;
     width: 100%;
     max-width: 100%;
-    padding: 0 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
+    padding: 0 8px;
+    flex-wrap: wrap;
+  }
+  .hero-countdown .countdown-item {
+    flex: 0 1 auto;
+    min-width: 48px;
+  }
+  .hero-countdown .countdown-number {
+    font-size: clamp(12px, 2.2vw, 20px);
+    padding: 4px 6px;
+    max-width: none;
+  }
+  .hero-countdown .countdown-label {
+    font-size: 10px;
   }
 }
 
@@ -1648,20 +1685,25 @@ nav.primary a:hover {
   flex-direction: column;
   align-items: center;
   gap: 6px;
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 .countdown-number {
   font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
-  font-size: clamp(24px, 4.5vw, 48px);
+  font-size: clamp(10px, 1.8vw, 18px);
   font-weight: normal;
   color: var(--white);
   background: rgba(238, 87, 63, 0.2);
-  border: 2px solid var(--accent);
-  border-radius: 12px;
-  padding: clamp(8px, 1.5vw, 12px) clamp(12px, 2vw, 20px);
-  min-width: clamp(55px, 9vw, 90px);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  padding: 2px 4px;
+  min-width: 0;
+  width: 100%;
+  max-width: 72px;
+  box-sizing: border-box;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(238, 87, 63, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 8px rgba(238, 87, 63, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(4px);
   transition: all 0.3s ease;
 }
@@ -1673,41 +1715,38 @@ nav.primary a:hover {
 }
 
 .countdown-label {
-  font-size: clamp(8px, 1.4vw, 11px);
+  font-size: 9px;
   font-weight: 600;
   color: var(--white);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.02em;
   opacity: 0.9;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  margin-top: -2px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  margin-top: 0;
+  line-height: 1.1;
 }
 
 .countdown-separator {
   font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
-  font-size: clamp(18px, 4vw, 36px);
+  font-size: clamp(10px, 1.5vw, 14px);
   font-weight: normal;
   color: #12B4E3;
-  margin-bottom: clamp(15px, 3vw, 28px);
+  margin-bottom: 14px;
   opacity: 0.8;
+  flex-shrink: 0;
 }
 
 @media (max-width: 600px) {
   .hero-countdown {
     gap: 6px;
-    padding: 0 16px;
+    padding: 0 8px;
   }
   
   .countdown-separator {
-    margin-bottom: 30px;
+    margin-bottom: 16px;
   }
   
-  .countdown-number {
-    min-width: 60px;
-    padding: 10px 12px;
-  }
-  
-  .hero-title {
+  .hero-grid {
     padding: 0 16px;
   }
   
