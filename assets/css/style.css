@@ -3522,6 +3522,8 @@ nav.primary a:hover {
   transform: rotateY(180deg);
   height: auto;
   min-height: auto;
+  max-height: 280px;
+  overflow-y: auto;
 }
 
 .atelier-card .flip-front .instructor-flip-container.flipped .instructor-flip-back {

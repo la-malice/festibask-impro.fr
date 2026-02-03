@@ -531,9 +531,12 @@
         tempBack.style.transform = 'none';
         tempBack.style.width = back.offsetWidth + 'px';
         document.body.appendChild(tempBack);
-        const backHeight = tempBack.scrollHeight + 28; // + padding
+        const measuredHeight = tempBack.scrollHeight + 28; // + padding
         document.body.removeChild(tempBack);
-        
+        // Plafonner la hauteur pour ne pas déformer la ligne de stages (bio scrollable si besoin)
+        const maxInstructorFlipHeight = 280;
+        const backHeight = Math.min(measuredHeight, maxInstructorFlipHeight);
+
         // On applique la hauteur au container
         container.style.minHeight = backHeight + 'px';
         // Petit délai pour que la hauteur soit appliquée avant le flip
