@@ -1293,6 +1293,12 @@ nav.primary a:hover {
   letter-spacing: -0.02em;
 }
 
+@media (max-width: 768px) {
+  .hero-date-year {
+    display: none;
+  }
+}
+
 .hero-date-separator {
   font-weight: 400;
   font-size: clamp(1.4rem, 3vw, 1.9rem);
