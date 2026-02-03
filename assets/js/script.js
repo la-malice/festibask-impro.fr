@@ -453,6 +453,10 @@
       if (e.target.closest('.btn-inscription, .btn-waitlist, a')) {
         return;
       }
+      // Ne pas flipper la carte si on clique sur l'intervenant (bio en overlay au lieu du flip)
+      if (e.target.closest('.instructor-flip-container')) {
+        return;
+      }
       const flipContainer = front.closest('.flip-container');
       if (flipContainer) {
         flipContainer.classList.add('flipped');
@@ -490,8 +494,8 @@
     });
   });
 
-  // Flip pour afficher la bio de l'intervenant (seulement pour Laëtitia - instructor-4)
-  document.querySelectorAll('.flip-back .instructor-flip-container[data-flip="instructor-4"]').forEach(container=>{
+  // Flip pour afficher la bio de l'intervenant (recto et verso : overlay au lieu de flipper la carte)
+  const instructorFlipHandler = (container) => {
     container.addEventListener('click',e=>{
       e.preventDefault();
       const isFlipped = container.classList.contains('flipped');
@@ -525,7 +529,9 @@
         }, 600);
       }
     });
-  });
+  };
+  document.querySelectorAll('.flip-back .instructor-flip-container').forEach(instructorFlipHandler);
+  document.querySelectorAll('.flip-front .instructor-flip-container').forEach(instructorFlipHandler);
 
   // Flip pour afficher les détails des tarifs
   document.querySelectorAll('.price-flip-container').forEach(container=>{
