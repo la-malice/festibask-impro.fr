@@ -4788,6 +4788,22 @@ button.slot-spectacle:active {
   position: relative;
 }
 
+/* Identité visuelle par type de pass (charte : cyan, orange, rose) — fond teinté + bordure */
+.price#pass-1j {
+  background: rgba(232, 247, 252, 0.95);
+  border: 2px solid rgba(1, 179, 228, 0.45);
+}
+
+.price#pass-3j {
+  background: rgba(255, 250, 243, 0.95);
+  border: 2px solid rgba(240, 133, 58, 0.45);
+}
+
+.price#stage {
+  background: rgba(255, 243, 250, 0.95);
+  border: 2px solid rgba(223, 18, 121, 0.4);
+}
+
 .price h3,
 .price-flip-front h3 {
   font-size: clamp(1.3rem, 2.5vw, 1.8rem);
@@ -4811,9 +4827,56 @@ button.slot-spectacle:active {
   margin-bottom: 0.2em;
 }
 
-.price:nth-of-type(2) .value,
-.price:nth-of-type(2) .price-flip-front .value {
+/* Cartes avec tarif prévente (Pass 1 jour, Pass 3 jours) */
+.value-with-presale .value-normal {
+  display: inline;
+  text-decoration: line-through;
+  color: var(--muted);
+  font-size: 0.6em;
+  font-weight: 700;
+  margin-left: 0.35em;
+}
+
+.value-with-presale .value-presale {
+  display: inline;
+}
+
+.value-with-presale .value-presale-label {
+  margin: 0.35em 0 0 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* Couleurs prix / accent par carte (cyan, orange, rose) */
+.price#pass-1j .value,
+.price#pass-1j .value-with-presale .value-presale,
+.price#pass-1j .value-with-presale .value-presale-label {
   color: var(--blue);
+}
+
+.price#pass-3j .value,
+.price#pass-3j .value-with-presale .value-presale,
+.price#pass-3j .value-with-presale .value-presale-label {
+  color: var(--orange);
+}
+
+.price#stage .value {
+  color: var(--pink);
+}
+
+.price#stage .price-front-footer .small {
+  color: var(--pink);
+}
+
+.price-flip-back .value-normal {
+  text-decoration: line-through;
+  color: rgba(255, 255, 255, 0.5);
+  margin-right: 0.35em;
+}
+
+.price-flip-back .value-presale {
+  color: var(--white);
 }
 
 /* Flipcards pour les cartes tarifaires */
@@ -4928,6 +4991,17 @@ button.slot-spectacle:active {
   text-decoration-color: var(--text);
 }
 
+/* Lien carte Stage : rose pour rester cohérent avec la carte */
+.price#stage .price-flip-front a {
+  color: var(--pink);
+  text-decoration-color: var(--pink);
+}
+
+.price#stage .price-flip-front a:hover {
+  color: #b80e64;
+  text-decoration-color: #b80e64;
+}
+
 .price-flip-back a {
   color: var(--white);
   text-decoration: underline;
@@ -4939,56 +5013,74 @@ button.slot-spectacle:active {
   opacity: 0.9;
 }
 
-.price-flip-front::after {
-  content: "En savoir plus →";
-  position: absolute;
-  top: calc(18px + clamp(1.3rem, 2.5vw, 1.8rem) + 8px + clamp(2.2rem, 4vw, 3.5rem) * 0.55);
-  right: 18px;
+/* Pied de carte tarif : texte + bouton Détails alignés en bas */
+.price-front-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.price-front-footer .small {
+  margin: 0;
+}
+
+.price-front-footer::after {
+  content: "Détails";
+  flex-shrink: 0;
   font-size: 0.75rem;
-  color: var(--accent);
+  color: var(--blue);
   background: transparent;
-  border: 1px solid var(--accent);
+  border: 1px solid var(--blue);
   padding: 6px 12px;
   border-radius: 8px;
   font-weight: 500;
-  opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
   pointer-events: none;
-  box-shadow: none;
-  text-shadow: none;
   letter-spacing: 0.3px;
   white-space: nowrap;
-  transform: translateY(-50%);
 }
 
-.price:hover .price-flip-front::after {
-  opacity: 1;
-  transform: translateY(calc(-50% - 2px));
-  background: rgba(233, 88, 66, 0.1);
-  border-color: var(--accent-dark);
-  color: var(--accent-dark);
+.price#pass-1j .price-front-footer::after {
+  color: var(--blue);
+  border-color: var(--blue);
 }
 
-.price-flip-container.flipped .price-flip-front::after {
+.price#pass-1j:hover .price-front-footer::after {
+  background: rgba(1, 179, 228, 0.15);
+  border-color: var(--blue-dark);
+  color: var(--blue-dark);
+  transform: translateY(-2px);
+}
+
+.price#pass-3j .price-front-footer::after {
+  color: var(--orange);
+  border-color: var(--orange);
+}
+
+.price#pass-3j:hover .price-front-footer::after {
+  background: rgba(240, 133, 58, 0.15);
+  border-color: var(--orange-dark);
+  color: var(--orange-dark);
+  transform: translateY(-2px);
+}
+
+.price#stage .price-front-footer::after {
+  color: var(--pink);
+  border-color: var(--pink);
+}
+
+.price#stage:hover .price-front-footer::after {
+  background: rgba(223, 18, 121, 0.12);
+  border-color: #b80e64;
+  color: #b80e64;
+  transform: translateY(-2px);
+}
+
+.price-flip-container.flipped .price-front-footer::after {
   display: none;
-}
-
-/* Sur mobile, toujours visible en bas */
-@media (max-width: 768px) {
-  .price-flip-front::after {
-    opacity: 1;
-    font-size: 0.75rem;
-    padding: 6px 12px;
-    top: auto;
-    bottom: 12px;
-    right: 12px;
-    transform: none;
-    box-shadow: none;
-  }
-  
-  .price:hover .price-flip-front::after {
-    transform: translateY(-2px);
-  }
 }
 
 .tarifs-encarts {
@@ -4997,13 +5089,13 @@ button.slot-spectacle:active {
   grid-template-columns: 1fr;
 }
 
-/* Encart Billetterie - fond semi-transparent et espacement réduit */
+/* Encart Billetterie - fond clair pour lisibilité */
 .billetterie-cta {
-  background: var(--white-overlay-medium);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(6px);
   padding: 24px;
-  border: 2px solid var(--blue-border-dark);
-  box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  border: 2px solid rgba(1, 179, 228, 0.4);
+  box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .billetterie-header {
@@ -5033,8 +5125,9 @@ button.slot-spectacle:active {
 
 .billetterie-text {
   margin: 0;
-  color: var(--blue-dark);
+  color: var(--navy);
   line-height: 1.5;
+  font-weight: 500;
 }
 
 .billetterie-button-wrapper {

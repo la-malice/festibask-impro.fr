@@ -98,7 +98,7 @@
       "@type": "Offer",
       "name": "Pass 3 jours",
       "url": "https://festibask-impro.fr/#pass-3j",
-      "price": "60",
+      "price": "70",
       "priceCurrency": "EUR",
       "description": "Accès aux 3 soirées du festival",
       "validFrom": "2025-12-01",
@@ -1367,11 +1367,18 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
         <div class="price-flip-container">
           <div class="price-flip-front">
             <h3>Pass 1 jour</h3>
-            <div class="value"><span class="value-prefix">à partir de</span> 25 €</div>
-            <p class="small">2 spectacles par soir</p>
+            <div class="value value-with-presale">
+              <span class="value-prefix">à partir de</span>
+              <span class="value-presale">25 €</span>
+              <span class="value-normal" aria-hidden="true">28 €</span>
+              <p class="value-presale-label">Tarif prévente</p>
+            </div>
+            <div class="price-front-footer">
+              <p class="small">2 spectacles par soir</p>
+            </div>
           </div>
           <div class="price-flip-back">
-            <h3>Pass 1 jour — à partir de 25 €</h3>
+            <h3>Pass 1 jour</h3>
             <p class="price-back-label">Inclut :</p>
 <ul class="price-back-list">
                 <li>Accès aux 2 spectacles du soir</li>
@@ -1386,11 +1393,18 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
         <div class="price-flip-container">
           <div class="price-flip-front">
             <h3>Pass 3 jours</h3>
-            <div class="value"><span class="value-prefix">à partir de</span> 60 €</div>
-            <p class="small">Accès aux 3 soirées</p>
+            <div class="value value-with-presale">
+              <span class="value-prefix">à partir de</span>
+              <span class="value-presale">70 €</span>
+              <span class="value-normal" aria-hidden="true">80 €</span>
+              <p class="value-presale-label">Tarif prévente</p>
+            </div>
+            <div class="price-front-footer">
+              <p class="small">Accès aux 3 soirées</p>
+            </div>
           </div>
           <div class="price-flip-back">
-            <h3>Pass 3 jours — à partir de 60 €</h3>
+            <h3>Pass 3 jours</h3>
             <p class="price-back-label">Inclut :</p>
             <ul class="price-back-list">
               <li>Accès aux 3 soirées du festival</li>
@@ -1406,10 +1420,12 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
           <div class="price-flip-front">
             <h3>Stage</h3>
             <div class="value"><span class="value-prefix">à partir de</span> 20 €</div>
-            <p class="small">1 <a href="#stages">stage d'impro à choisir</a></p>
+            <div class="price-front-footer">
+              <p class="small">1 <a href="#stages">stage d'impro à choisir</a></p>
+            </div>
           </div>
           <div class="price-flip-back">
-            <h3>Stages — à partir de 20 €</h3>
+            <h3>Stages</h3>
             <p class="price-back-label">Infos :</p>
             <ul class="price-back-list">
               <li>Durée selon le stage (1h30 à 3h)</li>
@@ -1426,15 +1442,12 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
       <div class="card billetterie-cta">
         <div class="billetterie-header">
           <h3>Billetterie</h3>
-          <!-- PRÉVENTES - Section masquée temporairement, à réactiver si besoin -->
-          <!--
           <div class="early-bird-notice">
-            <p><span>⚡ Préventes</span> — Places à tarif réduit en quantité limitée</p>
+            <p><span>Préventes limitées jusqu'au 15 mars</span>. Les tarifs affichés sont les tarifs préventes ; ils augmenteront après. Réservez dès l'ouverture pour profiter du meilleur prix.</p>
           </div>
-          -->
         </div>
         <div class="billetterie-content">
-          <p class="billetterie-text">Ouverture bientôt sur HelloAsso. Inscrivez-vous pour être prévenu·e en premier et ne pas manquer l'occasion.</p>
+          <p class="billetterie-text">Ouverture des préventes le <strong>15 février</strong> sur HelloAsso. Réservez avant le 15 mars pour bloquer les tarifs actuels.</p>
           <div class="billetterie-button-wrapper">
             <button class="btn btn-primary btn-billetterie" data-open="notify">Prévenez-moi</button>
           </div>
@@ -1501,7 +1514,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
       <div class="faq-card">
         <h2>Questions Fréquentes</h2>
         <div class="faq-list">
-          <details><summary>Quand la billetterie ouvre-t-elle ?</summary><p>Bientôt — laissez votre e-mail et nous vous préviendrons.</p></details>
+          <details><summary>Quand la billetterie ouvre-t-elle ?</summary><p>Les préventes ouvrent le 15 février et se terminent le 15 mars. Les tarifs augmenteront après cette date. Inscrivez-vous pour être prévenu·e à l’ouverture.</p></details>
           <details><summary>Des tarifs réduits ?</summary><p>Oui : -40% pour étudiant·e·s et demandeur·se·s d'emploi (justificatif requis).</p></details>
           <details><summary>La soirée festive est-elle incluse ?</summary><p>Oui, elle suit les spectacles du samedi.</p></details>
           <details><summary>Restauration sur place ?</summary><p>Oui, un espace snacks & boissons est prévu. Attention le prix des repas et boissons supplémentaires n'est pas inclu avec votre billet.</p></details>
