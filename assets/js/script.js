@@ -1482,20 +1482,38 @@
     });
   }
 
+  // URL du jeu Braquage (ouverture au clic en fullscreen puis sortie du plein écran)
+  const BRAQUAGE_URL = 'https://plamarque.github.io/braquage/';
+
   // Gérer les clics sur les cartes jour en plein écran pour changer de jour actif
   if (programFullscreenContainer) {
     programFullscreenContainer.addEventListener('click', (e) => {
+      if (programFullscreenContainer.style.display !== 'flex') return;
+
+      // Clic sur le slot Braquage : quitter le fullscreen et ouvrir le jeu dans un nouvel onglet
+      const slot = e.target.closest('button.slot-format-long');
+      if (slot) {
+        const titleEl = slot.querySelector('.slot-content h3');
+        if (titleEl && titleEl.textContent.trim() === 'Braquage') {
+          e.preventDefault();
+          e.stopPropagation();
+          closeProgramFullscreen();
+          window.open(BRAQUAGE_URL, '_blank', 'noopener,noreferrer');
+          return;
+        }
+      }
+
       // Vérifier si on clique sur une carte jour (mais pas sur les éléments interactifs à l'intérieur)
       const dayCard = e.target.closest('.day.card');
-      if (dayCard && programFullscreenContainer.style.display === 'flex') {
+      if (dayCard) {
         // Ne pas changer de jour si on clique sur un bouton, lien ou élément interactif
         if (e.target.closest('button, a, [data-spectacle]')) {
           return;
         }
-        
+
         const dayCards = programFullscreenGrid.querySelectorAll('.day.card');
         const dayIndex = Array.from(dayCards).indexOf(dayCard);
-        
+
         if (dayIndex >= 0) {
           updateFullscreenActiveDay(dayIndex);
         }
