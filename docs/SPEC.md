@@ -11,7 +11,7 @@ Static marketing site for **Festibask'Impro**, the improvisation theatre festiva
 
 ## Main Capabilities
 
-1. **Hero:** Logo, dates (15–17 mai), location (Patinoire de la Barre, Anglet), countdown to 2026-05-15 10:30; teaser video (poster by default, MP4 on click); anchors to #valeur, #programme, #stages.
+1. **Hero:** Logo, dates (15–17 mai), location (Patinoire de la Barre, Anglet), countdown to 2026-05-15 10:30; teaser video (poster by default, play on click). Source is either **YouTube** (video ID via `data-hero-video="youtube"` and `data-hero-youtube-id` on `#heroVideoContainer`) or **self-hosted** (MP4 from `data-src`, poster, captions from `assets/video/teaser-festibask-captions.vtt`); anchors to #valeur, #programme, #stages.
 2. **Spectacles (“À l’affiche”):** Day slider (Vendredi / Samedi / Dimanche); for each day: one “format long” block and one “match” block. Desktop: flip to show pitch; mobile: modal for spectacle details. Match France (Samedi) opens EDF player slider; other matches flip or open modal.
 3. **Programme:** Tabs by day; grid of day cards; fullscreen mode; sync with “À l’affiche” day selection.
 4. **Stages:** Atelier cards (flip for details, instructor bio where applicable); “En savoir plus” / “COMPLET” trigger flip; registration and waitlist buttons open Sibforms modals.
@@ -25,7 +25,7 @@ Static marketing site for **Festibask'Impro**, the improvisation theatre festiva
 ## Behavior
 
 - **Entry:** `index.html`; assets from `assets/` (css, js, img, data, video, fonts, favicon). Build: `npm run build` → copy script + PurgeCSS + PostCSS (cssnano) + Terser; output in `dist/`. Deploy: GitHub Actions → GitHub Pages (`dist/` artifact).
-- **Video:** Teaser poster shown by default; MP4 loaded and played on overlay click; captions from `assets/video/teaser-festibask-captions.vtt` (referenced in HTML).
+- **Video:** Teaser poster shown by default; play on overlay click. Mode chosen in HTML: **YouTube** (`data-hero-video="youtube"`, `data-hero-youtube-id`) — iframe embed loaded on click; or **self-hosted** (default) — MP4 loaded and played on click, captions from `assets/video/teaser-festibask-captions.vtt` (referenced in HTML). To revert to self-hosted, remove or set `data-hero-video` to `"self"` and remove `data-hero-youtube-id`.
 - **Data:** Testimonials from `assets/data/temoignages.json` (array); EDF players and spectacle pitches hardcoded in `script.js`. No backend API.
 
 ## Boundaries

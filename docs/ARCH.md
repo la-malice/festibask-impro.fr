@@ -22,7 +22,7 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 |-----------|----------------|-----------------|
 | **Markup** | Structure and content; critical CSS inline; preloads; meta, OG, Schema.org | index.html |
 | **Styles** | Layout, theme, components; PurgeCSS scans index.html + script.js | assets/css/style.css |
-| **Scripts** | Header, countdown, video, nav, modals, sliders, carousel, tooltips, fullscreen | assets/js/script.js |
+| **Scripts** | Header, countdown, hero video (YouTube iframe or self-hosted &lt;video&gt; per HTML config), nav, modals, sliders, carousel, tooltips, fullscreen | assets/js/script.js |
 | **Data** | Testimonials (carousel) | assets/data/temoignages.json |
 | **Copy build** | Copy index.html, CNAME, favicons, robots, sitemap, sw.js, assets, festival-2026, PDFs to dist/ | scripts/copy-to-dist.js |
 | **PurgeCSS** | Remove unused CSS for dist; safelist dynamic classes | purgecss.config.js |

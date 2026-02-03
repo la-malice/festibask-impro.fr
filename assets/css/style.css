@@ -1510,6 +1510,12 @@ nav.primary a:hover {
   aspect-ratio: 9 / 16; /* Format portrait */
 }
 
+/* Mode YouTube : poster appliqué en JS depuis l’attribut poster du <video> ; couverture du fond */
+.hero-video-container[data-hero-video="youtube"] {
+  background-size: cover;
+  background-position: center;
+}
+
 .hero-video-container iframe,
 .hero-video-container video {
   position: absolute;

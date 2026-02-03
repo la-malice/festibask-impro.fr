@@ -72,12 +72,16 @@
   updateCountdown();
   setInterval(updateCountdown, 1000);
 
-  // Vidéo hero : chargement au clic uniquement (poster affiché, MP4 chargé seulement si l’utilisateur clique)
+  // Vidéo hero : mode YouTube (iframe au clic) ou vidéo auto-hébergée (MP4 au clic) selon data-hero-video
   const heroVideoContainer = document.getElementById('heroVideoContainer');
   const heroVideo = document.getElementById('heroVideo');
   const heroVideoPlayOverlay = document.getElementById('heroVideoPlayOverlay');
 
   if (heroVideoContainer && heroVideo && heroVideoPlayOverlay) {
+    const heroVideoMode = heroVideoContainer.dataset.heroVideo;
+    const heroYoutubeId = heroVideoContainer.dataset.heroYoutubeId;
+    const isYoutubeMode = heroVideoMode === 'youtube' && heroYoutubeId;
+
     function hidePlayOverlay() {
       heroVideoPlayOverlay.classList.add('hidden');
     }
@@ -86,27 +90,52 @@
       heroVideoPlayOverlay.classList.remove('hidden');
     }
 
-    function startVideo() {
-      if (!heroVideo.src && heroVideo.dataset.src) {
-        heroVideo.muted = true;
-        heroVideo.src = heroVideo.dataset.src;
-        heroVideo.load();
-        heroVideo.addEventListener('loadeddata', () => {
+    if (isYoutubeMode) {
+      heroVideo.classList.add('hidden');
+      const posterUrl = heroVideo.getAttribute('poster') || 'assets/img/hero-video-poster-336w.avif';
+      heroVideoContainer.style.backgroundImage = 'url(' + posterUrl + ')';
+      heroVideoContainer.style.backgroundSize = 'cover';
+      heroVideoContainer.style.backgroundPosition = 'center';
+
+      heroVideoPlayOverlay.addEventListener('click', () => {
+        const iframe = document.createElement('iframe');
+        iframe.setAttribute('src', 'https://www.youtube.com/embed/' + heroYoutubeId + '?autoplay=1&rel=0');
+        iframe.setAttribute('title', heroVideo.getAttribute('title') || 'Vidéo Festibask\'Impro');
+        iframe.setAttribute('frameborder', '0');
+        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+        iframe.setAttribute('allowfullscreen', '');
+        iframe.style.position = 'absolute';
+        iframe.style.inset = '0';
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.border = 'none';
+        heroVideoContainer.style.backgroundImage = '';
+        heroVideoContainer.insertBefore(iframe, heroVideoContainer.firstChild);
+        hidePlayOverlay();
+      });
+    } else {
+      function startVideo() {
+        if (!heroVideo.src && heroVideo.dataset.src) {
+          heroVideo.muted = true;
+          heroVideo.src = heroVideo.dataset.src;
+          heroVideo.load();
+          heroVideo.addEventListener('loadeddata', () => {
+            heroVideo.play().catch(() => {});
+            hidePlayOverlay();
+          }, { once: true });
+        } else if (heroVideo.src) {
+          heroVideo.muted = true;
           heroVideo.play().catch(() => {});
           hidePlayOverlay();
-        }, { once: true });
-      } else if (heroVideo.src) {
-        heroVideo.muted = true;
-        heroVideo.play().catch(() => {});
-        hidePlayOverlay();
+        }
       }
+
+      heroVideoPlayOverlay.addEventListener('click', startVideo);
+
+      heroVideo.addEventListener('ended', () => {
+        showPlayOverlay();
+      });
     }
-
-    heroVideoPlayOverlay.addEventListener('click', startVideo);
-
-    heroVideo.addEventListener('ended', () => {
-      showPlayOverlay();
-    });
   }
 
   // Burger / drawer mobile
