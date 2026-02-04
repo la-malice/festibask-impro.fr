@@ -3860,7 +3860,6 @@ nav.primary a:hover {
   margin-top: 6px;
   margin-bottom: 0;
   padding-top: 12px;
-  border-top: 1px solid var(--blue-border-light);
 }
 
 .atelier-card .meta-chip {
@@ -3880,7 +3879,6 @@ nav.primary a:hover {
 .atelier-card .footer {
   margin-top: auto;
   padding-top: 12px;
-  border-top: 1px solid var(--orange-border-light);
 }
 
 /* Footer mobile - visible uniquement sur mobile, à côté de l'intervenant */
