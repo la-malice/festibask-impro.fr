@@ -567,11 +567,7 @@
     });
   });
 
-  // Popup détails spectacle
-  const spectacleDetailsModal = document.getElementById('spectacle-details');
-  const spectacleDetailsContent = document.getElementById('spectacle-details-content');
-  
-  // Données des spectacles (extrait des blocs existants)
+  // Données des spectacles (slider single-slide et match France)
   const spectaclesData = {
     'spectacle-vendredi-format-long': {
       type: 'format-long',
@@ -579,7 +575,7 @@
       label: 'Impro longue',
       title: 'Braquage',
       image: 'assets/img/long/braquage-800.avif',
-      pitch: 'Les portes se ferment, le braquage dérape, et soudain tout le monde devient suspect : braqueurs approximatifs, otages imprévisibles, alliances qui se font et se défont. Entre tension, humour qui surgit malgré tout et portraits touchants, on se surprend à s\'attacher à chacun… jusqu\'à ce que tout explose.'
+      pitch: 'Un braquage est en cours, portes closes. Otages et braqueurs se font face, chacun avec ses raisons, ses choix… et ce qu\'il préfère taire. Un format tendu et cinématographique, où le public désigne les positions de chacun avant de plonger dans une fiction en temps réel.'
     },
     'spectacle-vendredi-match': {
       type: 'match',
@@ -622,216 +618,41 @@
       pitch: 'Le match d\'impro est le format phare par lequel l\'impro s\'est diffusée. Venu du Québec, il emprunte aux codes du Hockey sur glace où 2 équipes de comédiens s\'affrontent sur une patinoire dans des séquences brèves et rythmées sous la surveillance d\'un arbitre implacable&nbsp;!'
     }
   };
-
-  // Fermeture du modal spectacle au swipe (mobile) — variables et handlers
-  let spectacleSwipeTouchStartY = 0;
-  let spectacleSwipeTouchStartX = 0;
-  let spectacleSwipeIgnoreClose = false;
-  let spectacleSwipeShouldClose = false;
-  let spectacleSwipeListenersAttached = false;
-  const spectacleSwipeThreshold = 60;
-
-  function spectacleSwipeTouchStart(e) {
-    if (!e.touches || !e.touches[0]) return;
-    const touch = e.touches[0];
-    spectacleSwipeTouchStartY = touch.clientY;
-    spectacleSwipeTouchStartX = touch.clientX;
-    spectacleSwipeShouldClose = false;
-    const modalInfo = spectacleDetailsContent.querySelector('.spectacle-modal-info');
-    const target = e.target;
-    spectacleSwipeIgnoreClose = !!(modalInfo && modalInfo.contains(target) && modalInfo.scrollTop > 0);
-  }
-
-  function spectacleSwipeTouchMove(e) {
-    if (!spectacleSwipeTouchStartY || !e.touches || !e.touches[0]) return;
-    const touch = e.touches[0];
-    const deltaY = touch.clientY - spectacleSwipeTouchStartY;
-    if (deltaY > spectacleSwipeThreshold && !spectacleSwipeIgnoreClose) spectacleSwipeShouldClose = true;
-  }
-
-  function spectacleSwipeTouchEnd(e) {
-    if (e.changedTouches && e.changedTouches[0]) {
-      const touch = e.changedTouches[0];
-      const deltaY = touch.clientY - spectacleSwipeTouchStartY;
-      if (deltaY > spectacleSwipeThreshold && !spectacleSwipeIgnoreClose) spectacleDetailsModal.close();
-    }
-    spectacleSwipeTouchStartY = 0;
-    spectacleSwipeTouchStartX = 0;
-    spectacleSwipeIgnoreClose = false;
-    spectacleSwipeShouldClose = false;
-  }
   
-  function openSpectacleDetails(spectacleId) {
-    const data = spectaclesData[spectacleId];
-    if (!data) return;
-    
-    spectacleDetailsContent.innerHTML = `
-      <div class="spectacle-modal-content">
-        <div class="spectacle-modal-image" style="background-image: url('${data.image}');"></div>
-        <div class="spectacle-modal-info">
-          <div class="spectacle-modal-time">${data.time}</div>
-          <div class="spectacle-modal-label">${data.label}</div>
-          <h3 class="spectacle-modal-title">${data.title}</h3>
-          <div class="spectacle-modal-pitch">
-            <p>${data.pitch}</p>
-          </div>
-          <div class="spectacle-modal-scroll-indicator" style="display: none;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19"></line>
-              <polyline points="19 12 12 19 5 12"></polyline>
-            </svg>
-            <span>Faites défiler pour voir la suite</span>
-          </div>
-        </div>
-      </div>
-    `;
-    
-    // Bloquer le scroll du body
-    document.body.style.overflow = 'hidden';
-    spectacleDetailsModal.showModal();
-
-    // Attacher les listeners swipe pour fermer (mobile uniquement)
-    if (window.innerWidth < 768 && !spectacleSwipeListenersAttached) {
-      spectacleDetailsModal.addEventListener('touchstart', spectacleSwipeTouchStart, { passive: true });
-      spectacleDetailsModal.addEventListener('touchmove', spectacleSwipeTouchMove, { passive: true });
-      spectacleDetailsModal.addEventListener('touchend', spectacleSwipeTouchEnd, { passive: true });
-      spectacleSwipeListenersAttached = true;
-    }
-    
-    // Vérifier si le contenu dépasse et afficher l'indicateur seulement si nécessaire
-    setTimeout(() => {
-      const modalInfo = spectacleDetailsContent.querySelector('.spectacle-modal-info');
-      const scrollIndicator = spectacleDetailsContent.querySelector('.spectacle-modal-scroll-indicator');
-      
-      if (modalInfo && scrollIndicator) {
-        // Vérifier si le contenu est scrollable (dépasse la hauteur visible)
-        const isScrollable = modalInfo.scrollHeight > modalInfo.clientHeight;
-        
-        if (isScrollable) {
-          // Ajouter une classe pour forcer la scrollbar et l'indicateur
-          modalInfo.classList.add('has-scroll');
-          scrollIndicator.style.display = 'flex';
-          
-          // Forcer la scrollbar à être visible en ajoutant un style inline
-          modalInfo.style.overflowY = 'scroll';
-          
-          // Masquer l'indicateur quand on arrive en bas
-          const handleScroll = () => {
-            const isAtBottom = modalInfo.scrollHeight - modalInfo.scrollTop <= modalInfo.clientHeight + 10;
-            if (isAtBottom) {
-              scrollIndicator.style.display = 'none';
-            } else {
-              scrollIndicator.style.display = 'flex';
-            }
-          };
-          
-          modalInfo.addEventListener('scroll', handleScroll);
-          
-          // Vérifier aussi au redimensionnement
-          window.addEventListener('resize', () => {
-            const stillScrollable = modalInfo.scrollHeight > modalInfo.clientHeight;
-            if (stillScrollable) {
-              modalInfo.classList.add('has-scroll');
-              scrollIndicator.style.display = 'flex';
-            } else {
-              modalInfo.classList.remove('has-scroll');
-              scrollIndicator.style.display = 'none';
-            }
-          });
-        } else {
-          modalInfo.classList.remove('has-scroll');
-          scrollIndicator.style.display = 'none';
-          modalInfo.style.overflowY = 'hidden';
-        }
-      }
-    }, 100);
-  }
-  
-  // Gérer les clics sur les boutons de spectacle
+  // Boutons programme : scroll vers la bannière spectacle (mobile et desktop)
   document.querySelectorAll('[data-spectacle]').forEach(button => {
     button.addEventListener('click', (e) => {
       e.preventDefault();
       const spectacleId = button.getAttribute('data-spectacle');
-      
-      // Sur desktop : scroll vers l'ancre, sur mobile : ouvrir la modal
-      const isMobile = window.innerWidth < 768;
-      
-      if (isMobile) {
-        // Mobile : ouvrir la modal
-        openSpectacleDetails(spectacleId);
-      } else {
-        // Desktop : scroll vers l'élément correspondant dans la section "valeur"
-        const targetElement = document.getElementById(spectacleId);
-        if (targetElement) {
-          // Scroll en douceur vers l'élément
-          targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
+      const targetElement = document.getElementById(spectacleId);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     });
   });
-  
-  // Fermer le modal en cliquant à l'extérieur
-  if (spectacleDetailsModal) {
-    spectacleDetailsModal.addEventListener('click', (e) => {
-      const modalCard = spectacleDetailsModal.querySelector('.modal-card');
-      const rect = modalCard.getBoundingClientRect();
-      const inside = rect.top <= e.clientY && e.clientY <= rect.bottom && rect.left <= e.clientX && e.clientX <= rect.right;
-      if (!inside) {
-        spectacleDetailsModal.close();
-        document.body.style.overflow = ''; // Restaurer le scroll
-      }
-    });
-    
-    // Restaurer le scroll quand le modal se ferme ; retirer les listeners swipe
-    spectacleDetailsModal.addEventListener('close', () => {
-      document.body.style.overflow = '';
-      if (spectacleSwipeListenersAttached) {
-        spectacleDetailsModal.removeEventListener('touchstart', spectacleSwipeTouchStart, { passive: true });
-        spectacleDetailsModal.removeEventListener('touchmove', spectacleSwipeTouchMove, { passive: true });
-        spectacleDetailsModal.removeEventListener('touchend', spectacleSwipeTouchEnd, { passive: true });
-        spectacleSwipeListenersAttached = false;
-      }
-    });
-  }
-  
-  // Gérer la fermeture via le bouton
-  const spectacleCloseBtn = spectacleDetailsModal?.querySelector('.modal-close');
-  if (spectacleCloseBtn) {
-    spectacleCloseBtn.addEventListener('click', () => {
-      document.body.style.overflow = '';
-    });
-  }
 
-  // Tap n'importe où sur le modal pour fermer (mobile uniquement)
-  const spectacleModalCard = spectacleDetailsModal?.querySelector('.modal-card');
-  if (spectacleModalCard) {
-    spectacleModalCard.addEventListener('click', (e) => {
-      if (window.innerWidth >= 768) return;
-      if (e.target.closest('.modal-close')) return;
-      spectacleDetailsModal.close();
-    });
-  }
-
-  // Flip pour afficher le pitch du format long (desktop) ou modal (mobile)
+  // Slider spectacle pour format long (mobile et desktop)
   document.querySelectorAll('.format-long-block').forEach(block=>{
     block.addEventListener('click',e=>{
       e.preventDefault();
-      const isMobile = window.innerWidth < 768;
-      
-      if (isMobile) {
-        // Mobile : ouvrir la modal
-        const blockId = block.id;
-        if (blockId && spectaclesData && spectaclesData[blockId]) {
-          openSpectacleDetails(blockId);
-        }
-      } else {
-        // Desktop : flip pour afficher le pitch
-        block.classList.toggle('flipped');
+      if (block.classList.contains('slider-active')) {
+        closeMatchSlider(block);
+        return;
+      }
+      const blockId = block.id;
+      if (blockId && spectaclesData && spectaclesData[blockId]) {
+        initSpectacleSingleSlide(block, spectaclesData[blockId]);
       }
     });
   });
 
   // Fonction pour initialiser le slider de bios des joueurs
+  function getFirstSentence(htmlOrText) {
+    const stripped = (htmlOrText || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+    const match = stripped.match(/^[^.!?]+[.!?]?/);
+    return match ? match[0].trim() : stripped;
+  }
+
   function initMatchSlider(matchBlock, players, originalImageSrc) {
     // Vérifier si le slider existe déjà
     let sliderContainer = matchBlock.querySelector('.match-slider-container');
@@ -844,43 +665,37 @@
       const sliderTrack = document.createElement('div');
       sliderTrack.className = 'match-slider-track';
       
-      // Slide 1 : Image originale avec titre, description et crédit photo
+      // Slide 1 : Image en background calée à droite (comme la bannière)
       const originalSlide = document.createElement('div');
-      originalSlide.className = 'match-slide';
-      
-      const originalImage = document.createElement('img');
-      originalImage.className = 'match-slide-image';
-      originalImage.src = originalImageSrc;
-      originalImage.alt = 'Match d\'improvisation';
+      originalSlide.className = 'match-slide match-slide-bg-right';
+      originalSlide.style.backgroundImage = `url("${originalImageSrc}")`;
       
       const originalOverlay = document.createElement('div');
       originalOverlay.className = 'match-slide-overlay';
       
-      // Titre
       const title = document.createElement('div');
       title.className = 'match-slide-name';
       title.textContent = 'L\'Équipe de France';
       
-      // Description avec crédit photo intégré
-      const pitch = document.createElement('div');
-      pitch.className = 'match-slide-bio';
-      pitch.textContent = 'Champions du monde, artistes reconnus et figures majeures de l\'improvisation professionnelle. Une équipe d\'excellence réunissant expérience, créativité et intensité scénique, au service de spectacles uniques et exigeants. Photo : © J.DUFRESNE';
+      const pitchFullText = 'Champions du monde, artistes reconnus et figures majeures de l\'improvisation professionnelle. Une équipe d\'excellence réunissant expérience, créativité et intensité scénique, au service de spectacles uniques et exigeants. Photo : © J.DUFRESNE';
+      const pitchShort = document.createElement('div');
+      pitchShort.className = 'match-slide-bio match-slide-bio-short';
+      pitchShort.textContent = getFirstSentence(pitchFullText);
+      const pitchFull = document.createElement('div');
+      pitchFull.className = 'match-slide-bio match-slide-bio-full';
+      pitchFull.textContent = pitchFullText;
       
       originalOverlay.appendChild(title);
-      originalOverlay.appendChild(pitch);
-      originalSlide.appendChild(originalImage);
+      originalOverlay.appendChild(pitchShort);
+      originalOverlay.appendChild(pitchFull);
       originalSlide.appendChild(originalOverlay);
       sliderTrack.appendChild(originalSlide);
       
-      // Slides suivants : Joueurs
+      // Slides suivants : Joueurs (image en background calée à droite)
       players.forEach(player => {
         const playerSlide = document.createElement('div');
-        playerSlide.className = 'match-slide';
-        
-        const playerImage = document.createElement('img');
-        playerImage.className = 'match-slide-image';
-        playerImage.src = player.image;
-        playerImage.alt = player.name;
+        playerSlide.className = 'match-slide match-slide-bg-right';
+        playerSlide.style.backgroundImage = `url("${encodeURI(player.image)}")`;
         
         const playerOverlay = document.createElement('div');
         playerOverlay.className = 'match-slide-overlay';
@@ -898,12 +713,15 @@
           playerOverlay.appendChild(playerRole);
         }
         
-        const playerBio = document.createElement('div');
-        playerBio.className = 'match-slide-bio';
-        playerBio.textContent = player.bio;
-        playerOverlay.appendChild(playerBio);
+        const playerBioShort = document.createElement('div');
+        playerBioShort.className = 'match-slide-bio match-slide-bio-short';
+        playerBioShort.textContent = getFirstSentence(player.bio);
+        const playerBioFull = document.createElement('div');
+        playerBioFull.className = 'match-slide-bio match-slide-bio-full';
+        playerBioFull.textContent = player.bio;
+        playerOverlay.appendChild(playerBioShort);
+        playerOverlay.appendChild(playerBioFull);
         
-        playerSlide.appendChild(playerImage);
         playerSlide.appendChild(playerOverlay);
         sliderTrack.appendChild(playerSlide);
       });
@@ -947,6 +765,54 @@
     
     // Initialiser l'auto-défilement
     startSliderAutoPlay(matchBlock);
+  }
+
+  // Slider à une slide pour les spectacles (format long ou match autre que France)
+  function initSpectacleSingleSlide(block, data) {
+    let sliderContainer = block.querySelector('.match-slider-container');
+    if (sliderContainer) {
+      block.classList.add('slider-active');
+      return;
+    }
+    sliderContainer = document.createElement('div');
+    sliderContainer.className = 'match-slider-container spectacle-single-slide';
+    const sliderTrack = document.createElement('div');
+    sliderTrack.className = 'match-slider-track';
+    const slide = document.createElement('div');
+    slide.className = 'match-slide';
+    slide.style.backgroundImage = `url("${encodeURI(data.image)}")`;
+    const overlay = document.createElement('div');
+    overlay.className = 'match-slide-overlay';
+    const meta = document.createElement('div');
+    meta.className = 'match-slide-role';
+    meta.textContent = data.time + ' — ' + data.label;
+    const titleEl = document.createElement('div');
+    titleEl.className = 'match-slide-name';
+    titleEl.textContent = data.title;
+    const pitchShort = document.createElement('div');
+    pitchShort.className = 'match-slide-bio match-slide-bio-short';
+    pitchShort.textContent = getFirstSentence(data.pitch);
+    const pitchFull = document.createElement('div');
+    pitchFull.className = 'match-slide-bio match-slide-bio-full';
+    pitchFull.innerHTML = data.pitch;
+    overlay.appendChild(meta);
+    overlay.appendChild(titleEl);
+    overlay.appendChild(pitchShort);
+    overlay.appendChild(pitchFull);
+    slide.appendChild(overlay);
+    sliderTrack.appendChild(slide);
+    const closeButton = document.createElement('button');
+    closeButton.className = 'match-slider-close';
+    closeButton.setAttribute('aria-label', 'Fermer le slider');
+    closeButton.innerHTML = '×';
+    closeButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeMatchSlider(block);
+    });
+    sliderContainer.appendChild(sliderTrack);
+    sliderContainer.appendChild(closeButton);
+    block.appendChild(sliderContainer);
+    block.classList.add('slider-active');
   }
   
   // Fonction pour aller à un slide spécifique
@@ -1085,47 +951,33 @@
       }
       
       e.preventDefault();
-      const isMobile = window.innerWidth < 768;
-      
-      // Vérifier si c'est le match France vs La Malice
       const blockId = block.id;
       const isFranceMatch = blockId === 'spectacle-samedi-match';
       
       if (isFranceMatch && edfPlayers && edfPlayers.length > 0) {
         // Récupérer l'image originale et le crédit photo
         const originalImage = block.querySelector('.match-image');
-        const photoCreditEl = block.querySelector('.match-photo-credit');
-        // Utiliser getAttribute pour obtenir le src original, puis encoder l'URL
         let originalImageSrc = '';
         if (originalImage) {
           const src = originalImage.getAttribute('src');
           originalImageSrc = src ? encodeURI(src) : '';
         } else {
-          // Sur mobile, l'image peut être en background, récupérer depuis le style
           const bgImage = window.getComputedStyle(block).backgroundImage;
           if (bgImage && bgImage !== 'none') {
-            // Extraire l'URL de la background-image
             const match = bgImage.match(/url\(["']?([^"']+)["']?\)/);
             if (match && match[1]) {
               originalImageSrc = match[1];
             }
           }
         }
-        // Initialiser le slider
         initMatchSlider(block, edfPlayers, originalImageSrc);
-      } else if (isMobile) {
-        // Mobile : ouvrir la modal pour les autres matchs
-        if (blockId && spectaclesData && spectaclesData[blockId]) {
-          openSpectacleDetails(blockId);
-        }
-      } else {
-        // Desktop : flip pour afficher le pitch
-        block.classList.toggle('flipped');
+      } else if (blockId && spectaclesData && spectaclesData[blockId]) {
+        initSpectacleSingleSlide(block, spectaclesData[blockId]);
       }
     });
   });
 
-  // Appliquer l'image en background sur mobile pour les matchs
+  // Appliquer l'image en background sur mobile (matchs + format long)
   function applyMatchBackgroundOnMobile() {
     if (window.matchMedia('(max-width: 768px)').matches) {
       document.querySelectorAll('.match-block').forEach(block => {
@@ -1144,9 +996,25 @@
           block.style.backgroundRepeat = 'no-repeat';
         }
       });
+      document.querySelectorAll('.format-long-block').forEach(block => {
+        const img = block.querySelector('.format-long-image');
+        const src = img ? (img.currentSrc || img.getAttribute('src')) : null;
+        if (src) {
+          const encodedSrc = encodeURI(src);
+          block.style.backgroundImage = `url("${encodedSrc}")`;
+          block.style.backgroundSize = 'cover';
+          block.style.backgroundPosition = 'center';
+          block.style.backgroundRepeat = 'no-repeat';
+        }
+      });
     } else {
-      // Retirer le background sur desktop
       document.querySelectorAll('.match-block').forEach(block => {
+        block.style.backgroundImage = '';
+        block.style.backgroundSize = '';
+        block.style.backgroundPosition = '';
+        block.style.backgroundRepeat = '';
+      });
+      document.querySelectorAll('.format-long-block').forEach(block => {
         block.style.backgroundImage = '';
         block.style.backgroundSize = '';
         block.style.backgroundPosition = '';

@@ -483,12 +483,13 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
             </div>
             <div class="format-long-pitch">
               <h3>Braquage</h3>
-              <p>Les portes se ferment, le braquage dérape, et soudain tout le monde devient suspect : braqueurs approximatifs, otages imprévisibles, alliances qui se font et se défont. Entre tension, humour qui surgit malgré tout et portraits touchants, on se surprend à s'attacher à chacun… jusqu'à ce que tout explose.</p>
+              <p>Un braquage est en cours, portes closes. Otages et braqueurs se font face, chacun avec ses raisons, ses choix… et ce qu'il préfère taire. Un format tendu et cinématographique, où le public désigne les positions de chacun avant de plonger dans une fiction en temps réel.</p>
             </div>
           </div>
           
           <!-- Match -->
           <div id="spectacle-vendredi-match" class="match-block">
+            <span class="match-details-btn" aria-hidden="true">Détails</span>
             <div class="match-gap-filler"></div>
             <div class="match-image-wrapper">
               <picture>
@@ -547,6 +548,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
           
           <!-- Match -->
           <div id="spectacle-samedi-match" class="match-block">
+            <span class="match-details-btn" aria-hidden="true">Détails</span>
             <div class="match-gap-filler"></div>
             <div class="match-image-wrapper">
               <picture>
@@ -567,11 +569,9 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
               </div>
             </div>
             <div class="match-overlay">
-              <div class="match-overlay-left">
-                <div class="match-time">21:00</div>
-                <div class="match-label-small">Match</div>
-                <div class="match-label">France vs La Malice</div>
-              </div>
+              <div class="match-time">21:00</div>
+              <div class="match-label-small">Match</div>
+              <div class="match-label">France vs La Malice</div>
             </div>
             <div class="match-pitch">
               <h2>Équipe de France d'improvisation vs La Malice</h2>
@@ -607,6 +607,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
           
           <!-- Match -->
           <div id="spectacle-dimanche-match" class="match-block">
+            <span class="match-details-btn" aria-hidden="true">Détails</span>
             <div class="match-gap-filler"></div>
             <div class="match-image-wrapper">
               <picture>
@@ -1853,21 +1854,6 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
           <input type="hidden" name="locale" value="fr">
         </form>
       </div>
-    </div>
-  </div>
-</dialog>
-
-<!-- Modal détails spectacle -->
-<dialog id="spectacle-details">
-  <div class="modal-card">
-    <button class="modal-close" onclick="document.getElementById('spectacle-details').close()" aria-label="Fermer" title="Fermer">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="18" y1="6" x2="6" y2="18"></line>
-        <line x1="6" y1="6" x2="18" y2="18"></line>
-      </svg>
-    </button>
-    <div id="spectacle-details-content">
-      <!-- Le contenu sera rempli dynamiquement par JavaScript -->
     </div>
   </div>
 </dialog>

@@ -12,13 +12,13 @@ Static marketing site for **Festibask'Impro**, the improvisation theatre festiva
 ## Main Capabilities
 
 1. **Hero:** Logo, dates (15–17 mai), location (Patinoire de la Barre, Anglet), countdown to 2026-05-15 10:30; teaser video (poster by default, play on click). Deux bandes décoratives doodles (images `doodles-top.avif` au-dessus du logo, `doodles-bottom.avif` sous les liens hero-tags), intégrées dans la même cellule que le logo et que les liens. Liens hero-tags : SPECTACLES, MATCHES, STAGES (ancres #valeur, #programme, #stages). Source vidéo : **YouTube** (video ID via `data-hero-video="youtube"` et `data-hero-youtube-id` sur `#heroVideoContainer`) ou **self-hosted** (MP4 depuis `data-src`, poster, sous-titres `assets/video/teaser-festibask-captions.vtt`).
-2. **Spectacles (“À l’affiche”):** Day slider (Vendredi / Samedi / Dimanche); for each day: one “format long” block and one “match” block. Desktop: flip to show pitch; mobile: modal for spectacle details. Match France (Samedi) opens EDF player slider; other matches flip or open modal.
+2. **Spectacles (“À l’affiche”):** Day slider (Vendredi / Samedi / Dimanche); for each day: one “format long” block and one “match” block. On mobile and desktop, tap/click on a spectacle banner opens a slider in the block (no fullscreen modal). Match France (Samedi) has multiple slides (EDF intro + players); other spectacles (format long and other matches) have a single slide (image + details). Slider is closed via the close button or by clicking the block again.
 3. **Programme:** Tabs by day; grid of day cards; fullscreen mode; sync with “À l’affiche” day selection. In fullscreen, clicking the Braquage slot exits fullscreen and opens https://plamarque.github.io/braquage/ in a new tab.
 4. **Stages:** Atelier cards (flip for details, instructor bio where applicable); “En savoir plus” / “COMPLET” trigger flip; registration and waitlist buttons open Sibforms modals.
 5. **Tarifs:** Pass 1 jour, Pass 3 jours, Stage; flip cards for details.
 6. **Témoignages:** Carousel built from `assets/data/temoignages.json`; section hidden if JSON empty or invalid. Fields: name, role, quote, image; optional signature, imageAvif128/256.
 7. **Navigation:** Fixed header on scroll; burger + drawer on mobile; desktop nav links.
-8. **Modals:** Newsletter (notify), waitlist; Sibforms CSS/JS loaded on first open. Spectacle details modal on mobile for spectacle blocks. On mobile, the spectacle details modal can be closed by tapping anywhere on the modal or by swiping down (except when the user is scrolling the text inside the modal).
+8. **Modals:** Newsletter (notify), waitlist; Sibforms CSS/JS loaded on first open. Spectacle details are shown in a slider within the block (not a modal).
 9. **Tooltips:** “Format long” and “Match” explained (desktop: hover; mobile: click popup).
 10. **SEO / meta:** Canonical, OpenGraph, Twitter Card, Schema.org Event (2026-05-15 to 2026-05-17, location, offers, organizer La Malice).
 
