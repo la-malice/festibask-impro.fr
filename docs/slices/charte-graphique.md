@@ -58,6 +58,8 @@ Boutons : **principal** (Prévenez-moi, billetterie) = **cyan** ; **inscription*
 
 Variables dérivées : `--accent` et `--accent-pink` = coral ; `--blue`, `--blue-border`, etc. = cyan.
 
+**Style carte orange** : s’applique aux cartes de la section Stages (`.atelier-card`) et aux créneaux stages du programme (`.slot-atelier`). Fond teinté orange, bordure ou liseret orange. Variables associées : `--orange-bg`, `--orange-bg-light`, `--orange-border-light` (fonds et bordures légères pour cohérence avec `--orange`).
+
 ## Programme – convention liserets (couleurs par type de créneau)
 
 | Variable | Couleur | Usage |
@@ -68,7 +70,7 @@ Variables dérivées : `--accent` et `--accent-pink` = coral ; `--blue`, `--blue
 | `--programme-slot-other` | navy | Autres (accueil, pause, fin de soirée – `.slot` sans sous-classe) |
 | `--programme-slot-festif` | blue-charte | Soirée festif (`.slot-festif`) |
 
-Liseret gauche = 3px (4px pour festif), dégradé vers transparent en bas.
+Liseret gauche = 3px (4px pour festif), dégradé vers transparent en bas. Créneaux stages (`.slot-atelier`) : fond teinté orange (`--orange-bg`), style carte orange aligné avec la section Stages.
 
 ## À l'affiche – titres bannières (format long + match)
 

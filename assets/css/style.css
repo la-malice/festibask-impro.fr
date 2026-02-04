@@ -19,6 +19,9 @@
   --coral: #e95842;
   --orange: #f0853a;
   --orange-dark: #d97328;
+  --orange-bg: rgba(240, 133, 58, 0.08);
+  --orange-bg-light: rgba(240, 133, 58, 0.12);
+  --orange-border-light: rgba(240, 133, 58, 0.2);
   --pink: #df1279;
   
   /* Couleurs d'accent (accent principal = coral charte) */
@@ -3229,8 +3232,8 @@ nav.primary a:hover {
 }
 
 .atelier-card {
-  background: rgba(255, 255, 255, 0.6);
-  border: 1px solid var(--blue-border-medium);
+  background: rgba(255, 250, 243, 0.95);
+  border: 2px solid rgba(240, 133, 58, 0.45);
   border-radius: 12px;
   overflow: hidden;
   backdrop-filter: blur(4px);
@@ -3243,7 +3246,7 @@ nav.primary a:hover {
 
 .atelier-card:hover {
   box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255, 255, 255, 0.5);
-  border-color: var(--blue-border);
+  border-color: var(--orange);
 }
 
 /* Surbrillance par jour : mêmes ombre et lisière que le programme (.program .day.card) */
@@ -3257,7 +3260,7 @@ nav.primary a:hover {
   opacity: 1;
   transform: scale(1.03);
   box-shadow: var(--shadow-md);
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 250, 243, 0.98);
 }
 
 @media (max-width: 768px) {
@@ -3324,8 +3327,8 @@ nav.primary a:hover {
 
 .atelier-card .header {
   position: relative;
-  background: linear-gradient(135deg, var(--blue-bg) 0%, var(--accent-light) 100%);
-  border-bottom: 1px solid var(--blue-border-light);
+  background: linear-gradient(135deg, var(--orange-bg) 0%, var(--orange-bg-light) 100%);
+  border-bottom: 1px solid var(--orange-border-light);
   padding: 14px 18px;
 }
 
@@ -3864,8 +3867,8 @@ nav.primary a:hover {
   display: inline-flex;
   align-items: center;
   padding: 6px 12px;
-  background: var(--blue-bg-light);
-  border: 1px solid var(--blue-border);
+  background: var(--orange-bg-light);
+  border: 1px solid var(--orange-border-light);
   border-radius: 16px;
   font-size: 0.85rem;
   font-weight: 600;
@@ -3877,7 +3880,7 @@ nav.primary a:hover {
 .atelier-card .footer {
   margin-top: auto;
   padding-top: 12px;
-  border-top: 1px solid var(--blue-bg-light);
+  border-top: 1px solid var(--orange-border-light);
 }
 
 /* Footer mobile - visible uniquement sur mobile, à côté de l'intervenant */
@@ -4102,9 +4105,9 @@ nav.primary a:hover {
   border-color: var(--programme-slot-match);
 }
 
-/* Liseret stages (ateliers) */
+/* Liseret stages (ateliers) — style carte orange */
 .slot-atelier {
-  background: var(--blue-bg);
+  background: var(--orange-bg);
   border-left-color: var(--programme-slot-stage);
   border-image: linear-gradient(to bottom, var(--programme-slot-stage), rgba(240, 133, 58, 0.5)) 1;
   min-height: 50px;
