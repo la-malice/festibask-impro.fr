@@ -60,6 +60,8 @@ Variables dérivées : `--accent` et `--accent-pink` = coral ; `--blue`, `--blue
 
 **Style carte orange** : s’applique aux cartes de la section Stages (`.atelier-card`) et aux créneaux stages du programme (`.slot-atelier`). Fond teinté orange, bordure ou liseret orange. Variables associées : `--orange-bg`, `--orange-bg-light`, `--orange-border-light` (fonds et bordures légères pour cohérence avec `--orange`).
 
+**Univers stages (orange)** : toute la couleur d'accent des stages est l'orange charte (`--orange`). Titres de stage dans le programme (`.salle-box .atelier-name`) et sur les cartes de la section Stages (`.atelier-card h3`, bandeau date `.day-header`) = `--orange` ; hover = `--orange-dark`. Pas de full caps sur ces titres (casse normale). Placeholder intervenant masterclass : nom « Intervenant.e bientôt dévoilé.e » en orange ; mini-bio et image placeholder (fond gris + ?) selon contenu en attente.
+
 ## Programme – convention liserets (couleurs par type de créneau)
 
 | Variable | Couleur | Usage |

@@ -3385,6 +3385,11 @@ nav.primary a:hover {
   text-align: center;
 }
 
+/* Cartes stage : date/heure en orange (charte) */
+#stages .atelier-card .day-header {
+  color: var(--orange);
+}
+
 /* Row pour l'intervenant et le bouton sur mobile */
 .atelier-card .flip-back .instructor-button-row {
   display: flex;
@@ -3575,21 +3580,33 @@ nav.primary a:hover {
 .atelier-card h3 {
   font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
   font-size: clamp(1rem, 1.7vw, 1.35rem);
-  color: var(--blue-accent);
+  color: var(--orange);
   margin: 12px 0 0 0;
   font-weight: normal;
   line-height: 1.25;
   transition: color 0.2s;
   text-align: center;
+  text-transform: none;
 }
 
-.atelier-card .flip-back h3 {
+/* Priorité sur .section h3 (bleu) et .section-bg-5 .atelier-card h3 / .section-bg-5 h3 : titres des cartes stage en orange (charte) */
+#stages .atelier-card h3,
+#stages.section-bg-5 .atelier-card h3 {
+  color: var(--orange);
+}
+
+.atelier-card .flip-back h3,
+#stages .atelier-card .flip-back h3 {
   color: var(--white);
   margin-bottom: 16px;
 }
 
 .atelier-card h3:hover {
-  color: var(--accent-dark);
+  color: var(--orange-dark);
+}
+
+#stages .atelier-card h3:hover {
+  color: var(--orange-dark);
 }
 
 .atelier-card .description-preview {
@@ -3763,17 +3780,10 @@ nav.primary a:hover {
   margin: 0;
 }
 
-/* Masquer l'intervenant pour les masterclass (en attente de sélection) */
-#atelier-samedi-10h-masterclass .instructor-button-row,
-#atelier-samedi-14h-masterclass .instructor-button-row {
-  display: none;
-}
-
-/* Réserver l'espace pour instructor-preview même quand masqué (masterclass) */
-#atelier-samedi-10h-masterclass .instructor-preview,
-#atelier-samedi-14h-masterclass .instructor-preview {
-  visibility: hidden;
-  /* Garde l'espace avec min-height défini ci-dessus */
+/* Placeholder intervenant masterclass : nom en orange (charte) */
+#atelier-samedi-10h-masterclass .instructor-name--placeholder,
+#atelier-samedi-14h-masterclass .instructor-name--placeholder {
+  color: var(--orange);
 }
 
 .atelier-card .flip-back .description {
@@ -4444,12 +4454,13 @@ nav.primary a:hover {
 }
 
 .salle-box .atelier-name {
-  color: var(--text);
+  color: var(--orange);
   font-weight: 600;
   line-height: 1.3;
   display: flex;
   align-items: center;
   gap: 8px;
+  text-transform: none;
 }
 
 .salle-box .instructor-avatar {
