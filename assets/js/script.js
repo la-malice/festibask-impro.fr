@@ -622,6 +622,44 @@
       pitch: 'Le match d\'impro est le format phare par lequel l\'impro s\'est diffusée. Venu du Québec, il emprunte aux codes du Hockey sur glace où 2 équipes de comédiens s\'affrontent sur une patinoire dans des séquences brèves et rythmées sous la surveillance d\'un arbitre implacable&nbsp;!'
     }
   };
+
+  // Fermeture du modal spectacle au swipe (mobile) — variables et handlers
+  let spectacleSwipeTouchStartY = 0;
+  let spectacleSwipeTouchStartX = 0;
+  let spectacleSwipeIgnoreClose = false;
+  let spectacleSwipeShouldClose = false;
+  let spectacleSwipeListenersAttached = false;
+  const spectacleSwipeThreshold = 60;
+
+  function spectacleSwipeTouchStart(e) {
+    if (!e.touches || !e.touches[0]) return;
+    const touch = e.touches[0];
+    spectacleSwipeTouchStartY = touch.clientY;
+    spectacleSwipeTouchStartX = touch.clientX;
+    spectacleSwipeShouldClose = false;
+    const modalInfo = spectacleDetailsContent.querySelector('.spectacle-modal-info');
+    const target = e.target;
+    spectacleSwipeIgnoreClose = !!(modalInfo && modalInfo.contains(target) && modalInfo.scrollTop > 0);
+  }
+
+  function spectacleSwipeTouchMove(e) {
+    if (!spectacleSwipeTouchStartY || !e.touches || !e.touches[0]) return;
+    const touch = e.touches[0];
+    const deltaY = touch.clientY - spectacleSwipeTouchStartY;
+    if (deltaY > spectacleSwipeThreshold && !spectacleSwipeIgnoreClose) spectacleSwipeShouldClose = true;
+  }
+
+  function spectacleSwipeTouchEnd(e) {
+    if (e.changedTouches && e.changedTouches[0]) {
+      const touch = e.changedTouches[0];
+      const deltaY = touch.clientY - spectacleSwipeTouchStartY;
+      if (deltaY > spectacleSwipeThreshold && !spectacleSwipeIgnoreClose) spectacleDetailsModal.close();
+    }
+    spectacleSwipeTouchStartY = 0;
+    spectacleSwipeTouchStartX = 0;
+    spectacleSwipeIgnoreClose = false;
+    spectacleSwipeShouldClose = false;
+  }
   
   function openSpectacleDetails(spectacleId) {
     const data = spectaclesData[spectacleId];
@@ -651,6 +689,14 @@
     // Bloquer le scroll du body
     document.body.style.overflow = 'hidden';
     spectacleDetailsModal.showModal();
+
+    // Attacher les listeners swipe pour fermer (mobile uniquement)
+    if (window.innerWidth < 768 && !spectacleSwipeListenersAttached) {
+      spectacleDetailsModal.addEventListener('touchstart', spectacleSwipeTouchStart, { passive: true });
+      spectacleDetailsModal.addEventListener('touchmove', spectacleSwipeTouchMove, { passive: true });
+      spectacleDetailsModal.addEventListener('touchend', spectacleSwipeTouchEnd, { passive: true });
+      spectacleSwipeListenersAttached = true;
+    }
     
     // Vérifier si le contenu dépasse et afficher l'indicateur seulement si nécessaire
     setTimeout(() => {
@@ -736,9 +782,15 @@
       }
     });
     
-    // Restaurer le scroll quand le modal se ferme
+    // Restaurer le scroll quand le modal se ferme ; retirer les listeners swipe
     spectacleDetailsModal.addEventListener('close', () => {
       document.body.style.overflow = '';
+      if (spectacleSwipeListenersAttached) {
+        spectacleDetailsModal.removeEventListener('touchstart', spectacleSwipeTouchStart, { passive: true });
+        spectacleDetailsModal.removeEventListener('touchmove', spectacleSwipeTouchMove, { passive: true });
+        spectacleDetailsModal.removeEventListener('touchend', spectacleSwipeTouchEnd, { passive: true });
+        spectacleSwipeListenersAttached = false;
+      }
     });
   }
   
@@ -747,6 +799,16 @@
   if (spectacleCloseBtn) {
     spectacleCloseBtn.addEventListener('click', () => {
       document.body.style.overflow = '';
+    });
+  }
+
+  // Tap n'importe où sur le modal pour fermer (mobile uniquement)
+  const spectacleModalCard = spectacleDetailsModal?.querySelector('.modal-card');
+  if (spectacleModalCard) {
+    spectacleModalCard.addEventListener('click', (e) => {
+      if (window.innerWidth >= 768) return;
+      if (e.target.closest('.modal-close')) return;
+      spectacleDetailsModal.close();
     });
   }
 

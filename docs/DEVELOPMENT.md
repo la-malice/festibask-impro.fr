@@ -18,6 +18,7 @@ npm install
 | Command | Purpose |
 |---------|---------|
 | `npm run dev` | Vite dev server at http://localhost:8000 (open in browser). Hot reload for HTML, CSS, JS, and data (e.g. temoignages.json). |
+| `./scripts/start-dev.sh` | Same as above but with `--host`: server listens on all interfaces so the site is reachable from the LAN (e.g. mobile at http://&lt;machine-ip&gt;:8000). |
 | `npm run build` | Copy site to `dist/`, then PurgeCSS + PostCSS (cssnano) on CSS, Terser on JS. Output in `dist/`. |
 | `npm run start` / `npm run serve` | Node HTTP server (server.js) for local testing if needed; avoid `file://` (CORS blocks JSON). |
 

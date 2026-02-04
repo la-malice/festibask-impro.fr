@@ -18,7 +18,7 @@ Static marketing site for **Festibask'Impro**, the improvisation theatre festiva
 5. **Tarifs:** Pass 1 jour, Pass 3 jours, Stage; flip cards for details.
 6. **Témoignages:** Carousel built from `assets/data/temoignages.json`; section hidden if JSON empty or invalid. Fields: name, role, quote, image; optional signature, imageAvif128/256.
 7. **Navigation:** Fixed header on scroll; burger + drawer on mobile; desktop nav links.
-8. **Modals:** Newsletter (notify), waitlist; Sibforms CSS/JS loaded on first open. Spectacle details modal on mobile for spectacle blocks.
+8. **Modals:** Newsletter (notify), waitlist; Sibforms CSS/JS loaded on first open. Spectacle details modal on mobile for spectacle blocks. On mobile, the spectacle details modal can be closed by tapping anywhere on the modal or by swiping down (except when the user is scrolling the text inside the modal).
 9. **Tooltips:** “Format long” and “Match” explained (desktop: hover; mobile: click popup).
 10. **SEO / meta:** Canonical, OpenGraph, Twitter Card, Schema.org Event (2026-05-15 to 2026-05-17, location, offers, organizer La Malice).
 

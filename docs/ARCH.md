@@ -34,14 +34,14 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 ## Technology Stack
 
 - **Build:** Node; npm scripts. copy-to-dist.js (Node), then PurgeCSS CLI, PostCSS CLI, Terser CLI. No Vite in build.
-- **Dev:** Vite (root, port 8000, open browser); serves index.html and assets as-is.
+- **Dev:** Vite (root, port 8000, open browser); serves index.html and assets as-is. Script `scripts/start-dev.sh` runs Vite with `--host` for access from the LAN (e.g. mobile on same Wi‑Fi).
 - **Front-end:** Vanilla HTML/CSS/JS; no framework. Google Fonts (Hubot Sans) loaded async. Styles follow the graphic charter (Hubot Sans hierarchy, 6-color palette); see docs/slices/charte-graphique.md.
 - **Data:** Static JSON (temoignages); EDF players and spectacle data in script.js.
 - **Deploy:** GitHub Actions (ubuntu-latest, Node 20); artifact `dist/` → deploy-pages. Environment: github-pages.
 
 ## Execution Model
 
-- **Development:** `npm run dev` → Vite serves at http://localhost:8000; no build. JSON and assets served from repo.
+- **Development:** `npm run dev` → Vite serves at http://localhost:8000; no build. Use `./scripts/start-dev.sh` (or `npm run dev -- --host`) to listen on all interfaces for access from the LAN (e.g. mobile at http://&lt;machine-ip&gt;:8000). JSON and assets served from repo.
 - **Production:** User requests site URL; server (GitHub Pages) serves files from `dist/`. Single document; no routing. JS fetches `temoignages.json` (relative to document base); modals load Sibforms/Brevo when opened.
 - **Service worker:** sw.js is copied to dist root; loads Brevo SDK with key from query string. [UNCERTAIN] Whether it is registered in production; no cache strategy in the observed snippet.
 
@@ -60,6 +60,7 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 | assets/data/temoignages.json | Testimonials array for carousel |
 | assets/img/, assets/video/, assets/fonts/, assets/favicon/ | Static assets |
 | scripts/copy-to-dist.js | Copies site files into dist/ |
+| scripts/start-dev.sh | Runs Vite with --host for dev access from LAN (e.g. mobile) |
 | purgecss.config.js | Content: index.html, script.js; output: dist/assets/css/style.css; safelist for dynamic classes |
 | postcss.config.js | cssnano for dist CSS |
 | vite.config.js | Dev server only (root, port 8000) |
