@@ -581,7 +581,7 @@
       time: '19:00',
       label: 'Impro longue',
       title: 'Braquage',
-      image: 'assets/img/long/braquage-800.avif',
+      image: 'assets/img/long/braquage-640w.avif',
       pitch: 'Un braquage est en cours, portes closes. Otages et braqueurs se font face, chacun avec ses raisons, ses choix… et ce qu\'il préfère taire. Un format tendu et cinématographique, où le public désigne les positions de chacun avant de plonger dans une fiction en temps réel.'
     },
     'spectacle-vendredi-match': {
@@ -597,7 +597,7 @@
       time: '19:00',
       label: 'Impro longue',
       title: 'Commis d\'Office',
-      image: 'assets/img/long/commis-d-office.jpg',
+      image: 'assets/img/long/commis-d-office-640w.avif',
       pitch: 'L\'un·e est accusé·e<br>L\'autre est avocat·e<br>L\'un·e est coupable<br>L\'autre devra trouver des circonstances atténuante.<br>Venez découvrir son histoire, son passé son crime et les raisons qui l\'ont poussées à commettre l\'irréparable'
     },
     'spectacle-samedi-match': {
@@ -613,7 +613,7 @@
       time: '19:00',
       label: 'Impro longue',
       title: 'Promo 2006',
-      image: 'assets/img/long/promo-2006.avif',
+      image: 'assets/img/long/promo-2006-640w.avif',
       pitch: 'Vingt ans après, une ancienne promo se retrouve pour une soirée pleine de secrets, de couples improbables et de souvenirs qui dérapent. Un format joyeux et tendre, où le public choisit l\'école, les liens… et ce qui aurait mieux valu rester enterré.'
     },
     'spectacle-dimanche-match': {
