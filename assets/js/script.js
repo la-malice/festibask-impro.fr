@@ -29,6 +29,13 @@
     }
   ];
 
+  // Données des joueurs de l'Équipe de Belgique (ordre alphabétique du prénom pour les slides ; bios vides)
+  const belgPlayers = [
+    { name: 'Adrien De Goes', image: 'assets/img/belg-adrien.avif', bio: '' },
+    { name: 'Julie De Greef', image: 'assets/img/belg-julie.avif', bio: '' },
+    { name: 'Marielle Chuffart', image: 'assets/img/belg-marielle.avif', bio: '' }
+  ];
+
   // Révéler le header quand le hero sort du viewport
   const hero = document.getElementById('hero');
   const header = document.getElementById('siteHeader');
@@ -615,7 +622,7 @@
       label: 'Match',
       title: 'La Malice vs Suisse',
       image: 'assets/img/equipe-suisse-640w.avif',
-      pitch: 'Le match d\'impro est le format phare par lequel l\'impro s\'est diffusée. Venu du Québec, il emprunte aux codes du Hockey sur glace où 2 équipes de comédiens s\'affrontent sur une patinoire dans des séquences brèves et rythmées sous la surveillance d\'un arbitre implacable&nbsp;!'
+      pitch: '' // à remplir quand reçu
     }
   };
   
@@ -653,7 +660,11 @@
     return match ? match[0].trim() : stripped;
   }
 
-  function initMatchSlider(matchBlock, players, originalImageSrc) {
+  function initMatchSlider(matchBlock, players, originalImageSrc, intro) {
+    // intro optionnel : { title, pitch } pour la slide 1 ; sinon défaut France
+    const introTitle = intro?.title ?? 'L\'Équipe de France';
+    const introPitch = intro?.pitch ?? 'Champions du monde, artistes reconnus et figures majeures de l\'improvisation professionnelle. Une équipe d\'excellence réunissant expérience, créativité et intensité scénique, au service de spectacles uniques et exigeants. Photo : © J.DUFRESNE';
+
     // Vérifier si le slider existe déjà
     let sliderContainer = matchBlock.querySelector('.match-slider-container');
     
@@ -675,15 +686,14 @@
       
       const title = document.createElement('div');
       title.className = 'match-slide-name';
-      title.textContent = 'L\'Équipe de France';
+      title.textContent = introTitle;
       
-      const pitchFullText = 'Champions du monde, artistes reconnus et figures majeures de l\'improvisation professionnelle. Une équipe d\'excellence réunissant expérience, créativité et intensité scénique, au service de spectacles uniques et exigeants. Photo : © J.DUFRESNE';
       const pitchShort = document.createElement('div');
       pitchShort.className = 'match-slide-bio match-slide-bio-short';
-      pitchShort.textContent = getFirstSentence(pitchFullText);
+      pitchShort.textContent = getFirstSentence(introPitch);
       const pitchFull = document.createElement('div');
       pitchFull.className = 'match-slide-bio match-slide-bio-full';
-      pitchFull.textContent = pitchFullText;
+      pitchFull.textContent = introPitch;
       
       originalOverlay.appendChild(title);
       originalOverlay.appendChild(pitchShort);
@@ -953,24 +963,36 @@
       e.preventDefault();
       const blockId = block.id;
       const isFranceMatch = blockId === 'spectacle-samedi-match';
-      
-      if (isFranceMatch && edfPlayers && edfPlayers.length > 0) {
-        // Récupérer l'image originale et le crédit photo
-        const originalImage = block.querySelector('.match-image');
-        let originalImageSrc = '';
+      const isBelgiumMatch = blockId === 'spectacle-vendredi-match';
+
+      function getOriginalImageSrc(blk) {
+        const originalImage = blk.querySelector('.match-image');
         if (originalImage) {
-          const src = originalImage.getAttribute('src');
-          originalImageSrc = src ? encodeURI(src) : '';
-        } else {
-          const bgImage = window.getComputedStyle(block).backgroundImage;
-          if (bgImage && bgImage !== 'none') {
-            const match = bgImage.match(/url\(["']?([^"']+)["']?\)/);
-            if (match && match[1]) {
-              originalImageSrc = match[1];
-            }
-          }
+          const src = originalImage.currentSrc || originalImage.getAttribute('src');
+          return src ? encodeURI(src) : '';
         }
-        initMatchSlider(block, edfPlayers, originalImageSrc);
+        const bgImage = window.getComputedStyle(blk).backgroundImage;
+        if (bgImage && bgImage !== 'none') {
+          const match = bgImage.match(/url\(["']?([^"']+)["']?\)/);
+          if (match && match[1]) return match[1];
+        }
+        return '';
+      }
+
+      if (isFranceMatch && edfPlayers && edfPlayers.length > 0) {
+        const originalImageSrc = getOriginalImageSrc(block);
+        const edfIntro = {
+          title: 'L\'Équipe de France',
+          pitch: 'Champions du monde, artistes reconnus et figures majeures de l\'improvisation professionnelle. Une équipe d\'excellence réunissant expérience, créativité et intensité scénique, au service de spectacles uniques et exigeants. Photo : © J.DUFRESNE'
+        };
+        initMatchSlider(block, edfPlayers, originalImageSrc, edfIntro);
+      } else if (isBelgiumMatch && belgPlayers && belgPlayers.length > 0) {
+        const originalImageSrc = getOriginalImageSrc(block);
+        const belgIntro = {
+          title: 'L\'Équipe de Belgique',
+          pitch: '' // à remplir quand reçu
+        };
+        initMatchSlider(block, belgPlayers, originalImageSrc, belgIntro);
       } else if (blockId && spectaclesData && spectaclesData[blockId]) {
         initSpectacleSingleSlide(block, spectaclesData[blockId]);
       }
