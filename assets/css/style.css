@@ -1869,7 +1869,7 @@ nav.primary a:hover {
   .hero-video-container {
     width: 100%;
     max-width: 100%;
-    margin: 0 auto clamp(24px, 4vw, 40px);
+    margin: 0 auto;
     aspect-ratio: 1000 / 607;
     flex: 0 0 auto;
   }
