@@ -1,10 +1,15 @@
-  // Données des joueurs de l'Équipe de France
+  // Données des joueurs de l'Équipe de France (ordre alphabétique du prénom pour les slides)
   const edfPlayers = [
     {
-      name: 'Olivier Descargues',
-      role: 'Coach',
-      image: 'assets/img/edf-olivier.png',
-      bio: 'Improvisateur depuis 1987, membre historique de l\'Équipe de France, triple champion du monde. Coach de l\'équipe depuis 2015. Cofondateur de la Ligue Majeure, créateur et interprète de nombreux spectacles de référence.'
+      name: 'Aurélie Desert',
+      image: 'assets/img/edf-aurelie.jpeg',
+      bio: 'Comédienne, chanteuse et auteure, formée au théâtre et à l\'improvisation à Bordeaux. Membre de l\'Équipe de France depuis 2018, elle évolue entre scène, rue et formats improvisés. Représente Bordeaux.'
+    },
+    {
+      name: 'Cécile Giroud',
+      role: 'Capitaine',
+      image: 'assets/img/edf-cecile.jpeg',
+      bio: 'Comédienne, humoriste et musicienne. Figure majeure de l\'impro française, multiple championne du monde. Capitaine de l\'Équipe de France, reconnue pour sa polyvalence, son énergie collective et son sens du jeu. Représente Lyon.'
     },
     {
       name: 'Félix Philippart',
@@ -17,15 +22,10 @@
       bio: 'Improvisateur parmi les plus titrés de France, membre de l\'Équipe de France depuis 1997. Triple champion du monde, habitué des scènes internationales, notamment au festival Juste pour Rire à Montréal. Représente Niort.'
     },
     {
-      name: 'Cécile Giroud',
-      role: 'Capitaine',
-      image: 'assets/img/edf-cecile.jpeg',
-      bio: 'Comédienne, humoriste et musicienne. Figure majeure de l\'impro française, multiple championne du monde. Capitaine de l\'Équipe de France, reconnue pour sa polyvalence, son énergie collective et son sens du jeu. Représente Lyon.'
-    },
-    {
-      name: 'Aurélie Desert',
-      image: 'assets/img/edf-aurelie.jpeg',
-      bio: 'Comédienne, chanteuse et auteure, formée au théâtre et à l\'improvisation à Bordeaux. Membre de l\'Équipe de France depuis 2018, elle évolue entre scène, rue et formats improvisés. Représente Bordeaux.'
+      name: 'Olivier Descargues',
+      role: 'Coach',
+      image: 'assets/img/edf-olivier.png',
+      bio: 'Improvisateur depuis 1987, membre historique de l\'Équipe de France, triple champion du monde. Coach de l\'équipe depuis 2015. Cofondateur de la Ligue Majeure, créateur et interprète de nombreux spectacles de référence.'
     }
   ];
 
