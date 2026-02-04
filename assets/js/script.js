@@ -500,64 +500,81 @@
     }, true);
   });
 
-  // Flip des cartes d'ateliers (ne s'exécute que si la carte est déjà en surbrillance, grâce au listener ci‑dessus en capture)
-  // 1) Clic sur "En savoir plus" → montre le verso
-  document.querySelectorAll('.en-savoir-plus-link').forEach(link => {
+  // Cartes stage : verso déroulé DEDANS (overlay). Seul le .flip-container a une min-height
+  // (pas l’article .atelier-card, pour éviter les conflits). Recto mesuré avant .measuring.
+  const STAGE_VERSO_MAX_TOTAL = Math.min(960, Math.round(0.88 * window.innerHeight));
+
+  function openStageVerso(flipContainer) {
+    const front = flipContainer.querySelector('.flip-front');
+    const back = flipContainer.querySelector('.flip-back');
+    if (!front || !back) return;
+    const frontHeight = front.offsetHeight;
+    flipContainer.classList.add('flipped', 'measuring');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const backContent = back.querySelector('.content');
+        const backHeight = backContent ? backContent.offsetHeight : back.offsetHeight;
+        flipContainer.classList.remove('measuring');
+        const backMax = Math.min(backHeight, STAGE_VERSO_MAX_TOTAL - frontHeight);
+        const sameHeight = backMax + 'px';
+        flipContainer.style.minHeight = sameHeight;
+        back.style.maxHeight = '0';
+        requestAnimationFrame(() => {
+          back.style.maxHeight = sameHeight;
+        });
+      });
+    });
+  }
+
+  function closeStageVerso(flipContainer) {
+    const back = flipContainer.querySelector('.flip-back');
+    if (back) back.style.maxHeight = '0';
+    setTimeout(() => {
+      if (back) back.style.maxHeight = '';
+      flipContainer.style.minHeight = '';
+      flipContainer.classList.remove('flipped');
+    }, 420);
+  }
+
+  // 1) Clic sur "Détails" (recto stage) → déroule le verso dedans et allonge la carte
+  document.querySelectorAll('.stage-details-btn').forEach(link => {
     link.addEventListener('click', e => {
       e.preventDefault();
       e.stopPropagation();
       const flipContainer = link.closest('.flip-container');
-      if (flipContainer) {
-        flipContainer.classList.add('flipped');
-      }
+      if (flipContainer) openStageVerso(flipContainer);
     });
   });
 
-  // 2) Clic n'importe où sur le recto (hors boutons) → montre le verso
+  // 2) Clic n'importe où sur le recto (hors boutons) → déroule le verso
   document.querySelectorAll('.atelier-card .flip-container .flip-front').forEach(front => {
     front.addEventListener('click', e => {
-      // Ne pas interférer avec les boutons d'inscription / liste d'attente ou les liens
-      if (e.target.closest('.btn-inscription, .btn-waitlist, a')) {
-        return;
-      }
-      // Ne pas flipper la carte si on clique sur l'intervenant (bio en overlay au lieu du flip)
-      if (e.target.closest('.instructor-flip-container')) {
-        return;
-      }
+      if (e.target.closest('.btn-inscription, .btn-waitlist, a')) return;
+      if (e.target.closest('.instructor-flip-container')) return;
       const flipContainer = front.closest('.flip-container');
-      if (flipContainer) {
-        flipContainer.classList.add('flipped');
-      }
+      if (flipContainer) openStageVerso(flipContainer);
     });
   });
 
-  // 3) Clic sur le verso pour revenir au recto
+  // 3) Clic sur le verso pour replier
   document.querySelectorAll('.atelier-card .flip-back').forEach(flipBack => {
     flipBack.addEventListener('click', e => {
-      // Ne pas flip si on clique sur l'intervenant (qui a son propre flip)
-      if (e.target.closest('.instructor-flip-container')) {
-        return;
-      }
-      // Ne pas flip si on clique sur le bouton d'inscription
-      if (e.target.closest('.btn-inscription, .btn-waitlist')) {
-        return;
-      }
+      if (e.target.closest('.instructor-flip-container')) return;
+      if (e.target.closest('.btn-inscription, .btn-waitlist')) return;
       const flipContainer = flipBack.closest('.flip-container');
       if (flipContainer && flipContainer.classList.contains('flipped')) {
-        flipContainer.classList.remove('flipped');
+        closeStageVerso(flipContainer);
       }
     });
   });
 
-  // Clic sur le tag COMPLET pour flip la carte et afficher le verso
+  // Clic sur le tag COMPLET → déroule le verso
   document.querySelectorAll('.complet-tag').forEach(tag => {
     tag.addEventListener('click', e => {
       e.preventDefault();
       e.stopPropagation();
       const flipContainer = tag.closest('.flip-container');
-      if (flipContainer) {
-        flipContainer.classList.add('flipped');
-      }
+      if (flipContainer) openStageVerso(flipContainer);
     });
   });
 

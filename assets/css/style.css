@@ -23,7 +23,8 @@
   --orange-bg-light: rgba(240, 133, 58, 0.12);
   --orange-border-light: rgba(240, 133, 58, 0.2);
   --pink: #df1279;
-  
+  --stage-date-blue: #177382;
+
   /* Couleurs d'accent (accent principal = coral charte) */
   --accent: #e95842;
   --accent-light: rgba(233, 88, 66, 0.08);
@@ -3321,49 +3322,56 @@ nav.primary a:hover {
   cursor: pointer;
 }
 
-/* Flip container - même style que les cartes tarifs */
+/* Cartes stage : verso déroulé DEDANS (overlay sur le recto), conteneur allongé au besoin */
 .atelier-card .flip-container {
   position: relative;
   width: 100%;
   flex: 1;
-  min-height: 350px;
-  transition: transform 0.6s;
-  transform-style: preserve-3d;
+  min-height: 0;
   cursor: pointer;
+  transition: transform 0.25s ease;
 }
 
 .atelier-card:hover .flip-container:not(.flipped) {
   transform: translateY(-2px);
 }
 
-.atelier-card .flip-front,
-.atelier-card .flip-back {
-  backface-visibility: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
+.atelier-card .flip-front {
   width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-}
-
-.atelier-card .flip-front {
   position: relative;
-  z-index: 2;
 }
 
+/* Verso : overlay qui se déroule DEDANS la carte ; hauteur gérée en JS pour allonger le conteneur */
 .atelier-card .flip-back {
-  transform: rotateY(180deg);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
   background: #000;
   color: var(--white);
   border-radius: 12px;
-  z-index: 1;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.4s ease-out;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
-.atelier-card .flip-container.flipped {
-  transform: rotateY(180deg);
+/* Mesure : verso en flow pour lire sa hauteur (classe ajoutée temporairement par le JS) */
+.atelier-card .flip-container.measuring .flip-back {
+  position: relative;
+  max-height: none;
+}
+
+.atelier-card .flip-container.flipped .flip-back {
+  /* max-height défini en JS = hauteur contenu, pas de scroll */
 }
 
 .atelier-card .header {
@@ -3387,7 +3395,7 @@ nav.primary a:hover {
 
 /* Cartes stage : date/heure en orange (charte) */
 #stages .atelier-card .day-header {
-  color: var(--orange);
+  color: var(--stage-date-blue);
 }
 
 /* Row pour l'intervenant et le bouton sur mobile */
@@ -3573,6 +3581,12 @@ nav.primary a:hover {
   flex-direction: column;
 }
 
+.atelier-card .flip-front .content {
+  position: relative;
+  overflow: visible;
+  min-width: 0;
+}
+
 .atelier-card .flip-back .content {
   min-height: 0;
 }
@@ -3622,7 +3636,51 @@ nav.primary a:hover {
   text-overflow: ellipsis;
 }
 
-/* Aperçu intervenant sur le recto */
+/* Recto compact : photo intervenant à gauche du titre (sans description ni bloc nom/insta) */
+.stage-recto-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.stage-recto-title-row h3 {
+  margin: 0;
+  text-align: left;
+  flex: 1;
+  min-width: 0;
+}
+
+.stage-recto-title-row .instructor-flip-container {
+  margin-top: 0;
+  min-height: 0;
+  height: auto;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.stage-recto-title-row .instructor-flip-front {
+  position: relative;
+  min-height: 0;
+  height: auto;
+  padding: 0;
+  width: auto;
+}
+
+.stage-recto-title-row .instructor-flip-front .instructor-name-block,
+.stage-recto-title-row .instructor-flip-front > .instructor-name-small {
+  display: none;
+}
+
+.stage-recto-title-row .instructor-avatar-small {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Aperçu intervenant sur le recto (layout ancien, conservé pour cohérence) */
 .atelier-card .instructor-preview {
   display: flex;
   align-items: center;
@@ -3740,6 +3798,55 @@ nav.primary a:hover {
 
 .atelier-card .flip-front .instructor-flip-container.flipped .instructor-flip-front {
   position: absolute;
+}
+
+/* Recto compact : surcharge pour ne pas réserver 116px quand photo à côté du titre */
+.atelier-card .flip-front .stage-recto-title-row .instructor-flip-container {
+  margin-top: 0;
+  min-height: 0;
+  height: auto;
+}
+
+/* Mini-bio ouvert : overlay au-dessus du titre (ne pousse plus le contenu) */
+.atelier-card .flip-front .stage-recto-title-row .instructor-flip-container.flipped {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 20;
+  max-width: 100%;
+  min-width: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.atelier-card .flip-front .stage-recto-title-row .instructor-flip-container.flipped .instructor-flip-back {
+  min-width: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.atelier-card .flip-front .stage-recto-title-row .instructor-flip-container.flipped .instructor-flip-back-header {
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.atelier-card .flip-front .stage-recto-title-row .instructor-flip-container.flipped .instructor-flip-back .instructor-bio {
+  min-width: 0;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.atelier-card .flip-front .stage-recto-title-row .instructor-flip-front {
+  position: relative;
+  min-height: 0;
+  width: auto;
+}
+
+.atelier-card .flip-front .stage-recto-title-row .instructor-flip-front .instructor-avatar-small {
+  width: 48px;
+  height: 48px;
 }
 
 .atelier-card .flip-front .instructor-flip-back .instructor-bio {
@@ -3892,16 +3999,50 @@ nav.primary a:hover {
 }
 
 
-/* Contenu dans les faces du flip */
+/* Contenu dans les faces (recto + verso dépliable) */
 .atelier-card .flip-front .content,
 .atelier-card .flip-back .content {
   padding: 18px;
   display: flex;
   flex-direction: column;
-  height: 100%;
   min-height: 0;
   box-sizing: border-box;
   position: relative;
+}
+
+.atelier-card .flip-front .content {
+  height: 100%;
+}
+
+.atelier-card .flip-back .content {
+  min-height: 0;
+}
+
+/* Détails : dernier « tag » dans la section tags (même ligne, en bout) */
+.atelier-card .meta-info .stage-details-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--orange);
+  background: transparent;
+  border: 1px solid var(--orange);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.atelier-card .meta-info .stage-details-btn:hover {
+  background: rgba(240, 133, 58, 0.12);
+  border-color: var(--orange-dark);
+  color: var(--orange-dark);
+  transform: translateY(-1px);
+}
+
+#stages .atelier-card.complet .meta-info .stage-details-btn {
+  display: none;
 }
 
 .atelier-card .meta-info {

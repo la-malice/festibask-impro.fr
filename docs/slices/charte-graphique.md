@@ -14,6 +14,7 @@ Référence des variables CSS et recommandations d’usage pour aligner le site 
 | Corail | **#e95842** | `--coral` / `--accent` | Accent principal (brand, countdown, badge COMPLET) |
 | Orange | **#f0853a** | `--orange` | Touche (À propos, bouton liste d'attente) |
 | Rose | **#df1279** | `--pink` | Titres sections, matchs programme |
+| Bleu teal (dates stages) | **#177382** | `--stage-date-blue` | Dates sur les cartes stages (bandeau `.day-header`) |
 
 **theme-color** (meta) : #21254e.
 
@@ -51,6 +52,7 @@ Classes utilitaires : `.titre-1`, `.titre-2`, `.titre-3`, `.text-charte`, `.desc
 | `--coral` | #e95842 | Même valeur que `--accent` ; visible sur brand, countdown, liens hover, badge COMPLET, titres footer, bordures/accents (slots programme, early-bird). |
 | `--orange` | #f0853a | Phrase d'accroche section À propos (`.intro-highlight`) ; bouton « Ça m'intéresse! » (liste d'attente stages) ; carte **Stage** section Réserver mes billets. |
 | `--pink` | #df1279 | Titres h2 de toutes les sections sur fond sombre ; carte **Pass 3 jours** section Réserver mes billets. |
+| `--stage-date-blue` | #177382 | Dates sur les cartes stages (bandeau `.day-header`) : briser la monotonie, alignement avec les autres dates du site. |
 
 Fond des cartes intervenant (flip bio, stages) : **navy** (`--navy`).
 
@@ -60,7 +62,7 @@ Variables dérivées : `--accent` et `--accent-pink` = coral ; `--blue`, `--blue
 
 **Style carte orange** : s’applique aux cartes de la section Stages (`.atelier-card`) et aux créneaux stages du programme (`.slot-atelier`). Fond teinté orange, bordure ou liseret orange. Variables associées : `--orange-bg`, `--orange-bg-light`, `--orange-border-light` (fonds et bordures légères pour cohérence avec `--orange`).
 
-**Univers stages (orange)** : toute la couleur d'accent des stages est l'orange charte (`--orange`). Titres de stage dans le programme (`.salle-box .atelier-name`) et sur les cartes de la section Stages (`.atelier-card h3`, bandeau date `.day-header`) = `--orange` ; hover = `--orange-dark`. Pas de full caps sur ces titres (casse normale). Placeholder intervenant masterclass : nom « Intervenant.e bientôt dévoilé.e » en orange ; mini-bio et image placeholder (fond gris + ?) selon contenu en attente.
+**Univers stages (orange)** : couleur d'accent des stages = orange charte (`--orange`). Titres de stage dans le programme (`.salle-box .atelier-name`) et sur les cartes (`.atelier-card h3`) = `--orange` ; hover = `--orange-dark`. **Dates sur les cartes stages** (bandeau `.day-header`) = bleu teal `--stage-date-blue` (#177382) pour briser la monotonie et alignement avec les autres dates du site. Pas de full caps sur ces titres (casse normale). Placeholder intervenant masterclass : nom « Intervenant.e bientôt dévoilé.e » en orange ; mini-bio et image placeholder (fond gris + ?) selon contenu en attente.
 
 ## Programme – convention liserets (couleurs par type de créneau)
 
