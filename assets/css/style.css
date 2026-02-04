@@ -4929,20 +4929,20 @@ button.slot-spectacle:active {
   position: relative;
 }
 
-/* Identité visuelle par type de pass (charte : cyan, orange, rose) — fond teinté + bordure */
+/* Identité visuelle par type de pass (charte : cyan Pass 1j, rose Pass 3j, orange Stage) — fond teinté + bordure */
 .price#pass-1j {
   background: rgba(232, 247, 252, 0.95);
   border: 2px solid rgba(1, 179, 228, 0.45);
 }
 
 .price#pass-3j {
-  background: rgba(255, 250, 243, 0.95);
-  border: 2px solid rgba(240, 133, 58, 0.45);
+  background: rgba(255, 243, 250, 0.95);
+  border: 2px solid rgba(223, 18, 121, 0.4);
 }
 
 .price#stage {
-  background: rgba(255, 243, 250, 0.95);
-  border: 2px solid rgba(223, 18, 121, 0.4);
+  background: rgba(255, 250, 243, 0.95);
+  border: 2px solid rgba(240, 133, 58, 0.45);
 }
 
 .price h3,
@@ -4989,7 +4989,7 @@ button.slot-spectacle:active {
   color: var(--accent);
 }
 
-/* Couleurs prix / accent par carte (cyan, orange, rose) */
+/* Couleurs prix / accent par carte (cyan Pass 1j, rose Pass 3j, orange Stage) */
 .price#pass-1j .value,
 .price#pass-1j .value-with-presale .value-presale,
 .price#pass-1j .value-with-presale .value-presale-label {
@@ -4999,15 +4999,15 @@ button.slot-spectacle:active {
 .price#pass-3j .value,
 .price#pass-3j .value-with-presale .value-presale,
 .price#pass-3j .value-with-presale .value-presale-label {
-  color: var(--orange);
+  color: var(--pink);
 }
 
 .price#stage .value {
-  color: var(--pink);
+  color: var(--orange);
 }
 
 .price#stage .price-front-footer .small {
-  color: var(--pink);
+  color: var(--orange);
 }
 
 .price-flip-back .value-normal {
@@ -5132,15 +5132,15 @@ button.slot-spectacle:active {
   text-decoration-color: var(--text);
 }
 
-/* Lien carte Stage : rose pour rester cohérent avec la carte */
+/* Lien carte Stage : orange pour rester cohérent avec la carte */
 .price#stage .price-flip-front a {
-  color: var(--pink);
-  text-decoration-color: var(--pink);
+  color: var(--orange);
+  text-decoration-color: var(--orange);
 }
 
 .price#stage .price-flip-front a:hover {
-  color: #b80e64;
-  text-decoration-color: #b80e64;
+  color: var(--orange-dark);
+  text-decoration-color: var(--orange-dark);
 }
 
 .price-flip-back a {
@@ -5197,26 +5197,26 @@ button.slot-spectacle:active {
 }
 
 .price#pass-3j .price-front-footer::after {
-  color: var(--orange);
-  border-color: var(--orange);
-}
-
-.price#pass-3j:hover .price-front-footer::after {
-  background: rgba(240, 133, 58, 0.15);
-  border-color: var(--orange-dark);
-  color: var(--orange-dark);
-  transform: translateY(-2px);
-}
-
-.price#stage .price-front-footer::after {
   color: var(--pink);
   border-color: var(--pink);
 }
 
-.price#stage:hover .price-front-footer::after {
+.price#pass-3j:hover .price-front-footer::after {
   background: rgba(223, 18, 121, 0.12);
   border-color: #b80e64;
   color: #b80e64;
+  transform: translateY(-2px);
+}
+
+.price#stage .price-front-footer::after {
+  color: var(--orange);
+  border-color: var(--orange);
+}
+
+.price#stage:hover .price-front-footer::after {
+  background: rgba(240, 133, 58, 0.15);
+  border-color: var(--orange-dark);
+  color: var(--orange-dark);
   transform: translateY(-2px);
 }
 

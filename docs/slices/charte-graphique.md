@@ -49,8 +49,8 @@ Classes utilitaires : `.titre-1`, `.titre-2`, `.titre-3`, `.text-charte`, `.desc
 | Variable | Hex | Usage dans le site |
 |----------|-----|---------------------|
 | `--coral` | #e95842 | Même valeur que `--accent` ; visible sur brand, countdown, liens hover, badge COMPLET, titres footer, bordures/accents (slots programme, early-bird). |
-| `--orange` | #f0853a | Phrase d'accroche section À propos (`.intro-highlight`) ; bouton « Ça m'intéresse! » (liste d'attente stages). |
-| `--pink` | #df1279 | Titres h2 de toutes les sections sur fond sombre. |
+| `--orange` | #f0853a | Phrase d'accroche section À propos (`.intro-highlight`) ; bouton « Ça m'intéresse! » (liste d'attente stages) ; carte **Stage** section Réserver mes billets. |
+| `--pink` | #df1279 | Titres h2 de toutes les sections sur fond sombre ; carte **Pass 3 jours** section Réserver mes billets. |
 
 Fond des cartes intervenant (flip bio, stages) : **navy** (`--navy`).
 
