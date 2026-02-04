@@ -2513,6 +2513,47 @@ nav.primary a:hover {
   pointer-events: none;
 }
 
+/* Match block — layout image à gauche, texte à droite (rompre la monotonie) */
+.match-block.image-left .match-image-wrapper {
+  left: 0;
+  right: auto;
+}
+
+.match-block.image-left::before {
+  left: auto;
+  right: 0;
+  width: calc(100% - min(50%, 442px) - 24px);
+  background: linear-gradient(to left, rgba(33, 37, 78, 0.75) 0%, rgba(33, 66, 143, 0.4) 65%, transparent 100%);
+}
+
+.match-block.image-left .match-overlay {
+  left: min(50%, 442px);
+  right: 0;
+}
+
+.match-block.image-left .match-teams-overlay {
+  left: auto;
+  right: 24px;
+  justify-content: flex-end;
+}
+
+.match-block.image-left .match-pitch {
+  left: min(50%, 442px);
+  right: 0;
+}
+
+.match-block.image-left.flipped .match-gap-filler {
+  left: 0;
+  right: calc(100% - min(50%, 442px));
+}
+
+.match-block.image-left.flipped::before {
+  left: 0;
+  right: auto;
+  width: min(50%, 442px);
+  background: #000;
+}
+
 .match-pitch h4,
 .match-pitch h3,
 .match-pitch h2 {
