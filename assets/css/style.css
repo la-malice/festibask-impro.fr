@@ -1536,7 +1536,7 @@ nav.primary a:hover {
 .hero-doodles-top img {
   width: 100%;
   height: auto;
-  max-height: 56px;
+  max-height: 90px;
   object-fit: contain;
   object-position: center center;
   display: block;
@@ -1573,13 +1573,17 @@ nav.primary a:hover {
   }
 }
 
-/* Mobile : doodles pleine largeur viewport (échappent au padding du grid) */
+/* Mobile : doodles pleine largeur viewport (échappent au padding du grid) + rapprocher tags du logo */
 @media (max-width: 767px) {
   .hero,
   .hero-grid,
   .hero-grid .hero-logo-wrapper,
   .hero-tags {
     overflow-x: visible;
+  }
+  /* Remonter la zone tags + doodles du bas pour chevaucher l'espace sous le logo */
+  .hero-tags {
+    margin-top: clamp(-64px, -12vw, -44px);
   }
   .hero-doodles-top {
     width: 100vw;
@@ -1598,7 +1602,7 @@ nav.primary a:hover {
 /* Plus large que la cellule tags (overflow centré), rapproché des liens — base mobile */
 .hero-doodles {
   width: 120%;
-  max-height: 56px;
+  max-height: 96px;
   margin-top: clamp(0px, 0.5vw, 6px);
   margin-left: -10%;
   margin-right: -10%;
@@ -1607,7 +1611,7 @@ nav.primary a:hover {
 .hero-doodles img {
   width: 100%;
   height: auto;
-  max-height: 56px;
+  max-height: 96px;
   object-fit: contain;
   object-position: center center;
   display: block;
