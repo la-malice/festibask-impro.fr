@@ -70,6 +70,10 @@ Variables dérivées : `--accent` et `--accent-pink` = coral ; `--blue`, `--blue
 
 Liseret gauche = 3px (4px pour festif), dégradé vers transparent en bas.
 
+## À l'affiche – titres bannières (format long + match)
+
+Titres des bannières spectacle (format long et match) : même style partout — Hubot Sans, `clamp(1.5rem, 3.5vw, 2.6rem)`, `font-weight: normal`, blanc, `text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6)`. Bouton « Détails » en haut à droite des bannières (fond semi-transparent).
+
 ## Fichiers
 
 - Variables définies dans `assets/css/style.css` (`:root`) et reflétées dans le critical CSS de `index.html`.

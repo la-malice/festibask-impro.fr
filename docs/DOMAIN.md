@@ -31,7 +31,7 @@ Vocabulary and concepts for the Festibask'Impro festival site: event, spectacles
 ## Domain Rules (Observed in Code)
 
 1. Testimonials: array in `temoignages.json`; each item must have name, role, quote, image for a card to be rendered; section hidden if list empty or fetch fails.
-2. Spectacles: three days; each day exactly one format long + one match. Match France (Samedi) has EDF slider; others use flip or modal.
+2. Spectacles: three days; each day exactly one format long + one match. Match France (Samedi) has EDF slider (multiple slides); other spectacles (format long, other matches) open a single-slide slider (image + details). No fullscreen modal for spectacles.
 3. Programme day tabs and “À l’affiche” day slider are synchronized (same day index).
 4. Images: under `assets/img/`; logos in `assets/img/logos/`; long-form show images in `assets/img/long/`.
 5. Brevo: client_key in index.html and sw.js (key from query in sw); forms are Sibforms (Brevo backend).
