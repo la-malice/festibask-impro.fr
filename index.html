@@ -222,6 +222,12 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
   .section-bg-3 .small,
   .section-bg-3 strong,
   .section-bg-3 em,
+  .section-bg-4 p,
+  .section-bg-4 .small,
+  .section-bg-4 strong,
+  .section-bg-4 em,
+  .section-bg-4 ul,
+  .section-bg-4 li,
   .section-bg-5 p,
   .section-bg-5 .small,
   .section-bg-5 ul,
@@ -239,6 +245,12 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
   .section-bg-3 .day.card .meta,
   .section-bg-3 .day.card strong,
   .section-bg-3 .day.card em,
+  .section-bg-4 .price p,
+  .section-bg-4 .price .small,
+  .section-bg-4 .price strong,
+  .section-bg-4 .price em,
+  .section-bg-4 .price ul,
+  .section-bg-4 .price li,
   .section-bg-5 .day.card p,
   .section-bg-5 .day.card .small,
   .section-bg-5 .day.card .meta,
@@ -250,6 +262,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
   /* Titres de section sur fond sombre : rose charte */
   .section-bg-1 h2,
   .section-bg-3 h2,
+  .section-bg-4 h2,
   .section-bg-5 h2 {
     color: var(--pink);
   }
@@ -314,8 +327,8 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
       </a>
     </div>
     <nav class="primary">
-      <a href="#valeur">À l'affiche</a>
-      <a href="#programme">Programme</a>
+      <a href="#valeur">Spectacles</a>
+      <a href="#programme">Programme détaillé</a>
       <a href="#tarifs">Billetterie</a>
       <a href="#sponsors">Partenaires</a>
     </nav>
@@ -329,8 +342,8 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
       <line x1="6" y1="6" x2="18" y2="18"></line>
     </svg>
   </button>
-  <a href="#valeur">À l'affiche</a>
-  <a href="#programme">Programme</a>
+  <a href="#valeur">Spectacles</a>
+  <a href="#programme">Programme détaillé</a>
   <a href="#tarifs">Billetterie</a>
   <a href="#sponsors">Partenaires</a>
   <div class="drawer-cta">
@@ -435,7 +448,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
 <!-- Proposition de valeur -->
 <section id="valeur" class="section section-bg-1">
   <div class="container">
-    <h2>À l'affiche</h2>
+    <h2>Spectacles</h2>
     <p class="small">Trois jours de festival, avec chaque soir un spectacle <span class="tooltip" data-tooltip="format-long" tabindex="0" role="button" aria-label="Format long - Cliquez pour plus d'informations">format long</span> suivi d'un <span class="tooltip" data-tooltip="match" tabindex="0" role="button" aria-label="Match - Cliquez pour plus d'informations">match</span> d'improvisation théâtrale pour vous embarquer dans une atmosphère pleine d'élan, de surprises et d'énergie partagée.</p>
     <!-- Slider jour par jour -->
     <div class="day-slider">
@@ -650,254 +663,13 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
   </div>
 </section>
 
-<!-- Programme -->
-<section id="programme" class="section program section-bg-3">
-  <div class="container">
-    <div class="program-header">
-      <h2>Programme</h2>
-      <button class="btn-fullscreen" id="programFullscreenBtn" aria-label="Afficher le programme en plein écran" title="Plein écran">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
-        </svg>
-      </button>
-    </div>
-    <p class="small">Chaque journée alterne des <strong>stages d'impro</strong> (matin & après-midi) et une <strong>soirée</strong> en deux temps : <em>format long</em> puis <em>match international</em>.</p>
-    
-    <!-- Switcher jour par jour -->
-    <div class="day-tabs" id="programmeDayTabs">
-      <button class="day-tab active" data-day="0" aria-label="Vendredi 15 mai">
-        <span class="day-tab-name">Vendredi</span>
-        <span class="day-tab-date">15 mai</span>
-      </button>
-      <button class="day-tab" data-day="1" aria-label="Samedi 16 mai">
-        <span class="day-tab-name">Samedi</span>
-        <span class="day-tab-date">16 mai</span>
-      </button>
-      <button class="day-tab" data-day="2" aria-label="Dimanche 17 mai">
-        <span class="day-tab-name">Dimanche</span>
-        <span class="day-tab-date">17 mai</span>
-      </button>
-    </div>
-
-    <div class="grid grid-3 mt-18">
-      <!-- Vendredi -->
-      <div class="day card" data-day="0">
-        <h3>Vendredi 15 mai</h3>
-        <div class="slot">
-          <div class="time">10:30</div>
-          <div class="meta">🥐☕ Accueil des stages d'impro</div>
-        </div>
-        <div class="slot slot-atelier">
-          <div class="time">11:00–13:00</div>
-          <div class="salles-container">
-            <a href="#atelier-vendredi-11h-initiation" class="salle-box">
-              <div class="salle-label">Salle 1</div>
-              <div class="atelier-name">
-                <img src="assets/img/quentin-ostanel.avif" alt="Quentin Ostanel" class="instructor-avatar">
-                Initiation au théâtre d'improvisation
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="slot slot-atelier">
-          <div class="time">14:00–16:00</div>
-          <div class="salles-container">
-            <a href="#atelier-vendredi-14h-initiation" class="salle-box">
-              <div class="salle-label">Salle 2</div>
-              <div class="atelier-name">
-                <img src="assets/img/laetitia-landelle.avif" alt="Laëtitia Landelle" class="instructor-avatar">
-                Découvrir le théâtre d'impro
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="slot">
-          <div class="time">17:30</div>
-          <div class="meta">Accueil du public</div>
-        </div>
-        <button data-spectacle="spectacle-vendredi-format-long" class="slot slot-format-long">
-          <div class="slot-content">
-            <div class="time">19:00</div>
-            <h3>Braquage</h3>
-            <div class="meta">LONG FORM · 1H</div>
-          </div>
-          <picture>
-            <source type="image/avif" srcset="assets/img/long/braquage-640w.avif 640w" sizes="(max-width: 768px) 140px, 180px">
-            <img src="assets/img/long/braquage.jpg" alt="Braquage" class="slot-image">
-          </picture>
-        </button>
-        <div class="slot">
-          <div class="time">20:00</div>
-          <div class="meta">🍺🥤 Pause</div>
-        </div>
-        <button data-spectacle="spectacle-vendredi-match" class="slot highlight slot-spectacle">
-          <div class="slot-content">
-            <div class="time">21:00</div>
-            <h3>La Malice vs Belgique</h3>
-            <div class="meta">MATCH · 1H20</div>
-          </div>
-          <picture>
-            <source type="image/avif" srcset="assets/img/equipe-belgique-320w.avif 320w, assets/img/equipe-belgique-640w.avif 640w" sizes="(min-width: 800px) 180px, 140px">
-            <source type="image/jpeg" srcset="assets/img/equipe-belgique-320w.jpg 320w, assets/img/equipe-belgique-640w.jpg 640w" sizes="(min-width: 800px) 180px, 140px">
-            <img src="assets/img/equipe-belgique-320w.jpg" alt="La Malice vs Belgique" class="slot-image" width="140" height="170">
-          </picture>
-        </button>
-        <div class="slot">
-          <div class="time">23:00</div>
-          <div class="meta">à demain!</div>
-        </div>
-      </div>
-
-      <!-- Samedi -->
-      <div class="day card" data-day="1">
-        <h3>Samedi 16 mai</h3>
-        <div class="slot"><div class="time">09:30</div><div class="meta">🥐☕ Accueil des stages d'impro</div></div>
-        <div class="slot slot-atelier">
-          <div class="time">10:00–13:00</div>
-          <div class="salles-container">
-            <a href="#atelier-samedi-10h-masterclass" class="salle-box">
-              <div class="salle-label">Salle 2</div>
-              <div class="atelier-name">
-                <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Bientôt dévoilé" class="instructor-avatar">
-                Master class impro
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="slot slot-atelier">
-          <div class="time">14:00–17:00</div>
-          <div class="salles-container">
-            <a href="#atelier-samedi-14h-masterclass" class="salle-box">
-              <div class="salle-label">Salle 1</div>
-              <div class="atelier-name">
-                <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Bientôt dévoilé" class="instructor-avatar">
-                Master class impro
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="slot"><div class="time">17:30</div><div class="meta">Accueil du public</div></div>
-        <button data-spectacle="spectacle-samedi-format-long" class="slot slot-format-long">
-          <div class="slot-content">
-            <div class="time">19:00</div>
-            <h3>Commis d'Office</h3>
-            <div class="meta">LONG FORM · 1H</div>
-          </div>
-          <picture>
-            <source type="image/avif" srcset="assets/img/long/commis-d-office-640w.avif 640w" sizes="(max-width: 768px) 140px, 180px">
-            <img src="assets/img/long/commis-d-office.jpg" alt="Commis d'Office" class="slot-image">
-          </picture>
-        </button>
-        <div class="slot"><div class="time">20:00</div><div class="meta">🍺🥤 Pause</div></div>
-        <button data-spectacle="spectacle-samedi-match" class="slot highlight slot-spectacle">
-          <div class="slot-content">
-            <div class="time">21:00</div>
-            <h3>La Malice vs France</h3>
-            <div class="meta">MATCH · 1H20</div>
-          </div>
-          <picture>
-            <source type="image/avif" srcset="assets/img/long/edf-colisee-442w.avif 442w, assets/img/long/edf-colisee.avif 640w" sizes="(min-width: 800px) 180px, 140px">
-            <img src="assets/img/long/edf-colisee.avif" alt="Match d'improvisation : La Malice vs France" class="slot-image" width="140" height="170">
-          </picture>
-        </button>
-        <div class="slot slot-festif"><div class="time">23:00+</div><div class="meta"><strong>🎧 Soirée musicale festive</strong></div></div>
-        <div class="slot"><div class="time">Fin de soirée</div><div class="meta">bonne nuit 😴</div></div>
-      </div>
-
-      <!-- Dimanche -->
-      <div class="day card" data-day="2">
-        <h3>Dimanche 17 mai</h3>
-        <div class="slot"><div class="time">10:30</div><div class="meta">🥐☕ Accueil des stages d'impro</div></div>
-        <div class="slot slot-atelier">
-          <div class="time">10:30–12:30</div>
-          <div class="salles-container">
-            <a href="#atelier-dimanche-famille" class="salle-box">
-              <div class="salle-label">Salle 1</div>
-              <div class="atelier-name">
-                <img src="assets/img/emilie-coeurdevache.avif" alt="Émilie Coeurdevache" class="instructor-avatar">
-                Impro en famille
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="slot slot-atelier">
-          <div class="time">13:30–15:30</div>
-          <div class="salles-container">
-            <a href="#atelier-dimanche-ados" class="salle-box">
-              <div class="salle-label">Salle 2</div>
-              <div class="atelier-name">
-                <img src="assets/img/anneke-bossis.avif" alt="Anneke Bossis" class="instructor-avatar">
-                Découverte de l'impro pour ados
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="slot"><div class="time">16:30</div><div class="meta">Accueil du public</div></div>
-        <button data-spectacle="spectacle-dimanche-format-long" class="slot slot-format-long">
-          <div class="slot-content">
-            <div class="time">18:00</div>
-            <h3>Promo 2006</h3>
-            <div class="meta">LONG FORM · 1H</div>
-          </div>
-          <picture>
-            <source type="image/avif" srcset="assets/img/long/promo-2006-640w.avif 640w" sizes="(max-width: 768px) 140px, 180px">
-            <img src="assets/img/long/promo-2006.avif" alt="Promo 2006" class="slot-image">
-          </picture>
-        </button>
-        <div class="slot"><div class="time">19:00</div><div class="meta">🍺🥤 Pause</div></div>
-        <button data-spectacle="spectacle-dimanche-match" class="slot highlight slot-spectacle">
-          <div class="slot-content">
-            <div class="time">20:00</div>
-            <h3>La Malice vs Suisse</h3>
-            <div class="meta">MATCH · 1H20</div>
-          </div>
-          <picture>
-            <source type="image/avif" srcset="assets/img/equipe-suisse-320w.avif 320w, assets/img/equipe-suisse-640w.avif 640w" sizes="(min-width: 800px) 180px, 140px">
-            <source type="image/jpeg" srcset="assets/img/equipe-suisse-320w.jpg 320w, assets/img/equipe-suisse-640w.jpg 640w" sizes="(min-width: 800px) 180px, 140px">
-            <img src="assets/img/equipe-suisse-320w.jpg" alt="La Malice vs Suisse" class="slot-image" width="140" height="170">
-          </picture>
-        </button>
-        <div class="slot"><div class="time">22:00</div><div class="meta">merci!! à l'année prochaine ?</div></div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- Conteneur plein écran pour le programme -->
-<div id="programFullscreenContainer" class="program-fullscreen" style="display: none;">
-  <button class="program-fullscreen-close" id="programFullscreenClose" aria-label="Fermer le mode plein écran" title="Fermer">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="18" y1="6" x2="6" y2="18"></line>
-      <line x1="6" y1="6" x2="18" y2="18"></line>
-    </svg>
-  </button>
-  <div class="program-fullscreen-content">
-    <div class="grid grid-3" id="programFullscreenGrid">
-      <!-- Le contenu sera copié dynamiquement depuis la grille originale -->
-    </div>
-    <div class="program-fullscreen-logo">
-      <picture>
-        <source type="image/avif" srcset="assets/img/logos/logo_ligne_fd-fonce-100.avif 100w, assets/img/logos/logo_ligne_fd-fonce-200.avif 200w" sizes="(max-width: 768px) 90px, 150px">
-        <img src="assets/img/logos/logo_ligne_fd-fonce.png" alt="Festibask'Impro" class="program-fullscreen-logo-img" width="1500" height="193">
-      </picture>
-    </div>
-    <div class="program-fullscreen-logo program-fullscreen-logo-malice">
-      <picture>
-        <source type="image/avif" srcset="assets/img/logos/logo-la-malice-noir-bleu-tr-120.avif 120w, assets/img/logos/logo-la-malice-noir-bleu-tr-240.avif 240w, assets/img/logos/logo-la-malice-noir-bleu-tr-300.avif 300w" sizes="(max-width: 768px) 90px, 150px">
-        <img src="assets/img/logos/logo-la-malice-noir-bleu-tr.png" alt="La Malice" class="program-fullscreen-logo-img" width="100" height="100">
-      </picture>
-    </div>
-  </div>
-</div>
-
 <!-- Stages -->
 <section id="stages" class="section section-bg-5">
   <div class="container">
     <h2>Stages d'impro</h2>
     <p class="small mb-16">Chaque jour des ateliers d'improvisation animés vous sont proposés. Que vous souhaitiez vous initier seul ou en famille, ou que vous souhaitiez vous perfectionner ou prendre une master class, il y aura forcément un atelier pour vous.</p>
 
-    <!-- Switcher jour par jour (synchronisé avec À l'affiche et Programme) -->
+    <!-- Switcher jour par jour (synchronisé avec Spectacles et Programme détaillé) -->
     <div class="day-tabs" id="stagesDayTabs">
       <button class="day-tab active" data-day="0" aria-label="Vendredi 15 mai">
         <span class="day-tab-name">Vendredi</span>
@@ -1394,10 +1166,254 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
   </div>
 </section>
 
+<!-- Programme détaillé -->
+<section id="programme" class="section program section-bg-3">
+  <div class="container">
+    <div class="program-header">
+      <h2>Programme détaillé</h2>
+      <button class="btn-fullscreen" id="programFullscreenBtn" aria-label="Afficher le programme en plein écran" title="Plein écran">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+        </svg>
+      </button>
+    </div>
+    <p class="small">Chaque journée alterne des <strong>stages d'impro</strong> (matin & après-midi) et une <strong>soirée</strong> en deux temps : <em>format long</em> puis <em>match international</em>.</p>
+    
+    <!-- Switcher jour par jour -->
+    <div class="day-tabs" id="programmeDayTabs">
+      <button class="day-tab active" data-day="0" aria-label="Vendredi 15 mai">
+        <span class="day-tab-name">Vendredi</span>
+        <span class="day-tab-date">15 mai</span>
+      </button>
+      <button class="day-tab" data-day="1" aria-label="Samedi 16 mai">
+        <span class="day-tab-name">Samedi</span>
+        <span class="day-tab-date">16 mai</span>
+      </button>
+      <button class="day-tab" data-day="2" aria-label="Dimanche 17 mai">
+        <span class="day-tab-name">Dimanche</span>
+        <span class="day-tab-date">17 mai</span>
+      </button>
+    </div>
+
+    <div class="grid grid-3 mt-18">
+      <!-- Vendredi -->
+      <div class="day card" data-day="0">
+        <h3>Vendredi 15 mai</h3>
+        <div class="slot">
+          <div class="time">10:30</div>
+          <div class="meta">🥐☕ Accueil des stages d'impro</div>
+        </div>
+        <div class="slot slot-atelier">
+          <div class="time">11:00–13:00</div>
+          <div class="salles-container">
+            <a href="#atelier-vendredi-11h-initiation" class="salle-box">
+              <div class="salle-label">Salle 1</div>
+              <div class="atelier-name">
+                <img src="assets/img/quentin-ostanel.avif" alt="Quentin Ostanel" class="instructor-avatar">
+                Initiation au théâtre d'improvisation
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="slot slot-atelier">
+          <div class="time">14:00–16:00</div>
+          <div class="salles-container">
+            <a href="#atelier-vendredi-14h-initiation" class="salle-box">
+              <div class="salle-label">Salle 2</div>
+              <div class="atelier-name">
+                <img src="assets/img/laetitia-landelle.avif" alt="Laëtitia Landelle" class="instructor-avatar">
+                Découvrir le théâtre d'impro
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="slot">
+          <div class="time">17:30</div>
+          <div class="meta">Accueil du public</div>
+        </div>
+        <button data-spectacle="spectacle-vendredi-format-long" class="slot slot-format-long">
+          <div class="slot-content">
+            <div class="time">19:00</div>
+            <h3>Braquage</h3>
+            <div class="meta">LONG FORM · 1H</div>
+          </div>
+          <picture>
+            <source type="image/avif" srcset="assets/img/long/braquage-640w.avif 640w" sizes="(max-width: 768px) 140px, 180px">
+            <img src="assets/img/long/braquage.jpg" alt="Braquage" class="slot-image">
+          </picture>
+        </button>
+        <div class="slot">
+          <div class="time">20:00</div>
+          <div class="meta">🍺🥤 Pause</div>
+        </div>
+        <button data-spectacle="spectacle-vendredi-match" class="slot highlight slot-spectacle">
+          <div class="slot-content">
+            <div class="time">21:00</div>
+            <h3>La Malice vs Belgique</h3>
+            <div class="meta">MATCH · 1H20</div>
+          </div>
+          <picture>
+            <source type="image/avif" srcset="assets/img/equipe-belgique-320w.avif 320w, assets/img/equipe-belgique-640w.avif 640w" sizes="(min-width: 800px) 180px, 140px">
+            <source type="image/jpeg" srcset="assets/img/equipe-belgique-320w.jpg 320w, assets/img/equipe-belgique-640w.jpg 640w" sizes="(min-width: 800px) 180px, 140px">
+            <img src="assets/img/equipe-belgique-320w.jpg" alt="La Malice vs Belgique" class="slot-image" width="140" height="170">
+          </picture>
+        </button>
+        <div class="slot">
+          <div class="time">23:00</div>
+          <div class="meta">à demain!</div>
+        </div>
+      </div>
+
+      <!-- Samedi -->
+      <div class="day card" data-day="1">
+        <h3>Samedi 16 mai</h3>
+        <div class="slot"><div class="time">09:30</div><div class="meta">🥐☕ Accueil des stages d'impro</div></div>
+        <div class="slot slot-atelier">
+          <div class="time">10:00–13:00</div>
+          <div class="salles-container">
+            <a href="#atelier-samedi-10h-masterclass" class="salle-box">
+              <div class="salle-label">Salle 2</div>
+              <div class="atelier-name">
+                <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Bientôt dévoilé" class="instructor-avatar">
+                Master class impro
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="slot slot-atelier">
+          <div class="time">14:00–17:00</div>
+          <div class="salles-container">
+            <a href="#atelier-samedi-14h-masterclass" class="salle-box">
+              <div class="salle-label">Salle 1</div>
+              <div class="atelier-name">
+                <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Bientôt dévoilé" class="instructor-avatar">
+                Master class impro
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="slot"><div class="time">17:30</div><div class="meta">Accueil du public</div></div>
+        <button data-spectacle="spectacle-samedi-format-long" class="slot slot-format-long">
+          <div class="slot-content">
+            <div class="time">19:00</div>
+            <h3>Commis d'Office</h3>
+            <div class="meta">LONG FORM · 1H</div>
+          </div>
+          <picture>
+            <source type="image/avif" srcset="assets/img/long/commis-d-office-640w.avif 640w" sizes="(max-width: 768px) 140px, 180px">
+            <img src="assets/img/long/commis-d-office.jpg" alt="Commis d'Office" class="slot-image">
+          </picture>
+        </button>
+        <div class="slot"><div class="time">20:00</div><div class="meta">🍺🥤 Pause</div></div>
+        <button data-spectacle="spectacle-samedi-match" class="slot highlight slot-spectacle">
+          <div class="slot-content">
+            <div class="time">21:00</div>
+            <h3>La Malice vs France</h3>
+            <div class="meta">MATCH · 1H20</div>
+          </div>
+          <picture>
+            <source type="image/avif" srcset="assets/img/long/edf-colisee-442w.avif 442w, assets/img/long/edf-colisee.avif 640w" sizes="(min-width: 800px) 180px, 140px">
+            <img src="assets/img/long/edf-colisee.avif" alt="Match d'improvisation : La Malice vs France" class="slot-image" width="140" height="170">
+          </picture>
+        </button>
+        <div class="slot slot-festif"><div class="time">23:00+</div><div class="meta"><strong>🎧 Soirée musicale festive</strong></div></div>
+        <div class="slot"><div class="time">Fin de soirée</div><div class="meta">bonne nuit 😴</div></div>
+      </div>
+
+      <!-- Dimanche -->
+      <div class="day card" data-day="2">
+        <h3>Dimanche 17 mai</h3>
+        <div class="slot"><div class="time">10:30</div><div class="meta">🥐☕ Accueil des stages d'impro</div></div>
+        <div class="slot slot-atelier">
+          <div class="time">10:30–12:30</div>
+          <div class="salles-container">
+            <a href="#atelier-dimanche-famille" class="salle-box">
+              <div class="salle-label">Salle 1</div>
+              <div class="atelier-name">
+                <img src="assets/img/emilie-coeurdevache.avif" alt="Émilie Coeurdevache" class="instructor-avatar">
+                Impro en famille
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="slot slot-atelier">
+          <div class="time">13:30–15:30</div>
+          <div class="salles-container">
+            <a href="#atelier-dimanche-ados" class="salle-box">
+              <div class="salle-label">Salle 2</div>
+              <div class="atelier-name">
+                <img src="assets/img/anneke-bossis.avif" alt="Anneke Bossis" class="instructor-avatar">
+                Découverte de l'impro pour ados
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="slot"><div class="time">16:30</div><div class="meta">Accueil du public</div></div>
+        <button data-spectacle="spectacle-dimanche-format-long" class="slot slot-format-long">
+          <div class="slot-content">
+            <div class="time">18:00</div>
+            <h3>Promo 2006</h3>
+            <div class="meta">LONG FORM · 1H</div>
+          </div>
+          <picture>
+            <source type="image/avif" srcset="assets/img/long/promo-2006-640w.avif 640w" sizes="(max-width: 768px) 140px, 180px">
+            <img src="assets/img/long/promo-2006.avif" alt="Promo 2006" class="slot-image">
+          </picture>
+        </button>
+        <div class="slot"><div class="time">19:00</div><div class="meta">🍺🥤 Pause</div></div>
+        <button data-spectacle="spectacle-dimanche-match" class="slot highlight slot-spectacle">
+          <div class="slot-content">
+            <div class="time">20:00</div>
+            <h3>La Malice vs Suisse</h3>
+            <div class="meta">MATCH · 1H20</div>
+          </div>
+          <picture>
+            <source type="image/avif" srcset="assets/img/equipe-suisse-320w.avif 320w, assets/img/equipe-suisse-640w.avif 640w" sizes="(min-width: 800px) 180px, 140px">
+            <source type="image/jpeg" srcset="assets/img/equipe-suisse-320w.jpg 320w, assets/img/equipe-suisse-640w.jpg 640w" sizes="(min-width: 800px) 180px, 140px">
+            <img src="assets/img/equipe-suisse-320w.jpg" alt="La Malice vs Suisse" class="slot-image" width="140" height="170">
+          </picture>
+        </button>
+        <div class="slot"><div class="time">22:00</div><div class="meta">merci!! à l'année prochaine ?</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Conteneur plein écran pour le programme -->
+<div id="programFullscreenContainer" class="program-fullscreen" style="display: none;">
+  <button class="program-fullscreen-close" id="programFullscreenClose" aria-label="Fermer le mode plein écran" title="Fermer">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+  <div class="program-fullscreen-content">
+    <div class="grid grid-3" id="programFullscreenGrid">
+      <!-- Le contenu sera copié dynamiquement depuis la grille originale -->
+    </div>
+    <div class="program-fullscreen-logo">
+      <picture>
+        <source type="image/avif" srcset="assets/img/logos/logo_ligne_fd-fonce-100.avif 100w, assets/img/logos/logo_ligne_fd-fonce-200.avif 200w" sizes="(max-width: 768px) 90px, 150px">
+        <img src="assets/img/logos/logo_ligne_fd-fonce.png" alt="Festibask'Impro" class="program-fullscreen-logo-img" width="1500" height="193">
+      </picture>
+    </div>
+    <div class="program-fullscreen-logo program-fullscreen-logo-malice">
+      <picture>
+        <source type="image/avif" srcset="assets/img/logos/logo-la-malice-noir-bleu-tr-120.avif 120w, assets/img/logos/logo-la-malice-noir-bleu-tr-240.avif 240w, assets/img/logos/logo-la-malice-noir-bleu-tr-300.avif 300w" sizes="(max-width: 768px) 90px, 150px">
+        <img src="assets/img/logos/logo-la-malice-noir-bleu-tr.png" alt="La Malice" class="program-fullscreen-logo-img" width="100" height="100">
+      </picture>
+    </div>
+  </div>
+</div>
+
+
+
 <!-- Tarifs et Billetterie -->
 <section id="tarifs" class="section section-bg-4">
   <div class="container">
-    <h2>Réserver mes billets</h2>
+    <h2>Réservations</h2>
+    <p class="small mb-16">Le festival est accessible via des pass à la journée ou pour les trois jours. Pour ceux qui veulent pratiquer l'impro, des pass stages sont également disponibles. Tous les pass proposent des tarifs réduits et des tarifs enfants.</p>
     <div class="pricing mt-18">
       <div class="price" id="pass-1j">
         <div class="price-flip-container">
@@ -1677,8 +1693,8 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
     </div>
     <div>
       <ul class="small footer-list">
-        <li><a href="#valeur">À l'affiche</a></li>
-        <li><a href="#programme">Programme</a></li>
+        <li><a href="#valeur">Spectacles</a></li>
+        <li><a href="#programme">Programme détaillé</a></li>
         <li><a href="#stages">Stages</a></li>
         <li><a href="#tarifs">Billetterie</a></li>
         <li><a href="#infos">Infos pratiques</a></li>

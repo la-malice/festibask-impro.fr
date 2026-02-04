@@ -477,6 +477,31 @@ h1 {
   z-index: 1;
 }
 
+/* Titre section Réservations : même rose charte que les autres sections sur fond sombre */
+.section-bg-4 h2 {
+  color: var(--pink);
+}
+
+/* Section Réservations : texte introductif blanc sur fond sombre (charte) */
+.section-bg-4 p,
+.section-bg-4 .small,
+.section-bg-4 strong,
+.section-bg-4 em,
+.section-bg-4 ul,
+.section-bg-4 li {
+  color: var(--white);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+.section-bg-4 .price p,
+.section-bg-4 .price .small,
+.section-bg-4 .price strong,
+.section-bg-4 .price em,
+.section-bg-4 .price ul,
+.section-bg-4 .price li {
+  color: inherit;
+}
+
 /* FAQ - encart style similaire à CTA */
 .faq-card {
   background: var(--white-overlay-medium);
@@ -599,6 +624,14 @@ h1 {
 /* Section À propos - dégradé inversé */
 #a-propos.section-bg-5 {
   background: linear-gradient(to bottom, var(--blue-charte) 0%, var(--navy) 100%);
+}
+
+/* Sections Stages et Programme : dégradés inversés l’un par rapport à l’autre (Stages = bleu→navy, Programme = navy→bleu) */
+#stages.section-bg-5 {
+  background: linear-gradient(to bottom, var(--blue-charte) 0%, var(--navy) 100%);
+}
+#programme.section-bg-3 {
+  background: linear-gradient(to bottom, var(--navy) 0%, var(--blue-charte) 100%);
 }
 
 /* Section CTA - Soyez les premiers informés - dégradé inversé */
@@ -775,11 +808,10 @@ footer .footer-impro {
   display: block;
 }
 
-/* Texte sur fond dégradé - utiliser la même couleur que intro-text */
+/* Texte sur fond dégradé - utiliser la même couleur que intro-text (section-bg-4 = blanc, voir bloc Réservations ci-dessus) */
 .section-bg-1 .small,
 .section-bg-2 .small,
 .section-bg-3 .small,
-.section-bg-4 .small,
 .section-bg-5 .small {
   color: var(--blue-dark);
 }
@@ -787,7 +819,6 @@ footer .footer-impro {
 .section-bg-1 ul,
 .section-bg-2 ul,
 .section-bg-3 ul,
-.section-bg-4 ul,
 .section-bg-5 ul {
   color: var(--blue-dark);
 }
@@ -795,7 +826,6 @@ footer .footer-impro {
 .section-bg-1 li,
 .section-bg-2 li,
 .section-bg-3 li,
-.section-bg-4 li,
 .section-bg-5 li {
   color: var(--blue-dark);
 }
@@ -2534,13 +2564,20 @@ nav.primary a:hover {
 
 .match-block.image-left .match-teams-overlay {
   left: auto;
-  right: 24px;
+  right: 96px; /* éviter le chevauchement avec le bouton Détails (right: 12px) */
+  top: 52px; /* descendre pour ne pas être à la même hauteur que le bouton */
   justify-content: flex-end;
 }
 
 .match-block.image-left .match-pitch {
   left: min(50%, 442px);
   right: 0;
+}
+
+/* Crédit photo sur l’image (à gauche) quand le bloc est en image-left (ex. bannière Équipe de France) */
+.match-block.image-left .match-photo-credit {
+  left: 12px;
+  right: auto;
 }
 
 .match-block.image-left.flipped .match-gap-filler {
@@ -3053,13 +3090,29 @@ nav.primary a:hover {
   
   .match-teams-overlay {
     top: 62px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 18px;
+    right: 18px;
+    transform: none;
     gap: 12px;
     flex-wrap: nowrap;
-    max-width: calc(100% - 36px);
-    padding: 0 18px;
+    max-width: none;
+    padding: 0;
     box-sizing: border-box;
+    justify-content: center;
+  }
+  
+  /* Bannière match mobile : logos centrés avec marges pour ne pas sortir du cadre */
+  .match-block.image-left .match-teams-overlay {
+    left: 18px;
+    right: 18px;
+    top: 62px;
+    justify-content: center;
+  }
+  
+  /* Bannière match mobile : bloc texte (heure, MATCH, noms) calé à gauche sur toute la largeur */
+  .match-block.image-left .match-overlay {
+    left: 0;
+    right: 0;
   }
   
   .match-time,

@@ -58,6 +58,8 @@ Fond des cartes intervenant (flip bio, stages) : **navy** (`--navy`).
 
 Boutons : **principal** (Prévenez-moi, billetterie) = **cyan** ; **inscription** aux stages = **cyan** ; **liste d'attente** (« Ça m'intéresse! ») = **orange**.
 
+**Texte d’intro sur fond sombre** : dans les sections sur fond dégradé (Spectacles, Stages, Programme détaillé, Réservations, etc. — `.section-bg-1`, `.section-bg-3`, `.section-bg-4`, `.section-bg-5`), le paragraphe d’introduction (`.small`, `p`) est en **blanc** (`var(--white)`), même taille et interligne que le corps. Le contenu à l’intérieur des cartes (prix, jour, atelier) garde sa couleur héritée (fond clair des cartes).
+
 Variables dérivées : `--accent` et `--accent-pink` = coral ; `--blue`, `--blue-border`, etc. = cyan.
 
 **Style carte orange** : s’applique aux cartes de la section Stages (`.atelier-card`) et aux créneaux stages du programme (`.slot-atelier`). Fond teinté orange, bordure ou liseret orange. Variables associées : `--orange-bg`, `--orange-bg-light`, `--orange-border-light` (fonds et bordures légères pour cohérence avec `--orange`).
