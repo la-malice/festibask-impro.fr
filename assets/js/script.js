@@ -561,6 +561,7 @@
     flipBack.addEventListener('click', e => {
       if (e.target.closest('.instructor-flip-container')) return;
       if (e.target.closest('.btn-inscription, .btn-waitlist')) return;
+      if (e.target.closest('a')) return; /* laisser les liens (ex. @insta) ouvrir dans un autre onglet */
       const flipContainer = flipBack.closest('.flip-container');
       if (flipContainer && flipContainer.classList.contains('flipped')) {
         closeStageVerso(flipContainer);
@@ -581,6 +582,7 @@
   // Flip pour afficher la bio de l'intervenant (recto et verso : overlay au lieu de flipper la carte)
   const instructorFlipHandler = (container) => {
     container.addEventListener('click',e=>{
+      if (e.target.closest('a')) return; /* laisser les liens (ex. @insta) ouvrir sans fermer la bio */
       e.preventDefault();
       const isFlipped = container.classList.contains('flipped');
       const back = container.querySelector('.instructor-flip-back');
