@@ -177,6 +177,13 @@
         showPlayOverlay();
       });
     }
+
+    // Lancer la vidéo au premier scroll si elle n’est pas encore lancée
+    window.addEventListener('scroll', () => {
+      if (!heroVideoPlayOverlay.classList.contains('hidden')) {
+        heroVideoPlayOverlay.click();
+      }
+    }, { once: true, passive: true });
   }
 
   // Burger / drawer mobile
