@@ -1521,7 +1521,7 @@ nav.primary a:hover {
 .hero-doodles-top {
   width: 120%;
   max-height: 56px;
-  margin-bottom: clamp(0px, 0.5vw, 6px);
+  margin-bottom: clamp(12px, 2.5vw, 28px);
   margin-left: -10%;
   margin-right: -10%;
   position: relative;
@@ -1584,14 +1584,23 @@ nav.primary a:hover {
   .hero-doodles-top {
     width: 100vw;
     max-width: 100vw;
+    max-height: 116px;
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
+    margin-bottom: 36px;
+  }
+  .hero-doodles-top img {
+    max-height: 116px;
   }
   .hero-doodles {
     width: 100vw;
     max-width: 100vw;
+    max-height: 116px;
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
+  }
+  .hero-doodles img {
+    max-height: 116px;
   }
 }
 
@@ -1752,7 +1761,7 @@ nav.primary a:hover {
   flex-shrink: 0;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  box-shadow: none;
   background: transparent;
   aspect-ratio: 1000 / 607;
 }
@@ -1775,7 +1784,7 @@ nav.primary a:hover {
   object-fit: contain; /* afficher l’image entière (date + jambes), pas de crop */
 }
 
-/* Overlay play : affiché tant que la vidéo n’est pas lancée (chargement au clic) */
+/* Overlay play : affiché tant que la vidéo n’est pas lancée (logo fondu dans la page, zone cliquable) */
 .hero-video-play-overlay {
   position: absolute;
   inset: 0;
@@ -1786,9 +1795,13 @@ nav.primary a:hover {
   padding: 0;
   margin: 0;
   border: none;
-  background: rgba(0, 0, 0, 0.35);
+  background: transparent;
   cursor: pointer;
   transition: background 0.2s ease;
+}
+
+.hero-video-container:hover .hero-video-play-overlay {
+  background: rgba(0, 0, 0, 0.35);
 }
 
 .hero-video-play-overlay:hover {
@@ -1800,6 +1813,10 @@ nav.primary a:hover {
 }
 
 .hero-video-play-overlay:focus {
+  outline: none;
+}
+
+.hero-video-play-overlay:focus-visible {
   outline: 2px solid var(--blue);
   outline-offset: 2px;
 }
@@ -1816,7 +1833,12 @@ nav.primary a:hover {
   background: rgba(255, 255, 255, 0.9);
   color: var(--blue-dark);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
-  transition: transform 0.15s ease, background 0.15s ease;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.15s ease, background 0.15s ease;
+}
+
+.hero-video-container:hover .hero-video-play-overlay-icon {
+  opacity: 1;
 }
 
 .hero-video-play-overlay:hover .hero-video-play-overlay-icon {

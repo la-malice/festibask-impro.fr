@@ -104,21 +104,55 @@
       heroVideoContainer.style.backgroundSize = 'contain';
       heroVideoContainer.style.backgroundPosition = 'center';
 
-      heroVideoPlayOverlay.addEventListener('click', () => {
-        const iframe = document.createElement('iframe');
-        iframe.setAttribute('src', 'https://www.youtube.com/embed/' + heroYoutubeId + '?autoplay=1&rel=0');
-        iframe.setAttribute('title', heroVideo.getAttribute('title') || 'Vidéo Festibask\'Impro');
-        iframe.setAttribute('frameborder', '0');
-        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
-        iframe.setAttribute('allowfullscreen', '');
-        iframe.style.position = 'absolute';
-        iframe.style.inset = '0';
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
-        iframe.style.border = 'none';
+      let youtubePlayer = null;
+      let youtubePlayerDiv = null;
+
+      function restorePoster() {
+        heroVideoContainer.style.backgroundImage = 'url(' + posterUrl + ')';
+        heroVideoContainer.style.backgroundSize = 'contain';
+        heroVideoContainer.style.backgroundPosition = 'center';
+        showPlayOverlay();
+      }
+
+      function onPlayerStateChange(event) {
+        if (event.data === 0) {
+          if (youtubePlayer && typeof youtubePlayer.destroy === 'function') youtubePlayer.destroy();
+          if (youtubePlayerDiv && youtubePlayerDiv.parentNode) youtubePlayerDiv.remove();
+          youtubePlayer = null;
+          youtubePlayerDiv = null;
+          restorePoster();
+        }
+      }
+
+      function createYoutubePlayer() {
+        youtubePlayerDiv = document.createElement('div');
+        youtubePlayerDiv.id = 'hero-youtube-player';
+        youtubePlayerDiv.style.position = 'absolute';
+        youtubePlayerDiv.style.inset = '0';
+        youtubePlayerDiv.style.width = '100%';
+        youtubePlayerDiv.style.height = '100%';
         heroVideoContainer.style.backgroundImage = '';
-        heroVideoContainer.insertBefore(iframe, heroVideoContainer.firstChild);
+        heroVideoContainer.insertBefore(youtubePlayerDiv, heroVideoContainer.firstChild);
+        youtubePlayer = new window.YT.Player('hero-youtube-player', {
+          videoId: heroYoutubeId,
+          playerVars: { autoplay: 1, rel: 0 },
+          events: { onStateChange: onPlayerStateChange }
+        });
         hidePlayOverlay();
+      }
+
+      heroVideoPlayOverlay.addEventListener('click', () => {
+        if (window.YT && window.YT.Player) {
+          createYoutubePlayer();
+        } else {
+          window.onYouTubeIframeAPIReady = function () {
+            window.onYouTubeIframeAPIReady = null;
+            createYoutubePlayer();
+          };
+          const tag = document.createElement('script');
+          tag.src = 'https://www.youtube.com/iframe_api';
+          document.head.appendChild(tag);
+        }
       });
     } else {
       function startVideo() {
