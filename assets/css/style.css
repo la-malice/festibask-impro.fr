@@ -1488,11 +1488,11 @@ nav.primary a:hover {
   box-sizing: border-box;
 }
 
-/* Grille hero : [ logo + doodles-top | vidéo ] [ tags + doodles-bottom | countdown ] */
+/* Grille hero : [ logo + doodles-top | vidéo ] [ tags + doodles-bottom ] [ countdown ] */
 .hero-grid {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: auto auto auto auto;
+  grid-template-rows: auto auto auto;
   row-gap: clamp(8px, 1.5vw, 16px);
   column-gap: 0;
   align-items: start;
@@ -1553,7 +1553,7 @@ nav.primary a:hover {
 
 .hero-tags {
   grid-column: 1;
-  grid-row: 3;
+  grid-row: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1573,16 +1573,13 @@ nav.primary a:hover {
   }
 }
 
-/* Mobile : doodles pleine largeur viewport + rapprocher countdown du logo */
+/* Mobile : doodles pleine largeur viewport */
 @media (max-width: 767px) {
   .hero,
   .hero-grid,
   .hero-grid .hero-logo-wrapper,
   .hero-tags {
     overflow-x: visible;
-  }
-  .hero-countdown {
-    margin-top: clamp(-48px, -10vw, -28px);
   }
   .hero-doodles-top {
     width: 100vw;
@@ -1625,19 +1622,14 @@ nav.primary a:hover {
   }
 }
 
-.hero-video-container {
-  grid-column: 1;
-  grid-row: 4;
-}
-
 .hero-countdown {
   grid-column: 1;
-  grid-row: 2;
+  grid-row: 3;
 }
 
 @media (min-width: 1024px) {
   .hero-grid {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr;
     grid-template-rows: auto auto auto;
     row-gap: clamp(8px, 1.5vw, 16px);
     column-gap: 0;
@@ -1672,13 +1664,12 @@ nav.primary a:hover {
     max-height: 185px;
   }
 
-  /* Colonne gauche : logo (r1), countdown (r2), tags (r3) — agrandi (×1.35), remonté vers IMPRO */
+  /* Colonne gauche : logo (r1), tags + doodles (r2), countdown (r3) */
   .hero-countdown {
     grid-column: 1;
-    grid-row: 2;
+    grid-row: 3;
     justify-self: center;
     align-self: start;
-    margin-top: clamp(-100px, -8vw, -56px);
     gap: 8px;
   }
   .hero-countdown .countdown-item {
@@ -1700,21 +1691,12 @@ nav.primary a:hover {
 
   .hero-tags {
     grid-column: 1;
-    grid-row: 3;
+    grid-row: 2;
     justify-self: center;
     align-self: start;
     max-width: 85%;
   }
 
-  /* Vidéo à droite, haut aligné sur le haut des doodles du haut */
-  .hero-video-container {
-    grid-column: 2;
-    grid-row: 1 / span 3;
-    justify-self: start;
-    align-self: start;
-    max-width: 336px;
-    margin-top: 0;
-  }
 }
 
 .hero-logo-wrapper {
@@ -1762,7 +1744,7 @@ nav.primary a:hover {
   }
 }
 
-/* Conteneur vidéo YouTube */
+/* Conteneur vidéo hero (à la place du logo, poster = logo, ratio logo) */
 .hero-video-container {
   position: relative;
   width: 100%;
@@ -1771,8 +1753,8 @@ nav.primary a:hover {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-  background: #000;
-  aspect-ratio: 9 / 16; /* Format portrait */
+  background: transparent;
+  aspect-ratio: 1000 / 607;
 }
 
 /* Mode YouTube : poster appliqué en JS depuis l’attribut poster du <video> ; couverture du fond */
@@ -1854,19 +1836,19 @@ nav.primary a:hover {
 
 @media (max-width: 768px) {
   .hero-video-container {
-    width: min(96vw, 336px);
-    max-width: 336px;
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto;
-    aspect-ratio: 9 / 16; /* Portrait : hauteur dérivée de la largeur (~597px pour 336px) */
+    aspect-ratio: 1000 / 607;
   }
 }
 
 @media (min-width: 1024px) {
   .hero-video-container {
-    width: clamp(192px, 21.6vw, 336px);
-    max-width: 336px;
-    max-height: clamp(420px, 48vh, 620px);
-    min-height: clamp(380px, 44vh, 560px);
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto clamp(24px, 4vw, 40px);
+    aspect-ratio: 1000 / 607;
     flex: 0 0 auto;
   }
 }
