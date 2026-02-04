@@ -1755,8 +1755,9 @@ nav.primary a:hover {
 
 /* Mode YouTube : poster appliqué en JS depuis l’attribut poster du <video> ; couverture du fond */
 .hero-video-container[data-hero-video="youtube"] {
-  background-size: cover;
+  background-size: contain;
   background-position: center;
+  background-repeat: no-repeat;
 }
 
 .hero-video-container iframe,
@@ -1767,7 +1768,7 @@ nav.primary a:hover {
   width: 100%;
   height: 100%;
   border: none;
-  object-fit: cover;
+  object-fit: contain; /* afficher l’image entière (date + jambes), pas de crop */
 }
 
 /* Overlay play : affiché tant que la vidéo n’est pas lancée (chargement au clic) */
@@ -1834,10 +1835,7 @@ nav.primary a:hover {
     width: min(96vw, 336px);
     max-width: 336px;
     margin: 0 auto;
-    min-height: 480px;
-    max-height: 480px;
-    height: 480px;
-    aspect-ratio: auto;
+    aspect-ratio: 9 / 16; /* Portrait : hauteur dérivée de la largeur (~597px pour 336px) */
   }
 }
 

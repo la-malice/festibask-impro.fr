@@ -101,7 +101,7 @@
       heroVideo.classList.add('hidden');
       const posterUrl = heroVideo.getAttribute('poster') || 'assets/img/hero-video-poster-336w.avif';
       heroVideoContainer.style.backgroundImage = 'url(' + posterUrl + ')';
-      heroVideoContainer.style.backgroundSize = 'cover';
+      heroVideoContainer.style.backgroundSize = 'contain';
       heroVideoContainer.style.backgroundPosition = 'center';
 
       heroVideoPlayOverlay.addEventListener('click', () => {
