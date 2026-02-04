@@ -1672,13 +1672,30 @@ nav.primary a:hover {
     max-height: 185px;
   }
 
-  /* Colonne gauche : logo (r1), countdown (r2), tags (r3) — mêmes proportions qu’avant, rapproché du logo */
+  /* Colonne gauche : logo (r1), countdown (r2), tags (r3) — agrandi (×1.35), remonté vers IMPRO */
   .hero-countdown {
     grid-column: 1;
     grid-row: 2;
     justify-self: center;
     align-self: start;
-    margin-top: clamp(-56px, -4vw, -32px);
+    margin-top: clamp(-100px, -8vw, -56px);
+    gap: 8px;
+  }
+  .hero-countdown .countdown-item {
+    min-width: 0;
+  }
+  .hero-countdown .countdown-number {
+    font-size: clamp(14px, 2.4vw, 24px);
+    padding: 4px 6px;
+    max-width: 97px;
+    border-radius: 8px;
+  }
+  .hero-countdown .countdown-label {
+    font-size: 12px;
+  }
+  .hero-countdown .countdown-separator {
+    font-size: clamp(14px, 2vw, 19px);
+    margin-bottom: 19px;
   }
 
   .hero-tags {
