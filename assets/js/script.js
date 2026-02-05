@@ -71,45 +71,61 @@
       return s;
     }
 
-    Promise.all(Array.from({ length: 17 }, (_, i) => {
+    Promise.all(Array.from({ length: 26 }, (_, i) => {
       const n = String(i + 1).padStart(2, '0');
       return fetch('assets/img/doodles/' + n + '.svg').then(r => r.text());
     })).then(function (svgTexts) {
       const perZone = 23;
       const half = perZone;
-      const SLOT_SIZE = 72;
+      const isNarrow = window.innerWidth < 768;
+      const TARGET_ROWS = 3;
+      const MIN_SLOT_SIZE = isNarrow ? 28 : 36;
       const GATHER_SCALE = 1;
       const FINAL_SCALE = 0.78;
       const SETTLE_DURATION_MS = 500;
+      const JITTER = isNarrow ? 6 : 10;
+      const BAND_HEIGHT_FACTOR = 0.78;
+      const NUDGE_LEFT_PX = 24;
       const burstRect = heroConfetti.getBoundingClientRect();
       const burstCenterX = burstRect.left + burstRect.width / 2;
       const burstCenterY = burstRect.top + burstRect.height / 2;
-      const topRect = doodlesTop ? doodlesTop.getBoundingClientRect() : null;
-      const bottomRect = doodlesBottom ? doodlesBottom.getBoundingClientRect() : null;
+      const videoRef = document.querySelector('.hero-video-container') || document.querySelector('.hero-logo-wrapper');
+      const videoRect = videoRef ? videoRef.getBoundingClientRect() : null;
+      const refWidth = videoRect ? videoRect.width : 0;
+      const topRectRaw = doodlesTop ? doodlesTop.getBoundingClientRect() : null;
+      const bottomRectRaw = doodlesBottom ? doodlesBottom.getBoundingClientRect() : null;
+      const topCenterX = topRectRaw ? topRectRaw.left + topRectRaw.width / 2 : burstCenterX;
+      const topRect = topRectRaw && refWidth > 0
+        ? { left: topCenterX - refWidth / 2 - NUDGE_LEFT_PX, top: topRectRaw.top, width: refWidth, height: topRectRaw.height }
+        : topRectRaw;
+      const bottomRect = bottomRectRaw && refWidth > 0
+        ? { left: burstCenterX - refWidth / 2 - NUDGE_LEFT_PX, top: bottomRectRaw.top, width: refWidth, height: bottomRectRaw.height }
+        : bottomRectRaw;
 
-      function buildSlots(rect, n, scale) {
+      function buildSlots(rect, n, scale, jitterArr) {
         if (!rect || rect.width <= 0 || rect.height <= 0) return null;
         scale = scale == null ? 1 : scale;
         const w = rect.width * scale;
         const h = rect.height * scale;
         const left = rect.left + (rect.width - w) / 2;
         const top = rect.top + (rect.height - h) / 2;
-        const cols = Math.max(1, Math.floor(w / SLOT_SIZE));
-        let rows = Math.ceil(n / cols);
-        if (rows * SLOT_SIZE > h) rows = Math.max(1, Math.floor(h / SLOT_SIZE));
-        const colsUsed = Math.ceil(n / rows);
-        const gridWidth = colsUsed * SLOT_SIZE;
-        const gridHeight = rows * SLOT_SIZE;
-        const startX = left + (w - gridWidth) / 2 + SLOT_SIZE / 2;
-        const startY = top + (h - gridHeight) / 2 + SLOT_SIZE / 2;
+        const colsUsed = Math.ceil(n / TARGET_ROWS);
+        const stepX = Math.max(MIN_SLOT_SIZE, w / colsUsed);
+        const gridH = h * BAND_HEIGHT_FACTOR;
+        const stepY = gridH / TARGET_ROWS;
+        const startX = left + stepX / 2;
+        const startY = top + (h - gridH) / 2 + stepY / 2;
         const slots = [];
         for (let i = 0; i < n; i++) {
           const row = Math.floor(i / colsUsed);
           const col = i % colsUsed;
-          slots.push({
-            x: startX + col * SLOT_SIZE - burstCenterX,
-            y: startY + row * SLOT_SIZE - burstCenterY
-          });
+          let x = startX + col * stepX - burstCenterX;
+          let y = startY + row * stepY - burstCenterY;
+          if (jitterArr && jitterArr[i]) {
+            x += jitterArr[i].dx;
+            y += jitterArr[i].dy;
+          }
+          slots.push({ x: x, y: y });
         }
         return slots;
       }
@@ -123,21 +139,30 @@
         return a;
       }
 
-      const topGather = buildSlots(topRect, perZone, GATHER_SCALE) || Array.from({ length: perZone }, (_, i) => ({ x: (Math.random() * 2 - 1) * 320, y: -(140 + (i / perZone) * 120) }));
-      const topFinal = buildSlots(topRect, perZone, FINAL_SCALE) || topGather;
-      const bottomGather = buildSlots(bottomRect, perZone, GATHER_SCALE) || Array.from({ length: perZone }, (_, i) => ({ x: (Math.random() * 2 - 1) * 320, y: 140 + (i / perZone) * 120 }));
-      const bottomFinal = buildSlots(bottomRect, perZone, FINAL_SCALE) || bottomGather;
+      function makeJitter(n) {
+        return Array.from({ length: n }, () => ({
+          dx: (Math.random() * 2 - 1) * JITTER,
+          dy: (Math.random() * 2 - 1) * JITTER
+        }));
+      }
+
+      const topJitter = makeJitter(perZone);
+      const bottomJitter = makeJitter(perZone);
+      const topGather = buildSlots(topRect, perZone, GATHER_SCALE, topJitter) || Array.from({ length: perZone }, (_, i) => ({ x: (Math.random() * 2 - 1) * 320, y: -(140 + (i / perZone) * 120) }));
+      const topFinal = buildSlots(topRect, perZone, FINAL_SCALE, topJitter) || topGather;
+      const bottomGather = buildSlots(bottomRect, perZone, GATHER_SCALE, bottomJitter) || Array.from({ length: perZone }, (_, i) => ({ x: (Math.random() * 2 - 1) * 320, y: 140 + (i / perZone) * 120 }));
+      const bottomFinal = buildSlots(bottomRect, perZone, FINAL_SCALE, bottomJitter) || bottomGather;
       const topShuffled = shuffledIndices(perZone);
       const bottomShuffled = shuffledIndices(perZone);
 
       let ended = 0;
       for (let i = 0; i < DOODLE_COUNT; i++) {
-        const svgIndex = Math.floor(Math.random() * 17);
+        const svgIndex = Math.floor(Math.random() * 26);
         const color = DOODLE_COLORS[Math.floor(Math.random() * DOODLE_COLORS.length)];
         const coloredSvg = colorizeSvgText(svgTexts[svgIndex], color);
 
         const angleRad = Math.random() * Math.PI * 2;
-        const burstRadius = 220 + Math.random() * 280;
+        const burstRadius = isNarrow ? (100 + Math.random() * 140) : (220 + Math.random() * 280);
         const burstX = Math.round(Math.cos(angleRad) * burstRadius);
         const burstY = Math.round(Math.sin(angleRad) * burstRadius);
 
@@ -166,7 +191,7 @@
         wrap.style.setProperty('--final-scale', String(FINAL_SCALE));
         wrap.style.setProperty('--doodle-rotation', rotation + 'deg');
         wrap.style.setProperty('--doodle-delay', delay + 's');
-        const size = 64 + Math.floor(Math.random() * 32);
+        const size = isNarrow ? (32 + Math.floor(Math.random() * 16)) : (64 + Math.floor(Math.random() * 32));
         wrap.style.setProperty('--doodle-size', size + 'px');
         wrap.innerHTML = coloredSvg;
         heroConfetti.appendChild(wrap);
@@ -177,21 +202,13 @@
           if (ended >= DOODLE_COUNT) {
             const doodles = heroConfetti.querySelectorAll('.hero-doodle-svg');
             doodles.forEach(function (d) { d.classList.add('settle-final'); });
-            setTimeout(function () {
-              if (heroConfetti.parentNode) {
-                heroConfetti.remove();
-                if (doodlesTop) doodlesTop.classList.add('is-visible');
-                if (doodlesBottom) doodlesBottom.classList.add('is-visible');
-              }
-            }, SETTLE_DURATION_MS);
           }
         });
       }
       setTimeout(function () {
-        if (heroConfetti.parentNode) {
-          heroConfetti.remove();
-          if (doodlesTop) doodlesTop.classList.add('is-visible');
-          if (doodlesBottom) doodlesBottom.classList.add('is-visible');
+        const doodles = heroConfetti.querySelectorAll('.hero-doodle-svg');
+        if (doodles.length && !doodles[0].classList.contains('settle-final')) {
+          doodles.forEach(function (d) { d.classList.add('settle-final'); });
         }
       }, FADE_DELAY_MS);
     }).catch(function () {

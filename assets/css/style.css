@@ -1691,7 +1691,7 @@ nav.primary a:hover {
   width: 0;
   height: 0;
   pointer-events: none;
-  z-index: 1;
+  z-index: 0;
 }
 
 .hero-doodle-svg {
@@ -1700,10 +1700,19 @@ nav.primary a:hover {
   top: 0;
   width: var(--doodle-size, 78px);
   height: var(--doodle-size, 78px);
+  max-width: 78px;
+  max-height: 78px;
   transform-origin: center center;
   animation: doodleBurstRangement 3.5s ease-out forwards;
   animation-delay: var(--doodle-delay, 0s);
   animation-fill-mode: both;
+}
+
+@media (max-width: 767px) {
+  .hero-doodle-svg {
+    max-width: 44px;
+    max-height: 44px;
+  }
 }
 
 .hero-doodle-svg svg {
