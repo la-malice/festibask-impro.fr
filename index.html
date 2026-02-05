@@ -184,6 +184,9 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
 .countdown-separator{font-family:"Hubot Sans",system-ui,sans-serif;font-size:clamp(18px,4vw,36px);font-weight:normal;color:var(--cyan);margin-bottom:clamp(15px,3vw,28px);opacity:.8;}
 @media (max-width:768px){.hero{min-height:100vh;padding:12px 0 90px;}.hero-logo-wrapper{width:100%}.hero-video-container{width:100%;max-width:100%;margin:0 auto;aspect-ratio:1000/607;}.hero-date-year{display:none;}}
 @media (min-width:1024px){.hero{min-height:auto;aspect-ratio:16/9;}.hero-title{flex-direction:row;}.hero-logo-wrapper{flex:1;max-width:60%;}.hero-video-container{width:100%;max-width:100%;}}
+.hero-doodles-top img,.hero-doodles img{opacity:0;transition:opacity .5s ease;}
+.hero-doodles-top.is-visible img,.hero-doodles.is-visible img{opacity:1;}
+@media (prefers-reduced-motion:reduce){.hero-doodles-top img,.hero-doodles img{opacity:1;}}
 </style>
 <link rel="preload" href="assets/css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="assets/css/style.css"></noscript>
@@ -375,6 +378,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
       <span>LA BARRE</span>
     </div>
   </div>
+  <div class="hero-confetti" aria-hidden="true"></div>
   <div class="hero-grid">
     <div class="hero-logo-wrapper">
       <div class="hero-doodles-top">
