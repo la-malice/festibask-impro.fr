@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* ============================================
    CHARTE DE COULEUR - Variables CSS (charte graphique Festi'Bask Impro)
    ============================================ */
@@ -2401,7 +2402,7 @@ nav.primary a:hover {
 
 /* Bouton Détails : en haut à droite des bannières, au-dessus des images */
 .format-long-block::after {
-  content: "Détails";
+  content: "D\00e9tails";
   position: absolute;
   top: 12px;
   right: 12px;
@@ -5654,7 +5655,7 @@ button.slot-spectacle:active {
 }
 
 .price-front-footer::after {
-  content: "Détails";
+  content: "D\00e9tails";
   flex-shrink: 0;
   font-size: 0.75rem;
   color: var(--blue);
