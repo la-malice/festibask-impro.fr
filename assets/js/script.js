@@ -29,9 +29,10 @@
     }
   ];
 
-  // Données des joueurs de l'Équipe de Belgique (ordre alphabétique du prénom pour les slides ; bios vides)
+  // Données des joueurs de l'Équipe de Belgique (ordre alphabétique du prénom pour les slides)
   const belgPlayers = [
     { name: 'Adrien De Goes', image: 'assets/img/belg-adrien.avif', bio: '' },
+    { name: 'François', image: 'assets/img/belg-francois.avif', bio: 'Sourire facile, imagination turbo. À l\'écoute et créatif, il fédère et fait briller les autres. La folie devient magie. Avec lui ça part en vrille. Toujours avec bienveillance, humour et l\'envie de partager.' },
     { name: 'Julie De Greef', image: 'assets/img/belg-julie.avif', bio: '' },
     { name: 'Marielle Chuffart', image: 'assets/img/belg-marielle.avif', bio: '' }
   ];
