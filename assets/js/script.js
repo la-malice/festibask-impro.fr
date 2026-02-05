@@ -37,7 +37,7 @@
     { name: 'François Ghislain', image: 'assets/img/belg-francois.avif', bio: 'Meneur au sourire facile et à l\'imagination turbo : lancer une impro, rattraper un partenaire en chute libre et écouter profondément, tout ça dans la même minute. Perfectionniste, à l\'écoute, chaleureux ; il fédère, fait briller les autres et transforme le grain de folie en moment magique. Avec lui ça part en vrille, toujours avec bienveillance, humour et l\'envie de partager.' },
     { name: 'Julie De Greef', image: 'assets/img/belg-julie.avif', bio: '' },
     { name: 'Marielle Chuffart', image: 'assets/img/belg-marielle.avif', bio: 'Pile électrique au cœur XXL, humour délicieusement douteux. Énergique, elle plonge dans les personnages les plus improbables et transforme les catégories en terrain de jeu déjanté. Spontanéité contagieuse, générosité sur scène. Avec Marielle : énergie brute, vannes assumées et une présence chaleureuse qui embarque tout le monde.' },
-    { name: 'Sophie Normand', image: 'assets/img/belg-sophie-normand.avif', bio: '' }
+    { name: 'Sophie Normand', image: 'assets/img/belg-sophie-normand.avif', bio: 'Depuis plus de dix ans, Sophie navigue dans l\'impro comme une tour de contrôle : calme, précise, elle transforme le moindre détail en récit cohérent. Elle écoute, relie et équilibre pour faire décoller les histoires. Sous sa rigueur, une Sophie délicieusement déjantée : voix improbables, personnages barrés. Carrée et folle, toujours au service du jeu.' }
   ];
 
   // Révéler le header quand le hero sort du viewport
@@ -1465,7 +1465,7 @@
         const originalImageSrc = getOriginalImageSrc(block);
         const belgIntro = {
           title: 'L\'Équipe de Belgique',
-          pitch: 'Depuis la Belgique, Les Zatilas ont traversé frontières et bière pour chatouiller vos zygomatiques. Troupe passionnée, délicieusement zinzin : un mot devient épopée, un regard comédie. Biarritz, prépare-toi : impro totale, avec un goût de Belgique qui colle aux doigts.'
+          pitch: 'Depuis la Belgique, Les Zatilas ont traversé frontières et bière pour chatouiller vos zygomatiques. Troupe passionnée, délicieusement zinzin : un mot devient épopée, un regard comédie. Anglet, prépare-toi : impro totale, avec un goût de Belgique qui colle aux doigts.'
         };
         initMatchSlider(block, belgPlayers, originalImageSrc, belgIntro);
       } else if (blockId && spectaclesData && spectaclesData[blockId]) {
