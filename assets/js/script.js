@@ -32,7 +32,7 @@
   // Données des joueurs de l'Équipe de Belgique (ordre alphabétique du prénom pour les slides)
   const belgPlayers = [
     { name: 'Adrien De Goes', image: 'assets/img/belg-adrien.avif', bio: '' },
-    { name: 'François', image: 'assets/img/belg-francois.avif', bio: 'Sourire facile, imagination turbo. À l\'écoute et créatif, il fédère et fait briller les autres. La folie devient magie. Avec lui ça part en vrille. Toujours avec bienveillance, humour et l\'envie de partager.' },
+    { name: 'François Ghislain', image: 'assets/img/belg-francois.avif', bio: 'Sourire facile, imagination turbo. À l\'écoute et créatif, il fédère et fait briller les autres. La folie devient magie. Avec lui ça part en vrille. Toujours avec bienveillance, humour et l\'envie de partager.' },
     { name: 'Julie De Greef', image: 'assets/img/belg-julie.avif', bio: '' },
     { name: 'Marielle Chuffart', image: 'assets/img/belg-marielle.avif', bio: '' }
   ];
@@ -42,6 +42,164 @@
   const header = document.getElementById('siteHeader');
   const io = new IntersectionObserver(es=>es.forEach(e=> header.classList.toggle('show', !e.isIntersecting)), {threshold:0.01});
   io.observe(hero);
+
+  // Doodles burst au chargement (centre du logo) puis fondu vers .avif — désactivé si prefers-reduced-motion
+  const heroConfetti = document.querySelector('.hero-confetti');
+  const doodlesTop = document.querySelector('.hero-doodles-top');
+  const doodlesBottom = document.querySelector('.hero-doodles');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (reduceMotion) {
+    if (doodlesTop) doodlesTop.classList.add('is-visible');
+    if (doodlesBottom) doodlesBottom.classList.add('is-visible');
+  } else if (heroConfetti) {
+    const DOODLE_COLORS = ['#53B1E4', '#F9F9FE', '#D48C55', '#D95E5A'];
+    const DOODLE_COUNT = 46;
+    const ANIM_DURATION_MS = 3500;
+    const FADE_DELAY_MS = 4500;
+
+    function colorizeSvgText(svgText, color) {
+      let s = svgText.replace(/<\?xml[^?]*\?>\s*/i, '').trim();
+      s = s
+        .replace(/#fff\b/gi, color)
+        .replace(/#ffffff/gi, color)
+        .replace(/\bwhite\b/gi, color)
+        .replace(/fill:\s*#fff\b/gi, 'fill:' + color)
+        .replace(/stroke:\s*#fff\b/gi, 'stroke:' + color)
+        .replace(/fill="#fff"/gi, 'fill="' + color + '"')
+        .replace(/stroke="#fff"/gi, 'stroke="' + color + '"');
+      return s;
+    }
+
+    Promise.all(Array.from({ length: 17 }, (_, i) => {
+      const n = String(i + 1).padStart(2, '0');
+      return fetch('assets/img/doodles/' + n + '.svg').then(r => r.text());
+    })).then(function (svgTexts) {
+      const perZone = 23;
+      const half = perZone;
+      const SLOT_SIZE = 72;
+      const GATHER_SCALE = 1;
+      const FINAL_SCALE = 0.78;
+      const SETTLE_DURATION_MS = 500;
+      const burstRect = heroConfetti.getBoundingClientRect();
+      const burstCenterX = burstRect.left + burstRect.width / 2;
+      const burstCenterY = burstRect.top + burstRect.height / 2;
+      const topRect = doodlesTop ? doodlesTop.getBoundingClientRect() : null;
+      const bottomRect = doodlesBottom ? doodlesBottom.getBoundingClientRect() : null;
+
+      function buildSlots(rect, n, scale) {
+        if (!rect || rect.width <= 0 || rect.height <= 0) return null;
+        scale = scale == null ? 1 : scale;
+        const w = rect.width * scale;
+        const h = rect.height * scale;
+        const left = rect.left + (rect.width - w) / 2;
+        const top = rect.top + (rect.height - h) / 2;
+        const cols = Math.max(1, Math.floor(w / SLOT_SIZE));
+        let rows = Math.ceil(n / cols);
+        if (rows * SLOT_SIZE > h) rows = Math.max(1, Math.floor(h / SLOT_SIZE));
+        const colsUsed = Math.ceil(n / rows);
+        const gridWidth = colsUsed * SLOT_SIZE;
+        const gridHeight = rows * SLOT_SIZE;
+        const startX = left + (w - gridWidth) / 2 + SLOT_SIZE / 2;
+        const startY = top + (h - gridHeight) / 2 + SLOT_SIZE / 2;
+        const slots = [];
+        for (let i = 0; i < n; i++) {
+          const row = Math.floor(i / colsUsed);
+          const col = i % colsUsed;
+          slots.push({
+            x: startX + col * SLOT_SIZE - burstCenterX,
+            y: startY + row * SLOT_SIZE - burstCenterY
+          });
+        }
+        return slots;
+      }
+
+      function shuffledIndices(n) {
+        const a = Array.from({ length: n }, (_, i) => i);
+        for (let k = a.length - 1; k > 0; k--) {
+          const j = Math.floor(Math.random() * (k + 1));
+          const t = a[k]; a[k] = a[j]; a[j] = t;
+        }
+        return a;
+      }
+
+      const topGather = buildSlots(topRect, perZone, GATHER_SCALE) || Array.from({ length: perZone }, (_, i) => ({ x: (Math.random() * 2 - 1) * 320, y: -(140 + (i / perZone) * 120) }));
+      const topFinal = buildSlots(topRect, perZone, FINAL_SCALE) || topGather;
+      const bottomGather = buildSlots(bottomRect, perZone, GATHER_SCALE) || Array.from({ length: perZone }, (_, i) => ({ x: (Math.random() * 2 - 1) * 320, y: 140 + (i / perZone) * 120 }));
+      const bottomFinal = buildSlots(bottomRect, perZone, FINAL_SCALE) || bottomGather;
+      const topShuffled = shuffledIndices(perZone);
+      const bottomShuffled = shuffledIndices(perZone);
+
+      let ended = 0;
+      for (let i = 0; i < DOODLE_COUNT; i++) {
+        const svgIndex = Math.floor(Math.random() * 17);
+        const color = DOODLE_COLORS[Math.floor(Math.random() * DOODLE_COLORS.length)];
+        const coloredSvg = colorizeSvgText(svgTexts[svgIndex], color);
+
+        const angleRad = Math.random() * Math.PI * 2;
+        const burstRadius = 220 + Math.random() * 280;
+        const burstX = Math.round(Math.cos(angleRad) * burstRadius);
+        const burstY = Math.round(Math.sin(angleRad) * burstRadius);
+
+        const goTop = i < half;
+        const idx = goTop ? i : i - half;
+        const shuffled = goTop ? topShuffled : bottomShuffled;
+        const slotIdx = shuffled[idx];
+        const gather = goTop ? topGather[slotIdx] : bottomGather[slotIdx];
+        const finalSlot = goTop ? topFinal[slotIdx] : bottomFinal[slotIdx];
+        const endX = Math.round(gather.x);
+        const endY = Math.round(gather.y);
+        const finalX = Math.round(finalSlot.x);
+        const finalY = Math.round(finalSlot.y);
+
+        const delay = (Math.random() * 200) / 1000;
+        const rotation = Math.round((Math.random() * 2 - 1) * 180);
+
+        const wrap = document.createElement('div');
+        wrap.className = 'hero-doodle-svg';
+        wrap.style.setProperty('--burst-x', burstX + 'px');
+        wrap.style.setProperty('--burst-y', burstY + 'px');
+        wrap.style.setProperty('--end-x', endX + 'px');
+        wrap.style.setProperty('--end-y', endY + 'px');
+        wrap.style.setProperty('--final-x', finalX + 'px');
+        wrap.style.setProperty('--final-y', finalY + 'px');
+        wrap.style.setProperty('--final-scale', String(FINAL_SCALE));
+        wrap.style.setProperty('--doodle-rotation', rotation + 'deg');
+        wrap.style.setProperty('--doodle-delay', delay + 's');
+        const size = 64 + Math.floor(Math.random() * 32);
+        wrap.style.setProperty('--doodle-size', size + 'px');
+        wrap.innerHTML = coloredSvg;
+        heroConfetti.appendChild(wrap);
+
+        wrap.addEventListener('animationend', function onEnd() {
+          wrap.removeEventListener('animationend', onEnd);
+          ended++;
+          if (ended >= DOODLE_COUNT) {
+            const doodles = heroConfetti.querySelectorAll('.hero-doodle-svg');
+            doodles.forEach(function (d) { d.classList.add('settle-final'); });
+            setTimeout(function () {
+              if (heroConfetti.parentNode) {
+                heroConfetti.remove();
+                if (doodlesTop) doodlesTop.classList.add('is-visible');
+                if (doodlesBottom) doodlesBottom.classList.add('is-visible');
+              }
+            }, SETTLE_DURATION_MS);
+          }
+        });
+      }
+      setTimeout(function () {
+        if (heroConfetti.parentNode) {
+          heroConfetti.remove();
+          if (doodlesTop) doodlesTop.classList.add('is-visible');
+          if (doodlesBottom) doodlesBottom.classList.add('is-visible');
+        }
+      }, FADE_DELAY_MS);
+    }).catch(function () {
+      if (heroConfetti.parentNode) heroConfetti.remove();
+      if (doodlesTop) doodlesTop.classList.add('is-visible');
+      if (doodlesBottom) doodlesBottom.classList.add('is-visible');
+    });
+  }
 
   // Countdown timer
   const countdownDays = document.getElementById('countdown-days');

@@ -1574,6 +1574,11 @@ nav.primary a:hover {
   object-fit: contain;
   object-position: center center;
   display: block;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.hero-doodles-top.is-visible img {
+  opacity: 1;
 }
 
 @media (min-width: 768px) {
@@ -1654,6 +1659,11 @@ nav.primary a:hover {
   object-fit: contain;
   object-position: center center;
   display: block;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.hero-doodles.is-visible img {
+  opacity: 1;
 }
 
 @media (min-width: 768px) {
@@ -1663,6 +1673,63 @@ nav.primary a:hover {
   .hero-doodles img {
     max-height: 110px;
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-doodles-top img,
+  .hero-doodles img {
+    opacity: 1;
+  }
+}
+
+/* Doodles burst : conteneur centré sur la zone logo, jaillissement puis rangement */
+.hero-confetti {
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-doodle-svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--doodle-size, 78px);
+  height: var(--doodle-size, 78px);
+  transform-origin: center center;
+  animation: doodleBurstRangement 3.5s ease-out forwards;
+  animation-delay: var(--doodle-delay, 0s);
+  animation-fill-mode: both;
+}
+
+.hero-doodle-svg svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@keyframes doodleBurstRangement {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(0) rotate(var(--doodle-rotation, 0deg));
+  }
+  30% {
+    opacity: 1;
+    transform: translate(var(--burst-x, 0), var(--burst-y, 0)) scale(1) rotate(var(--doodle-rotation, 0deg));
+  }
+  100% {
+    opacity: 1;
+    transform: translate(var(--end-x, 0), var(--end-y, 0)) scale(1) rotate(var(--doodle-rotation, 0deg));
+  }
+}
+
+.hero-doodle-svg.settle-final {
+  transform: translate(var(--final-x, 0), var(--final-y, 0)) scale(var(--final-scale, 1)) rotate(var(--doodle-rotation, 0deg));
+  transition: transform 0.5s ease-out;
 }
 
 .hero-countdown {
@@ -4048,6 +4115,30 @@ nav.primary a:hover {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes doodlesInFromLeft {
+  0% {
+    transform: translate(-100%, 30vh);
+  }
+  50% {
+    transform: translate(0, 30vh);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes doodlesInFromRight {
+  0% {
+    transform: translate(100%, -30vh);
+  }
+  50% {
+    transform: translate(0, -30vh);
+  }
+  100% {
+    transform: translate(0, 0);
   }
 }
 
