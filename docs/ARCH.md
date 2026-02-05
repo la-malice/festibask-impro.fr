@@ -23,7 +23,7 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 | **Markup** | Structure and content; critical CSS inline; preloads; meta, OG, Schema.org | index.html |
 | **Styles** | Layout, theme, components; PurgeCSS scans index.html + script.js | assets/css/style.css |
 | **Scripts** | Header, countdown, hero video (YouTube iframe or self-hosted &lt;video&gt; per HTML config), nav, modals, sliders, carousel, tooltips, fullscreen | assets/js/script.js |
-| **Data** | Testimonials (carousel) | assets/data/temoignages.json |
+| **Data** | Testimonials (carousel), hero video schedule (optional) | assets/data/temoignages.json, assets/data/hero-video-schedule.json |
 | **Copy build** | Copy index.html, CNAME, favicons, robots, sitemap, sw.js, assets, festival-2026, PDFs to dist/ | scripts/copy-to-dist.js |
 | **PurgeCSS** | Remove unused CSS for dist; safelist dynamic classes | purgecss.config.js |
 | **PostCSS** | Minify CSS (cssnano) | postcss.config.js |
@@ -58,6 +58,7 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 | assets/css/style.css | Full stylesheet; source for PurgeCSS/PostCSS |
 | assets/js/script.js | All client logic; source for Terser |
 | assets/data/temoignages.json | Testimonials array for carousel |
+| assets/data/hero-video-schedule.json | Hero video schedule (slots with publishAt, youtubeId); optional |
 | assets/img/, assets/video/, assets/fonts/, assets/favicon/ | Static assets |
 | scripts/copy-to-dist.js | Copies site files into dist/ |
 | scripts/start-dev.sh | Runs Vite with --host for dev access from LAN (e.g. mobile) |

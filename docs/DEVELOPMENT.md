@@ -30,3 +30,15 @@ No `preview` script in package.json; after `npm run build`, serve `dist/` with a
 - Update normative docs when behavior or architecture changes; keep **docs/PLAN.md** and **docs/ISSUES.md** factual.
 - Sources (index.html, assets/css, assets/js) stay in repo; only `dist/` is build output. Do not commit minified sources; build runs in CI on push to `main`.
 - **Témoignages:** Edit `assets/data/temoignages.json`; schema and examples in `docs/temoignages-carousel.md`. Empty array hides the carousel.
+- **Vidéo hero programmée:** Edit `assets/data/hero-video-schedule.json`; schema and test params in `docs/slices/hero-video-schedule.md`.
+
+## Tester les vidéos hero programmées
+
+Pour vérifier quel créneau vidéo s’affiche sans changer l’heure du système :
+
+| Paramètre (query string) | Valeur | Effet |
+|--------------------------|--------|--------|
+| `hero-video-slot` | 0, 1, 2, 3… | Force l’affichage du slot à cet index (0 = premier créneau). |
+| `hero-video-simulate` | Date/heure ISO 8601 (ex. `2026-02-06T18:00:00+01:00`) | Utilisée comme « maintenant » pour choisir le slot. |
+
+Exemples : `http://localhost:8000/?hero-video-slot=0` (première vidéo), `http://localhost:8000/?hero-video-simulate=2026-02-09T18:00:00+01:00` (comme si on était le 9 fév. 2026 à 18h Paris).
