@@ -501,6 +501,14 @@ h1 {
 .section-bg-4 .price li {
   color: inherit;
 }
+.section-bg-4 .billetterie-cta p,
+.section-bg-4 .billetterie-cta .small,
+.section-bg-4 .billetterie-cta strong,
+.section-bg-4 .billetterie-cta em,
+.section-bg-4 .billetterie-cta ul,
+.section-bg-4 .billetterie-cta li {
+  color: inherit;
+}
 
 /* FAQ - encart style similaire à CTA */
 .faq-card {
