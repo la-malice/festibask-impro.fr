@@ -243,6 +243,169 @@
     });
   }
 
+  // Doodles flottants (scroll + fullscreen programme) — logique partagée, désactivé si prefers-reduced-motion
+  let spawnFloatingDoodleIn = null;
+  if (!reduceMotion) {
+    const FLOAT_DOODLE_COLORS = ['#53B1E4', '#F9F9FE', '#D48C55', '#D95E5A'];
+    function colorizeSvgTextFloat(svgText, color) {
+      let s = svgText.replace(/<\?xml[^?]*\?>\s*/i, '').trim();
+      s = s
+        .replace(/#fff\b/gi, color)
+        .replace(/#ffffff/gi, color)
+        .replace(/\bwhite\b/gi, color)
+        .replace(/fill:\s*#fff\b/gi, 'fill:' + color)
+        .replace(/stroke:\s*#fff\b/gi, 'stroke:' + color)
+        .replace(/fill="#fff"/gi, 'fill="' + color + '"')
+        .replace(/stroke="#fff"/gi, 'stroke="' + color + '"');
+      return s;
+    }
+    let floatSvgTextsCache = null;
+    function loadFloatSvgTexts() {
+      if (floatSvgTextsCache) return Promise.resolve(floatSvgTextsCache);
+      return Promise.all(Array.from({ length: 26 }, (_, i) => {
+        const n = String(i + 1).padStart(2, '0');
+        return fetch('assets/img/doodles/' + n + '.svg').then(function (r) { return r.text(); });
+      })).then(function (texts) {
+        floatSvgTextsCache = texts;
+        return texts;
+      });
+    }
+    const FLOAT_SIZE_MIN = 48;
+    const FLOAT_SIZE_MAX = 78;
+    const FLOAT_VELOCITY = 0.15;
+    const FLOAT_GRAVITY = 0.012;
+    const FLOAT_ROTATION_SPEED = 0.08;
+    const FLOAT_JITTER = 0.04;
+
+    spawnFloatingDoodleIn = function (container, state, options) {
+      if (!container || state.active) return;
+      state.autoSmashTimeoutId = state.autoSmashTimeoutId || null;
+      loadFloatSvgTexts().then(function (svgTexts) {
+        if (state.active) return;
+        const W = window.innerWidth;
+        const H = window.innerHeight;
+        const margin = 60;
+        const size = FLOAT_SIZE_MIN + Math.floor(Math.random() * (FLOAT_SIZE_MAX - FLOAT_SIZE_MIN + 1));
+        const half = size / 2;
+        let x, y;
+        const edge = Math.floor(Math.random() * 4);
+        if (edge === 0) {
+          x = margin + Math.random() * (W - 2 * margin);
+          y = -half - 10;
+        } else if (edge === 1) {
+          x = W + half + 10;
+          y = margin + Math.random() * (H - 2 * margin);
+        } else if (edge === 2) {
+          x = margin + Math.random() * (W - 2 * margin);
+          y = H + half + 10;
+        } else {
+          x = -half - 10;
+          y = margin + Math.random() * (H - 2 * margin);
+        }
+        let vx = (Math.random() * 2 - 1) * FLOAT_VELOCITY;
+        let vy = (Math.random() * 2 - 1) * FLOAT_VELOCITY * 0.5;
+        let rotation = (Math.random() * 2 - 1) * 180;
+        const svgIndex = Math.floor(Math.random() * 26);
+        const color = FLOAT_DOODLE_COLORS[Math.floor(Math.random() * FLOAT_DOODLE_COLORS.length)];
+        const coloredSvg = colorizeSvgTextFloat(svgTexts[svgIndex], color);
+
+        const wrap = document.createElement('div');
+        wrap.className = 'floating-doodle';
+        wrap.style.width = size + 'px';
+        wrap.style.height = size + 'px';
+        wrap.style.left = (x - half) + 'px';
+        wrap.style.top = (y - half) + 'px';
+        wrap.style.transform = 'rotate(' + rotation + 'deg)';
+        const inner = document.createElement('div');
+        inner.className = 'floating-doodle-inner';
+        inner.innerHTML = coloredSvg;
+        wrap.appendChild(inner);
+        container.appendChild(wrap);
+        state.active = wrap;
+
+        let rafId = null;
+
+        function doSmash() {
+          if (!wrap.parentNode) return;
+          if (state.autoSmashTimeoutId) {
+            clearTimeout(state.autoSmashTimeoutId);
+            state.autoSmashTimeoutId = null;
+          }
+          cancelAnimationFrame(rafId);
+          wrap.style.setProperty('--floating-doodle-transform', 'rotate(' + rotation + 'deg)');
+          wrap.classList.add('floating-doodle-squashed');
+          wrap.addEventListener('animationend', function onEnd() {
+            wrap.removeEventListener('animationend', onEnd);
+            if (wrap.parentNode) wrap.parentNode.removeChild(wrap);
+            if (state.active === wrap) state.active = null;
+          }, { once: true });
+        }
+
+        wrap.addEventListener('click', function (e) {
+          e.stopPropagation();
+          e.preventDefault();
+          doSmash();
+        }, { passive: false });
+
+        if (options.autoSmashMs) {
+          state.autoSmashTimeoutId = setTimeout(doSmash, options.autoSmashMs);
+        }
+
+        let currentX = x;
+        let currentY = y;
+
+        function tick() {
+          if (!wrap.parentNode) return;
+          vx += (Math.random() * 2 - 1) * FLOAT_JITTER;
+          vy += FLOAT_GRAVITY;
+          vy += (Math.random() * 2 - 1) * FLOAT_JITTER;
+          currentX += vx;
+          currentY += vy;
+          rotation += (Math.random() * 2 - 1) * FLOAT_ROTATION_SPEED;
+          if (currentX < half) { currentX = half; vx = Math.abs(vx) * 0.85; }
+          if (currentX > W - half) { currentX = W - half; vx = -Math.abs(vx) * 0.85; }
+          if (currentY < half) { currentY = half; vy = Math.abs(vy) * 0.85; }
+          if (currentY > H - half) { currentY = H - half; vy = -Math.abs(vy) * 0.85; }
+          wrap.style.left = (currentX - half) + 'px';
+          wrap.style.top = (currentY - half) + 'px';
+          wrap.style.transform = 'rotate(' + rotation + 'deg)';
+          wrap.style.setProperty('--floating-doodle-transform', 'rotate(' + rotation + 'deg)');
+          rafId = requestAnimationFrame(tick);
+        }
+        rafId = requestAnimationFrame(tick);
+      }).catch(function () {});
+    };
+  }
+
+  // Doodles flottants au scroll (cosmonaute + smash au clic)
+  const floatingDoodlesContainer = document.getElementById('floating-doodles');
+  if (!reduceMotion && floatingDoodlesContainer) {
+    const scrollDoodleState = { active: null, autoSmashTimeoutId: null };
+    let lastScrollY = window.scrollY || 0;
+    let scrollAccum = 0;
+    let lastSpawnTime = 0;
+    const FLOAT_COOLDOWN_MS = 22000;
+    const FLOAT_SCROLL_THRESHOLD = 350;
+    const FLOAT_SPAWN_PROB = 0.11;
+
+    window.addEventListener('scroll', function () {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY <= lastScrollY) {
+        lastScrollY = currentScrollY;
+        return;
+      }
+      scrollAccum += currentScrollY - lastScrollY;
+      lastScrollY = currentScrollY;
+      if (scrollDoodleState.active) return;
+      if (Date.now() - lastSpawnTime < FLOAT_COOLDOWN_MS) return;
+      if (scrollAccum < FLOAT_SCROLL_THRESHOLD) return;
+      if (Math.random() > FLOAT_SPAWN_PROB) return;
+      scrollAccum = 0;
+      lastSpawnTime = Date.now();
+      spawnFloatingDoodleIn(floatingDoodlesContainer, scrollDoodleState, {});
+    }, { passive: true });
+  }
+
   // Countdown timer
   const countdownDays = document.getElementById('countdown-days');
   const countdownHours = document.getElementById('countdown-hours');
@@ -1549,7 +1712,20 @@
   const programFullscreenContainer = document.getElementById('programFullscreenContainer');
   const programFullscreenClose = document.getElementById('programFullscreenClose');
   const programFullscreenGrid = document.getElementById('programFullscreenGrid');
+  const programFullscreenFloatingDoodles = document.getElementById('programFullscreenFloatingDoodles');
   const originalProgramGrid = document.querySelector('#programme .grid.grid-3');
+
+  const fullscreenDoodleState = { active: null, autoSmashTimeoutId: null };
+  let fullscreenDoodleIntervalId = null;
+  const FULLSCREEN_DOODLE_INTERVAL_MS = 32000;
+  const FULLSCREEN_DOODLE_SPAWN_PROB = 0.2;
+  const FULLSCREEN_DOODLE_AUTOSMASH_MS = 16000;
+  // Mode dev : localhost ou ?dev=1 ou #dev → premier doodle dans les 10 s max
+  const fullscreenDoodleDevMode = window.location.hostname === 'localhost' ||
+    window.location.search.includes('dev=1') ||
+    window.location.hash === '#dev';
+  const fullscreenDoodleIntervalMs = fullscreenDoodleDevMode ? 10000 : FULLSCREEN_DOODLE_INTERVAL_MS;
+  const fullscreenDoodleSpawnProb = fullscreenDoodleDevMode ? 1 : FULLSCREEN_DOODLE_SPAWN_PROB;
 
   // Fonction pour obtenir l'élément en plein écran (avec préfixes navigateurs)
   function getFullscreenElement() {
@@ -1622,6 +1798,18 @@
     // Afficher le conteneur
     programFullscreenContainer.style.display = 'flex';
     
+    // Doodles flottants en fullscreen (pas trop souvent, disparaissent seuls après une apparition)
+    if (spawnFloatingDoodleIn && programFullscreenFloatingDoodles && !reduceMotion) {
+      fullscreenDoodleState.active = null;
+      fullscreenDoodleState.autoSmashTimeoutId = null;
+      fullscreenDoodleIntervalId = setInterval(function () {
+        if (programFullscreenContainer.style.display !== 'flex') return;
+        if (fullscreenDoodleState.active) return;
+        if (Math.random() > fullscreenDoodleSpawnProb) return;
+        spawnFloatingDoodleIn(programFullscreenFloatingDoodles, fullscreenDoodleState, { autoSmashMs: FULLSCREEN_DOODLE_AUTOSMASH_MS });
+      }, fullscreenDoodleIntervalMs);
+    }
+    
     // Entrer en mode plein écran du navigateur
     requestFullscreen(document.documentElement).catch(err => {
       console.warn('Erreur lors de l\'entrée en mode plein écran:', err);
@@ -1641,6 +1829,20 @@
       exitFullscreen().catch(err => {
         console.warn('Erreur lors de la sortie du mode plein écran:', err);
       });
+    }
+    
+    // Arrêter les doodles fullscreen et supprimer l’éventuel doodle actif
+    if (fullscreenDoodleIntervalId) {
+      clearInterval(fullscreenDoodleIntervalId);
+      fullscreenDoodleIntervalId = null;
+    }
+    if (fullscreenDoodleState.autoSmashTimeoutId) {
+      clearTimeout(fullscreenDoodleState.autoSmashTimeoutId);
+      fullscreenDoodleState.autoSmashTimeoutId = null;
+    }
+    if (fullscreenDoodleState.active && fullscreenDoodleState.active.parentNode) {
+      fullscreenDoodleState.active.parentNode.removeChild(fullscreenDoodleState.active);
+      fullscreenDoodleState.active = null;
     }
     
     // Masquer le conteneur

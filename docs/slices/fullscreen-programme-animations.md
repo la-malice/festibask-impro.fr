@@ -16,7 +16,7 @@ We do not rework or replace this; we only add capabilities on top of it.
 ## Current state (for context)
 
 - **Fullscreen:** `index.html` `#programFullscreenContainer`, `assets/js/script.js` ~L1226–1418. Three-day grid, day cards, slot buttons; click day → active day; click slot → selection/overshadow. No per-block animation/carousel and no time-based behaviour yet.
-- **Programme blocks:** Slots per day include ateliers, format long (Braquage, Commis d'Office, Promo 2006), matches (Belgique, EDF, Suisse), pauses, accueil, “à demain”, “soirée musicale” (Samedi), etc.
+- **Programme blocks:** Slots per day include ateliers, format long (Braquage, Commis d'Office, Promo 2006), matchs (Belgique, EDF, Suisse), pauses, accueil, “à demain”, “soirée musicale” (Samedi), etc.
 
 ## Slice goal
 
@@ -46,7 +46,7 @@ Improve fullscreen by adding (1) an associated animation or carousel for each pr
 ## Constraint — No animation during shows
 
 - Never run carousels/animations **during** actual performances, so as not to disturb the show.
-- During format long, matches, or long-form slots: fullscreen keeps showing the programme (existing layout; optional static “in progress”); no animated/carousel content.
+- During format long, matchs, or long-form slots: fullscreen keeps showing the programme (existing layout; optional static “in progress”); no animated/carousel content.
 - Animations and auto-schedule apply only **outside** those performance windows (before, after, or during breaks).
 
 ---

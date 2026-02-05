@@ -1741,6 +1741,99 @@ nav.primary a:hover {
   transition: transform 0.5s ease-out;
 }
 
+/* Doodles flottants au scroll (cosmonaute + smash au clic) */
+#floating-doodles {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+#floating-doodles .floating-doodle {
+  position: fixed;
+  pointer-events: auto;
+  cursor: pointer;
+  will-change: transform;
+  transform-origin: center center;
+}
+
+#floating-doodles .floating-doodle-inner {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#floating-doodles .floating-doodle-inner svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#floating-doodles .floating-doodle.floating-doodle-squashed {
+  animation: floatingDoodleSmash 0.35s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes floatingDoodleSmash {
+  0% {
+    transform: var(--floating-doodle-transform, none);
+    opacity: 1;
+  }
+  15% {
+    transform: var(--floating-doodle-transform, none) scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: var(--floating-doodle-transform, none) scale(0.1, 0.02);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #floating-doodles {
+    display: none;
+  }
+}
+
+/* Doodles flottants en mode fullscreen programme (même rendu que #floating-doodles) */
+#programFullscreenFloatingDoodles {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+}
+
+#programFullscreenFloatingDoodles .floating-doodle {
+  position: fixed;
+  pointer-events: auto;
+  cursor: pointer;
+  will-change: transform;
+  transform-origin: center center;
+}
+
+#programFullscreenFloatingDoodles .floating-doodle-inner {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#programFullscreenFloatingDoodles .floating-doodle-inner svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#programFullscreenFloatingDoodles .floating-doodle.floating-doodle-squashed {
+  animation: floatingDoodleSmash 0.35s ease-out forwards;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #programFullscreenFloatingDoodles {
+    display: none;
+  }
+}
+
 .hero-countdown {
   grid-column: 1;
   grid-row: 3;

@@ -413,7 +413,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
             <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
           </svg>
         </span>
-        <a href="#programme" class="hero-tag-link">MATCHES</a>
+        <a href="#programme" class="hero-tag-link">MATCHS</a>
         <span class="hero-tags-separator">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
@@ -1386,6 +1386,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
 
 <!-- Conteneur plein écran pour le programme -->
 <div id="programFullscreenContainer" class="program-fullscreen" style="display: none;">
+  <div id="programFullscreenFloatingDoodles" aria-hidden="true"></div>
   <button class="program-fullscreen-close" id="programFullscreenClose" aria-label="Fermer le mode plein écran" title="Fermer">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -1929,5 +1930,6 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
   };
   var AUTOHIDE = Boolean(1);
 </script>
+<div id="floating-doodles" aria-hidden="true"></div>
 </body>
 </html>

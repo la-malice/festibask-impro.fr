@@ -5,7 +5,7 @@
 Deux bandes décoratives (images) dans le hero, alignées sur l’affiche officielle du festival :
 
 - **Doodles top** : `assets/img/doodles-top.avif` — au-dessus du logo, dans la même cellule que le logo (`.hero-logo-wrapper`).
-- **Doodles bottom** : `assets/img/doodles-bottom.avif` — sous les liens SPECTACLES • MATCHES • STAGES, dans la même cellule que les hero-tags (`.hero-tags`).
+- **Doodles bottom** : `assets/img/doodles-bottom.avif` — sous les liens SPECTACLES • MATCHS • STAGES, dans la même cellule que les hero-tags (`.hero-tags`).
 
 ## Structure HTML
 

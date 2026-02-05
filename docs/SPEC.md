@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Static marketing site for **Festibask'Impro**, the improvisation theatre festival in Anglet. Informs visitors about the event (dates, venue, programme, stages, pricing), lineup (Équipe de France, matches, long-form shows), newsletter signup, and practical/legal info. Primary audience: French-speaking visitors.
+Static marketing site for **Festibask'Impro**, the improvisation theatre festival in Anglet. Informs visitors about the event (dates, venue, programme, stages, pricing), lineup (Équipe de France, matchs, long-form shows), newsletter signup, and practical/legal info. Primary audience: French-speaking visitors.
 
 ## Scope
 
@@ -11,8 +11,8 @@ Static marketing site for **Festibask'Impro**, the improvisation theatre festiva
 
 ## Main Capabilities
 
-1. **Hero:** Logo, dates (15–17 mai), location (Patinoire de la Barre, Anglet), countdown to 2026-05-15 10:30; teaser video (poster by default, play on click). La vidéo teaser est affichée à la place du logo hero, avec le logo du festival en image poster et un ratio 1000/607 (celui du logo). Deux bandes décoratives doodles (images `doodles-top.avif` au-dessus du bloc vidéo/logo, `doodles-bottom.avif` sous les liens hero-tags), intégrées dans la même cellule que le bloc vidéo et que les liens. Liens hero-tags : SPECTACLES, MATCHES, STAGES (ancres #valeur, #programme, #stages). Source vidéo : **YouTube** (video ID via `data-hero-video="youtube"` et `data-hero-youtube-id` sur `#heroVideoContainer`) ou **self-hosted** (MP4 depuis `data-src`, poster, sous-titres `assets/video/teaser-festibask-captions.vtt`).
-2. **Spectacles (“À l’affiche”):** Day slider (Vendredi / Samedi / Dimanche); for each day: one “format long” block and one “match” block. On mobile and desktop, tap/click on a spectacle banner opens a slider in the block (no fullscreen modal). Match France (Samedi) has multiple slides (EDF intro + players); other spectacles (format long and other matches) have a single slide (image + details). Slider is closed via the close button or by clicking the block again.
+1. **Hero:** Logo, dates (15–17 mai), location (Patinoire de la Barre, Anglet), countdown to 2026-05-15 10:30; teaser video (poster by default, play on click). La vidéo teaser est affichée à la place du logo hero, avec le logo du festival en image poster et un ratio 1000/607 (celui du logo). Deux bandes décoratives doodles (images `doodles-top.avif` au-dessus du bloc vidéo/logo, `doodles-bottom.avif` sous les liens hero-tags), intégrées dans la même cellule que le bloc vidéo et que les liens. Liens hero-tags : SPECTACLES, MATCHS, STAGES (ancres #valeur, #programme, #stages). Source vidéo : **YouTube** (video ID via `data-hero-video="youtube"` et `data-hero-youtube-id` sur `#heroVideoContainer`) ou **self-hosted** (MP4 depuis `data-src`, poster, sous-titres `assets/video/teaser-festibask-captions.vtt`).
+2. **Spectacles (“À l’affiche”):** Day slider (Vendredi / Samedi / Dimanche); for each day: one “format long” block and one “match” block. On mobile and desktop, tap/click on a spectacle banner opens a slider in the block (no fullscreen modal). Match France (Samedi) has multiple slides (EDF intro + players); other spectacles (format long and other matchs) have a single slide (image + details). Slider is closed via the close button or by clicking the block again.
 3. **Programme:** Tabs by day; grid of day cards; fullscreen mode; sync with “À l’affiche” day selection. In fullscreen, clicking the Braquage slot exits fullscreen and opens https://plamarque.github.io/braquage/ in a new tab.
 4. **Stages:** Atelier cards (flip for details, instructor bio where applicable); “En savoir plus” / “COMPLET” trigger flip; registration and waitlist buttons open Sibforms modals.
 5. **Tarifs:** Pass 1 jour, Pass 3 jours, Stage; flip cards for details.
@@ -21,12 +21,14 @@ Static marketing site for **Festibask'Impro**, the improvisation theatre festiva
 8. **Modals:** Newsletter (notify), waitlist; Sibforms CSS/JS loaded on first open. Spectacle details are shown in a slider within the block (not a modal).
 9. **Tooltips:** “Format long” and “Match” explained (desktop: hover; mobile: click popup).
 10. **SEO / meta:** Canonical, OpenGraph, Twitter Card, Schema.org Event (2026-05-15 to 2026-05-17, location, offers, organizer La Malice).
+11. **Doodles flottants au scroll:** Pendant le scroll vers le bas, un petit doodle peut apparaître de façon aléatoire, dériver lentement à l’écran (effet « cosmonaute », faible gravité) devant le contenu, et disparaître au clic avec un effet « smash » (écrasement). Un seul doodle flottant à la fois ; désactivé si l’utilisateur a `prefers-reduced-motion: reduce`.
 
 ## Behavior
 
 - **Entry:** `index.html`; assets from `assets/` (css, js, img, data, video, fonts, favicon). Build: `npm run build` → copy script + PurgeCSS + PostCSS (cssnano) + Terser; output in `dist/`. Deploy: GitHub Actions → GitHub Pages (`dist/` artifact).
 - **Video:** Teaser poster shown by default; play on overlay click. Mode chosen in HTML: **YouTube** (`data-hero-video="youtube"`, `data-hero-youtube-id`) — iframe embed loaded on click; or **self-hosted** (default) — MP4 loaded and played on click, captions from `assets/video/teaser-festibask-captions.vtt` (referenced in HTML). To revert to self-hosted, remove or set `data-hero-video` to `"self"` and remove `data-hero-youtube-id`.
 - **Data:** Testimonials from `assets/data/temoignages.json` (array); EDF players and spectacle pitches hardcoded in `script.js`. No backend API.
+- **Doodles flottants:** Apparition aléatoire au scroll (scroll vers le bas), dérive lente (physique type cosmonaute), clic sur le doodle = animation smash puis suppression ; désactivés si `prefers-reduced-motion: reduce`.
 
 ## Boundaries
 
