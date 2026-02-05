@@ -130,6 +130,29 @@
         return slots;
       }
 
+      function getNeighborSlotIndices(k, n, colsUsed) {
+        const row = Math.floor(k / colsUsed);
+        const col = k % colsUsed;
+        const out = [];
+        if (col > 0) out.push(k - 1);
+        if (col < colsUsed - 1 && k + 1 < n) out.push(k + 1);
+        if (row > 0) out.push(k - colsUsed);
+        if (row < Math.floor((n - 1) / colsUsed) && k + colsUsed < n) out.push(k + colsUsed);
+        return out;
+      }
+
+      function assignSvgIndicesNoAdjacent(n, colsUsed) {
+        const arr = new Array(n);
+        for (let k = 0; k < n; k++) {
+          const neighbors = getNeighborSlotIndices(k, n, colsUsed);
+          const used = new Set(neighbors.map(function (j) { return arr[j]; }).filter(function (v) { return v !== undefined; }));
+          let pick;
+          do { pick = Math.floor(Math.random() * 26); } while (used.has(pick));
+          arr[k] = pick;
+        }
+        return arr;
+      }
+
       function shuffledIndices(n) {
         const a = Array.from({ length: n }, (_, i) => i);
         for (let k = a.length - 1; k > 0; k--) {
@@ -154,10 +177,17 @@
       const bottomFinal = buildSlots(bottomRect, perZone, FINAL_SCALE, bottomJitter) || bottomGather;
       const topShuffled = shuffledIndices(perZone);
       const bottomShuffled = shuffledIndices(perZone);
+      const colsUsed = Math.ceil(perZone / TARGET_ROWS);
+      const topSvgIndices = assignSvgIndicesNoAdjacent(perZone, colsUsed);
+      const bottomSvgIndices = assignSvgIndicesNoAdjacent(perZone, colsUsed);
 
       let ended = 0;
       for (let i = 0; i < DOODLE_COUNT; i++) {
-        const svgIndex = Math.floor(Math.random() * 26);
+        const goTop = i < half;
+        const idx = goTop ? i : i - half;
+        const shuffled = goTop ? topShuffled : bottomShuffled;
+        const slotIdx = shuffled[idx];
+        const svgIndex = goTop ? topSvgIndices[slotIdx] : bottomSvgIndices[slotIdx];
         const color = DOODLE_COLORS[Math.floor(Math.random() * DOODLE_COLORS.length)];
         const coloredSvg = colorizeSvgText(svgTexts[svgIndex], color);
 
@@ -165,11 +195,6 @@
         const burstRadius = isNarrow ? (100 + Math.random() * 140) : (220 + Math.random() * 280);
         const burstX = Math.round(Math.cos(angleRad) * burstRadius);
         const burstY = Math.round(Math.sin(angleRad) * burstRadius);
-
-        const goTop = i < half;
-        const idx = goTop ? i : i - half;
-        const shuffled = goTop ? topShuffled : bottomShuffled;
-        const slotIdx = shuffled[idx];
         const gather = goTop ? topGather[slotIdx] : bottomGather[slotIdx];
         const finalSlot = goTop ? topFinal[slotIdx] : bottomFinal[slotIdx];
         const endX = Math.round(gather.x);
