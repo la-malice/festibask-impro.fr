@@ -85,8 +85,8 @@ Les variantes d’images utilisées pour PageSpeed (équipes Belgique/Suisse, ED
 
 - **hero-video-poster** (contains) → `hero-video-poster-336w.avif`, `hero-video-poster-672w.avif`
 - **image-fond-01** (contains) → `image-fond-01_1920px.avif`, `image-fond-01_4000px.avif`
-- **assets/img/long/** (contains) → spectacles (edf-colisee-442w.avif, braquage, commis-d-office, promo-2006), image de fond (`image-fond-01_1920px.avif`), doodles hero (`doodles-top.avif`, `doodles-bottom.avif`), photos instructeurs (quentin-ostanel, laetitia-landelle, emilie-coeurdevache, anneke-bossis), etc.
-- **equipe-belgique** (contains) → `equipe-belgique-320w.avif`, `equipe-belgique-640w.avif`, `equipe-belgique-320w.jpg`, `equipe-belgique-640w.jpg`, etc.
+- **assets/img/long/** (contains) → spectacles (edf-colisee-442w.avif, braquage, commis-d-office, promo-2006), image de fond (`image-fond-01_1920px.avif`), doodles hero (`doodles-top.avif`, `doodles-bottom.avif`), photos instructeurs (quentin-ostanel, laetitia-landelle, emilie-coeurdevache, anneke-bossis), variantes equipe-belgique (320w, 442w, 640w), poster hero (festibask-impro__logo_ss-baseline_fd-fonce-720w.avif, 800w.avif), logos sociaux 49w (Instagram_Glyph_Gradient-49w.avif, Facebook_Logo_Primary-49w.avif), etc.
+- **equipe-belgique** (contains) → les variantes sont désormais sous `assets/img/long/` (320w, 442w, 640w) et donc couvertes par la règle `assets/img/long/` ci-dessus. La condition « equipe-belgique » reste utile si d’autres URLs (hors long/) contiennent encore ce segment.
 - **equipe-suisse** (contains) → `equipe-suisse-320w.avif`, `equipe-suisse-640w.avif`, `equipe-suisse-320w.jpg`, `equipe-suisse-640w.jpg`, etc.
 
 ---
