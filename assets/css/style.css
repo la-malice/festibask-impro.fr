@@ -704,6 +704,13 @@ h1 {
   font-weight: 700;
 }
 
+.section-cta .cta-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
 .section-cta .grid-2 {
   grid-template-columns: max-content 1fr;
   gap: 32px;
@@ -4325,11 +4332,19 @@ nav.primary a:hover {
 .atelier-card .footer {
   margin-top: auto;
   padding-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Footer mobile - visible uniquement sur mobile, à côté de l'intervenant */
 .atelier-card .flip-back .footer-mobile {
-  display: block;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
   margin-top: 0;
   padding-top: 0;
   border-top: none;
@@ -4366,7 +4381,11 @@ nav.primary a:hover {
 
 @media (min-width: 768px) {
   .atelier-card .flip-back .footer-desktop {
-    display: block;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
     margin-top: auto;
     padding-top: 12px;
     border-top: 1px solid rgba(255, 255, 255, 0.2);
@@ -4388,9 +4407,19 @@ nav.primary a:hover {
   display: flex;
   justify-content: center;
   text-align: center;
-  background: var(--blue);
+  background: var(--orange);
   color: var(--white);
-  border-color: var(--blue);
+  border-color: var(--orange);
+  font-size: 0.9rem;
+  padding: 0.6rem 1rem;
+  font-weight: 600;
+}
+
+.atelier-card .btn-inscription:hover {
+  background: var(--orange-dark);
+  border-color: var(--orange-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(240, 133, 58, 0.35);
 }
 
 /* Masquer le bouton d'inscription si la carte est complète */
@@ -4449,15 +4478,19 @@ nav.primary a:hover {
   opacity: 0.9;
 }
 
-/* Bouton "Ça m'intéresse!" (liste d'attente) – orange charte */
+/* Bouton "Ça m'intéresse!" (liste d'attente) – masqué par défaut, affiché quand .atelier-card.complet */
 .atelier-card .btn-waitlist {
-  display: flex;
+  display: none;
   width: 100%;
   justify-content: center;
   text-align: center;
   background: var(--orange);
   color: var(--white);
   border-color: var(--orange);
+}
+
+.atelier-card.complet .btn-waitlist {
+  display: flex;
 }
 
 .atelier-card .btn-waitlist:hover {
@@ -5721,8 +5754,15 @@ button.slot-spectacle:active {
 
 .billetterie-button-wrapper {
   display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
   justify-content: center;
   align-items: center;
+}
+
+.billetterie-button-wrapper .btn-link-notify {
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 
 @media (min-width: 800px) {

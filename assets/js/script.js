@@ -1,3 +1,5 @@
+  const BILETTERIE_URL = 'https://www.helloasso.com/associations/arteateou/evenements/festibask-impro';
+
   // Données des joueurs de l'Équipe de France (ordre alphabétique du prénom pour les slides)
   const edfPlayers = [
     {
@@ -607,6 +609,13 @@
     const r = dlgWaitlist.querySelector('.modal-card').getBoundingClientRect();
     const inside = r.top <= e.clientY && e.clientY <= r.bottom && r.left <= e.clientX && e.clientX <= r.right;
     if (!inside) dlgWaitlist.close();
+  });
+
+  // Liens billetterie : URL centralisée, ouverture nouvel onglet
+  document.querySelectorAll('.link-billetterie').forEach(a => {
+    a.href = BILETTERIE_URL;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
   });
 
   // Brevo gère automatiquement le masquage du formulaire avec AUTOHIDE = Boolean(1)
