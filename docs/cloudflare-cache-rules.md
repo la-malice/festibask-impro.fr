@@ -85,7 +85,7 @@ Les variantes d’images utilisées pour PageSpeed (équipes Belgique/Suisse, ED
 
 - **hero-video-poster** (contains) → `hero-video-poster-336w.avif`, `hero-video-poster-672w.avif`
 - **image-fond-01** (contains) → `image-fond-01_1920px.avif`, `image-fond-01_4000px.avif`
-- **assets/img/long/** (contains) → `edf-colisee-442w.avif`, etc.
+- **assets/img/long/** (contains) → spectacles (edf-colisee-442w.avif, braquage, commis-d-office, promo-2006), image de fond (`image-fond-01_1920px.avif`), doodles hero (`doodles-top.avif`, `doodles-bottom.avif`), photos instructeurs (quentin-ostanel, laetitia-landelle, emilie-coeurdevache, anneke-bossis), etc.
 - **equipe-belgique** (contains) → `equipe-belgique-320w.avif`, `equipe-belgique-640w.avif`, `equipe-belgique-320w.jpg`, `equipe-belgique-640w.jpg`, etc.
 - **equipe-suisse** (contains) → `equipe-suisse-320w.avif`, `equipe-suisse-640w.avif`, `equipe-suisse-320w.jpg`, `equipe-suisse-640w.jpg`, etc.
 

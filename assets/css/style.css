@@ -120,7 +120,7 @@ body {
   line-height: 1.6;
   background-image: 
     /* Texture aquarelle */
-    url('../img/image-fond-01_1920px.avif'),
+    url('../img/long/image-fond-01_1920px.avif'),
     /* Gradients radiaux charte (coral / cyan) */
     radial-gradient(circle at 20% 50%, rgba(233, 88, 66, 0.05) 0%, transparent 50%),
     radial-gradient(circle at 80% 80%, rgba(1, 179, 228, 0.05) 0%, transparent 50%);
@@ -377,7 +377,7 @@ h1 {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('../img/image-fond-01_1920px.avif');
+  background-image: url('../img/long/image-fond-01_1920px.avif');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -405,7 +405,7 @@ h1 {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('../img/image-fond-01_1920px.avif');
+  background-image: url('../img/long/image-fond-01_1920px.avif');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -433,7 +433,7 @@ h1 {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('../img/image-fond-01_1920px.avif');
+  background-image: url('../img/long/image-fond-01_1920px.avif');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -461,7 +461,7 @@ h1 {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('../img/image-fond-01_1920px.avif');
+  background-image: url('../img/long/image-fond-01_1920px.avif');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -603,7 +603,7 @@ h1 {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('../img/image-fond-01_1920px.avif');
+  background-image: url('../img/long/image-fond-01_1920px.avif');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -656,7 +656,7 @@ h1 {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('../img/image-fond-01_1920px.avif');
+  background-image: url('../img/long/image-fond-01_1920px.avif');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -1254,7 +1254,7 @@ nav.primary a:hover {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('../img/image-fond-01_1920px.avif');
+  background-image: url('../img/long/image-fond-01_1920px.avif');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -2372,7 +2372,7 @@ nav.primary a:hover {
   margin-bottom: 8px;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease, height 0.3s ease;
-  background-image: url('../img/image-fond-01_1920px.avif');
+  background-image: url('../img/long/image-fond-01_1920px.avif');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -2565,7 +2565,7 @@ nav.primary a:hover {
   box-shadow: var(--shadow-lg);
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  background-image: url('../img/image-fond-01_1920px.avif');
+  background-image: url('../img/long/image-fond-01_1920px.avif');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -4661,7 +4661,7 @@ nav.primary a:hover {
 .slot-format-long {
   background-image:
     linear-gradient(to right, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.5) 100%),
-    url('../img/image-fond-01_1920px.avif');
+    url('../img/long/image-fond-01_1920px.avif');
   background-size: cover, cover;
   background-position: center, center;
   background-repeat: no-repeat, no-repeat;
@@ -4768,7 +4768,7 @@ nav.primary a:hover {
 .slot-spectacle {
   background-image:
     linear-gradient(to right, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.5) 100%),
-    url('../img/image-fond-01_1920px.avif');
+    url('../img/long/image-fond-01_1920px.avif');
   background-size: cover, cover;
   background-position: center, center;
   background-repeat: no-repeat, no-repeat;
