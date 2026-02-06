@@ -4739,6 +4739,13 @@ nav.primary a:hover {
   font-size: clamp(0.9rem, 1.8vw, 1.1rem) !important;
 }
 
+.program .slot-format-long .slot-content .meta,
+.program .slot-spectacle .slot-content .meta {
+  text-align: center;
+  padding-left: 0;
+  margin-top: 8px;
+}
+
 .slot-format-long .slot-image {
   width: 140px;
   height: 170px;
@@ -5184,6 +5191,13 @@ button.slot-spectacle:active {
 
 .program-fullscreen .slot .meta {
   padding-left: 8px;
+}
+
+.program-fullscreen .slot-format-long .slot-content .meta,
+.program-fullscreen .slot-spectacle .slot-content .meta {
+  text-align: center;
+  padding-left: 0;
+  margin-top: 6px;
 }
 
 .program-fullscreen .slot-atelier .salle-box .slot-content {
