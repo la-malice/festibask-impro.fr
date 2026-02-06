@@ -30,6 +30,7 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 | **Terser** | Minify JS (invoked in npm run build on source script.js → dist) | npm script |
 | **PWA / Brevo** | Service worker loads Brevo by query key | sw.js (root) |
 | **CI/CD** | Build and deploy to GitHub Pages | .github/workflows/pages.yml |
+| **Mini-jeu Malix** | App autonome sous /malix ; HTML/CSS/JS propres ; 26 SVG doodles ; stockage local | malix/ (dans dist après build) ; spec docs/SPEC-Malix.md |
 
 ## Technology Stack
 
@@ -38,6 +39,7 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 - **Front-end:** Vanilla HTML/CSS/JS; no framework. Google Fonts (Hubot Sans) loaded async. Styles follow the graphic charter (Hubot Sans hierarchy, 6-color palette); see docs/slices/charte-graphique.md.
 - **Data:** Static JSON (temoignages); EDF players and spectacle data in script.js.
 - **Deploy:** GitHub Actions (ubuntu-latest, Node 20); artifact `dist/` → deploy-pages. Environment: github-pages.
+- **Malix:** Application statique dans `dist/malix/` (index.html, assets dédiés, copies des 26 doodles). Aucun impact sur index.html ni sur le bundle principal (script.js, style.css). Le build doit inclure la copie ou la génération de `malix/` dans `dist/` (ex. ajout de `malix` à copy-to-dist ou script dédié).
 
 ## Execution Model
 
@@ -68,6 +70,8 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 | .github/workflows/pages.yml | Build on push to main; deploy Pages from dist |
 | sw.js | Service worker; Brevo init from query |
 | docs/temoignages-carousel.md | Documented schema for temoignages.json |
+| malix/ | Mini-jeu Malix (sources) ; copié ou généré dans dist/malix/ ; entrée malix/index.html ; isolation totale du site principal |
+| docs/SPEC-Malix.md | Spécification fonctionnelle normative du mini-jeu Malix |
 
 ## Assumptions and Uncertainties
 

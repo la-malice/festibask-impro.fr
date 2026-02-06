@@ -8,6 +8,7 @@
 - **docs/WORKFLOW.md** — When to update which doc. Follow for doc changes.
 - **docs/ADR/** — Architecture Decision Records (one file per decision). Normative.
 - **docs/slices/charte-graphique.md** — Charte graphique : couleurs (hex, variables CSS), typographie (Hubot Sans, hiérarchie), recommandations d’usage (boutons, titres, programme). Toute proposition de design doit respecter cette charte.
+- **docs/SPEC-Malix.md** — Spécification fonctionnelle du mini-jeu Malix (comportement, périmètre, mécaniques, stockage, tests). Source de vérité pour le jeu sous /malix.
 
 Code and changes must align with these. Do not document or implement behavior that contradicts normative docs without updating them first.
 
@@ -28,3 +29,4 @@ Code and changes must align with these. Do not document or implement behavior th
 
 - **Témoignages:** Schema and usage are in `docs/temoignages-carousel.md`. Data: `assets/data/temoignages.json`. Do not invent fields; add only what the schema and script support.
 - **Build:** Sources live in repo; only `dist/` is built and deployed. Do not commit minified sources; build runs in CI (GitHub Actions) and locally via `npm run build`.
+- **Malix:** Mini-jeu enfant sous /malix ; spec dans docs/SPEC-Malix.md. Strictement isolé du site principal (aucun code Malix dans index.html, script.js, style.css ; chargement uniquement sous /malix).

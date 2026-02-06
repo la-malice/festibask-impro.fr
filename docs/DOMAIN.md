@@ -18,6 +18,10 @@ Vocabulary and concepts for the Festibask'Impro festival site: event, spectacles
 | **Atelier / Stage** | Workshop (initiation, masterclass, famille); has title, time, description, instructor; some “COMPLET” (waitlist); registration via Sibforms. |
 | **Pass 1 jour / Pass 3 jours** | Day pass (2 spectacles + 1 drink); 3-day pass (all three evenings). |
 | **Programme** | Schedule by day (Vendredi, Samedi, Dimanche); each day has format long + match. |
+| **Malix** | Mini-jeu enfant (collection de doodles). Un Malix = un doodle (un des 26 SVG) dans une des 4 variantes de couleur ; unité collectable. Jeu autonome sous /malix ; spec : docs/SPEC-Malix.md. |
+| **Malidex** | Dans le jeu Malix : la collection / catalogue listant les 26 types de Malix avec les 4 couleurs chacune (26 × 4 = 104 entrées). |
+| **Spawn** | Dans le jeu Malix : apparition d’un Malix à l’écran (position et variante aléatoires). |
+| **Capture** | Dans le jeu Malix : tap ou clic sur un Malix → ajout à la collection, feedback, disparition. |
 
 ## Entities and Relationships
 
@@ -27,6 +31,7 @@ Vocabulary and concepts for the Festibask'Impro festival site: event, spectacles
 - **Témoignage:** name, role, quote, image; optional signature, imageAvif128, imageAvif256. Stored in `temoignages.json` array; order by array index.
 - **Atelier:** id (e.g. atelier-vendredi-11h-initiation), title, time, description, instructor(s), flip-back content; optional “COMPLET” and waitlist. Registration/waitlist forms point to Sibforms.
 - **Tarif:** Pass 1 jour, Pass 3 jours, Stage; each has price, description, flip-back details; anchors #pass-1j, #pass-3j, #stage.
+- **Malix (jeu):** 26 types (fichiers 01.svg–26.svg dans assets/img/doodles/), 4 variantes de couleur ; entrée de collection = paire (type, variante). Collection complète = 104 entrées ; fin de jeu avec écran « Bravo » et animation. Spec : docs/SPEC-Malix.md.
 
 ## Domain Rules (Observed in Code)
 

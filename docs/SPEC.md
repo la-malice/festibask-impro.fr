@@ -8,6 +8,7 @@ Static marketing site for **Festibask'Impro**, the improvisation theatre festiva
 
 - **In scope:** Single-page layout with hero (logo, dates, countdown, teaser video, bandes doodles décoratives, liens hero-tags); section “À l’affiche” (spectacles by day: format long + match); programme (three days, fullscreen mode); stages/ateliers (flip cards, registration/waitlist); tarifs (flip cards); FAQ; à propos; témoignages carousel (from JSON); sponsors; newsletter and waitlist modals (Brevo/Sibforms); legal/contact/footer.
 - **Out of scope:** Ticketing, user accounts, backend CMS, server-side rendering. No routing; single HTML document. Google Analytics is commented out in code; Brevo and Sibforms are the active third-party integrations.
+- **Mini-jeu Malix :** Jeu enfant autonome (collection de Malix), disponible **uniquement** sous **/malix**. Comportement et périmètre détaillés dans [docs/SPEC-Malix.md](SPEC-Malix.md). Le site principal (index.html, assets/) ne charge rien depuis /malix ; aucun code du jeu dans le bundle principal.
 
 ## Main Capabilities
 
