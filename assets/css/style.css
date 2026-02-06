@@ -119,17 +119,11 @@ body {
   font-family: var(--font-body);
   font-size: var(--text-size);
   line-height: 1.6;
-  background-image: 
-    /* Texture aquarelle */
-    url('../img/long/image-fond-01_1920px.avif'),
-    /* Gradients radiaux charte (coral / cyan) */
-    radial-gradient(circle at 20% 50%, rgba(233, 88, 66, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(1, 179, 228, 0.05) 0%, transparent 50%);
-  background-size: cover, 100% 100%, 100% 100%;
-  background-position: center, center, center;
-  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-image: url('../img/long/image-fond-01_1920px.avif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   background-attachment: fixed;
-  background-blend-mode: overlay, normal, normal;
   position: relative;
 }
 
@@ -367,7 +361,7 @@ h1 {
 
 /* Backgrounds de sections */
 .section-bg-1 {
-  background: linear-gradient(to bottom, var(--navy) 0%, var(--blue-charte) 100%);
+  background: var(--navy);
   position: relative;
 }
 
@@ -383,8 +377,7 @@ h1 {
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  opacity: 1;
-  mix-blend-mode: overlay;
+  opacity: 0.5;
   pointer-events: none;
   z-index: 0;
 }
@@ -395,7 +388,7 @@ h1 {
 }
 
 .section-bg-2 {
-  background: linear-gradient(to bottom, var(--blue-charte) 0%, var(--navy) 100%);
+  background: var(--navy);
   position: relative;
 }
 
@@ -411,8 +404,7 @@ h1 {
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  opacity: 1;
-  mix-blend-mode: overlay;
+  opacity: 0.5;
   pointer-events: none;
   z-index: 0;
 }
@@ -423,7 +415,7 @@ h1 {
 }
 
 .section-bg-3 {
-  background: linear-gradient(to bottom, var(--blue-charte) 0%, var(--navy) 100%);
+  background: var(--navy);
   position: relative;
 }
 
@@ -439,8 +431,7 @@ h1 {
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  opacity: 1;
-  mix-blend-mode: overlay;
+  opacity: 0.5;
   pointer-events: none;
   z-index: 0;
 }
@@ -451,7 +442,7 @@ h1 {
 }
 
 .section-bg-4 {
-  background: linear-gradient(to bottom, var(--blue-charte) 0%, var(--navy) 100%);
+  background: var(--navy);
   position: relative;
 }
 
@@ -467,8 +458,7 @@ h1 {
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  opacity: 1;
-  mix-blend-mode: overlay;
+  opacity: 0.5;
   pointer-events: none;
   z-index: 0;
 }
@@ -593,7 +583,7 @@ h1 {
 }
 
 .section-bg-5 {
-  background: linear-gradient(to bottom, var(--navy) 0%, var(--blue-charte) 100%);
+  background: var(--navy);
   position: relative;
 }
 
@@ -609,8 +599,7 @@ h1 {
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  opacity: 1;
-  mix-blend-mode: overlay;
+  opacity: 0.5;
   pointer-events: none;
   z-index: 0;
 }
@@ -620,32 +609,10 @@ h1 {
   z-index: 1;
 }
 
-/* Section infos pratiques - dégradé inversé */
-#infos.section-bg-5 {
-  background: linear-gradient(to bottom, var(--navy) 0%, var(--blue-charte) 100%);
-}
-
-/* Section sponsors - dégradé normal */
-#sponsors.section-bg-5 {
-  background: linear-gradient(to bottom, var(--navy) 0%, var(--blue-charte) 100%);
-}
-
-/* Section À propos - dégradé inversé */
-#a-propos.section-bg-5 {
-  background: linear-gradient(to bottom, var(--blue-charte) 0%, var(--navy) 100%);
-}
-
 /* Sections Stages et Programme : dégradés inversés l’un par rapport à l’autre (Stages = bleu→navy, Programme = navy→bleu) */
-#stages.section-bg-5 {
-  background: linear-gradient(to bottom, var(--blue-charte) 0%, var(--navy) 100%);
-}
-#programme.section-bg-3 {
-  background: linear-gradient(to bottom, var(--navy) 0%, var(--blue-charte) 100%);
-}
 
-/* Section CTA - Soyez les premiers informés - dégradé inversé */
 .section-cta {
-  background: linear-gradient(to bottom, var(--blue-charte) 0%, var(--navy) 100%);
+  background: var(--navy);
   padding: 60px 0;
   position: relative;
 }
@@ -662,8 +629,7 @@ h1 {
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  opacity: 1;
-  mix-blend-mode: overlay;
+  opacity: 0.5;
   pointer-events: none;
   z-index: 0;
 }
@@ -1255,7 +1221,7 @@ nav.primary a:hover {
   align-items: center;
   justify-content: flex-start;
   padding: 12px 0 80px;
-  background: linear-gradient(to bottom, var(--blue-charte) 0%, var(--navy) 100%);
+  background: var(--navy);
   border-bottom: 1px solid var(--blue-border-light);
 }
 
@@ -1271,8 +1237,7 @@ nav.primary a:hover {
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  opacity: 0.95;
-  mix-blend-mode: overlay;
+  opacity: 0.5;
   pointer-events: none;
   z-index: 0;
 }
@@ -2397,7 +2362,7 @@ nav.primary a:hover {
   left: 0;
   width: calc(100% - min(50%, 442px) - 24px);
   bottom: 0;
-  background: linear-gradient(to right, rgba(33, 37, 78, 0.75) 0%, rgba(33, 66, 143, 0.4) 65%, transparent 100%);
+  background: transparent;
   z-index: 0;
 }
 
@@ -2590,7 +2555,7 @@ nav.primary a:hover {
   left: 0;
   width: calc(100% - min(50%, 442px) - 24px);
   bottom: 0;
-  background: linear-gradient(to right, rgba(33, 37, 78, 0.75) 0%, rgba(33, 66, 143, 0.4) 65%, transparent 100%);
+  background: transparent;
   z-index: 0;
 }
 
@@ -2754,7 +2719,7 @@ nav.primary a:hover {
   left: auto;
   right: 0;
   width: calc(100% - min(50%, 442px) - 24px);
-  background: linear-gradient(to left, rgba(33, 37, 78, 0.75) 0%, rgba(33, 66, 143, 0.4) 65%, transparent 100%);
+  background: transparent;
 }
 
 .match-block.image-left .match-overlay {
@@ -2968,7 +2933,7 @@ nav.primary a:hover {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to right, #000 0%, #000 15%, transparent 45%);
+  background: transparent;
   pointer-events: none;
   z-index: 1;
 }
@@ -3004,7 +2969,7 @@ nav.primary a:hover {
   left: 0;
   right: 0;
   padding: 24px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 50%, transparent 100%);
+  background: transparent;
   color: var(--white);
   z-index: 2;
 }
@@ -3224,10 +3189,10 @@ nav.primary a:hover {
     gap: 12px;
   }
   
-  /* Format long : image en fond + texte par-dessus (comme les matchs) */
+  /* Format long : image en fond, plus de dégradé assombrissant */
   .format-long-block::before {
     width: 100%;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.7) 100%);
+    background: transparent;
   }
   
   .format-long-image-wrapper {
@@ -3258,7 +3223,7 @@ nav.primary a:hover {
   
   .match-block::before {
     width: 100%;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.7) 100%);
+    background: transparent;
   }
   
   .format-long-overlay,
