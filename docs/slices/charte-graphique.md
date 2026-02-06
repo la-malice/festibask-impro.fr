@@ -76,7 +76,11 @@ Variables dérivées : `--accent` et `--accent-pink` = coral ; `--blue`, `--blue
 | `--programme-slot-other` | navy | Autres (accueil, pause, fin de soirée – `.slot` sans sous-classe) |
 | `--programme-slot-festif` | blue-charte | Soirée festif (`.slot-festif`) |
 
-Liseret gauche = 3px (4px pour festif), dégradé vers transparent en bas. Créneaux stages (`.slot-atelier`) : fond teinté orange (`--orange-bg`), style carte orange aligné avec la section Stages.
+Liseret gauche = 3px (4px pour festif), dégradé vers transparent en bas.
+
+**Format long et match** : fond plein (sans texture), teinté comme les cartes tarif — cyan pour format long (`.slot-format-long`, aligné Pass 1 jour), rose pour match (`.slot-spectacle`, aligné Pass 3 jours).
+
+**Stages** (`.slot-atelier`) : fond teinté orange (`--orange-bg`), style carte orange aligné avec la section Stages. Même layout que les spectacles : contenu à gauche (heure, salle, titre), image de l’intervenant à droite ; numéro de salle en position « meta » (comme LONG FORM · 1H / MATCH · 1H20). En mode normal (hors fullscreen), largeur de l’avatar réduite pour laisser de la place au titre du stage.
 
 ## À l'affiche – titres bannières (format long + match)
 

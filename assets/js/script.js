@@ -1764,6 +1764,7 @@
   const programFullscreenClose = document.getElementById('programFullscreenClose');
   const programFullscreenGrid = document.getElementById('programFullscreenGrid');
   const programFullscreenFloatingDoodles = document.getElementById('programFullscreenFloatingDoodles');
+  const programFullscreenDayTabs = document.getElementById('programFullscreenDayTabs');
   const originalProgramGrid = document.querySelector('#programme .grid.grid-3');
 
   const fullscreenDoodleState = { active: null, autoSmashTimeoutId: null };
@@ -1849,6 +1850,14 @@
     // Afficher le conteneur
     programFullscreenContainer.style.display = 'flex';
     
+    programFullscreenContainer.classList.add('program-fullscreen--single-day');
+    const activeDayIndex = Array.from(document.querySelectorAll('#programmeDayTabs .day-tab')).findIndex(
+      tab => tab.classList.contains('active')
+    );
+    if (activeDayIndex >= 0) {
+      updateFullscreenActiveDay(activeDayIndex);
+    }
+    
     // Doodles flottants en fullscreen (pas trop souvent, disparaissent seuls après une apparition)
     if (spawnFloatingDoodleIn && programFullscreenFloatingDoodles && !reduceMotion) {
       fullscreenDoodleState.active = null;
@@ -1874,6 +1883,8 @@
   // Fonction pour fermer le mode plein écran
   function closeProgramFullscreen() {
     if (!programFullscreenContainer) return;
+    
+    programFullscreenContainer.classList.remove('program-fullscreen--single-day');
     
     // Sortir du mode plein écran du navigateur
     if (getFullscreenElement()) {
@@ -1955,6 +1966,13 @@
       }
     });
     
+    if (programFullscreenDayTabs) {
+      const fullscreenTabs = programFullscreenDayTabs.querySelectorAll('.day-tab');
+      fullscreenTabs.forEach((tab, index) => {
+        tab.classList.toggle('active', index === dayIndex);
+      });
+    }
+    
     // Synchroniser aussi avec les tabs de la vue normale
     const programmeDayTabs = document.querySelectorAll('#programmeDayTabs .day-tab');
     programmeDayTabs.forEach((tab, index) => {
@@ -2008,6 +2026,15 @@
           updateFullscreenActiveDay(dayIndex);
         }
       }
+    });
+  }
+
+  if (programFullscreenDayTabs) {
+    programFullscreenDayTabs.querySelectorAll('.day-tab').forEach((tab, index) => {
+      tab.addEventListener('click', () => {
+        setCurrentDay(index);
+        updateFullscreenActiveDay(index);
+      });
     });
   }
 
