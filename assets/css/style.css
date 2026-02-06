@@ -974,6 +974,17 @@ footer .footer-impro {
   .grid-3 {
     grid-template-columns: repeat(3, 1fr);
   }
+
+  /* Programme : colonne highlightée plus large pour afficher les images */
+  #programme .grid.grid-3:has(.day.card[data-day="0"].active) {
+    grid-template-columns: 1.4fr 1fr 1fr;
+  }
+  #programme .grid.grid-3:has(.day.card[data-day="1"].active) {
+    grid-template-columns: 1fr 1.4fr 1fr;
+  }
+  #programme .grid.grid-3:has(.day.card[data-day="2"].active) {
+    grid-template-columns: 1fr 1fr 1.4fr;
+  }
 }
 
 /* ============================================
@@ -4656,12 +4667,11 @@ nav.primary a:hover {
   border-radius: 0;
 }
 
-/* Avatar intervenant à droite (plus étroit qu'un spectacle pour laisser de la place au titre) */
-/* object-fit: contain pour afficher le portrait en entier sans le couper */
+/* Avatar intervenant à droite : zone carrée (1:1) = hauteur du slot, pleine hauteur sans bourrage */
 .slot-atelier .salle-box .instructor-avatar.slot-image {
-  width: 88px;
+  width: 170px;
   height: 170px;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   flex-shrink: 0;
   display: block;
@@ -4669,6 +4679,15 @@ nav.primary a:hover {
   border: none;
   box-shadow: none;
   background: var(--orange-bg);
+}
+
+/* Programme : images uniquement dans la colonne highlightée (active) */
+#programme .day.card:not(.active) .instructor-avatar.slot-image,
+#programme .day.card:not(.active) .slot-format-long .slot-image,
+#programme .day.card:not(.active) .slot-format-long picture,
+#programme .day.card:not(.active) .slot-spectacle .slot-image,
+#programme .day.card:not(.active) .slot-spectacle picture {
+  display: none;
 }
 
 .slot-format-long {
@@ -4843,7 +4862,7 @@ nav.primary a:hover {
   }
 
   .slot-atelier .salle-box .instructor-avatar.slot-image {
-    width: 110px;
+    width: 170px;
   }
 }
 
@@ -5178,8 +5197,9 @@ button.slot-spectacle:active {
 }
 
 .program-fullscreen .slot-atelier .salle-box .instructor-avatar.slot-image {
-  width: 160px;
+  width: 140px;
   height: 140px;
+  object-fit: cover;
 }
 
 .program-fullscreen .slot-format-long .slot-content h3,
@@ -5423,9 +5443,9 @@ button.slot-spectacle:active {
 }
 
 .program-fullscreen.program-fullscreen--single-day .slot-atelier .salle-box .instructor-avatar.slot-image {
-  width: 95px;
+  width: 56px;
   height: 56px;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   background: var(--orange-bg);
 }
@@ -5587,8 +5607,9 @@ button.slot-spectacle:active {
   .program-fullscreen .slot-format-long .slot-image,
   .program-fullscreen .slot-spectacle .slot-image,
   .program-fullscreen .slot-atelier .salle-box .instructor-avatar.slot-image {
-    width: 130px;
+    width: 110px;
     height: 110px;
+    object-fit: cover;
   }
 
   .program-fullscreen .slot-format-long .slot-content,
