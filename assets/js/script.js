@@ -543,7 +543,10 @@
           youtubePlayer = new window.YT.Player('hero-youtube-player', {
             videoId: effectiveYoutubeId,
             playerVars: { autoplay: 1, rel: 0 },
-            events: { onStateChange: onPlayerStateChange }
+            events: {
+              onReady: function (event) { event.target.playVideo(); },
+              onStateChange: onPlayerStateChange
+            }
           });
           hidePlayOverlay();
         }
@@ -2160,7 +2163,7 @@
       track.addEventListener('scroll', () => {
         updateButtons();
         updateActiveDot();
-      });
+      }, { passive: true });
       dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
           const card = cards[index];
