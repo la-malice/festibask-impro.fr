@@ -4657,15 +4657,18 @@ nav.primary a:hover {
 }
 
 /* Avatar intervenant à droite (plus étroit qu'un spectacle pour laisser de la place au titre) */
+/* object-fit: contain pour afficher le portrait en entier sans le couper */
 .slot-atelier .salle-box .instructor-avatar.slot-image {
   width: 88px;
   height: 170px;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
   flex-shrink: 0;
   display: block;
   border-radius: 0;
   border: none;
   box-shadow: none;
+  background: var(--orange-bg);
 }
 
 .slot-format-long {
@@ -5422,7 +5425,9 @@ button.slot-spectacle:active {
 .program-fullscreen.program-fullscreen--single-day .slot-atelier .salle-box .instructor-avatar.slot-image {
   width: 95px;
   height: 56px;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
+  background: var(--orange-bg);
 }
 
 .program-fullscreen.program-fullscreen--single-day .slot-format-long,
