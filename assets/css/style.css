@@ -2349,9 +2349,10 @@ nav.primary a:hover {
   margin-bottom: 8px;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease, height 0.3s ease;
+  border: 1px solid rgba(1, 179, 228, 0.3);
   background-image: url('../img/long/image-fond-01_1920px.avif');
-  background-size: cover;
-  background-position: center;
+  background-size: min(50%, 442px) 100%;
+  background-position: right center;
   background-repeat: no-repeat;
 }
 
@@ -2360,9 +2361,10 @@ nav.primary a:hover {
   position: absolute;
   top: 0;
   left: 0;
-  width: calc(100% - min(50%, 442px) - 24px);
+  width: calc(100% - min(50%, 442px) + 2px);
   bottom: 0;
-  background: transparent;
+  background: rgba(33, 37, 78, 0.4);
+  backdrop-filter: blur(4px);
   z-index: 0;
 }
 
@@ -2542,9 +2544,10 @@ nav.primary a:hover {
   box-shadow: var(--shadow-lg);
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(1, 179, 228, 0.3);
   background-image: url('../img/long/image-fond-01_1920px.avif');
-  background-size: cover;
-  background-position: center;
+  background-size: min(50%, 442px) 100%;
+  background-position: right center;
   background-repeat: no-repeat;
 }
 
@@ -2553,9 +2556,10 @@ nav.primary a:hover {
   position: absolute;
   top: 0;
   left: 0;
-  width: calc(100% - min(50%, 442px) - 24px);
+  width: calc(100% - min(50%, 442px) + 2px);
   bottom: 0;
-  background: transparent;
+  background: rgba(33, 37, 78, 0.4);
+  backdrop-filter: blur(4px);
   z-index: 0;
 }
 
@@ -2671,15 +2675,15 @@ nav.primary a:hover {
   right: min(50%, 442px);
   bottom: 0;
   padding: 24px;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.85) 100%);
+  background: transparent;
   color: var(--white);
-  backdrop-filter: blur(4px);
+  backdrop-filter: none;
   display: flex;
   flex-direction: column;
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, background 0.3s ease, backdrop-filter 0.3s ease;
   overflow-y: auto;
   z-index: 3; /* au-dessus de l'image et des logos */
 }
@@ -2687,6 +2691,8 @@ nav.primary a:hover {
 .match-block.flipped .match-pitch {
   opacity: 1;
   pointer-events: auto;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.85) 100%);
+  backdrop-filter: blur(4px);
 }
 
 .match-block.flipped::before {
@@ -2710,6 +2716,10 @@ nav.primary a:hover {
 }
 
 /* Match block — layout image à gauche, texte à droite (rompre la monotonie) */
+.match-block.image-left {
+  background-position: left center;
+}
+
 .match-block.image-left .match-image-wrapper {
   left: 0;
   right: auto;
@@ -2718,8 +2728,9 @@ nav.primary a:hover {
 .match-block.image-left::before {
   left: auto;
   right: 0;
-  width: calc(100% - min(50%, 442px) - 24px);
-  background: transparent;
+  width: calc(100% - min(50%, 442px) + 2px);
+  background: rgba(33, 37, 78, 0.4);
+  backdrop-filter: blur(4px);
 }
 
 .match-block.image-left .match-overlay {
@@ -3189,10 +3200,11 @@ nav.primary a:hover {
     gap: 12px;
   }
   
-  /* Format long : image en fond, plus de dégradé assombrissant */
+  /* Format long : overlay navy semi-transparent, sans blur en mobile (éviter l’effet flou étrange) */
   .format-long-block::before {
     width: 100%;
-    background: transparent;
+    background: rgba(33, 37, 78, 0.4);
+    backdrop-filter: none;
   }
   
   .format-long-image-wrapper {
@@ -3223,7 +3235,12 @@ nav.primary a:hover {
   
   .match-block::before {
     width: 100%;
-    background: transparent;
+    background: rgba(33, 37, 78, 0.4);
+    backdrop-filter: none;
+  }
+  
+  .match-block.image-left::before {
+    backdrop-filter: none;
   }
   
   .format-long-overlay,
