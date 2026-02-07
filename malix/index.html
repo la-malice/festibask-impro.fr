@@ -53,13 +53,14 @@
 
       <section class="screen screen-game" id="screen-game" aria-label="Jeu Malix">
         <div class="kawaii-decor" aria-hidden="true">
-          <span class="sticker sticker-cloud sticker-cloud-1"></span>
-          <span class="sticker sticker-cloud sticker-cloud-2"></span>
-          <span class="sticker sticker-star sticker-star-1"></span>
-          <span class="sticker sticker-star sticker-star-2"></span>
-          <span class="sticker sticker-heart sticker-heart-1"></span>
-          <span class="sticker sticker-heart sticker-heart-2"></span>
-          <span class="sticker sticker-rainbow"></span>
+          <span class="sticker sticker-proscenium"></span>
+          <span class="sticker sticker-curtain sticker-curtain-left"></span>
+          <span class="sticker sticker-curtain sticker-curtain-right"></span>
+          <span class="sticker sticker-stage"></span>
+          <div class="sticker sticker-audience" id="audienceSeats" aria-hidden="true"></div>
+          <span class="sticker sticker-spotlight sticker-spotlight-1"></span>
+          <span class="sticker sticker-spotlight sticker-spotlight-2"></span>
+          <span class="sticker sticker-spotlight sticker-spotlight-3"></span>
         </div>
         <header class="topbar">
           <h1 class="logo">Chasse aux Malix!</h1>
@@ -67,7 +68,7 @@
 
         <div class="playzone" id="playzone" aria-live="polite">
           <p class="spawn-approach-hint hidden" id="spawnApproachHint" aria-live="polite">
-            Un Malix est à l'approche... tiens-toi prêt !
+            Un Malix va entrer en scène !
           </p>
         </div>
         <div class="capture-overlay hidden" id="captureOverlay" aria-live="polite"></div>

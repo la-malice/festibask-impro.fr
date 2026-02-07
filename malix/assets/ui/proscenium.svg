@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" fill="none">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffc4bf"/>
+      <stop offset="1" stop-color="#f3a4a7"/>
+    </linearGradient>
+    <linearGradient id="stageVoid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7e48b6"/>
+      <stop offset="1" stop-color="#4d2f84"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="18" y="16" width="864" height="528" rx="36" fill="url(#wall)" opacity=".44"/>
+  <rect x="130" y="-402" width="640" height="946" rx="20" fill="url(#stageVoid)"/>
+
+  <path d="M120 84h660" stroke="#f8a39c" stroke-width="22" stroke-linecap="round"/>
+  <path d="M128 80h644" stroke="#e47f76" stroke-width="8" stroke-linecap="round"/>
+
+  <path d="M130 8q64 56 128 0q64 56 128 0q64 56 128 0q64 56 128 0q64 56 128 0" stroke="#ff4f9f" stroke-width="40" stroke-linecap="round" opacity=".95"/>
+  <path d="M130 20q64 42 128 0q64 42 128 0q64 42 128 0q64 42 128 0q64 42 128 0" stroke="#ff94cb" stroke-width="18" stroke-linecap="round" opacity=".8"/>
+
+  <rect x="104" y="110" width="28" height="328" rx="12" fill="#f5a3a7"/>
+  <rect x="768" y="110" width="28" height="328" rx="12" fill="#f5a3a7"/>
+</svg>

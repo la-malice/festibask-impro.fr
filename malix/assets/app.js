@@ -6,19 +6,22 @@
   }
 
   const variantColors = ['var(--v1)', 'var(--v2)', 'var(--v3)', 'var(--v4)'];
-  const variantFilters = [
-    'brightness(0) saturate(100%) invert(71%) sepia(18%) saturate(3316%) hue-rotate(174deg) brightness(104%) contrast(102%)',
-    'brightness(0) saturate(100%) invert(68%) sepia(25%) saturate(2567%) hue-rotate(297deg) brightness(102%) contrast(101%)',
-    'brightness(0) saturate(100%) invert(79%) sepia(36%) saturate(1400%) hue-rotate(336deg) brightness(101%) contrast(99%)',
-    'brightness(0) saturate(100%) invert(79%) sepia(26%) saturate(763%) hue-rotate(71deg) brightness(96%) contrast(92%)'
-  ];
+  const variantStrokeHexColors = ['#2b82ff', '#f13a97', '#f09a35', '#46bd66'];
+  const variantFillHexColors = ['#bee8ff', '#ffd4e9', '#ffe2bd', '#d2f5d9'];
   const variantRarityWeights = [55, 27, 13, 5];
   const OFFICIAL_GAME_URL = 'https://festibask-impro.fr/malix';
+  const AUDIENCE_LAYOUT_KEY = 'malix-audience-layout-v1';
+  const AUDIENCE_ROWS = 8;
+  const AUDIENCE_LEFT_COUNT = 6;
+  const AUDIENCE_RIGHT_COUNT = 7;
+  const AUDIENCE_SEATS_COUNT = AUDIENCE_ROWS * (AUDIENCE_LEFT_COUNT + AUDIENCE_RIGHT_COUNT);
   const PHOTO_INDEX_KEY = 'malix-photo-album-index';
   const PHOTO_DB_NAME = 'malix-photo-db';
   const PHOTO_DB_VERSION = 1;
   const PHOTO_STORE_NAME = 'photos';
   const variantHexColors = ['#3bb9ff', '#ff5fa8', '#ffb85a', '#71df8a'];
+  const doodleSourceCache = new Map();
+  const doodleVariantCache = new Map();
   const typeNames = [
     'Flechix',
     'Manix',
@@ -55,6 +58,7 @@
   const playzone = document.getElementById('playzone');
   const spawnApproachHint = document.getElementById('spawnApproachHint');
   const kawaiiDecor = document.querySelector('.kawaii-decor');
+  const audienceSeats = document.getElementById('audienceSeats');
   const progressText = document.getElementById('progressText');
   const progressFill = document.getElementById('progressFill');
   const malidexProgress = document.getElementById('malidexProgress');
@@ -127,6 +131,8 @@
   let albumFilter = 'all';
   let pendingAlbumTypeFilter = 'all';
   let malidexActiveTab = 'malix';
+  let audienceSeatAssignment = [];
+  let audienceSeatNodes = [];
 
   function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -142,6 +148,120 @@
 
   function randomVariant() {
     return pickWeightedIndex(variantRarityWeights) + 1;
+  }
+
+  function listAllCollectionEntryIds() {
+    const ids = [];
+    for (let type = 1; type <= collectionApi.MAX_TYPES; type += 1) {
+      for (let variant = 1; variant <= collectionApi.MAX_VARIANTS; variant += 1) {
+        ids.push(collectionApi.makeId(type, variant));
+      }
+    }
+    return ids;
+  }
+
+  function shuffleArray(values) {
+    const next = values.slice();
+    for (let index = next.length - 1; index > 0; index -= 1) {
+      const swapIndex = randomInt(0, index);
+      const temp = next[index];
+      next[index] = next[swapIndex];
+      next[swapIndex] = temp;
+    }
+    return next;
+  }
+
+  function saveAudienceSeatAssignment(layout) {
+    try {
+      window.localStorage.setItem(AUDIENCE_LAYOUT_KEY, JSON.stringify(layout));
+    } catch (error) {
+      // Ignore storage errors for layout metadata.
+    }
+  }
+
+  function createAudienceSeatAssignment() {
+    const ids = listAllCollectionEntryIds();
+    const shuffled = shuffleArray(ids);
+    saveAudienceSeatAssignment(shuffled);
+    return shuffled;
+  }
+
+  function loadAudienceSeatAssignment() {
+    const expectedIds = listAllCollectionEntryIds();
+    const expectedSet = new Set(expectedIds);
+
+    try {
+      const raw = window.localStorage.getItem(AUDIENCE_LAYOUT_KEY);
+      if (!raw) {
+        return createAudienceSeatAssignment();
+      }
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed) || parsed.length !== AUDIENCE_SEATS_COUNT) {
+        return createAudienceSeatAssignment();
+      }
+      const seen = new Set();
+      for (let index = 0; index < parsed.length; index += 1) {
+        const entryId = String(parsed[index]);
+        if (!expectedSet.has(entryId) || seen.has(entryId)) {
+          return createAudienceSeatAssignment();
+        }
+        seen.add(entryId);
+      }
+      return parsed.map(function (entryId) {
+        return String(entryId);
+      });
+    } catch (error) {
+      return createAudienceSeatAssignment();
+    }
+  }
+
+  function buildAudienceSeats() {
+    if (!audienceSeats) return;
+    audienceSeatNodes = new Array(AUDIENCE_SEATS_COUNT);
+    audienceSeats.innerHTML = '';
+
+    const fragment = document.createDocumentFragment();
+    for (let row = 0; row < AUDIENCE_ROWS; row += 1) {
+      const rowEl = document.createElement('div');
+      rowEl.className = 'audience-row' + (row % 2 === 1 ? ' is-offset' : '');
+
+      const left = document.createElement('div');
+      left.className = 'audience-side audience-side-left';
+      const right = document.createElement('div');
+      right.className = 'audience-side audience-side-right';
+
+      for (let col = 0; col < AUDIENCE_LEFT_COUNT + AUDIENCE_RIGHT_COUNT; col += 1) {
+        const seat = document.createElement('span');
+        seat.className = 'audience-seat';
+        const seatIndex = row * (AUDIENCE_LEFT_COUNT + AUDIENCE_RIGHT_COUNT) + col;
+        audienceSeatNodes[seatIndex] = seat;
+        if (col < AUDIENCE_LEFT_COUNT) {
+          left.appendChild(seat);
+        } else {
+          right.appendChild(seat);
+        }
+      }
+
+      rowEl.appendChild(left);
+      rowEl.appendChild(right);
+      fragment.appendChild(rowEl);
+    }
+    audienceSeats.appendChild(fragment);
+  }
+
+  function refreshAudienceSeats() {
+    if (!audienceSeats || !audienceSeatNodes.length || !audienceSeatAssignment.length) return;
+
+    for (let index = 0; index < audienceSeatAssignment.length; index += 1) {
+      const entryId = audienceSeatAssignment[index];
+      const seatEl = audienceSeatNodes[index];
+      if (!seatEl) continue;
+      const parsed = collectionApi.parseId(entryId);
+      if (!parsed) continue;
+      const isCollected = collection.has(entryId);
+      seatEl.classList.toggle('is-collected', isCollected);
+      seatEl.style.setProperty('--seat-color', variantHexColors[parsed.variant - 1] || '#89c7ff');
+    }
   }
 
   function isPhoneDevice() {
@@ -329,14 +449,7 @@
   }
 
   function addObstacleElement(rect, kindClass) {
-    const el = document.createElement('div');
-    el.className = 'play-obstacle ' + kindClass;
-    el.style.left = rect.x + 'px';
-    el.style.top = rect.y + 'px';
-    el.style.width = rect.w + 'px';
-    el.style.height = rect.h + 'px';
-    playzone.appendChild(el);
-    obstacles.push({ ...rect, el: el });
+    obstacles.push({ ...rect });
   }
 
   function placeKawaiiSticker(selector, config) {
@@ -351,14 +464,60 @@
     sticker.style.animationDelay = randomFloat(0, config.maxDelay || 2.2).toFixed(2) + 's';
   }
 
+  function getSpotlightTopRange() {
+    const fallback = { minTop: 0, maxTop: 12 };
+    if (!kawaiiDecor || !screenGame) return fallback;
+
+    const decorRect = kawaiiDecor.getBoundingClientRect();
+    if (decorRect.height <= 0) return fallback;
+
+    const topbar = screenGame.querySelector('.topbar');
+    const logo = screenGame.querySelector('.logo');
+    const topbarBottom = topbar ? topbar.getBoundingClientRect().bottom : decorRect.top;
+    const logoBottom = logo ? logo.getBoundingClientRect().bottom : decorRect.top;
+    const guardBottomPx = Math.max(topbarBottom, logoBottom) - decorRect.top + 10;
+
+    const spotlight = kawaiiDecor.querySelector('.sticker-spotlight');
+    const spotlightHeightPx = spotlight ? spotlight.getBoundingClientRect().height : 118;
+    const firstThirdBottomPx = decorRect.height / 3;
+    const maxTopPx = firstThirdBottomPx - spotlightHeightPx - 6;
+
+    let minTop = (guardBottomPx / decorRect.height) * 100;
+    let maxTop = (maxTopPx / decorRect.height) * 100;
+
+    minTop = Math.max(0, minTop);
+    maxTop = Math.max(0, maxTop);
+
+    if (maxTop < minTop) {
+      maxTop = minTop;
+    }
+
+    return { minTop: minTop, maxTop: maxTop };
+  }
+
   function randomizeKawaiiDecorLayout() {
-    placeKawaiiSticker('.sticker-cloud-1', { minLeft: -8, maxLeft: 18, minTop: 4, maxTop: 16, maxDelay: 2.8 });
-    placeKawaiiSticker('.sticker-cloud-2', { minLeft: 76, maxLeft: 92, minTop: 8, maxTop: 20, maxDelay: 2.8 });
-    placeKawaiiSticker('.sticker-star-1', { minLeft: 3, maxLeft: 20, minTop: 30, maxTop: 58, maxDelay: 1.8 });
-    placeKawaiiSticker('.sticker-star-2', { minLeft: 78, maxLeft: 92, minTop: 28, maxTop: 56, maxDelay: 1.8 });
-    placeKawaiiSticker('.sticker-heart-1', { minLeft: 6, maxLeft: 24, minTop: 62, maxTop: 84, maxDelay: 2.4 });
-    placeKawaiiSticker('.sticker-heart-2', { minLeft: 74, maxLeft: 92, minTop: 62, maxTop: 84, maxDelay: 2.4 });
-    placeKawaiiSticker('.sticker-rainbow', { minLeft: 28, maxLeft: 48, minTop: 0, maxTop: 8, maxDelay: 1.2 });
+    const topRange = getSpotlightTopRange();
+    placeKawaiiSticker('.sticker-spotlight-1', {
+      minLeft: 1,
+      maxLeft: 18,
+      minTop: topRange.minTop,
+      maxTop: topRange.maxTop,
+      maxDelay: 2
+    });
+    placeKawaiiSticker('.sticker-spotlight-2', {
+      minLeft: 80,
+      maxLeft: 94,
+      minTop: topRange.minTop,
+      maxTop: topRange.maxTop,
+      maxDelay: 2
+    });
+    placeKawaiiSticker('.sticker-spotlight-3', {
+      minLeft: 42,
+      maxLeft: 56,
+      minTop: topRange.minTop,
+      maxTop: topRange.maxTop,
+      maxDelay: 2
+    });
   }
 
   function generateObstacles() {
@@ -372,78 +531,42 @@
     if (rect.width < 120 || rect.height < 120) {
       return;
     }
+    const curtainWidth = Math.max(22, Math.min(48, rect.width * 0.08));
+    const curtainTop = 0;
+    const curtainHeight = rect.height * 0.64;
+    const stageWidth = Math.min(rect.width - 28, 860);
+    const stageHeight = Math.max(38, rect.height * 0.13);
+    const stageX = (rect.width - stageWidth) / 2;
+    const stageY = curtainTop + curtainHeight - stageHeight * 0.68;
+    let audienceX = 0;
+    let audienceY = Math.max(0, rect.height - Math.max(270, rect.height * 0.36));
+    let audienceWidth = rect.width;
+    let audienceHeight = Math.max(48, rect.height * 0.22);
 
-    const centerSafeZone = {
-      x: rect.width * 0.24,
-      y: rect.height * 0.28,
-      w: rect.width * 0.52,
-      h: rect.height * 0.3
-    };
-
-    const wallThickness = Math.max(12, Math.min(20, Math.round(Math.min(rect.width, rect.height) * 0.03)));
-    const cornerCount = randomInt(2, 4);
-    for (let count = 0; count < cornerCount; count += 1) {
-      let placed = false;
-      for (let attempt = 0; attempt < 28 && !placed; attempt += 1) {
-        const armX = randomFloat(rect.width * 0.16, rect.width * 0.28);
-        const armY = randomFloat(rect.height * 0.12, rect.height * 0.24);
-        const elbowX = randomFloat(rect.width * 0.1, rect.width * 0.9 - wallThickness);
-        const elbowY = randomFloat(rect.height * 0.12, rect.height * 0.88 - wallThickness);
-        const orientation = randomInt(0, 3);
-
-        let horizontal;
-        let vertical;
-        if (orientation === 0) {
-          horizontal = { x: elbowX, y: elbowY, w: armX, h: wallThickness };
-          vertical = { x: elbowX, y: elbowY, w: wallThickness, h: armY };
-        } else if (orientation === 1) {
-          horizontal = { x: elbowX - armX + wallThickness, y: elbowY, w: armX, h: wallThickness };
-          vertical = { x: elbowX, y: elbowY, w: wallThickness, h: armY };
-        } else if (orientation === 2) {
-          horizontal = { x: elbowX, y: elbowY, w: armX, h: wallThickness };
-          vertical = { x: elbowX, y: elbowY - armY + wallThickness, w: wallThickness, h: armY };
-        } else {
-          horizontal = { x: elbowX - armX + wallThickness, y: elbowY, w: armX, h: wallThickness };
-          vertical = { x: elbowX, y: elbowY - armY + wallThickness, w: wallThickness, h: armY };
-        }
-
-        if (!canPlaceCorner(horizontal, vertical, centerSafeZone)) {
-          continue;
-        }
-        addObstacleElement(horizontal, 'play-obstacle-wall');
-        addObstacleElement(vertical, 'play-obstacle-wall');
-        placed = true;
+    if (audienceSeats) {
+      const audienceRect = audienceSeats.getBoundingClientRect();
+      if (audienceRect.width > 0 && audienceRect.height > 0) {
+        audienceX = Math.max(0, audienceRect.left - rect.left);
+        audienceY = Math.max(0, audienceRect.top - rect.top);
+        audienceWidth = Math.min(rect.width - audienceX, audienceRect.width);
+        audienceHeight = Math.min(rect.height - audienceY, audienceRect.height);
       }
     }
 
-    const straightCount = randomInt(1, 2);
-    for (let count = 0; count < straightCount; count += 1) {
-      let placed = false;
-      for (let attempt = 0; attempt < 24 && !placed; attempt += 1) {
-        const horizontal = Math.random() < 0.5;
-        const length = horizontal
-          ? randomFloat(rect.width * 0.22, rect.width * 0.34)
-          : randomFloat(rect.height * 0.16, rect.height * 0.28);
-        const candidate = horizontal
-          ? {
-              x: randomFloat(rect.width * 0.08, rect.width * 0.92 - length),
-              y: randomFloat(rect.height * 0.12, rect.height * 0.88 - wallThickness),
-              w: length,
-              h: wallThickness
-            }
-          : {
-              x: randomFloat(rect.width * 0.1, rect.width * 0.9 - wallThickness),
-              y: randomFloat(rect.height * 0.12, rect.height * 0.88 - length),
-              w: wallThickness,
-              h: length
-            };
-        if (!canPlaceObstacle(candidate, centerSafeZone)) {
-          continue;
-        }
-        addObstacleElement(candidate, 'play-obstacle-wall');
-        placed = true;
-      }
-    }
+    const aisleWidth = Math.max(28, audienceWidth * 0.08);
+    const sideWidth = Math.max(1, (audienceWidth - aisleWidth) / 2);
+
+    addObstacleElement({ x: 0, y: curtainTop, w: curtainWidth, h: curtainHeight }, 'play-obstacle-curtain');
+    addObstacleElement(
+      { x: rect.width - curtainWidth, y: curtainTop, w: curtainWidth, h: curtainHeight },
+      'play-obstacle-curtain'
+    );
+    addObstacleElement({ x: stageX, y: stageY, w: stageWidth, h: stageHeight }, 'play-obstacle-stage');
+    addObstacleElement({ x: audienceX, y: audienceY, w: sideWidth, h: audienceHeight }, 'play-obstacle-audience');
+    addObstacleElement(
+      { x: audienceX + audienceWidth - sideWidth, y: audienceY, w: sideWidth, h: audienceHeight },
+      'play-obstacle-audience'
+    );
   }
 
   function intersectsAnyObstacle(box) {
@@ -501,6 +624,162 @@
 
   function typePath(type) {
     return './assets/doodles/' + String(type).padStart(2, '0') + '.svg';
+  }
+
+  function readStyleMap(styleText) {
+    const styleMap = {};
+    if (!styleText) return styleMap;
+    const chunks = styleText.split(';');
+    for (let index = 0; index < chunks.length; index += 1) {
+      const pair = chunks[index].trim();
+      if (!pair) continue;
+      const splitAt = pair.indexOf(':');
+      if (splitAt <= 0) continue;
+      const key = pair.slice(0, splitAt).trim();
+      const value = pair.slice(splitAt + 1).trim();
+      if (key) {
+        styleMap[key] = value;
+      }
+    }
+    return styleMap;
+  }
+
+  function writeStyleMap(styleMap) {
+    const entries = Object.entries(styleMap);
+    if (!entries.length) return '';
+    return entries
+      .map(function (entry) {
+        return entry[0] + ': ' + entry[1];
+      })
+      .join('; ');
+  }
+
+  function isClosedShapeElement(element) {
+    const tagName = (element.tagName || '').toLowerCase();
+    if (tagName === 'path') {
+      const d = element.getAttribute('d') || '';
+      return /[zZ]/.test(d);
+    }
+    if (tagName === 'polygon' || tagName === 'circle' || tagName === 'ellipse' || tagName === 'rect') {
+      return true;
+    }
+    return false;
+  }
+
+  function getStrokeWidthValue(element, styleMap) {
+    const attrWidth = element.getAttribute('stroke-width');
+    if (attrWidth) return attrWidth;
+    if (styleMap['stroke-width']) return styleMap['stroke-width'];
+    return '';
+  }
+
+  function normalizeShapeStyle(element, strokeColor, fillColor) {
+    const styleMap = readStyleMap(element.getAttribute('style') || '');
+    const closedShape = isClosedShapeElement(element);
+    const currentWidth = getStrokeWidthValue(element, styleMap);
+
+    delete styleMap.fill;
+    delete styleMap.stroke;
+    delete styleMap['stroke-width'];
+
+    if (closedShape) {
+      element.setAttribute('fill', fillColor);
+      element.setAttribute('stroke', strokeColor);
+      element.setAttribute('stroke-width', currentWidth || '3');
+      if (!element.getAttribute('stroke-linejoin') && !styleMap['stroke-linejoin']) {
+        element.setAttribute('stroke-linejoin', 'round');
+      }
+    } else {
+      element.setAttribute('fill', 'none');
+      element.setAttribute('stroke', strokeColor);
+      element.setAttribute('stroke-width', currentWidth || '6');
+    }
+
+    const nextStyle = writeStyleMap(styleMap);
+    if (nextStyle) {
+      element.setAttribute('style', nextStyle);
+    } else {
+      element.removeAttribute('style');
+    }
+  }
+
+  function colorizeDoodleSvg(svgText, variant) {
+    if (!svgText || !variant) return svgText;
+    const parser = new window.DOMParser();
+    const parsed = parser.parseFromString(svgText, 'image/svg+xml');
+    const svg = parsed.documentElement;
+    if (!svg || svg.nodeName.toLowerCase() !== 'svg') {
+      return svgText;
+    }
+
+    const strokeColor = variantStrokeHexColors[variant - 1] || variantHexColors[variant - 1] || '#3bb9ff';
+    const fillColor = variantFillHexColors[variant - 1] || '#ffffff';
+    const targets = parsed.querySelectorAll('path, polygon, polyline, circle, ellipse, rect, line');
+    for (let index = 0; index < targets.length; index += 1) {
+      normalizeShapeStyle(targets[index], strokeColor, fillColor);
+    }
+    return new window.XMLSerializer().serializeToString(parsed);
+  }
+
+  async function loadTypeSvgSource(type) {
+    if (doodleSourceCache.has(type)) {
+      return doodleSourceCache.get(type);
+    }
+    try {
+      const response = await fetch(typePath(type));
+      if (!response.ok) {
+        doodleSourceCache.set(type, null);
+        return null;
+      }
+      const source = await response.text();
+      doodleSourceCache.set(type, source);
+      return source;
+    } catch (error) {
+      doodleSourceCache.set(type, null);
+      return null;
+    }
+  }
+
+  async function typeVariantPath(type, variant) {
+    if (!Number.isInteger(type) || !Number.isInteger(variant)) {
+      return typePath(type);
+    }
+    const key = type + '-' + variant;
+    if (doodleVariantCache.has(key)) {
+      return doodleVariantCache.get(key);
+    }
+
+    const source = await loadTypeSvgSource(type);
+    if (!source) {
+      const fallback = typePath(type);
+      doodleVariantCache.set(key, fallback);
+      return fallback;
+    }
+    const colorized = colorizeDoodleSvg(source, variant);
+    const dataUrl = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(colorized);
+    doodleVariantCache.set(key, dataUrl);
+    return dataUrl;
+  }
+
+  function setTypeVariantImage(imageElement, type, variant) {
+    if (!imageElement) return;
+    const expectedType = type;
+    const expectedVariant = variant;
+    imageElement.dataset.pendingType = String(type);
+    imageElement.dataset.pendingVariant = String(variant);
+    imageElement.src = typePath(type);
+    typeVariantPath(type, variant).then(function (variantPath) {
+      if (!imageElement.isConnected) {
+        return;
+      }
+      if (
+        imageElement.dataset.pendingType !== String(expectedType) ||
+        imageElement.dataset.pendingVariant !== String(expectedVariant)
+      ) {
+        return;
+      }
+      imageElement.src = variantPath;
+    });
   }
 
   function typeName(type) {
@@ -696,8 +975,8 @@
       photoMalix.style.height = photoState.size + 'px';
     }
     if (photoMalixImg) {
-      photoMalixImg.src = typePath(type);
-      photoMalixImg.style.filter = variantFilters[variant - 1];
+      setTypeVariantImage(photoMalixImg, type, variant);
+      photoMalixImg.style.filter = '';
     }
   }
 
@@ -842,16 +1121,9 @@
     }
   }
 
-  function drawTintedMalix(context, image, x, y, size, hexColor) {
+  function drawTintedMalix(context, image, x, y, size) {
     const safeSize = Math.max(24, size);
-    context.save();
-    context.translate(x, y);
-    context.drawImage(image, 0, 0, safeSize, safeSize);
-    context.globalCompositeOperation = 'source-in';
-    context.fillStyle = hexColor;
-    context.fillRect(0, 0, safeSize, safeSize);
-    context.globalCompositeOperation = 'source-over';
-    context.restore();
+    context.drawImage(image, x, y, safeSize, safeSize);
   }
 
   async function createBitmapFromBlob(blob) {
@@ -1063,7 +1335,7 @@
     const drawX = photoState.x * xRatio;
     const drawY = photoState.y * yRatio;
     const drawSize = photoState.size * ((xRatio + yRatio) / 2);
-    drawTintedMalix(ctx, photoMalixImg, drawX, drawY, drawSize, variantHexColors[photoState.variant - 1]);
+    drawTintedMalix(ctx, photoMalixImg, drawX, drawY, drawSize);
     const previewDataUrl = canvas.toDataURL('image/jpeg', 0.72);
 
     const blob = await new Promise(function (resolve) {
@@ -1356,6 +1628,7 @@
     if (malidexProgressFill) {
       malidexProgressFill.style.width = percent + '%';
     }
+    refreshAudienceSeats();
   }
 
   function persistCollection() {
@@ -1385,9 +1658,13 @@
   function openDetail(type, variant, isCollected, amount) {
     if (!malidexDetail || !detailVisual || !detailName || !detailRarity || !detailCaptures) return;
 
-    detailVisual.src = typePath(type);
+    if (isCollected) {
+      setTypeVariantImage(detailVisual, type, variant);
+    } else {
+      detailVisual.src = typePath(type);
+    }
     detailVisual.alt = '';
-    detailVisual.style.filter = isCollected ? variantFilters[variant - 1] : 'brightness(0) saturate(0) opacity(0.25)';
+    detailVisual.style.filter = isCollected ? '' : 'brightness(0) saturate(0) opacity(0.25)';
     detailName.textContent = isCollected
       ? typeName(type) + ' · ' + variantName(variant)
       : 'Malix inconnu';
@@ -1470,9 +1747,9 @@
 
     const inner = document.createElement('img');
     inner.className = 'spawn-inner';
-    inner.src = typePath(type);
+    setTypeVariantImage(inner, type, variant);
     inner.alt = '';
-    inner.style.filter = variantFilters[variant - 1] + ' drop-shadow(0 8px 12px rgba(0, 0, 0, 0.25))';
+    inner.style.filter = 'drop-shadow(0 8px 12px rgba(0, 0, 0, 0.25))';
     button.appendChild(inner);
 
     playzone.appendChild(button);
@@ -1829,9 +2106,9 @@
     name.textContent = typeName(type);
 
     const preview = document.createElement('img');
-    preview.src = typePath(type);
+    setTypeVariantImage(preview, type, variant);
     preview.alt = '';
-    preview.style.filter = variantFilters[variant - 1];
+    preview.style.filter = '';
     if (!reduceMotion) {
       preview.classList.add('capture-preview-spin');
     }
@@ -2009,10 +2286,10 @@
         if (discoveredType) {
           const preview = document.createElement('img');
           preview.className = 'variant-thumb';
-          preview.src = typePath(type);
+          setTypeVariantImage(preview, type, variant);
           preview.alt = '';
           if (isCollected) {
-            preview.style.filter = variantFilters[variant - 1];
+            preview.style.filter = '';
           }
           dot.appendChild(preview);
         } else {
@@ -2083,12 +2360,12 @@
       const type = randomType();
       const variant = randomVariant();
 
-      sprite.src = typePath(type);
+      setTypeVariantImage(sprite, type, variant);
       sprite.alt = '';
       sprite.style.left = randomFloat(0, 92) + '%';
       sprite.style.animationDelay = randomFloat(0, reduceMotion ? 0.2 : 1.6) + 's';
       sprite.style.animationDuration = randomFloat(2.2, 4.5) + 's';
-      sprite.style.filter = variantFilters[variant - 1];
+      sprite.style.filter = '';
       finaleZone.appendChild(sprite);
     }
   }
@@ -2102,6 +2379,7 @@
     updateProgress();
     renderMalidex();
     closeMalidexSheet(false);
+    refreshAudienceSeats();
   }
 
   function unlockAllMalix() {
@@ -2209,6 +2487,8 @@
   window.addEventListener('orientationchange', syncOrientationGuard);
 
   ensureCountsConsistency();
+  audienceSeatAssignment = loadAudienceSeatAssignment();
+  buildAudienceSeats();
   desktopWelcomeMode = !isPhoneDevice();
   updateProgress();
   if (desktopWelcomeMode) {
