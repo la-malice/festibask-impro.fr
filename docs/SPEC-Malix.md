@@ -253,7 +253,20 @@ L’agent qui implémente le jeu doit prévoir ou exécuter :
 
 ---
 
-## 12. Hypothèses et incertitudes
+## 12. SEO / découvrabilité
+
+La page /malix dispose de son propre jeu de balises pour le référencement et le partage social, en cohérence avec l’accueil :
+
+- **Meta** : meta description (~155 caractères), meta robots (index, follow), canonical `https://festibask-impro.fr/malix/`.
+- **OpenGraph** : og:title, og:description, og:url, og:type (website), og:image (réutilisation de l’image sociale du festival ou image dédiée Malix).
+- **Twitter Card** : summary_large_image avec title, description, image (même image que OG).
+- **Sitemap** : l’URL `https://festibask-impro.fr/malix/` est listée dans le sitemap du site (sitemap.xml) avec priority 0.8, changefreq weekly.
+
+Optionnel : Schema.org **WebApplication** (applicationCategory "Game") en JSON-LD pour enrichir les résultats de recherche ; image OG dédiée « Chasse aux Malix » (ex. logo + titre ou doodles, 1200×630 px) pour un partage social plus ciblé sur le jeu.
+
+---
+
+## 13. Hypothèses et incertitudes
 
 - [ASSUMPTION] Les 26 types correspondent aux fichiers `01.svg` … `26.svg` dans `assets/img/doodles/`.
 - [ASSUMPTION] Les 4 variantes sont des couleurs appliquées au SVG (remplacement du blanc) ; pas de fichier SVG différent par couleur.
@@ -263,7 +276,7 @@ L’agent qui implémente le jeu doit prévoir ou exécuter :
 
 ---
 
-## 13. Documentation et gouvernance
+## 14. Documentation et gouvernance
 
 Après implémentation du jeu, les documents normatifs du projet doivent être mis à jour :
 

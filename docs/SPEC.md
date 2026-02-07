@@ -21,7 +21,7 @@ Static marketing site for **Festibask'Impro**, the improvisation theatre festiva
 7. **Navigation:** Fixed header on scroll; burger + drawer on mobile; desktop nav links.
 8. **Modals:** Newsletter (notify), waitlist; Sibforms CSS/JS loaded on first open. Spectacle details are shown in a slider within the block (not a modal).
 9. **Tooltips:** “Format long” and “Match” explained (desktop: hover; mobile: click popup).
-10. **SEO / meta:** Canonical, OpenGraph, Twitter Card, Schema.org Event (2026-05-15 to 2026-05-17, location, offers, organizer La Malice).
+10. **SEO / meta:** Canonical, OpenGraph, Twitter Card, Schema.org Event (2026-05-15 to 2026-05-17, location, offers, organizer La Malice). La page /malix a son propre jeu de meta (description, canonical, OpenGraph, Twitter Card, entrée sitemap) pour le référencement et le partage, en cohérence avec l’accueil (voir docs/SPEC-Malix.md § SEO / découvrabilité).
 11. **Doodles flottants au scroll:** Pendant le scroll vers le bas, un petit doodle peut apparaître de façon aléatoire, dériver lentement à l’écran (effet « cosmonaute », faible gravité) devant le contenu, et disparaître au clic avec un effet « smash » (écrasement). Un seul doodle flottant à la fois ; désactivé si l’utilisateur a `prefers-reduced-motion: reduce`.
 
 ## Behavior
