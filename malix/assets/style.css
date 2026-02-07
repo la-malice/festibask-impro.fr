@@ -763,12 +763,22 @@ body {
   transform: translateY(104%);
 }
 
+.screen-malidex.is-dragging {
+  transition: none;
+}
+
 .hud-handle {
   width: 62px;
   height: 5px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.5);
   margin: 0 auto 8px;
+  touch-action: none;
+  cursor: grab;
+}
+
+.screen-malidex.is-dragging .hud-handle {
+  cursor: grabbing;
 }
 
 .malidex-tabs {

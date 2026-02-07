@@ -86,6 +86,7 @@
 
   const openMalidexBtn = document.getElementById('openMalidexBtn');
   const closeMalidexBtn = document.getElementById('closeMalidexBtn');
+  const malidexHandle = screenMalidex ? screenMalidex.querySelector('.hud-handle') : null;
   const openPhotoModeBtn = document.getElementById('openPhotoModeBtn');
   const malidexTabMalixBtn = document.getElementById('malidexTabMalixBtn');
   const malidexTabAlbumBtn = document.getElementById('malidexTabAlbumBtn');
@@ -119,6 +120,12 @@
   let hasSpawnedAtLeastOnce = false;
   let captureBusy = false;
   let malidexCloseTimer = null;
+  let malidexDragPointerId = null;
+  let malidexDragStartY = 0;
+  let malidexDragCurrentY = 0;
+  let malidexDragLastY = 0;
+  let malidexDragLastTime = 0;
+  let malidexDragVelocity = 0;
   let finishDismissInProgress = false;
   let desktopWelcomeMode = false;
   let photoModeActive = false;
@@ -906,6 +913,17 @@
     }, 2200);
   }
 
+  function resetMalidexDrag() {
+    malidexDragPointerId = null;
+    malidexDragStartY = 0;
+    malidexDragCurrentY = 0;
+    malidexDragLastY = 0;
+    malidexDragLastTime = 0;
+    malidexDragVelocity = 0;
+    screenMalidex.classList.remove('is-dragging');
+    screenMalidex.style.removeProperty('transform');
+  }
+
   function hideSpawnApproachHint() {
     if (spawnHintHideTimer) {
       window.clearTimeout(spawnHintHideTimer);
@@ -1518,6 +1536,7 @@
     renderMalidex();
     closeDetail();
     setMalidexTab('malix');
+    resetMalidexDrag();
     screenMalidex.classList.remove('hidden');
     screenMalidex.classList.remove('is-closing');
     window.requestAnimationFrame(function () {
@@ -1536,6 +1555,7 @@
       window.clearTimeout(malidexCloseTimer);
       malidexCloseTimer = null;
     }
+    resetMalidexDrag();
     screenMalidex.classList.remove('is-open');
 
     if (immediate) {
@@ -2490,6 +2510,74 @@
 
   window.addEventListener('resize', syncOrientationGuard);
   window.addEventListener('orientationchange', syncOrientationGuard);
+
+  if (malidexHandle) {
+    malidexHandle.addEventListener('pointerdown', function (event) {
+      if (
+        event.button !== 0 ||
+        screenMalidex.classList.contains('hidden') ||
+        !screenMalidex.classList.contains('is-open') ||
+        screenMalidex.classList.contains('is-closing')
+      ) {
+        return;
+      }
+
+      if (malidexCloseTimer) {
+        window.clearTimeout(malidexCloseTimer);
+        malidexCloseTimer = null;
+      }
+
+      malidexDragPointerId = event.pointerId;
+      malidexDragStartY = event.clientY;
+      malidexDragCurrentY = event.clientY;
+      malidexDragLastY = event.clientY;
+      malidexDragLastTime = performance.now();
+      malidexDragVelocity = 0;
+      screenMalidex.classList.add('is-dragging');
+      malidexHandle.setPointerCapture(event.pointerId);
+      event.preventDefault();
+    });
+
+    malidexHandle.addEventListener('pointermove', function (event) {
+      if (malidexDragPointerId !== event.pointerId) {
+        return;
+      }
+
+      const now = performance.now();
+      const dy = Math.max(0, event.clientY - malidexDragStartY);
+      const dt = now - malidexDragLastTime;
+      if (dt > 0) {
+        malidexDragVelocity = (event.clientY - malidexDragLastY) / dt;
+      }
+
+      malidexDragCurrentY = event.clientY;
+      malidexDragLastY = event.clientY;
+      malidexDragLastTime = now;
+      screenMalidex.style.transform = 'translateY(' + dy + 'px)';
+      event.preventDefault();
+    });
+
+    const onHandleRelease = function (event) {
+      if (malidexDragPointerId !== event.pointerId) {
+        return;
+      }
+
+      const dy = Math.max(0, malidexDragCurrentY - malidexDragStartY);
+      const velocity = Math.max(0, malidexDragVelocity);
+      const closeDistance = Math.min(180, Math.max(96, screenMalidex.offsetHeight * 0.24));
+      const shouldClose = dy >= closeDistance || velocity >= 0.5;
+      if (malidexHandle.hasPointerCapture(event.pointerId)) {
+        malidexHandle.releasePointerCapture(event.pointerId);
+      }
+      resetMalidexDrag();
+      if (shouldClose) {
+        closeMalidexSheet(false);
+      }
+    };
+
+    malidexHandle.addEventListener('pointerup', onHandleRelease);
+    malidexHandle.addEventListener('pointercancel', onHandleRelease);
+  }
 
   ensureCountsConsistency();
   audienceSeatAssignment = loadAudienceSeatAssignment();
