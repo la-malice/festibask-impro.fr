@@ -400,6 +400,38 @@ body {
   z-index: 1;
 }
 
+.playzone:focus,
+.playzone:focus-visible,
+.playzone:focus-within {
+  outline: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.spawn-approach-hint {
+  position: absolute;
+  left: 50%;
+  top: 16%;
+  transform: translateX(-50%);
+  z-index: 5;
+  margin: 0;
+  width: min(90%, 420px);
+  padding: 12px 14px;
+  border-radius: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.86);
+  background:
+    radial-gradient(circle at 22% 26%, rgba(255, 255, 255, 0.52), transparent 52%),
+    linear-gradient(135deg, rgba(255, 214, 155, 0.95), rgba(255, 146, 194, 0.93));
+  color: #64275d;
+  text-align: center;
+  font-size: clamp(1rem, 3.9vw, 1.2rem);
+  font-weight: 900;
+  line-height: 1.25;
+  box-shadow: 0 10px 22px rgba(98, 61, 138, 0.24);
+  pointer-events: none;
+  animation: hint-bob 1.4s ease-in-out infinite;
+}
+
 .play-obstacle {
   position: absolute;
   border-radius: 4px;
@@ -1310,6 +1342,16 @@ body {
   }
 }
 
+@keyframes hint-bob {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-4px);
+  }
+}
+
 @keyframes unlock-burst {
   from {
     transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
@@ -1338,6 +1380,10 @@ body {
   }
 
   .detail-visual {
+    animation: none !important;
+  }
+
+  .spawn-approach-hint {
     animation: none !important;
   }
 }

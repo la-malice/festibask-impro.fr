@@ -53,6 +53,7 @@
   });
   const app = document.getElementById('app');
   const playzone = document.getElementById('playzone');
+  const spawnApproachHint = document.getElementById('spawnApproachHint');
   const kawaiiDecor = document.querySelector('.kawaii-decor');
   const progressText = document.getElementById('progressText');
   const progressFill = document.getElementById('progressFill');
@@ -106,6 +107,8 @@
   let collection = collectionApi.loadCollection(window.localStorage);
   let captureCounts = collectionApi.loadCounts(window.localStorage);
   let spawnTimer = null;
+  let preSpawnHintTimer = null;
+  let spawnHintHideTimer = null;
   let animationFrame = null;
   let currentSpawn = null;
   let obstacles = [];
@@ -617,6 +620,31 @@
       captureOverlay.classList.add('hidden');
       captureOverlay.innerHTML = '';
     }, 2200);
+  }
+
+  function hideSpawnApproachHint() {
+    if (spawnHintHideTimer) {
+      window.clearTimeout(spawnHintHideTimer);
+      spawnHintHideTimer = null;
+    }
+    if (spawnApproachHint) {
+      spawnApproachHint.classList.add('hidden');
+    }
+  }
+
+  function showSpawnApproachHint(durationMs) {
+    if (!spawnApproachHint) return;
+    if (screenGame.classList.contains('hidden') || !screenMalidex.classList.contains('hidden') || photoModeActive) {
+      return;
+    }
+    if (spawnHintHideTimer) {
+      window.clearTimeout(spawnHintHideTimer);
+    }
+    spawnApproachHint.classList.remove('hidden');
+    spawnHintHideTimer = window.setTimeout(function () {
+      spawnHintHideTimer = null;
+      spawnApproachHint.classList.add('hidden');
+    }, Math.max(700, durationMs || 2200));
   }
 
   function setMalidexTab(tabName) {
@@ -1193,6 +1221,7 @@
     hideAllScreens();
     screenGame.classList.remove('hidden');
     generateObstacles();
+    showSpawnApproachHint(2400);
     planNextSpawn();
   }
 
@@ -1208,6 +1237,7 @@
       malidexCloseTimer = null;
     }
     clearSpawn();
+    hideSpawnApproachHint();
     renderMalidex();
     closeDetail();
     setMalidexTab('malix');
@@ -1259,6 +1289,7 @@
     hideAllScreens();
     screenFinish.classList.remove('hidden');
     clearSpawn();
+    hideSpawnApproachHint();
     finishDismissInProgress = false;
     launchFinale();
   }
@@ -1370,6 +1401,11 @@
       window.clearTimeout(spawnTimer);
       spawnTimer = null;
     }
+    if (preSpawnHintTimer) {
+      window.clearTimeout(preSpawnHintTimer);
+      preSpawnHintTimer = null;
+    }
+    hideSpawnApproachHint();
     if (animationFrame) {
       window.cancelAnimationFrame(animationFrame);
       animationFrame = null;
@@ -1410,6 +1446,7 @@
     ) {
       return;
     }
+    hideSpawnApproachHint();
 
     const type = randomType();
     const variant = randomVariant();
@@ -1926,6 +1963,12 @@
         ? randomInt(3000, 12000)
         : randomInt(450, 1200)
       : randomInt(10000, 60000);
+    const preHintLead = Math.min(2600, Math.max(1100, Math.floor(delay * 0.35)));
+    const preHintDelay = Math.max(0, delay - preHintLead);
+    preSpawnHintTimer = window.setTimeout(function () {
+      preSpawnHintTimer = null;
+      showSpawnApproachHint(preHintLead + 520);
+    }, preHintDelay);
     spawnTimer = window.setTimeout(function () {
       spawnTimer = null;
       spawnNow();
