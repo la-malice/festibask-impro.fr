@@ -7,10 +7,10 @@
 
   const variantColors = ['var(--v1)', 'var(--v2)', 'var(--v3)', 'var(--v4)'];
   const variantFilters = [
-    'brightness(0) saturate(100%) invert(67%) sepia(90%) saturate(2760%) hue-rotate(157deg) brightness(104%) contrast(103%)',
-    'brightness(0) saturate(100%) invert(49%) sepia(70%) saturate(2339%) hue-rotate(293deg) brightness(107%) contrast(102%)',
-    'brightness(0) saturate(100%) invert(64%) sepia(74%) saturate(1230%) hue-rotate(339deg) brightness(103%) contrast(102%)',
-    'brightness(0) saturate(100%) invert(80%) sepia(33%) saturate(890%) hue-rotate(51deg) brightness(96%) contrast(90%)'
+    'brightness(0) saturate(100%) invert(71%) sepia(18%) saturate(3316%) hue-rotate(174deg) brightness(104%) contrast(102%)',
+    'brightness(0) saturate(100%) invert(68%) sepia(25%) saturate(2567%) hue-rotate(297deg) brightness(102%) contrast(101%)',
+    'brightness(0) saturate(100%) invert(79%) sepia(36%) saturate(1400%) hue-rotate(336deg) brightness(101%) contrast(99%)',
+    'brightness(0) saturate(100%) invert(79%) sepia(26%) saturate(763%) hue-rotate(71deg) brightness(96%) contrast(92%)'
   ];
   const variantRarityWeights = [55, 27, 13, 5];
   const OFFICIAL_GAME_URL = 'https://festibask-impro.fr/malix';
@@ -18,7 +18,7 @@
   const PHOTO_DB_NAME = 'malix-photo-db';
   const PHOTO_DB_VERSION = 1;
   const PHOTO_STORE_NAME = 'photos';
-  const variantHexColors = ['#16c6ff', '#ff4fa8', '#ffa53d', '#67dd6f'];
+  const variantHexColors = ['#3bb9ff', '#ff5fa8', '#ffb85a', '#71df8a'];
   const typeNames = [
     'Flechix',
     'Manix',
@@ -53,6 +53,7 @@
   });
   const app = document.getElementById('app');
   const playzone = document.getElementById('playzone');
+  const kawaiiDecor = document.querySelector('.kawaii-decor');
   const progressText = document.getElementById('progressText');
   const progressFill = document.getElementById('progressFill');
   const malidexProgress = document.getElementById('malidexProgress');
@@ -335,11 +336,34 @@
     obstacles.push({ ...rect, el: el });
   }
 
+  function placeKawaiiSticker(selector, config) {
+    if (!kawaiiDecor) return;
+    const sticker = kawaiiDecor.querySelector(selector);
+    if (!sticker) return;
+
+    sticker.style.left = randomFloat(config.minLeft, config.maxLeft).toFixed(2) + '%';
+    sticker.style.top = randomFloat(config.minTop, config.maxTop).toFixed(2) + '%';
+    sticker.style.right = 'auto';
+    sticker.style.bottom = 'auto';
+    sticker.style.animationDelay = randomFloat(0, config.maxDelay || 2.2).toFixed(2) + 's';
+  }
+
+  function randomizeKawaiiDecorLayout() {
+    placeKawaiiSticker('.sticker-cloud-1', { minLeft: -8, maxLeft: 18, minTop: 4, maxTop: 16, maxDelay: 2.8 });
+    placeKawaiiSticker('.sticker-cloud-2', { minLeft: 76, maxLeft: 92, minTop: 8, maxTop: 20, maxDelay: 2.8 });
+    placeKawaiiSticker('.sticker-star-1', { minLeft: 3, maxLeft: 20, minTop: 30, maxTop: 58, maxDelay: 1.8 });
+    placeKawaiiSticker('.sticker-star-2', { minLeft: 78, maxLeft: 92, minTop: 28, maxTop: 56, maxDelay: 1.8 });
+    placeKawaiiSticker('.sticker-heart-1', { minLeft: 6, maxLeft: 24, minTop: 62, maxTop: 84, maxDelay: 2.4 });
+    placeKawaiiSticker('.sticker-heart-2', { minLeft: 74, maxLeft: 92, minTop: 62, maxTop: 84, maxDelay: 2.4 });
+    placeKawaiiSticker('.sticker-rainbow', { minLeft: 28, maxLeft: 48, minTop: 0, maxTop: 8, maxDelay: 1.2 });
+  }
+
   function generateObstacles() {
     clearObstacles();
     if (desktopWelcomeMode || screenGame.classList.contains('hidden')) {
       return;
     }
+    randomizeKawaiiDecorLayout();
 
     const rect = playzone.getBoundingClientRect();
     if (rect.width < 120 || rect.height < 120) {
