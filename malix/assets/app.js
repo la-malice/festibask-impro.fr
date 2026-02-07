@@ -820,6 +820,20 @@
     return 'Commun';
   }
 
+  function unlockExcitementByRarity(rarity) {
+    if (rarity === 'Legendaire') return 'Fantastique';
+    if (rarity === 'Epique') return 'Incroyable';
+    if (rarity === 'Rare') return 'Bravo';
+    return 'Cool';
+  }
+
+  function rarityNounForm(rarity) {
+    if (rarity === 'Legendaire') return 'legendaire';
+    if (rarity === 'Epique') return 'epique';
+    if (rarity === 'Rare') return 'rare';
+    return 'commun';
+  }
+
   function getRarityScale(type, variant) {
     const weight = typeRarityWeights[type - 1] * variantRarityWeights[variant - 1];
     const maxWeight = typeRarityWeights[0] * variantRarityWeights[0];
@@ -2141,7 +2155,14 @@
     const text = document.createElement('p');
     text.className = 'capture-text';
     if (isFirstTypeDiscovery) {
-      text.textContent = 'Bravo, tu viens de debloquer ' + typeName(type) + ' !';
+      const rarity = rarityLabel(type, variant);
+      text.textContent =
+        unlockExcitementByRarity(rarity) +
+        ', tu viens de debloquer un ' +
+        typeName(type) +
+        ' ' +
+        rarityNounForm(rarity) +
+        ' !';
     } else if (isNewCapture) {
       text.textContent = "Bravo, tu viens d'attraper un " + typeName(type) + '!';
     } else {

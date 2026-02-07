@@ -187,6 +187,9 @@ body {
 
 .screen-game {
   position: relative;
+  border: 0;
+  outline: none;
+  box-shadow: none;
 }
 
 .kawaii-decor {
@@ -475,6 +478,8 @@ body {
   border-radius: 0;
   background: transparent;
   border: 0;
+  outline: none;
+  box-shadow: none;
   position: relative;
   overflow: hidden;
   -webkit-touch-callout: none;
@@ -557,7 +562,9 @@ body {
   height: 100%;
   display: block;
   object-fit: contain;
-  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.25));
+  filter:
+    drop-shadow(0 10px 16px rgba(0, 0, 0, 0.42))
+    drop-shadow(0 0 12px rgba(255, 255, 255, 0.42));
   user-select: none;
   -webkit-user-drag: none;
 }
@@ -592,12 +599,15 @@ body {
 
 .capture-card {
   width: min(82vw, 300px);
-  background: linear-gradient(180deg, rgba(121, 85, 199, 0.94), rgba(84, 170, 236, 0.92));
+  background:
+    radial-gradient(circle at 14% 12%, rgba(1, 179, 228, 0.28), transparent 38%),
+    radial-gradient(circle at 86% 18%, rgba(233, 88, 66, 0.24), transparent 40%),
+    linear-gradient(170deg, rgba(33, 37, 78, 0.97), rgba(33, 66, 143, 0.95));
   border: 2px solid rgba(255, 255, 255, 0.76);
   border-radius: 20px;
   padding: 14px 14px 18px;
   text-align: center;
-  box-shadow: 0 18px 30px rgba(97, 63, 152, 0.36);
+  box-shadow: 0 18px 30px rgba(22, 24, 49, 0.5);
 }
 
 .capture-card.capture-notice {
@@ -611,6 +621,9 @@ body {
   width: min(50vw, 200px);
   height: min(50vw, 200px);
   object-fit: contain;
+  filter:
+    drop-shadow(0 10px 16px rgba(0, 0, 0, 0.4))
+    drop-shadow(0 0 14px rgba(255, 255, 255, 0.34));
 }
 
 .capture-name {
