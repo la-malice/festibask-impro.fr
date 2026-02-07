@@ -108,10 +108,6 @@
           <div class="malidex-grid" id="malidexGrid"></div>
         </section>
         <section class="malidex-panel hidden" id="malidexPanelAlbum">
-          <div class="album-filters">
-            <label for="albumFilterType">Filtrer:</label>
-            <select id="albumFilterType"></select>
-          </div>
           <div class="album-grid" id="albumGrid"></div>
         </section>
         <aside class="malidex-detail hidden" id="malidexDetail" aria-live="polite">
@@ -155,6 +151,17 @@
           <div class="confirm-actions">
             <button class="chip chip-ghost" id="cancelResetBtn" type="button">Annuler</button>
             <button class="chip chip-warn" id="confirmResetBtn" type="button">Oui, effacer</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="confirm-overlay hidden" id="deletePhotoConfirmOverlay" aria-label="Confirmation de suppression de photo">
+        <div class="confirm-card" role="dialog" aria-modal="true" aria-labelledby="deletePhotoDialogTitle">
+          <h3 id="deletePhotoDialogTitle">Supprimer cette photo ?</h3>
+          <p>Cette action est definitive sur cet appareil.</p>
+          <div class="confirm-actions">
+            <button class="chip chip-ghost" id="cancelDeletePhotoBtn" type="button">Annuler</button>
+            <button class="chip chip-warn" id="confirmDeletePhotoBtn" type="button">Oui, supprimer</button>
           </div>
         </div>
       </section>

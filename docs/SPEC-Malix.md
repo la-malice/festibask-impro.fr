@@ -61,6 +61,7 @@
 
 - Jeu autonome sous **/malix**.
 - Spawn, capture, collection (Malidex).
+- Mode photo local et album (consultation et suppression manuelle d’une photo).
 - Fin de jeu spectaculaire (grand « Bravo », super animation des doodles).
 - Stockage local uniquement ; persistance ; option de réinitialisation.
 - **Mobile-first, portrait uniquement** (voir section Design).
@@ -100,7 +101,7 @@
 
 ### 5.1 Spawn
 
-- **Intervalle** : apparition pseudo-aléatoire dans le temps. Fourchette recommandée : **3 à 12 secondes** entre deux spawns (à ajuster pour garder un rythme fun sans surcharge). Un seul Malix à l’écran à la fois (spawn suivant uniquement après disparition du précédent, par capture ou timeout).
+- **Intervalle** : apparition pseudo-aléatoire dans le temps. Fourchette cible : **3 à 12 secondes** entre deux spawns, avec un **premier spawn plus rapide** après lancement (environ 1 à 2 secondes) pour démarrer immédiatement le jeu. Un seul Malix à l’écran à la fois (spawn suivant uniquement après disparition du précédent, par capture ou timeout).
 - **Position** : aléatoire dans la **zone visible** de l’écran, avec **marges** (ex. 10 % des bords) pour que le Malix reste entièrement visible.
 - **Type et variante** : à chaque spawn, choix aléatoire parmi les 26 types et les 4 variantes (pas d’obligation d’éviter les déjà collectés ; l’enfant peut avoir des “doublons” visuels mais une entrée (type, variante) n’est enregistrée qu’une fois dans la collection).
 - **Durée de vie** : si le Malix n’est **pas attrapé**, il disparaît après une durée limitée (recommandation : **5 à 10 secondes**). Aucun ajout à la collection dans ce cas.

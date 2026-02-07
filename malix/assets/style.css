@@ -1191,33 +1191,23 @@ body {
   display: none;
 }
 
-.album-filters {
-  margin-top: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.album-filters select {
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
-  padding: 4px 8px;
-}
-
 .album-grid {
-  margin-top: 10px;
+  margin-top: 0;
   flex: 1;
   min-height: 0;
   overflow-y: auto;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, 106px);
+  justify-content: start;
+  align-content: start;
+  align-items: start;
   gap: 8px;
   padding-bottom: 4px;
 }
 
 .album-item {
+  width: 106px;
+  position: relative;
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.28);
@@ -1231,12 +1221,36 @@ body {
   object-fit: cover;
 }
 
-.album-item button {
+.album-item-preview {
   display: block;
   width: 100%;
   border: 0;
   padding: 0;
   background: transparent;
+}
+
+.album-item-delete {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 24px;
+  height: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 999px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #fff;
+  background: rgba(12, 17, 62, 0.86);
+}
+
+.album-item-delete:hover,
+.album-item-delete:focus-visible {
+  background: rgba(177, 42, 72, 0.92);
+  border-color: rgba(255, 255, 255, 0.58);
 }
 
 .album-empty {

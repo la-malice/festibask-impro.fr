@@ -83,6 +83,9 @@
   const resetConfirmOverlay = document.getElementById('resetConfirmOverlay');
   const cancelResetBtn = document.getElementById('cancelResetBtn');
   const confirmResetBtn = document.getElementById('confirmResetBtn');
+  const deletePhotoConfirmOverlay = document.getElementById('deletePhotoConfirmOverlay');
+  const cancelDeletePhotoBtn = document.getElementById('cancelDeletePhotoBtn');
+  const confirmDeletePhotoBtn = document.getElementById('confirmDeletePhotoBtn');
 
   const openMalidexBtn = document.getElementById('openMalidexBtn');
   const closeMalidexBtn = document.getElementById('closeMalidexBtn');
@@ -101,7 +104,6 @@
   const photoAlbumTarget = document.getElementById('photoAlbumTarget');
   const closePhotoModeBtn = document.getElementById('closePhotoModeBtn');
   const takePhotoBtn = document.getElementById('takePhotoBtn');
-  const albumFilterType = document.getElementById('albumFilterType');
   const albumGrid = document.getElementById('albumGrid');
   const albumViewer = document.getElementById('albumViewer');
   const albumViewerImg = document.getElementById('albumViewerImg');
@@ -135,8 +137,8 @@
   let photoAlbum = loadPhotoAlbumIndex();
   let photoDbPromise = null;
   let albumObjectUrls = [];
-  let albumFilter = 'all';
-  let pendingAlbumTypeFilter = 'all';
+  let albumRenderToken = 0;
+  let pendingDeletePhotoId = null;
   let malidexActiveTab = 'malix';
   let audienceSeatAssignment = [];
   let audienceSeatNodes = [];
@@ -403,6 +405,32 @@
     } catch (error) {
       return null;
     }
+  }
+
+  async function deletePhotoBlob(photoId) {
+    try {
+      const db = await openPhotoDb();
+      await new Promise(function (resolve, reject) {
+        const tx = db.transaction(PHOTO_STORE_NAME, 'readwrite');
+        const store = tx.objectStore(PHOTO_STORE_NAME);
+        store.delete(photoId);
+        tx.oncomplete = function () {
+          resolve();
+        };
+        tx.onerror = function () {
+          reject(tx.error);
+        };
+      });
+    } catch (error) {
+      // Ignore deletion failures; index cleanup still hides removed photos.
+    }
+  }
+
+  function resetAlbumObjectUrls() {
+    for (let index = 0; index < albumObjectUrls.length; index += 1) {
+      URL.revokeObjectURL(albumObjectUrls[index]);
+    }
+    albumObjectUrls = [];
   }
 
   function pickWeightedIndex(weights) {
@@ -1416,23 +1444,57 @@
     stopPhotoMode();
   }
 
-  function openAlbum(filterType) {
-    if (typeof filterType === 'number' && Number.isInteger(filterType)) {
-      pendingAlbumTypeFilter = String(filterType);
-    } else if (typeof filterType === 'string') {
-      pendingAlbumTypeFilter = filterType;
-    }
+  function openAlbum() {
     openMalidexSheet();
     setMalidexTab('album');
   }
 
   function closeAlbum() {
-    for (let index = 0; index < albumObjectUrls.length; index += 1) {
-      URL.revokeObjectURL(albumObjectUrls[index]);
-    }
-    albumObjectUrls = [];
+    resetAlbumObjectUrls();
     closeAlbumViewer();
     setMalidexTab('malix');
+  }
+
+  async function deletePhotoShot(photoId) {
+    const nextAlbum = photoAlbum.filter(function (item) {
+      return item.id !== photoId;
+    });
+    if (nextAlbum.length === photoAlbum.length) {
+      return;
+    }
+    photoAlbum = nextAlbum;
+    persistPhotoAlbumIndex();
+    await deletePhotoBlob(photoId);
+    closeAlbumViewer();
+    await renderAlbum();
+  }
+
+  function openDeletePhotoDialog(photoId) {
+    if (!deletePhotoConfirmOverlay || !photoId) return;
+    pendingDeletePhotoId = photoId;
+    if (confirmDeletePhotoBtn) {
+      confirmDeletePhotoBtn.disabled = false;
+    }
+    deletePhotoConfirmOverlay.classList.remove('hidden');
+  }
+
+  function closeDeletePhotoDialog() {
+    pendingDeletePhotoId = null;
+    if (!deletePhotoConfirmOverlay) return;
+    deletePhotoConfirmOverlay.classList.add('hidden');
+  }
+
+  async function confirmDeletePhoto() {
+    if (!pendingDeletePhotoId) {
+      closeDeletePhotoDialog();
+      return;
+    }
+    const photoId = pendingDeletePhotoId;
+    if (confirmDeletePhotoBtn) {
+      confirmDeletePhotoBtn.disabled = true;
+    }
+    await deletePhotoShot(photoId);
+    closeDeletePhotoDialog();
   }
 
   function openAlbumViewer(primarySrc, altText, fallbackSrc) {
@@ -1458,28 +1520,11 @@
   }
 
   async function renderAlbum() {
-    if (!albumFilterType || !albumGrid) return;
-    const currentFilter = pendingAlbumTypeFilter || albumFilter || 'all';
-    albumFilterType.innerHTML = '';
-    const optionAll = document.createElement('option');
-    optionAll.value = 'all';
-    optionAll.textContent = 'Toutes les photos';
-    albumFilterType.appendChild(optionAll);
-    for (let type = 1; type <= collectionApi.MAX_TYPES; type += 1) {
-      const option = document.createElement('option');
-      option.value = String(type);
-      option.textContent = typeName(type);
-      albumFilterType.appendChild(option);
-    }
-    albumFilterType.value = currentFilter;
-    albumFilter = currentFilter;
-    pendingAlbumTypeFilter = currentFilter;
-
+    if (!albumGrid) return;
+    const renderToken = ++albumRenderToken;
+    resetAlbumObjectUrls();
     albumGrid.innerHTML = '';
-    const filtered = photoAlbum.filter(function (item) {
-      return albumFilter === 'all' || String(item.type) === String(albumFilter);
-    });
-    if (filtered.length === 0) {
+    if (photoAlbum.length === 0) {
       const empty = document.createElement('p');
       empty.className = 'album-empty';
       empty.textContent = 'Aucune photo pour le moment.';
@@ -1487,16 +1532,20 @@
       return;
     }
 
-    for (let index = filtered.length - 1; index >= 0; index -= 1) {
-      const item = filtered[index];
+    for (let index = photoAlbum.length - 1; index >= 0; index -= 1) {
+      const item = photoAlbum[index];
       const card = document.createElement('article');
       card.className = 'album-item';
-      const button = document.createElement('button');
-      button.type = 'button';
+      const previewBtn = document.createElement('button');
+      previewBtn.type = 'button';
+      previewBtn.className = 'album-item-preview';
       const img = document.createElement('img');
       let resolvedSrc = item.dataUrl || '';
       let objectSrc = '';
       const blob = await getPhotoBlob(item.id);
+      if (renderToken !== albumRenderToken) {
+        return;
+      }
       if (blob) {
         const objectUrl = URL.createObjectURL(blob);
         albumObjectUrls.push(objectUrl);
@@ -1513,11 +1562,22 @@
         };
       }
       img.alt = resolvedSrc ? typeName(item.type) : 'Photo indisponible';
-      button.appendChild(img);
-      button.addEventListener('click', function () {
+      previewBtn.appendChild(img);
+      previewBtn.addEventListener('click', function () {
         openAlbumViewer(objectSrc || resolvedSrc, typeName(item.type), resolvedSrc);
       });
-      card.appendChild(button);
+      const deleteBtn = document.createElement('button');
+      deleteBtn.type = 'button';
+      deleteBtn.className = 'album-item-delete';
+      deleteBtn.innerHTML = '<span aria-hidden="true">✕</span>';
+      deleteBtn.setAttribute('aria-label', 'Supprimer la photo');
+      deleteBtn.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        openDeletePhotoDialog(item.id);
+      });
+      card.appendChild(previewBtn);
+      card.appendChild(deleteBtn);
       albumGrid.appendChild(card);
     }
   }
@@ -1760,7 +1820,7 @@
       isLandscape() ||
       !screenMalidex.classList.contains('hidden')
     ) {
-      return;
+      return false;
     }
     hideSpawnApproachHint();
 
@@ -2001,6 +2061,7 @@
     if (window.navigator && typeof window.navigator.vibrate === 'function') {
       window.navigator.vibrate(20);
     }
+    return true;
   }
 
   function animateSpawn() {
@@ -2281,11 +2342,7 @@
     ) {
       return;
     }
-    const delay = isCheatAllowed()
-      ? hasSpawnedAtLeastOnce
-        ? randomInt(3000, 12000)
-        : randomInt(450, 1200)
-      : randomInt(10000, 60000);
+    const delay = hasSpawnedAtLeastOnce ? randomInt(3000, 12000) : randomInt(900, 1800);
     const preHintLead = Math.min(2600, Math.max(1100, Math.floor(delay * 0.35)));
     const preHintDelay = Math.max(0, delay - preHintLead);
     preSpawnHintTimer = window.setTimeout(function () {
@@ -2294,7 +2351,10 @@
     }, preHintDelay);
     spawnTimer = window.setTimeout(function () {
       spawnTimer = null;
-      spawnNow();
+      const spawned = spawnNow();
+      if (!spawned) {
+        planNextSpawn();
+      }
     }, delay);
   }
 
@@ -2498,11 +2558,6 @@
   shareAlbumPhotoBtn.addEventListener('click', function () {
     showGameNotice('Partage bientot disponible.');
   });
-  albumFilterType.addEventListener('change', function () {
-    albumFilter = albumFilterType.value;
-    pendingAlbumTypeFilter = albumFilter;
-    renderAlbum();
-  });
   albumViewer.addEventListener('click', function (event) {
     if (event.target !== shareAlbumPhotoBtn) {
       closeAlbumViewer();
@@ -2528,6 +2583,19 @@
       closeResetDialog();
     }
   });
+  if (cancelDeletePhotoBtn) {
+    cancelDeletePhotoBtn.addEventListener('click', closeDeletePhotoDialog);
+  }
+  if (confirmDeletePhotoBtn) {
+    confirmDeletePhotoBtn.addEventListener('click', confirmDeletePhoto);
+  }
+  if (deletePhotoConfirmOverlay) {
+    deletePhotoConfirmOverlay.addEventListener('click', function (event) {
+      if (event.target === deletePhotoConfirmOverlay) {
+        closeDeletePhotoDialog();
+      }
+    });
+  }
 
   window.addEventListener('resize', syncOrientationGuard);
   window.addEventListener('orientationchange', syncOrientationGuard);
