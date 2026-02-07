@@ -224,9 +224,13 @@
     for (let row = 0; row < AUDIENCE_ROWS; row += 1) {
       const rowEl = document.createElement('div');
       rowEl.className = 'audience-row' + (row % 2 === 1 ? ' is-offset' : '');
+      const rowProgress = AUDIENCE_ROWS > 1 ? row / (AUDIENCE_ROWS - 1) : 1;
+      rowEl.style.setProperty('--aisle-width', (24 + rowProgress * 14).toFixed(1) + 'px');
 
       const left = document.createElement('div');
       left.className = 'audience-side audience-side-left';
+      const aisle = document.createElement('span');
+      aisle.className = 'audience-aisle';
       const right = document.createElement('div');
       right.className = 'audience-side audience-side-right';
 
@@ -243,6 +247,7 @@
       }
 
       rowEl.appendChild(left);
+      rowEl.appendChild(aisle);
       rowEl.appendChild(right);
       fragment.appendChild(rowEl);
     }
