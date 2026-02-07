@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Chasse aux Malix!</title>
+    <meta name="theme-color" content="#1f1252" />
+    <link rel="stylesheet" href="./assets/style.css" />
+  </head>
+  <body>
+    <main class="app" id="app">
+      <section class="screen screen-welcome hidden" id="screen-welcome" aria-label="Accueil Chasse aux Malix">
+        <div class="welcome-brand" aria-hidden="true">
+          <img
+            class="welcome-doodles-top"
+            src="../assets/img/long/doodles-top.avif"
+            alt=""
+            loading="eager"
+            decoding="async"
+          />
+          <div class="welcome-logo-shell">
+            <img
+              class="welcome-festibask-logo"
+              src="../assets/img/long/festibask-impro__logo_ss-baseline_fd-fonce-720w.avif"
+              alt="Logo Festibask Impro"
+              loading="eager"
+              decoding="async"
+            />
+          </div>
+        </div>
+        <div class="welcome-card">
+          <h1>Chasse aux Malix!</h1>
+          <p>Scanne ce QR code avec ton telephone pour jouer.</p>
+          <img class="welcome-qr" id="welcomeQr" alt="QR code vers Chasse aux Malix" />
+          <a class="welcome-link" id="welcomeLink" href="#" target="_blank" rel="noopener noreferrer"></a>
+          <p class="welcome-note" id="welcomeNote"></p>
+        </div>
+      </section>
+
+      <section class="screen screen-game" id="screen-game" aria-label="Jeu Malix">
+        <header class="topbar">
+          <h1 class="logo">Chasse aux Malix!</h1>
+        </header>
+
+        <div class="playzone" id="playzone" aria-live="polite"></div>
+        <div class="capture-overlay hidden" id="captureOverlay" aria-live="polite"></div>
+        <nav class="bottom-shortcuts" aria-label="Acces rapides">
+          <button class="shortcut-btn" id="openMalidexBtn" type="button" aria-controls="screen-malidex" aria-expanded="false">
+            <span class="shortcut-icon" aria-hidden="true">📚</span>
+            <span class="shortcut-label">Malidex</span>
+          </button>
+        </nav>
+        <button class="photo-fab" id="openPhotoModeBtn" type="button" aria-label="Ouvrir le mode photo">
+          <span class="photo-fab-icon" aria-hidden="true">📷</span>
+          <span class="photo-fab-flash" aria-hidden="true">⚡</span>
+        </button>
+      </section>
+
+      <section class="screen screen-malidex hidden" id="screen-malidex" aria-label="Collection Malidex">
+        <div class="hud-handle" aria-hidden="true"></div>
+        <header class="topbar">
+          <h2 class="screen-title">
+            Malidex
+            <span class="title-counter" aria-live="polite">
+              <span class="title-counter-value" id="malidexProgress">0</span>
+              <span class="title-counter-track" aria-hidden="true">
+                <span class="title-counter-fill" id="malidexProgressFill"></span>
+              </span>
+            </span>
+          </h2>
+          <button class="chip chip-ghost" id="closeMalidexBtn" type="button" aria-label="Fermer le Malidex">
+            ✕
+          </button>
+        </header>
+        <div class="malidex-tabs" role="tablist" aria-label="Malidex onglets">
+          <button class="malidex-tab is-active" id="malidexTabMalixBtn" type="button" role="tab" aria-selected="true">Malix</button>
+          <button class="malidex-tab" id="malidexTabAlbumBtn" type="button" role="tab" aria-selected="false">Album</button>
+        </div>
+        <section class="malidex-panel" id="malidexPanelMalix">
+          <div class="malidex-grid" id="malidexGrid"></div>
+        </section>
+        <section class="malidex-panel hidden" id="malidexPanelAlbum">
+          <div class="album-filters">
+            <label for="albumFilterType">Filtrer:</label>
+            <select id="albumFilterType"></select>
+          </div>
+          <div class="album-grid" id="albumGrid"></div>
+        </section>
+        <aside class="malidex-detail hidden" id="malidexDetail" aria-live="polite">
+          <div class="detail-visual-wrap">
+            <img class="detail-visual" id="detailVisual" alt="" />
+          </div>
+          <h3 class="detail-name" id="detailName"></h3>
+          <p class="detail-rarity" id="detailRarity"></p>
+          <p class="detail-captures" id="detailCaptures"></p>
+        </aside>
+
+      </section>
+
+      <section class="screen-photo hidden" id="screen-photo" aria-label="Mode photomaton Malix">
+        <video class="photo-video" id="photoVideo" autoplay playsinline muted></video>
+        <div class="photo-malix" id="photoMalix">
+          <img id="photoMalixImg" alt="" />
+        </div>
+        <div class="photo-flash hidden" id="photoFlash"></div>
+        <p class="photo-hint" id="photoHint">Cadre ton Malix et prends la photo</p>
+        <div class="photo-controls">
+          <button class="chip chip-ghost" id="closePhotoModeBtn" type="button" aria-label="Fermer le mode photo">✕</button>
+          <span class="photo-album-target" id="photoAlbumTarget" aria-hidden="true">Chasse</span>
+          <button class="photo-capture-btn" id="takePhotoBtn" type="button" aria-label="Prendre la photo">●</button>
+        </div>
+      </section>
+
+      <section class="album-viewer hidden" id="albumViewer" aria-label="Photo Malix">
+        <div class="album-viewer-card">
+          <img id="albumViewerImg" alt="Photo Malix" />
+          <div class="album-viewer-actions">
+            <button class="chip chip-ghost" id="shareAlbumPhotoBtn" type="button" disabled>Partager</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="confirm-overlay hidden" id="resetConfirmOverlay" aria-label="Confirmation de reinitialisation">
+        <div class="confirm-card" role="dialog" aria-modal="true" aria-labelledby="resetDialogTitle">
+          <h3 id="resetDialogTitle">Reinitialiser ta collection ?</h3>
+          <p>Tes Malix captures seront effaces sur cet appareil.</p>
+          <div class="confirm-actions">
+            <button class="chip chip-ghost" id="cancelResetBtn" type="button">Annuler</button>
+            <button class="chip chip-warn" id="confirmResetBtn" type="button">Oui, effacer</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen screen-finish hidden" id="screen-finish" aria-label="Fin du jeu">
+        <div class="finish-content">
+          <h2 class="bravo">Bravo !</h2>
+          <p>Tu as tout collecté ! Va chercher ton cadeau au stand du festival.</p>
+          <div class="finale-zone" id="finaleZone" aria-hidden="true"></div>
+          <p class="finish-hint">Tape n'importe où pour ranger ta collection dans le Malidex</p>
+          <div class="finish-target" id="finishMalidexTarget" aria-hidden="true">Malidex</div>
+        </div>
+      </section>
+
+      <section class="screen-landscape hidden" id="landscapeGuard" aria-label="Orientation paysage non supportée">
+        <div class="landscape-card">
+          <div class="landscape-illustration" aria-hidden="true">
+            <span class="phone"></span>
+            <span class="arrow">↺</span>
+            <span class="mini-malix"></span>
+          </div>
+          <p>Tourne ton téléphone pour jouer</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="./assets/collection-state.js"></script>
+    <script src="./assets/app.js"></script>
+  </body>
+</html>

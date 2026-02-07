@@ -7,3 +7,7 @@ node_modules/
 
 # Build output (sources stay in repo; only dist/ is deployed)
 dist/
+
+# Certificats dev HTTPS (générés par scripts/gen-dev-cert.sh)
+scripts/certs/dev.key
+scripts/certs/dev.pem

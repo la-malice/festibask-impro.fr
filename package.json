@@ -7,7 +7,8 @@
     "start": "node server.js",
     "serve": "node server.js",
     "dev": "vite",
-    "build": "node scripts/copy-to-dist.js && purgecss --config purgecss.config.js && postcss dist/assets/css/style.css -o dist/assets/css/style.css && terser assets/js/script.js -o dist/assets/js/script.js"
+    "build": "node scripts/copy-to-dist.js && purgecss --config purgecss.config.js && postcss dist/assets/css/style.css -o dist/assets/css/style.css && terser assets/js/script.js -o dist/assets/js/script.js",
+    "test:malix": "node --test tests/malix/*.test.js"
   },
   "keywords": ["server", "http", "local"],
   "author": "",
@@ -21,5 +22,4 @@
     "terser": "^5.36.0"
   }
 }
-
 
