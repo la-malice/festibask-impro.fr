@@ -1,8 +1,9 @@
 (function () {
   const collectionApi = window.MalixCollection;
   const accessGateApi = window.MalixAccessGate;
+  const tradeApi = window.MalixTradeSession;
 
-  if (!collectionApi || !accessGateApi) {
+  if (!collectionApi || !accessGateApi || !tradeApi) {
     return;
   }
 
@@ -108,6 +109,7 @@
   const detailName = document.getElementById('detailName');
   const detailRarity = document.getElementById('detailRarity');
   const detailCaptures = document.getElementById('detailCaptures');
+  const detailTradeBtn = document.getElementById('detailTradeBtn');
   const welcomeQr = document.getElementById('welcomeQr');
   const welcomeLink = document.getElementById('welcomeLink');
   const welcomeNote = document.getElementById('welcomeNote');
@@ -117,6 +119,28 @@
   const deletePhotoConfirmOverlay = document.getElementById('deletePhotoConfirmOverlay');
   const cancelDeletePhotoBtn = document.getElementById('cancelDeletePhotoBtn');
   const confirmDeletePhotoBtn = document.getElementById('confirmDeletePhotoBtn');
+  const tradeOverlay = document.getElementById('tradeOverlay');
+  const tradeStatusText = document.getElementById('tradeStatusText');
+  const tradeSelectedText = document.getElementById('tradeSelectedText');
+  const tradeStepDecision = document.getElementById('tradeStepDecision');
+  const tradeMyOfferText = document.getElementById('tradeMyOfferText');
+  const tradePeerOfferText = document.getElementById('tradePeerOfferText');
+  const tradeMyQr = document.getElementById('tradeMyQr');
+  const tradeMyCode = document.getElementById('tradeMyCode');
+  const tradePeerQr = document.getElementById('tradePeerQr');
+  const tradeScanInput = document.getElementById('tradeScanInput');
+  const tradeApplyScanBtn = document.getElementById('tradeApplyScanBtn');
+  const tradeOpenScannerBtn = document.getElementById('tradeOpenScannerBtn');
+  const tradeScannerOverlay = document.getElementById('tradeScannerOverlay');
+  const tradeScannerVideo = document.getElementById('tradeScannerVideo');
+  const tradeScannerCancelBtn = document.getElementById('tradeScannerCancelBtn');
+  const tradeMyConfirmBtn = document.getElementById('tradeMyConfirmBtn');
+  const tradePeerConfirmBtn = document.getElementById('tradePeerConfirmBtn');
+  const tradeMyConfirmImg = document.getElementById('tradeMyConfirmImg');
+  const tradePeerConfirmImg = document.getElementById('tradePeerConfirmImg');
+  const tradeMyConfirmLabel = document.getElementById('tradeMyConfirmLabel');
+  const tradePeerConfirmLabel = document.getElementById('tradePeerConfirmLabel');
+  const tradeCancelBtn = document.getElementById('tradeCancelBtn');
 
   const openMalidexBtn = document.getElementById('openMalidexBtn');
   const closeMalidexBtn = document.getElementById('closeMalidexBtn');
@@ -175,6 +199,17 @@
   let audienceSeatNodes = [];
   let accessGatePending = false;
   let cheatBypassActive = false;
+  let tradeBusy = false;
+  let tradeProtocol = null;
+  let tradeLocalOfferId = null;
+  let tradePeerOfferId = null;
+  let tradeCommitApplied = false;
+  let tradeSessionTimeout = null;
+  let detailTradeEntryId = null;
+  let tradeOwnerCode = 0;
+  let tradeScannerStream = null;
+  let tradeScannerFrame = null;
+  let tradeBarcodeDetector = null;
 
   function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -182,6 +217,70 @@
 
   function randomFloat(min, max) {
     return Math.random() * (max - min) + min;
+  }
+
+  function createTradeOwnerCode() {
+    return randomInt(0, 99);
+  }
+
+  function loadTradeOwnerCode() {
+    try {
+      const raw = window.localStorage.getItem('malix-trade-owner-code');
+      const parsed = Number.parseInt(String(raw), 10);
+      if (Number.isInteger(parsed) && parsed >= 0 && parsed <= 99) {
+        return parsed;
+      }
+      const created = createTradeOwnerCode();
+      window.localStorage.setItem('malix-trade-owner-code', String(created));
+      return created;
+    } catch (error) {
+      return createTradeOwnerCode();
+    }
+  }
+
+  function offerIdToIndex(offerId) {
+    const parsed = collectionApi.parseId(offerId);
+    if (!parsed) return -1;
+    return (parsed.type - 1) * collectionApi.MAX_VARIANTS + (parsed.variant - 1);
+  }
+
+  function indexToOfferId(index) {
+    const safeIndex = Number(index);
+    if (!Number.isInteger(safeIndex) || safeIndex < 0 || safeIndex >= collectionApi.MAX_ENTRIES) {
+      return null;
+    }
+    const type = Math.floor(safeIndex / collectionApi.MAX_VARIANTS) + 1;
+    const variant = (safeIndex % collectionApi.MAX_VARIANTS) + 1;
+    return collectionApi.makeId(type, variant);
+  }
+
+  function encodeTradeShortCode(offerId, acceptedByOwner, ownerCode) {
+    const offerIndex = offerIdToIndex(offerId);
+    if (offerIndex < 0) return '';
+    const owner = Math.max(0, Math.min(99, Number(ownerCode) || 0));
+    const lettersValue = offerIndex * 2 + (acceptedByOwner ? 1 : 0);
+    const a = String.fromCharCode(65 + Math.floor(lettersValue / (26 * 26)));
+    const b = String.fromCharCode(65 + Math.floor((lettersValue % (26 * 26)) / 26));
+    const c = String.fromCharCode(65 + (lettersValue % 26));
+    return a + b + c + String(owner).padStart(2, '0');
+  }
+
+  function decodeTradeShortCode(rawCode) {
+    const code = String(rawCode || '').trim().toUpperCase();
+    if (!/^[A-Z]{3}[0-9]{2}$/.test(code)) return null;
+    const lettersValue =
+      (code.charCodeAt(0) - 65) * 26 * 26 +
+      (code.charCodeAt(1) - 65) * 26 +
+      (code.charCodeAt(2) - 65);
+    const offerIndex = Math.floor(lettersValue / 2);
+    const acceptedByOwner = lettersValue % 2 === 1;
+    const offerId = indexToOfferId(offerIndex);
+    if (!offerId) return null;
+    return {
+      offerId: offerId,
+      acceptedByOwner: acceptedByOwner,
+      ownerCode: Number.parseInt(code.slice(3), 10)
+    };
   }
 
   function randomType() {
@@ -873,6 +972,12 @@
     return names[variant - 1] || 'Mystere';
   }
 
+  function formatEntryLabel(entryId) {
+    const parsed = collectionApi.parseId(entryId);
+    if (!parsed) return 'Malix inconnu';
+    return typeName(parsed.type) + ' · ' + variantName(parsed.variant);
+  }
+
   function rarityLabel(type, variant) {
     const rarity = getRarityScale(type, variant);
     if (rarity >= 0.85) return 'Legendaire';
@@ -1118,6 +1223,7 @@
     }
     closeDetail();
     closeResetDialog();
+    closeTradeOverlay(true);
   }
 
   function showWelcomeScreen() {
@@ -1155,6 +1261,309 @@
       captureOverlay.classList.add('hidden');
       captureOverlay.innerHTML = '';
     }, 2200);
+  }
+
+  function resetTradeUi() {
+    if (!tradeOverlay) return;
+    if (tradeStepDecision) {
+      tradeStepDecision.classList.remove('hidden');
+    }
+    tradeMyOfferText.textContent = 'Ta proposition: -';
+    tradePeerOfferText.textContent = 'Sa proposition: -';
+    if (tradeMyCode) {
+      tradeMyCode.value = '';
+    }
+    if (tradeScanInput) {
+      tradeScanInput.value = '';
+    }
+    if (tradeMyQr) {
+      tradeMyQr.classList.add('hidden');
+      tradeMyQr.removeAttribute('src');
+    }
+    if (tradePeerQr) {
+      tradePeerQr.classList.add('hidden');
+      tradePeerQr.removeAttribute('src');
+    }
+    if (tradeMyConfirmBtn) {
+      tradeMyConfirmBtn.disabled = true;
+      tradeMyConfirmBtn.classList.remove('is-confirmed');
+    }
+    if (tradePeerConfirmBtn) {
+      tradePeerConfirmBtn.classList.remove('is-confirmed');
+    }
+    if (tradeMyConfirmImg) {
+      tradeMyConfirmImg.removeAttribute('src');
+    }
+    if (tradePeerConfirmImg) {
+      tradePeerConfirmImg.removeAttribute('src');
+    }
+    if (tradeMyConfirmLabel) {
+      tradeMyConfirmLabel.textContent = 'Ton Malix';
+    }
+    if (tradePeerConfirmLabel) {
+      tradePeerConfirmLabel.textContent = 'Malix du joueur 2';
+    }
+  }
+
+  function updateTradeStatus(message) {
+    if (tradeStatusText) {
+      tradeStatusText.textContent = message;
+    }
+  }
+
+  function revealTradeDecisionStep() {
+    if (tradeStepDecision) {
+      tradeStepDecision.classList.remove('hidden');
+    }
+  }
+
+  function updateTradeDecisionUi() {
+    if (!tradeProtocol) return;
+    const snapshot = tradeProtocol.getSnapshot();
+    tradeMyOfferText.textContent = 'Ta proposition: ' + formatEntryLabel(snapshot.localOfferId);
+    tradePeerOfferText.textContent = 'Sa proposition: ' + formatEntryLabel(snapshot.peerOfferId);
+    const canAnswer = Boolean(snapshot.localOfferId && snapshot.peerOfferId && !snapshot.localAccepted);
+
+    if (tradeMyConfirmBtn) {
+      tradeMyConfirmBtn.disabled = !canAnswer;
+      tradeMyConfirmBtn.classList.toggle('is-confirmed', Boolean(snapshot.localAccepted));
+    }
+    if (tradePeerConfirmBtn) {
+      tradePeerConfirmBtn.classList.toggle('is-confirmed', Boolean(snapshot.peerAccepted));
+    }
+
+    if (snapshot.localOfferId) {
+      const mine = collectionApi.parseId(snapshot.localOfferId);
+      if (mine && tradeMyConfirmImg) {
+        setTypeVariantImage(tradeMyConfirmImg, mine.type, mine.variant);
+      }
+      if (tradeMyConfirmLabel) {
+        tradeMyConfirmLabel.textContent = formatEntryLabel(snapshot.localOfferId);
+      }
+    }
+    if (snapshot.peerOfferId) {
+      const peer = collectionApi.parseId(snapshot.peerOfferId);
+      if (peer && tradePeerConfirmImg) {
+        setTypeVariantImage(tradePeerConfirmImg, peer.type, peer.variant);
+      }
+      if (tradePeerConfirmLabel) {
+        tradePeerConfirmLabel.textContent = formatEntryLabel(snapshot.peerOfferId);
+      }
+    }
+
+    if (snapshot.localAccepted && snapshot.peerAccepted) {
+      updateTradeStatus('Les deux joueurs ont confirme. Echange en cours...');
+    } else if (snapshot.localAccepted) {
+      updateTradeStatus('Ton acceptation est enregistree. Fais scanner ton QR au joueur en face.');
+    } else if (snapshot.peerAccepted) {
+      updateTradeStatus('Le joueur en face a confirme. Scanne son QR confirme pour finaliser.');
+    } else {
+      updateTradeStatus('Scanne le QR de l\'autre joueur pour accepter l\'echange.');
+    }
+  }
+
+  function createTradeQr(codeValue, imageElement) {
+    if (!imageElement) return;
+    if (!codeValue) {
+      imageElement.classList.add('hidden');
+      imageElement.removeAttribute('src');
+      return;
+    }
+    imageElement.src =
+      'https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=' + encodeURIComponent(codeValue);
+    imageElement.classList.remove('hidden');
+  }
+
+  function buildTradePayload() {
+    if (!tradeProtocol) return null;
+    const snapshot = tradeProtocol.getSnapshot();
+    if (!snapshot.localOfferId) return null;
+    return {
+      offerId: snapshot.localOfferId,
+      acceptedByOwner: Boolean(snapshot.localAccepted)
+    };
+  }
+
+  function refreshTradeLocalCode() {
+    const payload = buildTradePayload();
+    if (!payload) return;
+    const encoded = encodeTradeShortCode(payload.offerId, payload.acceptedByOwner, tradeOwnerCode);
+    if (tradeMyCode) {
+      tradeMyCode.value = encoded;
+    }
+    createTradeQr(encoded, tradeMyQr);
+  }
+
+  function processScannedTradeCode(rawCode) {
+    if (!tradeProtocol) return;
+    const encoded = String(rawCode || '').trim().toUpperCase();
+    if (!encoded) {
+      updateTradeStatus('Code vide. Reessaie le scan.');
+      return;
+    }
+    const payload = decodeTradeShortCode(encoded);
+    if (!payload) {
+      updateTradeStatus('Code d\'echange invalide.');
+      return;
+    }
+    if (payload.ownerCode === tradeOwnerCode) {
+      updateTradeStatus('Ce code est le tien. Scanne celui de l\'autre joueur.');
+      return;
+    }
+
+    tradeProtocol.receiveOffer(payload.offerId);
+    tradePeerOfferId = payload.offerId;
+    tradeProtocol.acceptOffer();
+
+    if (payload.acceptedByOwner) {
+      tradeProtocol.receiveAccept();
+    }
+
+    createTradeQr(encoded, tradePeerQr);
+    updateTradeDecisionUi();
+    refreshTradeLocalCode();
+    maybeCommitTrade();
+  }
+
+  function stopTradeScanner() {
+    if (tradeScannerFrame) {
+      window.cancelAnimationFrame(tradeScannerFrame);
+      tradeScannerFrame = null;
+    }
+    if (tradeScannerStream) {
+      const tracks = tradeScannerStream.getTracks();
+      for (let index = 0; index < tracks.length; index += 1) {
+        tracks[index].stop();
+      }
+      tradeScannerStream = null;
+    }
+    if (tradeScannerVideo) {
+      tradeScannerVideo.srcObject = null;
+    }
+  }
+
+  function closeTradeScanner() {
+    stopTradeScanner();
+    if (tradeScannerOverlay) {
+      tradeScannerOverlay.classList.add('hidden');
+    }
+  }
+
+  async function openTradeScanner() {
+    if (!tradeScannerOverlay || !tradeScannerVideo) return;
+    if (!window.BarcodeDetector || !window.navigator || !window.navigator.mediaDevices) {
+      updateTradeStatus('Scanner indisponible ici. Colle le code du joueur en face.');
+      return;
+    }
+
+    try {
+      tradeBarcodeDetector = tradeBarcodeDetector || new window.BarcodeDetector({ formats: ['qr_code'] });
+      const stream = await window.navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: 'environment' } },
+        audio: false
+      });
+      tradeScannerStream = stream;
+      tradeScannerVideo.srcObject = stream;
+      tradeScannerOverlay.classList.remove('hidden');
+      await tradeScannerVideo.play();
+
+      const loop = function () {
+        if (!tradeScannerOverlay || tradeScannerOverlay.classList.contains('hidden')) {
+          return;
+        }
+        tradeBarcodeDetector
+          .detect(tradeScannerVideo)
+          .then(function (codes) {
+            if (codes && codes.length > 0 && codes[0].rawValue) {
+              if (tradeScanInput) {
+                tradeScanInput.value = codes[0].rawValue;
+              }
+              processScannedTradeCode(codes[0].rawValue);
+              closeTradeScanner();
+              return;
+            }
+            tradeScannerFrame = window.requestAnimationFrame(loop);
+          })
+          .catch(function () {
+            tradeScannerFrame = window.requestAnimationFrame(loop);
+          });
+      };
+
+      tradeScannerFrame = window.requestAnimationFrame(loop);
+    } catch (error) {
+      closeTradeScanner();
+      updateTradeStatus('Impossible d\'ouvrir la camera. Colle le code a la main.');
+    }
+  }
+
+  function cleanupTradeSession() {
+    if (tradeSessionTimeout) {
+      window.clearTimeout(tradeSessionTimeout);
+      tradeSessionTimeout = null;
+    }
+    tradeProtocol = null;
+    tradeLocalOfferId = null;
+    tradePeerOfferId = null;
+    tradeCommitApplied = false;
+    tradeBusy = false;
+  }
+
+  function armTradeSessionTimeout() {
+    if (tradeSessionTimeout) {
+      window.clearTimeout(tradeSessionTimeout);
+    }
+    tradeSessionTimeout = window.setTimeout(function () {
+      closeTradeOverlay(true);
+      showGameNotice('Echange expire. Recommencez le scan.');
+    }, 60000);
+  }
+
+  function closeTradeOverlay(skipNotice) {
+    if (!tradeOverlay) return;
+    const hadSession = Boolean(tradeProtocol);
+    closeTradeScanner();
+    cleanupTradeSession();
+    tradeOverlay.classList.add('hidden');
+    resetTradeUi();
+    if (!skipNotice && hadSession) {
+      showGameNotice('Echange annule.');
+    }
+    if (!screenGame.classList.contains('hidden') && screenMalidex.classList.contains('hidden')) {
+      planNextSpawn();
+    }
+  }
+
+  function maybeCommitTrade() {
+    if (!tradeProtocol) return;
+    if (!tradeProtocol.canCommit()) return;
+    const snapshot = tradeProtocol.getSnapshot();
+    if (!snapshot.localOfferId || !snapshot.peerOfferId) return;
+    if (tradeCommitApplied) return;
+    applyTradeCommit(snapshot.localOfferId, snapshot.peerOfferId);
+  }
+
+  function openTradeOverlayFor(entryId) {
+    if (!tradeOverlay) return;
+    if (!collection.has(entryId)) {
+      showGameNotice('Ce Malix n\'est pas disponible pour un echange.');
+      return;
+    }
+    cleanupTradeSession();
+    resetTradeUi();
+    tradeOverlay.classList.remove('hidden');
+    tradeBusy = true;
+    clearSpawn();
+    tradeProtocol = tradeApi.createProtocol();
+    tradeProtocol.setPairing();
+    tradeLocalOfferId = entryId;
+    tradeProtocol.createOffer(entryId);
+    tradeProtocol.setConnected();
+    tradeSelectedText.textContent = 'Ta proposition: ' + formatEntryLabel(entryId);
+    updateTradeStatus('Montre ton QR et scanne celui du joueur en face.');
+    revealTradeDecisionStep();
+    updateTradeDecisionUi();
+    refreshTradeLocalCode();
+    armTradeSessionTimeout();
   }
 
   function resetMalidexDrag() {
@@ -1958,10 +2367,12 @@
   function closeDetail() {
     if (!malidexDetail) return;
     malidexDetail.classList.add('hidden');
+    detailTradeEntryId = null;
   }
 
   function openDetail(type, variant, isCollected, amount) {
     if (!malidexDetail || !detailVisual || !detailName || !detailRarity || !detailCaptures) return;
+    const entryId = collectionApi.makeId(type, variant);
 
     if (isCollected) {
       setTypeVariantImage(detailVisual, type, variant);
@@ -1975,6 +2386,10 @@
       : 'Malix inconnu';
     detailRarity.textContent = 'Rareté: ' + rarityLabel(type, variant);
     detailCaptures.textContent = isCollected ? 'Captures: x' + amount : 'Pas encore attrape';
+    detailTradeEntryId = isCollected ? entryId : null;
+    if (detailTradeBtn) {
+      detailTradeBtn.classList.toggle('hidden', !isCollected);
+    }
     malidexDetail.classList.remove('hidden');
   }
 
@@ -2020,6 +2435,7 @@
     if (
       currentSpawn ||
       captureBusy ||
+      tradeBusy ||
       photoModeActive ||
       isCollectionComplete() ||
       screenGame.classList.contains('hidden') ||
@@ -2421,8 +2837,8 @@
 
     const text = document.createElement('p');
     text.className = 'capture-text';
+    const rarity = rarityLabel(type, variant);
     if (isFirstTypeDiscovery) {
-      const rarity = rarityLabel(type, variant);
       text.textContent =
         unlockExcitementByRarity(rarity) +
         ', tu viens de debloquer un ' +
@@ -2431,9 +2847,21 @@
         rarityNounForm(rarity) +
         ' !';
     } else if (isNewCapture) {
-      text.textContent = "Bravo, tu viens d'attraper un " + typeName(type) + '!';
+      text.textContent =
+        unlockExcitementByRarity(rarity) +
+        ", tu viens d'attraper un " +
+        typeName(type) +
+        ' ' +
+        rarityNounForm(rarity) +
+        ' !';
     } else {
-      text.textContent = typeName(type) + ' deja attrape ! +1 dans ton Malidex.';
+      text.textContent =
+        unlockExcitementByRarity(rarity) +
+        ', tu as attrape un ' +
+        typeName(type) +
+        ' ' +
+        rarityNounForm(rarity) +
+        ' ! +1 dans ton Malidex.';
     }
 
     card.appendChild(name);
@@ -2477,8 +2905,130 @@
     captureOverlay.innerHTML = '';
   }
 
+  async function runTradeWelcomeSequence(type, variant, wasNew) {
+    if (!captureOverlay) return;
+    captureOverlay.innerHTML = '';
+    captureOverlay.classList.remove('hidden');
+    captureOverlay.classList.add('is-active');
+    captureOverlay.tabIndex = 0;
+
+    const card = document.createElement('div');
+    card.className = 'capture-card';
+
+    const name = document.createElement('h3');
+    name.className = 'capture-name';
+    name.textContent = typeName(type);
+
+    const preview = document.createElement('img');
+    setTypeVariantImage(preview, type, variant);
+    preview.alt = '';
+    if (!reduceMotion) {
+      preview.classList.add('capture-preview-spin');
+    }
+
+    const text = document.createElement('p');
+    text.className = 'capture-text';
+    if (wasNew) {
+      text.textContent = 'Nouveau Malix recu ! Bienvenue dans ton Malidex.';
+    } else {
+      text.textContent = 'Malix recu ! Tu l\'avais deja, +1 dans ton Malidex.';
+    }
+
+    card.appendChild(name);
+    card.appendChild(preview);
+    card.appendChild(text);
+    captureOverlay.appendChild(card);
+    spawnUnlockConfetti(captureOverlay);
+    captureOverlay.focus();
+    await waitForTap(captureOverlay);
+    captureOverlay.classList.add('hidden');
+    captureOverlay.classList.remove('is-active');
+    captureOverlay.innerHTML = '';
+  }
+
+  async function runTradeCrossSequence(localOfferId, peerOfferId) {
+    if (!captureOverlay) return;
+    const mine = collectionApi.parseId(localOfferId);
+    const peer = collectionApi.parseId(peerOfferId);
+    if (!mine || !peer) return;
+
+    captureOverlay.innerHTML = '';
+    captureOverlay.classList.remove('hidden');
+    captureOverlay.classList.add('is-active');
+
+    const card = document.createElement('div');
+    card.className = 'capture-card';
+    const title = document.createElement('h3');
+    title.className = 'capture-name';
+    title.textContent = 'Echange!';
+    const stage = document.createElement('div');
+    stage.className = 'trade-cross-stage';
+    const left = document.createElement('img');
+    left.className = 'trade-cross-malix left';
+    const right = document.createElement('img');
+    right.className = 'trade-cross-malix right';
+    setTypeVariantImage(left, mine.type, mine.variant);
+    setTypeVariantImage(right, peer.type, peer.variant);
+    stage.appendChild(left);
+    stage.appendChild(right);
+    card.appendChild(title);
+    card.appendChild(stage);
+    captureOverlay.appendChild(card);
+
+    if (!reduceMotion) {
+      const leftAnim = left.animate(
+        [
+          { transform: 'translate3d(0, 0, 0) scale(1)' },
+          { transform: 'translate3d(115px, 0, 0) scale(1.05)' }
+        ],
+        { duration: 700, easing: 'ease-in-out', fill: 'forwards' }
+      );
+      const rightAnim = right.animate(
+        [
+          { transform: 'translate3d(0, 0, 0) scale(1)' },
+          { transform: 'translate3d(-115px, 0, 0) scale(1.05)' }
+        ],
+        { duration: 700, easing: 'ease-in-out', fill: 'forwards' }
+      );
+      await Promise.all([leftAnim.finished.catch(function () {}), rightAnim.finished.catch(function () {})]);
+    } else {
+      await new Promise(function (resolve) {
+        window.setTimeout(resolve, 300);
+      });
+    }
+
+    captureOverlay.classList.add('hidden');
+    captureOverlay.classList.remove('is-active');
+    captureOverlay.innerHTML = '';
+  }
+
+  async function applyTradeCommit(localOfferId, peerOfferId) {
+    if (tradeCommitApplied) return;
+    const next = collectionApi.applyTrade(collection, captureCounts, localOfferId, peerOfferId);
+    const incoming = collectionApi.parseId(peerOfferId);
+    if (!incoming) {
+      return;
+    }
+
+    tradeCommitApplied = true;
+    if (tradeProtocol) {
+      tradeProtocol.markCommitted();
+    }
+    collection = next.collection;
+    captureCounts = next.counts;
+    persistCollection();
+    updateProgress();
+    renderMalidex();
+    closeTradeOverlay(true);
+    await runTradeCrossSequence(localOfferId, peerOfferId);
+    await runTradeWelcomeSequence(incoming.type, incoming.variant, next.receivedWasNew);
+    if (collectionApi.isComplete(collection)) {
+      showFinish();
+    }
+  }
+
   async function captureCurrent() {
-    if (!currentSpawn || captureBusy) return;
+    if (!currentSpawn || captureBusy || tradeBusy) return;
     captureBusy = true;
 
     const captured = currentSpawn;
@@ -2540,6 +3090,7 @@
       spawnTimer ||
       currentSpawn ||
       captureBusy ||
+      tradeBusy ||
       photoModeActive ||
       isCollectionComplete() ||
       screenGame.classList.contains('hidden') ||
@@ -2802,6 +3353,58 @@
       }
     });
   }
+  if (tradeMyConfirmBtn) {
+    tradeMyConfirmBtn.addEventListener('click', function (event) {
+      event.preventDefault();
+      showGameNotice('Ton acceptation se fait en scannant le QR du joueur en face.');
+    });
+  }
+  if (tradePeerConfirmBtn) {
+    tradePeerConfirmBtn.addEventListener('click', function (event) {
+      event.preventDefault();
+      showGameNotice('Le joueur en face confirme sur son propre telephone.');
+    });
+  }
+  if (tradeApplyScanBtn) {
+    tradeApplyScanBtn.addEventListener('click', function () {
+      processScannedTradeCode(tradeScanInput ? tradeScanInput.value : '');
+    });
+  }
+  if (tradeOpenScannerBtn) {
+    tradeOpenScannerBtn.addEventListener('click', function () {
+      openTradeScanner();
+    });
+  }
+  if (tradeScannerCancelBtn) {
+    tradeScannerCancelBtn.addEventListener('click', function () {
+      closeTradeScanner();
+    });
+  }
+  if (tradeScannerOverlay) {
+    tradeScannerOverlay.addEventListener('click', function (event) {
+      if (event.target === tradeScannerOverlay) {
+        closeTradeScanner();
+      }
+    });
+  }
+  if (tradeCancelBtn) {
+    tradeCancelBtn.addEventListener('click', function () {
+      closeTradeOverlay(false);
+    });
+  }
+  if (tradeOverlay) {
+    tradeOverlay.addEventListener('click', function (event) {
+      if (event.target === tradeOverlay) {
+        closeTradeOverlay(false);
+      }
+    });
+  }
+  if (detailTradeBtn) {
+    detailTradeBtn.addEventListener('click', function () {
+      if (!detailTradeEntryId) return;
+      openTradeOverlayFor(detailTradeEntryId);
+    });
+  }
   if (accessGateRetryBtn) {
     accessGateRetryBtn.addEventListener('click', function () {
       verifyGameAccess();
@@ -2880,6 +3483,7 @@
   }
 
   ensureCountsConsistency();
+  tradeOwnerCode = loadTradeOwnerCode();
   audienceSeatAssignment = loadAudienceSeatAssignment();
   buildAudienceSeats();
   desktopWelcomeMode = !isPhoneDevice();
