@@ -185,6 +185,21 @@ body {
   z-index: 2;
 }
 
+.cheat-badge {
+  position: absolute;
+  right: 0;
+  top: 4px;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  color: #482361;
+  background: linear-gradient(135deg, #fff2a8, #ffc768);
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  box-shadow: 0 7px 16px rgba(79, 56, 124, 0.28);
+}
+
 .screen-game {
   position: relative;
   border: 0;
@@ -1013,6 +1028,76 @@ body {
   display: grid;
   place-items: center;
   padding: 20px;
+}
+
+.access-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 48;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(8, 12, 38, 0.64);
+}
+
+.access-gate.hidden {
+  display: none;
+}
+
+.access-gate-card {
+  width: min(92vw, 370px);
+  border-radius: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  background:
+    radial-gradient(circle at 18% 10%, rgba(131, 219, 255, 0.34), transparent 40%),
+    linear-gradient(180deg, rgba(119, 84, 196, 0.97), rgba(85, 149, 219, 0.97));
+  padding: 16px 14px 18px;
+  text-align: center;
+  box-shadow: 0 22px 36px rgba(84, 57, 124, 0.4);
+}
+
+.access-gate-card h2 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.access-gate-logo {
+  display: block;
+  width: min(72%, 220px);
+  height: auto;
+  margin: 0 auto 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 8px 10px;
+}
+
+.access-gate-message {
+  margin: 10px 0 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.access-gate-detail {
+  margin: 8px 0 0;
+  font-size: 0.92rem;
+  opacity: 0.95;
+}
+
+.access-gate-card .chip {
+  margin-top: 14px;
+  min-width: 132px;
+}
+
+.access-gate-rdv {
+  margin: 10px 0 0;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  opacity: 0.95;
+}
+
+.access-gate-rdv a {
+  color: #fff8b3;
+  font-weight: 800;
 }
 
 .confirm-overlay.hidden {

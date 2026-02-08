@@ -1,7 +1,8 @@
 (function () {
   const collectionApi = window.MalixCollection;
+  const accessGateApi = window.MalixAccessGate;
 
-  if (!collectionApi) {
+  if (!collectionApi || !accessGateApi) {
     return;
   }
 
@@ -19,6 +20,31 @@
   const PHOTO_DB_NAME = 'malix-photo-db';
   const PHOTO_DB_VERSION = 1;
   const PHOTO_STORE_NAME = 'photos';
+  const DEFAULT_ACCESS_CONFIG = accessGateApi.normalizeConfig({
+    festivalWindowStart: '2026-05-15T00:00:00+02:00',
+    festivalWindowEnd: '2026-05-17T23:59:59+02:00',
+    geoTarget: {
+      lat: 43.501,
+      lon: -1.513
+    },
+    geoRadiusMeters: 100,
+    geoToleranceMeters: 20
+  });
+  const ACCESS_CONFIG = accessGateApi.normalizeConfig({
+    ...DEFAULT_ACCESS_CONFIG,
+    ...(window.MalixAccessConfig && typeof window.MalixAccessConfig === 'object'
+      ? window.MalixAccessConfig
+      : {}),
+    geoTarget: {
+      ...DEFAULT_ACCESS_CONFIG.geoTarget,
+      ...(window.MalixAccessConfig &&
+      typeof window.MalixAccessConfig === 'object' &&
+      window.MalixAccessConfig.geoTarget &&
+      typeof window.MalixAccessConfig.geoTarget === 'object'
+        ? window.MalixAccessConfig.geoTarget
+        : {})
+    }
+  });
   const variantHexColors = ['#3bb9ff', '#ff5fa8', '#ffb85a', '#71df8a'];
   const doodleSourceCache = new Map();
   const doodleVariantCache = new Map();
@@ -72,6 +98,11 @@
   const finishMalidexTarget = document.getElementById('finishMalidexTarget');
   const landscapeGuard = document.getElementById('landscapeGuard');
   const captureOverlay = document.getElementById('captureOverlay');
+  const accessGate = document.getElementById('accessGate');
+  const accessGateMessage = document.getElementById('accessGateMessage');
+  const accessGateDetail = document.getElementById('accessGateDetail');
+  const accessGateRetryBtn = document.getElementById('accessGateRetryBtn');
+  const cheatBadge = document.getElementById('cheatBadge');
   const malidexDetail = document.getElementById('malidexDetail');
   const detailVisual = document.getElementById('detailVisual');
   const detailName = document.getElementById('detailName');
@@ -142,6 +173,8 @@
   let malidexActiveTab = 'malix';
   let audienceSeatAssignment = [];
   let audienceSeatNodes = [];
+  let accessGatePending = false;
+  let cheatBypassActive = false;
 
   function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -886,6 +919,173 @@
     }
   }
 
+  function formatMeters(value) {
+    return Math.max(0, Math.round(value));
+  }
+
+  function setCheatBadgeVisible(visible) {
+    if (!cheatBadge) return;
+    cheatBadge.classList.toggle('hidden', !visible);
+  }
+
+  function hideAccessGate() {
+    if (!accessGate) return;
+    accessGate.classList.add('hidden');
+  }
+
+  function showAccessGate(message, detail, isChecking) {
+    if (!accessGate || !accessGateMessage || !accessGateRetryBtn) return;
+    hideAllScreens();
+    accessGate.classList.remove('hidden');
+    accessGateMessage.textContent = message;
+    if (accessGateDetail) {
+      const hasDetail = Boolean(detail);
+      accessGateDetail.classList.toggle('hidden', !hasDetail);
+      accessGateDetail.textContent = hasDetail ? detail : '';
+    }
+    accessGateRetryBtn.disabled = Boolean(isChecking);
+    accessGateRetryBtn.textContent = isChecking ? 'Verification...' : 'Reessayer';
+  }
+
+  function requestCurrentPosition() {
+    return new Promise(function (resolve, reject) {
+      if (!window.navigator || !window.navigator.geolocation) {
+        reject(new Error('geolocation-unavailable'));
+        return;
+      }
+      window.navigator.geolocation.getCurrentPosition(
+        function (position) {
+          resolve(position);
+        },
+        function (error) {
+          reject(error);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 60000
+        }
+      );
+    });
+  }
+
+  function blockedGateCopy(status) {
+    if (status === 'blocked_time') {
+      return {
+        message: 'Le jeu est disponible pendant le festival.',
+        detail: 'Reviens entre le 15 et le 17 mai 2026.'
+      };
+    }
+    if (status === 'blocked_geo') {
+      return {
+        message: 'Entre dans la patinoire pour jouer.',
+        detail: 'Rapproche-toi de la Patinoire de la Barre.'
+      };
+    }
+    if (status === 'blocked_permission') {
+      return {
+        message: 'Active la localisation pour jouer.',
+        detail: 'Autorise la geolocalisation dans ton navigateur.'
+      };
+    }
+    return {
+      message: 'Geolocalisation indisponible.',
+      detail: 'Active la localisation puis reessaie.'
+    };
+  }
+
+  async function verifyGameAccess() {
+    if (desktopWelcomeMode) {
+      showWelcomeScreen();
+      return;
+    }
+
+    if (accessGatePending) return;
+    accessGatePending = true;
+    showAccessGate('Verification de ta position...', '', true);
+
+    const cheatEnabled = isCheatAllowed();
+    const startDecision = accessGateApi.evaluateAccess({
+      cheat: cheatEnabled,
+      now: Date.now(),
+      config: ACCESS_CONFIG,
+      geoAvailable: Boolean(window.navigator && window.navigator.geolocation)
+    });
+    cheatBypassActive = startDecision.status === 'cheat_bypass';
+    setCheatBadgeVisible(cheatBypassActive);
+    if (startDecision.allowed) {
+      hideAccessGate();
+      accessGatePending = false;
+      if (collectionApi.isComplete(collection)) {
+        showFinish();
+      } else {
+        showGame();
+      }
+      return;
+    }
+
+    if (startDecision.status === 'blocked_time') {
+      const copy = blockedGateCopy(startDecision.status);
+      showAccessGate(copy.message, copy.detail, false);
+      accessGatePending = false;
+      return;
+    }
+    if (!window.navigator || !window.navigator.geolocation) {
+      const copy = blockedGateCopy('blocked_unavailable');
+      showAccessGate(copy.message, copy.detail, false);
+      accessGatePending = false;
+      return;
+    }
+
+    try {
+      const position = await requestCurrentPosition();
+      const decision = accessGateApi.evaluateAccess({
+        cheat: cheatEnabled,
+        now: Date.now(),
+        config: ACCESS_CONFIG,
+        geoAvailable: true,
+        coords: position && position.coords
+      });
+      cheatBypassActive = decision.status === 'cheat_bypass';
+      setCheatBadgeVisible(cheatBypassActive);
+      if (decision.allowed) {
+        hideAccessGate();
+        accessGatePending = false;
+        if (collectionApi.isComplete(collection)) {
+          showFinish();
+        } else {
+          showGame();
+        }
+        return;
+      }
+
+      const copy = blockedGateCopy(decision.status);
+      let detail = copy.detail;
+      if (
+        decision.status === 'blocked_geo' &&
+        Number.isFinite(decision.distanceMeters) &&
+        Number.isFinite(decision.thresholdMeters)
+      ) {
+        detail =
+          'Tu es a environ ' +
+          formatMeters(decision.distanceMeters) +
+          ' m. Zone autorisee: ' +
+          formatMeters(decision.thresholdMeters) +
+          ' m autour de la Patinoire.';
+      }
+      showAccessGate(copy.message, detail, false);
+    } catch (error) {
+      const denied =
+        error &&
+        typeof error === 'object' &&
+        Number(error.code) === 1;
+      const copy = blockedGateCopy(denied ? 'blocked_permission' : 'blocked_unavailable');
+      showAccessGate(copy.message, copy.detail, false);
+    } finally {
+      accessGatePending = false;
+    }
+  }
+
   function hideAllScreens() {
     if (screenWelcome) {
       screenWelcome.classList.add('hidden');
@@ -922,6 +1122,8 @@
 
   function showWelcomeScreen() {
     hideAllScreens();
+    hideAccessGate();
+    setCheatBadgeVisible(false);
     if (!screenWelcome) return;
     const url = gameUrl();
     const qrSource = 'https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=' + encodeURIComponent(url);
@@ -1588,6 +1790,8 @@
       return;
     }
     hideAllScreens();
+    hideAccessGate();
+    setCheatBadgeVisible(cheatBypassActive);
     screenGame.classList.remove('hidden');
     generateObstacles();
     showSpawnApproachHint(2400);
@@ -1658,6 +1862,8 @@
 
   function showFinish() {
     hideAllScreens();
+    hideAccessGate();
+    setCheatBadgeVisible(cheatBypassActive);
     screenFinish.classList.remove('hidden');
     clearSpawn();
     hideSpawnApproachHint();
@@ -2596,6 +2802,11 @@
       }
     });
   }
+  if (accessGateRetryBtn) {
+    accessGateRetryBtn.addEventListener('click', function () {
+      verifyGameAccess();
+    });
+  }
 
   window.addEventListener('resize', syncOrientationGuard);
   window.addEventListener('orientationchange', syncOrientationGuard);
@@ -2675,10 +2886,8 @@
   updateProgress();
   if (desktopWelcomeMode) {
     showWelcomeScreen();
-  } else if (collectionApi.isComplete(collection)) {
-    showFinish();
   } else {
-    showGame();
+    verifyGameAccess();
   }
   renderMalidex();
   syncOrientationGuard();

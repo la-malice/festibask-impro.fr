@@ -11,3 +11,6 @@ dist/
 # Certificats dev HTTPS (générés par scripts/gen-dev-cert.sh)
 scripts/certs/dev.key
 scripts/certs/dev.pem
+
+# Local dev-only Malix access override (build injection)
+malix/assets/access-config.local.js

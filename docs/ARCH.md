@@ -24,7 +24,7 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 | **Styles** | Layout, theme, components; PurgeCSS scans index.html + script.js | assets/css/style.css |
 | **Scripts** | Header, countdown, hero video (YouTube iframe or self-hosted &lt;video&gt; per HTML config), nav, modals, sliders, carousel, tooltips, fullscreen | assets/js/script.js |
 | **Data** | Testimonials (carousel), hero video schedule (optional) | assets/data/temoignages.json, assets/data/hero-video-schedule.json |
-| **Copy build** | Copy index.html, CNAME, favicons, robots, sitemap, sw.js, assets, festival-2026, PDFs to dist/ | scripts/copy-to-dist.js |
+| **Copy build** | Copy index.html, CNAME, favicons, robots, sitemap, sw.js, assets, festival-2026, PDFs to dist/ ; optionnellement remplacer `dist/malix/assets/access-config.js` par `malix/assets/access-config.local.js` si présent | scripts/copy-to-dist.js |
 | **PurgeCSS** | Remove unused CSS for dist; safelist dynamic classes | purgecss.config.js |
 | **PostCSS** | Minify CSS (cssnano) | postcss.config.js |
 | **Terser** | Minify JS (invoked in npm run build on source script.js → dist) | npm script |
@@ -39,7 +39,7 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 - **Front-end:** Vanilla HTML/CSS/JS; no framework. Google Fonts (Hubot Sans) loaded async. Styles follow the graphic charter (Hubot Sans hierarchy, 6-color palette); see docs/slices/charte-graphique.md.
 - **Data:** Static JSON (temoignages); EDF players and spectacle data in script.js.
 - **Deploy:** GitHub Actions (ubuntu-latest, Node 20); artifact `dist/` → deploy-pages. Environment: github-pages.
-- **Malix:** Application statique dans `dist/malix/` (index.html, assets dédiés, copies des 26 doodles). Aucun impact sur index.html ni sur le bundle principal (script.js, style.css). Le build doit inclure la copie ou la génération de `malix/` dans `dist/` (ex. ajout de `malix` à copy-to-dist ou script dédié).
+- **Malix:** Application statique dans `dist/malix/` (index.html, assets dédiés, copies des 26 doodles). Aucun impact sur index.html ni sur le bundle principal (script.js, style.css). Le build inclut `malix/` dans `dist/`. La config d’accès du garde (`malix/assets/access-config.js`) est versionnée avec les valeurs par défaut prod ; un override local non versionné (`malix/assets/access-config.local.js`) peut être injecté au build pour les tests dev.
 
 ## Execution Model
 
@@ -69,6 +69,8 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 | vite.config.js | Dev server only (root, port 8000) |
 | .github/workflows/pages.yml | Build on push to main; deploy Pages from dist |
 | sw.js | Service worker; Brevo init from query |
+| malix/assets/access-config.js | Config d’accès Malix versionnée (coordonnées/date/rayon par défaut prod) |
+| malix/assets/access-config.local.js | Override local dev non versionné, injecté dans dist au build si présent |
 | docs/temoignages-carousel.md | Documented schema for temoignages.json |
 | malix/ | Mini-jeu Malix (sources) ; copié ou généré dans dist/malix/ ; entrée malix/index.html ; isolation totale du site principal |
 | docs/SPEC-Malix.md | Spécification fonctionnelle normative du mini-jeu Malix |

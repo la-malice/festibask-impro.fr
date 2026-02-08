@@ -64,6 +64,7 @@
         </div>
         <header class="topbar">
           <h1 class="logo">Chasse aux Malix!</h1>
+          <span class="cheat-badge hidden" id="cheatBadge">Mode cheat</span>
         </header>
 
         <div class="playzone" id="playzone" aria-live="polite">
@@ -186,9 +187,32 @@
           <p>Tourne ton téléphone pour jouer</p>
         </div>
       </section>
+
+      <section class="access-gate hidden" id="accessGate" aria-label="Acces au jeu">
+        <div class="access-gate-card">
+          <img
+            class="access-gate-logo"
+            src="../assets/img/logos/festibask-impro__logo_ss-baseline_fd-fonce-400.avif"
+            alt="Logo Festibask Impro"
+            loading="eager"
+            decoding="async"
+          />
+          <h2>La chasse est fermee!</h2>
+          <p class="access-gate-message" id="accessGateMessage">Le jeu est uniquement disponible pendant le festival</p>
+          <p class="access-gate-detail hidden" id="accessGateDetail"></p>
+          <p class="access-gate-rdv">
+            Rendez-vous entre le 15 et le 17 mai 2026 a la Patinoire de la Barre a Anglet.
+            <br />
+            Infos : <a href="https://festibask-impro.fr" target="_blank" rel="noopener noreferrer">festibask-impro.fr</a>
+          </p>
+          <button class="chip" id="accessGateRetryBtn" type="button">Reessayer</button>
+        </div>
+      </section>
     </main>
 
     <script src="./assets/collection-state.js"></script>
+    <script src="./assets/access-config.js"></script>
+    <script src="./assets/access-gate.js"></script>
     <script src="./assets/app.js"></script>
   </body>
 </html>

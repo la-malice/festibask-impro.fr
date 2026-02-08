@@ -50,4 +50,12 @@ for (const entry of toCopy) {
   copyRecursive(src, dest);
 }
 
+const localMalixAccessConfig = path.join(root, 'malix', 'assets', 'access-config.local.js');
+const distMalixAccessConfig = path.join(dist, 'malix', 'assets', 'access-config.js');
+if (fs.existsSync(localMalixAccessConfig)) {
+  fs.mkdirSync(path.dirname(distMalixAccessConfig), { recursive: true });
+  fs.copyFileSync(localMalixAccessConfig, distMalixAccessConfig);
+  console.log('Applied local Malix access config override in dist/malix/assets/access-config.js');
+}
+
 console.log('Copied site files to dist/');
