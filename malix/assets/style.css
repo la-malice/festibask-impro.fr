@@ -169,6 +169,12 @@ body {
   font-size: 0.9rem;
 }
 
+.welcome-actions {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+}
+
 .hidden {
   display: none;
 }
@@ -1065,7 +1071,7 @@ body {
   display: block;
   width: min(72%, 220px);
   height: auto;
-  margin: 0 auto 10px;
+  margin: 14px auto 0;
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.92);
   padding: 8px 10px;
@@ -1084,8 +1090,21 @@ body {
 }
 
 .access-gate-card .chip {
-  margin-top: 14px;
   min-width: 132px;
+}
+
+.access-gate-actions {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.access-gate-actions .chip.hidden {
+  display: none;
 }
 
 .access-gate-rdv {
@@ -1095,8 +1114,20 @@ body {
   opacity: 0.95;
 }
 
-.access-gate-rdv a {
+.access-gate-infos {
+  margin: 8px 0 0;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  opacity: 0.95;
+}
+
+.access-gate-rdv a,
+.access-gate-infos a {
   color: #fff8b3;
+  font-weight: 800;
+}
+
+.access-gate-rdv-emphasis {
   font-weight: 800;
 }
 

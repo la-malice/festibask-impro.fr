@@ -103,7 +103,10 @@
   const accessGate = document.getElementById('accessGate');
   const accessGateMessage = document.getElementById('accessGateMessage');
   const accessGateDetail = document.getElementById('accessGateDetail');
+  const accessGateRdvTime = document.getElementById('accessGateRdvTime');
+  const accessGateRdvGeo = document.getElementById('accessGateRdvGeo');
   const accessGateRetryBtn = document.getElementById('accessGateRetryBtn');
+  const accessGateIgnoreBtn = document.getElementById('accessGateIgnoreBtn');
   const cheatBadge = document.getElementById('cheatBadge');
   const malidexDetail = document.getElementById('malidexDetail');
   const detailVisual = document.getElementById('detailVisual');
@@ -113,6 +116,7 @@
   const detailTradeBtn = document.getElementById('detailTradeBtn');
   const welcomeQr = document.getElementById('welcomeQr');
   const welcomeLink = document.getElementById('welcomeLink');
+  const welcomeStartBtn = document.getElementById('welcomeStartBtn');
   const welcomeNote = document.getElementById('welcomeNote');
   const resetConfirmOverlay = document.getElementById('resetConfirmOverlay');
   const cancelResetBtn = document.getElementById('cancelResetBtn');
@@ -182,7 +186,7 @@
   let malidexDragLastTime = 0;
   let malidexDragVelocity = 0;
   let finishDismissInProgress = false;
-  let desktopWelcomeMode = false;
+  let isDesktopDevice = false;
   let photoModeActive = false;
   let photoAnimationFrame = null;
   let photoTrackStream = null;
@@ -196,6 +200,8 @@
   let audienceSeatAssignment = [];
   let audienceSeatNodes = [];
   let accessGatePending = false;
+  let accessAuthorized = false;
+  let cheatModeEnabled = false;
   let cheatBypassActive = false;
   let tradeBusy = false;
   let tradeProtocol = null;
@@ -433,8 +439,7 @@
 
   function isCheatAllowed() {
     const params = new URLSearchParams(window.location.search);
-    const host = (window.location.hostname || '').toLowerCase();
-    return params.get('cheat') === '1' || host === 'localhost' || host === '127.0.0.1';
+    return params.get('cheat') === '1';
   }
 
   function loadPhotoAlbumIndex() {
@@ -699,7 +704,7 @@
 
   function generateObstacles() {
     clearObstacles();
-    if (desktopWelcomeMode || screenGame.classList.contains('hidden')) {
+    if (screenGame.classList.contains('hidden')) {
       return;
     }
     randomizeKawaiiDecorLayout();
@@ -1043,11 +1048,24 @@
     accessGate.classList.add('hidden');
   }
 
-  function showAccessGate(message, detail, isChecking) {
+  function setAccessGateRdvEmphasis(options) {
+    const config = options && typeof options === 'object' ? options : {};
+    const emphasizeTime = Boolean(config.time);
+    const emphasizeGeo = Boolean(config.geo);
+    if (accessGateRdvTime) {
+      accessGateRdvTime.classList.toggle('access-gate-rdv-emphasis', emphasizeTime);
+    }
+    if (accessGateRdvGeo) {
+      accessGateRdvGeo.classList.toggle('access-gate-rdv-emphasis', emphasizeGeo);
+    }
+  }
+
+  function showAccessGate(message, detail, isChecking, showIgnore, emphasis) {
     if (!accessGate || !accessGateMessage || !accessGateRetryBtn) return;
     hideAllScreens();
     accessGate.classList.remove('hidden');
     accessGateMessage.textContent = message;
+    setAccessGateRdvEmphasis(emphasis);
     if (accessGateDetail) {
       const hasDetail = Boolean(detail);
       accessGateDetail.classList.toggle('hidden', !hasDetail);
@@ -1055,6 +1073,10 @@
     }
     accessGateRetryBtn.disabled = Boolean(isChecking);
     accessGateRetryBtn.textContent = isChecking ? 'Verification...' : 'Reessayer';
+    if (accessGateIgnoreBtn) {
+      accessGateIgnoreBtn.classList.toggle('hidden', !showIgnore);
+      accessGateIgnoreBtn.disabled = Boolean(isChecking);
+    }
   }
 
   function requestCurrentPosition() {
@@ -1082,8 +1104,8 @@
   function blockedGateCopy(status) {
     if (status === 'blocked_time') {
       return {
-        message: 'Le jeu est disponible pendant le festival.',
-        detail: 'Reviens entre le 15 et le 17 mai 2026.'
+        message: "Le jeu n'est disponible que pendant le festival.",
+        detail: ''
       };
     }
     if (status === 'blocked_geo') {
@@ -1105,44 +1127,35 @@
   }
 
   async function verifyGameAccess() {
-    if (desktopWelcomeMode) {
-      showWelcomeScreen();
-      return;
-    }
-
     if (accessGatePending) return;
     accessGatePending = true;
-    showAccessGate('Verification de ta position...', '', true);
+    showAccessGate('Verification de ta position...', '', true, false, { time: false, geo: false });
 
-    const cheatEnabled = isCheatAllowed();
     const startDecision = accessGateApi.evaluateAccess({
-      cheat: cheatEnabled,
+      cheat: false,
       now: Date.now(),
       config: ACCESS_CONFIG,
       geoAvailable: Boolean(window.navigator && window.navigator.geolocation)
     });
-    cheatBypassActive = startDecision.status === 'cheat_bypass';
-    setCheatBadgeVisible(cheatBypassActive);
+    cheatBypassActive = false;
+    setCheatBadgeVisible(false);
     if (startDecision.allowed) {
+      accessAuthorized = true;
       hideAccessGate();
       accessGatePending = false;
-      if (collectionApi.isComplete(collection)) {
-        showFinish();
-      } else {
-        showGame();
-      }
+      showWelcomeScreen();
       return;
     }
 
     if (startDecision.status === 'blocked_time') {
       const copy = blockedGateCopy(startDecision.status);
-      showAccessGate(copy.message, copy.detail, false);
+      showAccessGate(copy.message, copy.detail, false, cheatModeEnabled, { time: true, geo: false });
       accessGatePending = false;
       return;
     }
     if (!window.navigator || !window.navigator.geolocation) {
       const copy = blockedGateCopy('blocked_unavailable');
-      showAccessGate(copy.message, copy.detail, false);
+      showAccessGate(copy.message, copy.detail, false, cheatModeEnabled, { time: false, geo: true });
       accessGatePending = false;
       return;
     }
@@ -1150,22 +1163,19 @@
     try {
       const position = await requestCurrentPosition();
       const decision = accessGateApi.evaluateAccess({
-        cheat: cheatEnabled,
+        cheat: false,
         now: Date.now(),
         config: ACCESS_CONFIG,
         geoAvailable: true,
         coords: position && position.coords
       });
-      cheatBypassActive = decision.status === 'cheat_bypass';
-      setCheatBadgeVisible(cheatBypassActive);
+      cheatBypassActive = false;
+      setCheatBadgeVisible(false);
       if (decision.allowed) {
+        accessAuthorized = true;
         hideAccessGate();
         accessGatePending = false;
-        if (collectionApi.isComplete(collection)) {
-          showFinish();
-        } else {
-          showGame();
-        }
+        showWelcomeScreen();
         return;
       }
 
@@ -1183,14 +1193,20 @@
           formatMeters(decision.thresholdMeters) +
           ' m autour de la Patinoire.';
       }
-      showAccessGate(copy.message, detail, false);
+      showAccessGate(copy.message, detail, false, cheatModeEnabled, {
+        time: decision.status === 'blocked_time',
+        geo:
+          decision.status === 'blocked_geo' ||
+          decision.status === 'blocked_permission' ||
+          decision.status === 'blocked_unavailable'
+      });
     } catch (error) {
       const denied =
         error &&
         typeof error === 'object' &&
         Number(error.code) === 1;
       const copy = blockedGateCopy(denied ? 'blocked_permission' : 'blocked_unavailable');
-      showAccessGate(copy.message, copy.detail, false);
+      showAccessGate(copy.message, copy.detail, false, cheatModeEnabled, { time: false, geo: true });
     } finally {
       accessGatePending = false;
     }
@@ -1921,7 +1937,7 @@
   }
 
   async function openPhotoMode() {
-    if (photoModeActive || desktopWelcomeMode || !screenPhoto) {
+    if (photoModeActive || !screenPhoto) {
       return;
     }
     if (!currentSpawn) {
@@ -2431,8 +2447,8 @@
   }
 
   function showGame() {
-    if (desktopWelcomeMode) {
-      showWelcomeScreen();
+    if (!accessAuthorized) {
+      verifyGameAccess();
       return;
     }
     hideAllScreens();
@@ -2676,7 +2692,7 @@
       photoModeActive ||
       isCollectionComplete() ||
       screenGame.classList.contains('hidden') ||
-      isLandscape() ||
+      (!isDesktopDevice && isLandscape()) ||
       !screenMalidex.classList.contains('hidden')
     ) {
       return false;
@@ -3375,7 +3391,7 @@
       photoModeActive ||
       isCollectionComplete() ||
       screenGame.classList.contains('hidden') ||
-      isLandscape() ||
+      (!isDesktopDevice && isLandscape()) ||
       !screenMalidex.classList.contains('hidden')
     ) {
       return;
@@ -3551,7 +3567,7 @@
   }
 
   function syncOrientationGuard() {
-    if (desktopWelcomeMode) {
+    if (isDesktopDevice) {
       landscapeGuard.classList.add('hidden');
       clearObstacles();
       return;
@@ -3706,6 +3722,28 @@
       verifyGameAccess();
     });
   }
+  if (accessGateIgnoreBtn) {
+    accessGateIgnoreBtn.addEventListener('click', function () {
+      if (!cheatModeEnabled || accessGatePending) return;
+      accessAuthorized = true;
+      cheatBypassActive = true;
+      hideAccessGate();
+      showWelcomeScreen();
+    });
+  }
+  if (welcomeStartBtn) {
+    welcomeStartBtn.addEventListener('click', function () {
+      if (!accessAuthorized) {
+        verifyGameAccess();
+        return;
+      }
+      if (collectionApi.isComplete(collection)) {
+        showFinish();
+        return;
+      }
+      showGame();
+    });
+  }
 
   window.addEventListener('resize', syncOrientationGuard);
   window.addEventListener('orientationchange', syncOrientationGuard);
@@ -3782,13 +3820,10 @@
   tradeOwnerCode = loadTradeOwnerCode();
   audienceSeatAssignment = loadAudienceSeatAssignment();
   buildAudienceSeats();
-  desktopWelcomeMode = !isPhoneDevice();
+  isDesktopDevice = !isPhoneDevice();
+  cheatModeEnabled = isCheatAllowed();
   updateProgress();
-  if (desktopWelcomeMode) {
-    showWelcomeScreen();
-  } else {
-    verifyGameAccess();
-  }
+  verifyGameAccess();
   renderMalidex();
   syncOrientationGuard();
 

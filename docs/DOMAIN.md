@@ -27,7 +27,7 @@ Vocabulary and concepts for the Festibask'Impro festival site: event, spectacles
 | **Validation bilatérale (Malix)** | Condition où les deux joueurs ont explicitement accepté l’échange ; seul cas autorisant le commit. |
 | **Zone de jeu (Malix)** | Zone géographique autorisée pour jouer sur mobile : rayon cible autour de la Patinoire de la Barre (100 m + tolérance fixe de 20 m). |
 | **Fenêtre festival (Malix)** | Période temporelle pendant laquelle le jeu est autorisé (configuration dates/horaires de l’édition en cours). |
-| **Bypass cheat (Malix)** | Contournement volontaire du garde d’accès via `?cheat=1` : autorise le jeu hors zone et hors fenêtre. |
+| **Bypass cheat (Malix)** | Contournement volontaire du garde d’accès en mode `?cheat=1` via un bouton « Ignorer » visible uniquement dans ce mode : autorise le jeu hors zone et hors fenêtre tout en gardant l’affichage normal du garde. |
 
 ## Entities and Relationships
 

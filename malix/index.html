@@ -47,6 +47,9 @@
           <p>Scanne ce QR code avec ton telephone pour jouer.</p>
           <img class="welcome-qr" id="welcomeQr" alt="QR code vers Chasse aux Malix" />
           <a class="welcome-link" id="welcomeLink" href="#" target="_blank" rel="noopener noreferrer"></a>
+          <div class="welcome-actions">
+            <button class="chip" id="welcomeStartBtn" type="button">Demarrer</button>
+          </div>
           <p class="welcome-note" id="welcomeNote"></p>
         </div>
       </section>
@@ -236,6 +239,19 @@
 
       <section class="access-gate hidden" id="accessGate" aria-label="Acces au jeu">
         <div class="access-gate-card">
+          <h2>La chasse est fermee!</h2>
+          <p class="access-gate-message" id="accessGateMessage">Le jeu est uniquement disponible pendant le festival</p>
+          <p class="access-gate-detail hidden" id="accessGateDetail"></p>
+          <p class="access-gate-rdv">
+            Rendez-vous
+            <span id="accessGateRdvTime">entre le 15 et le 17 mai 2026</span>
+            a
+            <span id="accessGateRdvGeo">la Patinoire de la Barre a Anglet</span>.
+          </p>
+          <div class="access-gate-actions">
+            <button class="chip" id="accessGateRetryBtn" type="button">Reessayer</button>
+            <button class="chip chip-ghost hidden" id="accessGateIgnoreBtn" type="button">Ignorer</button>
+          </div>
           <img
             class="access-gate-logo"
             src="../assets/img/logos/festibask-impro__logo_ss-baseline_fd-fonce-400.avif"
@@ -243,15 +259,9 @@
             loading="eager"
             decoding="async"
           />
-          <h2>La chasse est fermee!</h2>
-          <p class="access-gate-message" id="accessGateMessage">Le jeu est uniquement disponible pendant le festival</p>
-          <p class="access-gate-detail hidden" id="accessGateDetail"></p>
-          <p class="access-gate-rdv">
-            Rendez-vous entre le 15 et le 17 mai 2026 a la Patinoire de la Barre a Anglet.
-            <br />
+          <p class="access-gate-infos">
             Infos : <a href="https://festibask-impro.fr" target="_blank" rel="noopener noreferrer">festibask-impro.fr</a>
           </p>
-          <button class="chip" id="accessGateRetryBtn" type="button">Reessayer</button>
         </div>
       </section>
     </main>

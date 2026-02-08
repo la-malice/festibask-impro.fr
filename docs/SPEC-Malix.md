@@ -139,7 +139,7 @@
 
 ### 5.5 Accès limité (temps + géolocalisation)
 
-- Le jeu mobile passe par un **garde d’accès** avant le démarrage (avant le premier spawn).
+- Le jeu passe par un **garde d’accès** avant l’accueil et avant le démarrage (avant le premier spawn), sur mobile comme sur desktop.
 - Conditions normales d’accès :
   - Date/heure courante dans la **fenêtre festival** configurée.
   - Géolocalisation disponible et autorisée.
@@ -147,11 +147,13 @@
 - Si hors fenêtre : message bloquant indiquant que le jeu est disponible pendant le festival.
 - Si hors zone : message bloquant demandant d’entrer/se rapprocher de la patinoire.
 - Si géolocalisation refusée ou indisponible : message bloquant demandant d’activer la localisation.
-- Le mode desktop d’accueil QR (écran d’orientation vers smartphone) reste inchangé.
+- Si l’accès est autorisé, le jeu affiche un écran d’accueil commun (mobile + desktop) avec QR code et bouton **« Demarrer »**.
+- Tant que l’accès n’est pas autorisé, l’accueil (QR + bouton) n’est pas affiché.
 
 #### Bypass cheat
 
-- En **mode cheat** (`?cheat=1`), le garde d’accès est contourné :
+- En **mode cheat** (`?cheat=1`), le garde d’accès reste affiché avec les messages normaux (temps/géo/permission) pour reproduire l’expérience joueur.
+- Un bouton **« Ignorer »** apparaît uniquement en mode cheat sur l’écran du garde, et permet de forcer l’entrée :
   - jeu jouable hors fenêtre temporelle ;
   - jeu jouable hors zone géographique.
 - Ce bypass est volontairement actif y compris en production pour les usages staff/tests.
