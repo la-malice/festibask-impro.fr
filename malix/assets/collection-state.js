@@ -32,6 +32,15 @@
     return next;
   }
 
+  function removeCapture(collection, type, variant) {
+    const next = new Set(collection);
+    if (type < 1 || type > MAX_TYPES || variant < 1 || variant > MAX_VARIANTS) {
+      return next;
+    }
+    next.delete(makeId(type, variant));
+    return next;
+  }
+
   function isComplete(collection) {
     return collection.size >= MAX_ENTRIES;
   }
@@ -112,6 +121,35 @@
     return next;
   }
 
+  function applyTrade(collection, counts, outgoing, incoming) {
+    const outgoingEntry = parseId(outgoing);
+    const incomingEntry = parseId(incoming);
+    const nextCollection = new Set(collection);
+    let nextCounts = normalizeCounts(counts);
+
+    if (!outgoingEntry || !incomingEntry) {
+      return {
+        collection: nextCollection,
+        counts: nextCounts,
+        receivedWasNew: false
+      };
+    }
+
+    const outgoingId = makeId(outgoingEntry.type, outgoingEntry.variant);
+    const incomingId = makeId(incomingEntry.type, incomingEntry.variant);
+
+    nextCollection.delete(outgoingId);
+    const receivedWasNew = !nextCollection.has(incomingId);
+    nextCollection.add(incomingId);
+    nextCounts = incrementCount(nextCounts, incomingEntry.type, incomingEntry.variant);
+
+    return {
+      collection: nextCollection,
+      counts: nextCounts,
+      receivedWasNew: receivedWasNew
+    };
+  }
+
   function loadCounts(storage) {
     try {
       const raw = storage.getItem(COUNTS_KEY);
@@ -150,6 +188,7 @@
     parseId: parseId,
     emptyState: emptyState,
     addCapture: addCapture,
+    removeCapture: removeCapture,
     isComplete: isComplete,
     serialize: serialize,
     deserialize: deserialize,
@@ -159,6 +198,7 @@
     emptyCounts: emptyCounts,
     normalizeCounts: normalizeCounts,
     incrementCount: incrementCount,
+    applyTrade: applyTrade,
     loadCounts: loadCounts,
     saveCounts: saveCounts,
     clearCounts: clearCounts

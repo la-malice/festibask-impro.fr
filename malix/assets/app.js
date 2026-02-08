@@ -12,6 +12,7 @@
   const variantFillHexColors = ['#bee8ff', '#ffd4e9', '#ffe2bd', '#d2f5d9'];
   const variantRarityWeights = [55, 27, 13, 5];
   const OFFICIAL_GAME_URL = 'https://festibask-impro.fr/malix';
+  const TRADE_SCAN_ICON_PATH = './assets/ui/icon-photo-camera.svg';
   const AUDIENCE_LAYOUT_KEY = 'malix-audience-layout-v1';
   const AUDIENCE_ROWS = 8;
   const AUDIENCE_LEFT_COUNT = 6;
@@ -120,17 +121,10 @@
   const cancelDeletePhotoBtn = document.getElementById('cancelDeletePhotoBtn');
   const confirmDeletePhotoBtn = document.getElementById('confirmDeletePhotoBtn');
   const tradeOverlay = document.getElementById('tradeOverlay');
-  const tradeStatusText = document.getElementById('tradeStatusText');
-  const tradeSelectedText = document.getElementById('tradeSelectedText');
+  const tradeHelpText = document.getElementById('tradeHelpText');
   const tradeStepDecision = document.getElementById('tradeStepDecision');
-  const tradeMyOfferText = document.getElementById('tradeMyOfferText');
-  const tradePeerOfferText = document.getElementById('tradePeerOfferText');
   const tradeMyQr = document.getElementById('tradeMyQr');
   const tradeMyCode = document.getElementById('tradeMyCode');
-  const tradePeerQr = document.getElementById('tradePeerQr');
-  const tradeScanInput = document.getElementById('tradeScanInput');
-  const tradeApplyScanBtn = document.getElementById('tradeApplyScanBtn');
-  const tradeOpenScannerBtn = document.getElementById('tradeOpenScannerBtn');
   const tradeScannerOverlay = document.getElementById('tradeScannerOverlay');
   const tradeScannerVideo = document.getElementById('tradeScannerVideo');
   const tradeScannerCancelBtn = document.getElementById('tradeScannerCancelBtn');
@@ -210,6 +204,7 @@
   let tradeScannerStream = null;
   let tradeScannerFrame = null;
   let tradeBarcodeDetector = null;
+  let tradeMyCardFlipped = false;
 
   function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -1268,46 +1263,43 @@
     if (tradeStepDecision) {
       tradeStepDecision.classList.remove('hidden');
     }
-    tradeMyOfferText.textContent = 'Ta proposition: -';
-    tradePeerOfferText.textContent = 'Sa proposition: -';
-    if (tradeMyCode) {
-      tradeMyCode.value = '';
+    if (tradeHelpText) {
+      tradeHelpText.textContent = 'Tape sur ton Malix lorsque tu es pret a echanger.';
     }
-    if (tradeScanInput) {
-      tradeScanInput.value = '';
+    if (tradeMyCode) {
+      tradeMyCode.textContent = '---';
     }
     if (tradeMyQr) {
       tradeMyQr.classList.add('hidden');
       tradeMyQr.removeAttribute('src');
     }
-    if (tradePeerQr) {
-      tradePeerQr.classList.add('hidden');
-      tradePeerQr.removeAttribute('src');
-    }
     if (tradeMyConfirmBtn) {
-      tradeMyConfirmBtn.disabled = true;
+      tradeMyConfirmBtn.disabled = false;
       tradeMyConfirmBtn.classList.remove('is-confirmed');
+      tradeMyConfirmBtn.classList.remove('is-flipped');
     }
     if (tradePeerConfirmBtn) {
       tradePeerConfirmBtn.classList.remove('is-confirmed');
+      tradePeerConfirmBtn.classList.add('is-placeholder');
     }
     if (tradeMyConfirmImg) {
       tradeMyConfirmImg.removeAttribute('src');
     }
     if (tradePeerConfirmImg) {
-      tradePeerConfirmImg.removeAttribute('src');
+      tradePeerConfirmImg.src = TRADE_SCAN_ICON_PATH;
     }
     if (tradeMyConfirmLabel) {
       tradeMyConfirmLabel.textContent = 'Ton Malix';
     }
     if (tradePeerConfirmLabel) {
-      tradePeerConfirmLabel.textContent = 'Malix du joueur 2';
+      tradePeerConfirmLabel.textContent = 'Scanner le QR joueur 2';
     }
+    tradeMyCardFlipped = false;
   }
 
   function updateTradeStatus(message) {
-    if (tradeStatusText) {
-      tradeStatusText.textContent = message;
+    if (tradeHelpText) {
+      tradeHelpText.textContent = message;
     }
   }
 
@@ -1320,12 +1312,8 @@
   function updateTradeDecisionUi() {
     if (!tradeProtocol) return;
     const snapshot = tradeProtocol.getSnapshot();
-    tradeMyOfferText.textContent = 'Ta proposition: ' + formatEntryLabel(snapshot.localOfferId);
-    tradePeerOfferText.textContent = 'Sa proposition: ' + formatEntryLabel(snapshot.peerOfferId);
-    const canAnswer = Boolean(snapshot.localOfferId && snapshot.peerOfferId && !snapshot.localAccepted);
 
     if (tradeMyConfirmBtn) {
-      tradeMyConfirmBtn.disabled = !canAnswer;
       tradeMyConfirmBtn.classList.toggle('is-confirmed', Boolean(snapshot.localAccepted));
     }
     if (tradePeerConfirmBtn) {
@@ -1346,6 +1334,9 @@
       if (peer && tradePeerConfirmImg) {
         setTypeVariantImage(tradePeerConfirmImg, peer.type, peer.variant);
       }
+      if (tradePeerConfirmBtn) {
+        tradePeerConfirmBtn.classList.remove('is-placeholder');
+      }
       if (tradePeerConfirmLabel) {
         tradePeerConfirmLabel.textContent = formatEntryLabel(snapshot.peerOfferId);
       }
@@ -1353,12 +1344,36 @@
 
     if (snapshot.localAccepted && snapshot.peerAccepted) {
       updateTradeStatus('Les deux joueurs ont confirme. Echange en cours...');
+      if (tradeHelpText) {
+        tradeHelpText.textContent = 'Validation complete, echange en cours...';
+      }
     } else if (snapshot.localAccepted) {
       updateTradeStatus('Ton acceptation est enregistree. Fais scanner ton QR au joueur en face.');
+      if (tradeHelpText) {
+        tradeHelpText.textContent = 'Ton QR est confirme. Attends la confirmation du joueur en face.';
+      }
     } else if (snapshot.peerAccepted) {
       updateTradeStatus('Le joueur en face a confirme. Scanne son QR confirme pour finaliser.');
+      if (tradeHelpText) {
+        tradeHelpText.textContent = 'Scanne de nouveau le QR du joueur en face pour finaliser.';
+      }
     } else {
-      updateTradeStatus('Scanne le QR de l\'autre joueur pour accepter l\'echange.');
+      if (!tradeMyCardFlipped) {
+        updateTradeStatus('Tape sur ton Malix pour afficher ton QR.');
+        if (tradeHelpText) {
+          tradeHelpText.textContent = 'Tape sur ton Malix lorsque tu es pret a echanger.';
+        }
+      } else if (!snapshot.peerOfferId) {
+        updateTradeStatus('Fais scanner ton QR puis scanne celui de l\'autre joueur.');
+        if (tradeHelpText) {
+          tradeHelpText.textContent = 'Fais scanner ce QR code pour echanger.';
+        }
+      } else {
+        updateTradeStatus('Scanne le QR de l\'autre joueur pour accepter l\'echange.');
+        if (tradeHelpText) {
+          tradeHelpText.textContent = 'Tape sur le Malix adverse pour ouvrir le scan.';
+        }
+      }
     }
   }
 
@@ -1389,7 +1404,7 @@
     if (!payload) return;
     const encoded = encodeTradeShortCode(payload.offerId, payload.acceptedByOwner, tradeOwnerCode);
     if (tradeMyCode) {
-      tradeMyCode.value = encoded;
+      tradeMyCode.textContent = encoded;
     }
     createTradeQr(encoded, tradeMyQr);
   }
@@ -1419,7 +1434,6 @@
       tradeProtocol.receiveAccept();
     }
 
-    createTradeQr(encoded, tradePeerQr);
     updateTradeDecisionUi();
     refreshTradeLocalCode();
     maybeCommitTrade();
@@ -1449,10 +1463,20 @@
     }
   }
 
+  function promptTradeFallbackCode() {
+    const fallbackCode = window.prompt('Saisis le code court du joueur en face (ex: ABC12)');
+    if (fallbackCode) {
+      processScannedTradeCode(fallbackCode);
+      return true;
+    }
+    return false;
+  }
+
   async function openTradeScanner() {
     if (!tradeScannerOverlay || !tradeScannerVideo) return;
     if (!window.BarcodeDetector || !window.navigator || !window.navigator.mediaDevices) {
-      updateTradeStatus('Scanner indisponible ici. Colle le code du joueur en face.');
+      updateTradeStatus('Scanner indisponible ici. Saisie manuelle du code.');
+      promptTradeFallbackCode();
       return;
     }
 
@@ -1475,9 +1499,6 @@
           .detect(tradeScannerVideo)
           .then(function (codes) {
             if (codes && codes.length > 0 && codes[0].rawValue) {
-              if (tradeScanInput) {
-                tradeScanInput.value = codes[0].rawValue;
-              }
               processScannedTradeCode(codes[0].rawValue);
               closeTradeScanner();
               return;
@@ -1492,7 +1513,8 @@
       tradeScannerFrame = window.requestAnimationFrame(loop);
     } catch (error) {
       closeTradeScanner();
-      updateTradeStatus('Impossible d\'ouvrir la camera. Colle le code a la main.');
+      updateTradeStatus('Impossible d\'ouvrir la camera. Saisie manuelle du code.');
+      promptTradeFallbackCode();
     }
   }
 
@@ -1558,7 +1580,6 @@
     tradeLocalOfferId = entryId;
     tradeProtocol.createOffer(entryId);
     tradeProtocol.setConnected();
-    tradeSelectedText.textContent = 'Ta proposition: ' + formatEntryLabel(entryId);
     updateTradeStatus('Montre ton QR et scanne celui du joueur en face.');
     revealTradeDecisionStep();
     updateTradeDecisionUi();
@@ -3356,22 +3377,28 @@
   if (tradeMyConfirmBtn) {
     tradeMyConfirmBtn.addEventListener('click', function (event) {
       event.preventDefault();
-      showGameNotice('Ton acceptation se fait en scannant le QR du joueur en face.');
+      tradeMyCardFlipped = !tradeMyCardFlipped;
+      tradeMyConfirmBtn.classList.toggle('is-flipped', tradeMyCardFlipped);
+      if (tradeMyCardFlipped) {
+        if (tradeHelpText) {
+          tradeHelpText.textContent = 'Fais scanner ce QR code pour echanger.';
+        }
+        updateTradeStatus('Ton QR est visible. Fais-le scanner puis scanne celui du joueur en face.');
+      } else if (tradeHelpText) {
+        tradeHelpText.textContent = 'Tape sur ton Malix lorsque tu es pret a echanger.';
+      }
     });
   }
   if (tradePeerConfirmBtn) {
     tradePeerConfirmBtn.addEventListener('click', function (event) {
       event.preventDefault();
-      showGameNotice('Le joueur en face confirme sur son propre telephone.');
-    });
-  }
-  if (tradeApplyScanBtn) {
-    tradeApplyScanBtn.addEventListener('click', function () {
-      processScannedTradeCode(tradeScanInput ? tradeScanInput.value : '');
-    });
-  }
-  if (tradeOpenScannerBtn) {
-    tradeOpenScannerBtn.addEventListener('click', function () {
+      if (!tradeMyCardFlipped) {
+        tradeMyCardFlipped = true;
+        tradeMyConfirmBtn.classList.add('is-flipped');
+        if (tradeHelpText) {
+          tradeHelpText.textContent = 'Fais scanner ce QR code pour echanger.';
+        }
+      }
       openTradeScanner();
     });
   }

@@ -118,6 +118,9 @@
           <h3 class="detail-name" id="detailName"></h3>
           <p class="detail-rarity" id="detailRarity"></p>
           <p class="detail-captures" id="detailCaptures"></p>
+          <div class="confirm-actions">
+            <button class="chip" id="detailTradeBtn" type="button">Echanger</button>
+          </div>
         </aside>
 
       </section>
@@ -163,6 +166,44 @@
           <div class="confirm-actions">
             <button class="chip chip-ghost" id="cancelDeletePhotoBtn" type="button">Annuler</button>
             <button class="chip chip-warn" id="confirmDeletePhotoBtn" type="button">Oui, supprimer</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="confirm-overlay hidden" id="tradeOverlay" aria-label="Echange de Malix">
+        <div class="confirm-card trade-card" role="dialog" aria-modal="true" aria-labelledby="tradeDialogTitle">
+          <button class="chip chip-ghost trade-close-btn" id="tradeCancelBtn" type="button" aria-label="Fermer">✕</button>
+          <h3 id="tradeDialogTitle">Echange de Malix</h3>
+          <div class="trade-step" id="tradeStepDecision">
+            <p class="trade-help" id="tradeHelpText">Tape sur ton Malix lorsque tu es pret a echanger.</p>
+            <div class="trade-confirm-zone">
+              <button class="trade-malix-card" id="tradeMyConfirmBtn" type="button">
+                <span class="trade-malix-flip" id="tradeMyFlip">
+                  <span class="trade-malix-face trade-malix-front">
+                    <img id="tradeMyConfirmImg" alt="" />
+                    <span id="tradeMyConfirmLabel">Ton Malix</span>
+                  </span>
+                  <span class="trade-malix-face trade-malix-back">
+                    <img class="trade-qr" id="tradeMyQr" alt="Ton QR d'echange" />
+                    <span class="trade-code-inline" id="tradeMyCode">---</span>
+                  </span>
+                </span>
+              </button>
+              <button class="trade-malix-card trade-malix-peer" id="tradePeerConfirmBtn" type="button">
+                <img id="tradePeerConfirmImg" alt="" />
+                <span id="tradePeerConfirmLabel">Malix du joueur 2</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="confirm-overlay hidden" id="tradeScannerOverlay" aria-label="Scanner QR echange">
+        <div class="confirm-card trade-scanner-card">
+          <h3>Scan du QR</h3>
+          <video id="tradeScannerVideo" autoplay playsinline muted></video>
+          <div class="confirm-actions">
+            <button class="chip chip-ghost" id="tradeScannerCancelBtn" type="button">Fermer</button>
           </div>
         </div>
       </section>
@@ -213,6 +254,7 @@
     <script src="./assets/collection-state.js"></script>
     <script src="./assets/access-config.js"></script>
     <script src="./assets/access-gate.js"></script>
+    <script src="./assets/trade-session.js"></script>
     <script src="./assets/app.js"></script>
   </body>
 </html>

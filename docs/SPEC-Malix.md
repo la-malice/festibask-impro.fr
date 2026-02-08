@@ -45,7 +45,7 @@
 ### 2.3 Inspirations
 
 - Collection et complétion (type Pokédex / Pokémon Go).
-- Mini-jeu casual, fun, **sans compte**, **mono-utilisateur**.
+- Mini-jeu casual, fun, **sans compte** ; progression locale par appareil, avec **échange ponctuel P2P** possible entre deux appareils.
 - **Simple et sans explication** : l’enfant comprend en jouant (tap pour attraper, voir la collection). Pas de tutoriel ni de blocs de texte explicatifs.
 - **Fun, rigolo, joli** : ambiance joyeuse, couleurs vives, animations sympas ; pas de pression, pas de score affiché, pas de compétition.
 
@@ -61,6 +61,7 @@
 
 - Jeu autonome sous **/malix**.
 - Spawn, capture, collection (Malidex).
+- Échange 1↔1 de Malix depuis le Malidex (double validation).
 - Mode photo local et album (consultation et suppression manuelle d’une photo).
 - Fin de jeu spectaculaire (grand « Bravo », super animation des doodles).
 - Stockage local uniquement ; persistance ; option de réinitialisation.
@@ -94,6 +95,7 @@
 | **Type** | Identifiant du doodle : 1 à 26 (correspondant aux fichiers `01.svg` … `26.svg`). |
 | **Variante (couleur)** | Une des 4 couleurs appliquées au SVG (par remplissage CSS ou équivalent). Identifiants 1 à 4 ou noms de couleur définis dans la SPEC. |
 | **Entrée de collection** | Paire (type, variante). Une entrée est soit collectée soit manquante. 26 × 4 = 104 entrées au total. |
+| **Échange** | Transaction 1↔1 entre deux joueurs: chaque joueur propose une entrée du Malidex, les deux valident, puis transfert croisé. |
 
 ---
 
@@ -154,13 +156,34 @@
   - jeu jouable hors zone géographique.
 - Ce bypass est volontairement actif y compris en production pour les usages staff/tests.
 
+### 5.6 Échange de Malix (Malidex)
+
+- **Point d’entrée** : depuis le Malidex, chaque entrée collectée peut ouvrir un mode « Échanger ».
+- **Rituel proximité** : l’UI demande de rapprocher les téléphones ; en web, la validation passe par **scan croisé de QR codes** entre les deux appareils.
+- **Appairage / validation** :
+  - Chaque joueur affiche un QR d’échange pour son offre (type-variante choisie).
+  - Le code affiché est un format court lisible/saisissable (**3 lettres + 2 chiffres**, ex. `ABC12`), identique au contenu du QR.
+  - Chaque joueur scanne le QR de l’autre ; ce scan vaut **acceptation locale**.
+  - Le QR local passe alors en mode « confirmé » ; un second scan croisé peut être nécessaire pour réconcilier la double confirmation sur les deux appareils.
+- **Négociation** :
+  - Les deux joueurs visualisent les deux offres dans la zone d’échange.
+  - Action de confirmation principale : **scanner le QR de l’autre joueur**.
+  - Bouton disponible : **Annuler**.
+- **Règle métier** : échange **1 contre 1 avec transfert**.
+  - Le Malix proposé par A est retiré de la collection de A et ajouté chez B.
+  - Le Malix proposé par B est retiré de la collection de B et ajouté chez A.
+- **Validation bilatérale** : l’échange n’est appliqué qu’après acceptation des deux joueurs.
+- **Doublon reçu** : si l’entrée reçue existe déjà, la collection reste inchangée mais le compteur de captures (`xN`) augmente de +1.
+- **Feedback** : après échange réussi, afficher une popup de bienvenue/réception (style congratulation), y compris si doublon.
+
 ---
 
 ## 6. Données et stockage
 
 ### 6.1 Principes
 
-- **Mono-utilisateur** : un seul joueur par appareil.
+- **Progression locale** : un joueur principal par appareil (collection locale).
+- **Échange QR ponctuel** : interaction temporaire entre deux appareils par scan/copie de codes ; aucune base serveur centrale.
 - **Aucun compte** : pas d’authentification.
 - **Aucune donnée serveur** : tout reste dans le navigateur.
 
@@ -172,6 +195,7 @@
   - **Clé** : `malix-collection` (préfixe ou nom unique pour éviter les collisions avec d’éventuelles autres clés du même domaine).
   - **Valeur** : JSON. Exemple : tableau de paires `[{ "type": 1, "variant": 2 }, ...]` ou ensemble de chaînes `["1-2", "3-1", ...]`. Chaque paire (type, variante) n’apparaît qu’une fois. Type : entier 1–26, Variant : entier 1–4.
 - **Persistance** : à chaque capture, sauvegarder la collection mise à jour. Au chargement de la page, recharger la collection depuis localStorage pour afficher le Malidex à jour et détecter une éventuelle complétion (redirection vers écran de fin si déjà 104).
+- **Échange** : après commit d’un échange bilatéral, sauvegarder immédiatement la collection et les compteurs mis à jour. Les états intermédiaires de négociation ne sont pas persistés.
 
 ### 6.3 Réinitialisation
 
@@ -266,7 +290,14 @@ L’agent qui implémente le jeu doit prévoir ou exécuter :
 
 - Lecture/écriture de la collection (localStorage) ; persistance après rechargement de la page ; réinitialisation efface bien la clé et remet la collection à zéro.
 
-### 11.4 Vérification de l’isolement
+### 11.4 Tests échange (Malidex)
+
+- Logique: retrait de l’entrée sortante, ajout de l’entrée reçue, détection `receivedWasNew`.
+- Doublon reçu: collection inchangée côté receveur mais compteur de captures incrémenté.
+- Protocole: commit uniquement après double acceptation ; annulation/refus ne modifie pas les collections.
+- Résilience: si déconnexion avant commit, aucun transfert appliqué.
+
+### 11.5 Vérification de l’isolement
 
 - Le jeu fonctionne **uniquement** sous /malix (accès direct à l’URL du jeu).
 - Le site à la racine (/) reste inchangé : pas de lien automatique vers Malix dans le menu principal sauf décision future documentée.

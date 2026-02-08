@@ -56,3 +56,38 @@ test('normalizeCounts keeps only valid ids and positive numbers', function () {
   assert.equal(Object.prototype.hasOwnProperty.call(normalized, 'bad'), false);
   assert.equal(Object.prototype.hasOwnProperty.call(normalized, '2-2'), false);
 });
+
+test('removeCapture removes only valid existing entries', function () {
+  let state = collection.emptyState();
+  state = collection.addCapture(state, 4, 2);
+  state = collection.removeCapture(state, 4, 2);
+  assert.equal(state.has('4-2'), false);
+  const unchanged = collection.removeCapture(state, 99, 1);
+  assert.deepEqual(Array.from(unchanged), Array.from(state));
+});
+
+test('applyTrade transfers local entry and adds received entry', function () {
+  let state = collection.emptyState();
+  state = collection.addCapture(state, 1, 1);
+  let counts = collection.emptyCounts();
+  counts = collection.incrementCount(counts, 1, 1);
+  const result = collection.applyTrade(state, counts, '1-1', '2-3');
+  assert.equal(result.collection.has('1-1'), false);
+  assert.equal(result.collection.has('2-3'), true);
+  assert.equal(result.counts['2-3'], 1);
+  assert.equal(result.receivedWasNew, true);
+});
+
+test('applyTrade keeps collection size when received entry already exists and increments count', function () {
+  let state = collection.emptyState();
+  state = collection.addCapture(state, 1, 1);
+  state = collection.addCapture(state, 2, 3);
+  let counts = collection.emptyCounts();
+  counts = collection.incrementCount(counts, 2, 3);
+  const result = collection.applyTrade(state, counts, '1-1', '2-3');
+  assert.equal(result.collection.has('1-1'), false);
+  assert.equal(result.collection.has('2-3'), true);
+  assert.equal(result.collection.size, 1);
+  assert.equal(result.counts['2-3'], 2);
+  assert.equal(result.receivedWasNew, false);
+});

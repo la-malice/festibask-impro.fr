@@ -22,6 +22,9 @@ Vocabulary and concepts for the Festibask'Impro festival site: event, spectacles
 | **Malidex** | Dans le jeu Malix : la collection / catalogue listant les 26 types de Malix avec les 4 couleurs chacune (26 × 4 = 104 entrées). |
 | **Spawn** | Dans le jeu Malix : apparition d’un Malix à l’écran (position et variante aléatoires). |
 | **Capture** | Dans le jeu Malix : tap ou clic sur un Malix → ajout à la collection, feedback, disparition. |
+| **Échange (Malix)** | Transaction 1↔1 entre deux appareils : chaque joueur propose un Malix, les deux valident, puis transfert croisé des entrées. |
+| **Offre d’échange (Malix)** | Entrée (type, variante) proposée par un joueur pendant une session d’échange. |
+| **Validation bilatérale (Malix)** | Condition où les deux joueurs ont explicitement accepté l’échange ; seul cas autorisant le commit. |
 | **Zone de jeu (Malix)** | Zone géographique autorisée pour jouer sur mobile : rayon cible autour de la Patinoire de la Barre (100 m + tolérance fixe de 20 m). |
 | **Fenêtre festival (Malix)** | Période temporelle pendant laquelle le jeu est autorisé (configuration dates/horaires de l’édition en cours). |
 | **Bypass cheat (Malix)** | Contournement volontaire du garde d’accès via `?cheat=1` : autorise le jeu hors zone et hors fenêtre. |
