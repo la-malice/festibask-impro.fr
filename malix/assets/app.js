@@ -122,7 +122,11 @@
   const confirmDeletePhotoBtn = document.getElementById('confirmDeletePhotoBtn');
   const tradeOverlay = document.getElementById('tradeOverlay');
   const tradeHelpText = document.getElementById('tradeHelpText');
+  const tradeCountdown = document.getElementById('tradeCountdown');
   const tradeStepDecision = document.getElementById('tradeStepDecision');
+  const tradeSuccessPanel = document.getElementById('tradeSuccessPanel');
+  const tradeSuccessText = document.getElementById('tradeSuccessText');
+  const tradeDoneBtn = document.getElementById('tradeDoneBtn');
   const tradeMyQr = document.getElementById('tradeMyQr');
   const tradeMyCode = document.getElementById('tradeMyCode');
   const tradeScannerOverlay = document.getElementById('tradeScannerOverlay');
@@ -199,12 +203,18 @@
   let tradePeerOfferId = null;
   let tradeCommitApplied = false;
   let tradeSessionTimeout = null;
+  let tradeSessionDeadline = 0;
+  let tradeCountdownTimer = null;
   let detailTradeEntryId = null;
   let tradeOwnerCode = 0;
   let tradeScannerStream = null;
   let tradeScannerFrame = null;
   let tradeBarcodeDetector = null;
   let tradeMyCardFlipped = false;
+  let tradeCompleted = false;
+  let tradeRtcSession = null;
+  let tradeRtcConnected = false;
+  let tradeRtcAwaitingAnswer = false;
 
   function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -1294,13 +1304,56 @@
     if (tradePeerConfirmLabel) {
       tradePeerConfirmLabel.textContent = 'Scanner le QR joueur 2';
     }
+    if (tradeSuccessPanel) {
+      tradeSuccessPanel.classList.add('hidden');
+    }
+    if (tradeSuccessText) {
+      tradeSuccessText.textContent = 'Echange reussi !';
+    }
+    if (tradeCancelBtn) {
+      tradeCancelBtn.disabled = true;
+      tradeCancelBtn.setAttribute('aria-disabled', 'true');
+    }
     tradeMyCardFlipped = false;
+    tradeCompleted = false;
+    tradeRtcConnected = false;
+    tradeRtcAwaitingAnswer = false;
   }
 
   function updateTradeStatus(message) {
     if (tradeHelpText) {
       tradeHelpText.textContent = message;
     }
+  }
+
+  function formatCountdown(msRemaining) {
+    const totalSeconds = Math.max(0, Math.ceil(msRemaining / 1000));
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+  }
+
+  function stopTradeCountdown() {
+    if (tradeCountdownTimer) {
+      window.clearInterval(tradeCountdownTimer);
+      tradeCountdownTimer = null;
+    }
+    tradeSessionDeadline = 0;
+    if (tradeCountdown) {
+      tradeCountdown.textContent = '';
+    }
+  }
+
+  function startTradeCountdown(timeoutMs) {
+    stopTradeCountdown();
+    tradeSessionDeadline = Date.now() + timeoutMs;
+    if (!tradeCountdown) return;
+    const update = function () {
+      const remaining = tradeSessionDeadline - Date.now();
+      tradeCountdown.textContent = 'Temps restant: ' + formatCountdown(remaining);
+    };
+    update();
+    tradeCountdownTimer = window.setInterval(update, 1000);
   }
 
   function revealTradeDecisionStep() {
@@ -1350,7 +1403,7 @@
     } else if (snapshot.localAccepted) {
       updateTradeStatus('Ton acceptation est enregistree. Fais scanner ton QR au joueur en face.');
       if (tradeHelpText) {
-        tradeHelpText.textContent = 'Ton QR est confirme. Attends la confirmation du joueur en face.';
+        tradeHelpText.textContent = 'Ton QR est confirme. Attends que l\'autre joueur finalise de son cote.';
       }
     } else if (snapshot.peerAccepted) {
       updateTradeStatus('Le joueur en face a confirme. Scanne son QR confirme pour finaliser.');
@@ -1409,13 +1462,156 @@
     createTradeQr(encoded, tradeMyQr);
   }
 
+  function closeTradeRtcSession() {
+    if (tradeRtcSession) {
+      tradeRtcSession.close();
+      tradeRtcSession = null;
+    }
+    tradeRtcConnected = false;
+    tradeRtcAwaitingAnswer = false;
+  }
+
+  function handleTradeRtcMessage(message) {
+    if (!tradeProtocol || !message || typeof message !== 'object') return;
+
+    if (message.type === 'offer' && message.entryId) {
+      tradeProtocol.receiveOffer(message.entryId);
+      tradePeerOfferId = message.entryId;
+      if (!tradeProtocol.getSnapshot().localAccepted) {
+        tradeProtocol.acceptOffer();
+        if (tradeRtcSession) {
+          tradeRtcSession.send({ type: 'accept' });
+        }
+      }
+      updateTradeDecisionUi();
+      maybeCommitTrade();
+      return;
+    }
+
+    if (message.type === 'accept') {
+      tradeProtocol.receiveAccept();
+      updateTradeDecisionUi();
+      maybeCommitTrade();
+      return;
+    }
+
+    if (message.type === 'commit') {
+      if (!tradeCommitApplied && message.localOfferId && message.peerOfferId) {
+        applyTradeCommit(message.localOfferId, message.peerOfferId);
+      }
+    }
+  }
+
+  function setupTradeRtcSession() {
+    if (tradeRtcSession) return true;
+    const session = tradeApi.createRtcSession({
+      onStateChange: function (state) {
+        if (state === 'connected') {
+          tradeRtcConnected = true;
+          tradeRtcAwaitingAnswer = false;
+          if (tradeProtocol) {
+            tradeProtocol.setConnected();
+          }
+          updateTradeStatus('Connexion en direct etablie. Echange en cours...');
+          if (tradeProtocol && tradeLocalOfferId) {
+            session.send({ type: 'offer', entryId: tradeLocalOfferId });
+          }
+        }
+      },
+      onMessage: function (payload) {
+        handleTradeRtcMessage(payload);
+      },
+      onError: function () {
+        updateTradeStatus('Connexion directe indisponible. Fallback QR actif.');
+      }
+    });
+    if (!session.isSupported) {
+      return false;
+    }
+    tradeRtcSession = session;
+    return true;
+  }
+
+  async function startTradeRtcHost() {
+    if (!setupTradeRtcSession()) {
+      tradeProtocol.setConnected();
+      refreshTradeLocalCode();
+      return;
+    }
+    try {
+      const offerCode = await tradeRtcSession.startHost();
+      if (!offerCode) {
+        tradeProtocol.setConnected();
+        refreshTradeLocalCode();
+        return;
+      }
+      tradeRtcAwaitingAnswer = true;
+      if (tradeMyCode) {
+        tradeMyCode.textContent = 'RTC';
+      }
+      createTradeQr(offerCode, tradeMyQr);
+      updateTradeStatus('Fais scanner ton QR pour etablir la connexion directe.');
+    } catch (error) {
+      tradeProtocol.setConnected();
+      refreshTradeLocalCode();
+    }
+  }
+
   function processScannedTradeCode(rawCode) {
     if (!tradeProtocol) return;
-    const encoded = String(rawCode || '').trim().toUpperCase();
+    const encodedRaw = String(rawCode || '').trim();
+    const encoded = encodedRaw.toUpperCase();
     if (!encoded) {
       updateTradeStatus('Code vide. Reessaie le scan.');
       return;
     }
+
+    const rtcPayload = tradeApi.decodePayload(encodedRaw);
+    if (rtcPayload && rtcPayload.type === 'offer' && rtcPayload.sdp) {
+      if (!setupTradeRtcSession()) {
+        updateTradeStatus('Connexion directe non supportee ici. Utilise le code court.');
+        return;
+      }
+      tradeRtcSession
+        .startGuest(encodedRaw)
+        .then(function (answerCode) {
+          if (!answerCode) {
+            updateTradeStatus('Offer invalide. Reessaie.');
+            return;
+          }
+          tradeRtcAwaitingAnswer = false;
+          if (tradeMyCode) {
+            tradeMyCode.textContent = 'RTC';
+          }
+          createTradeQr(answerCode, tradeMyQr);
+          updateTradeStatus('Fais scanner ton QR reponse pour finaliser la connexion.');
+        })
+        .catch(function () {
+          updateTradeStatus('Connexion directe echouee. Utilise le code court.');
+        });
+      return;
+    }
+
+    if (rtcPayload && rtcPayload.type === 'answer' && rtcPayload.sdp) {
+      if (!tradeRtcSession || !tradeRtcAwaitingAnswer) {
+        updateTradeStatus('Reponse RTC inattendue.');
+        return;
+      }
+      tradeRtcSession
+        .applyHostAnswer(encodedRaw)
+        .then(function (ok) {
+          if (!ok) {
+            updateTradeStatus('Reponse RTC invalide.');
+          } else {
+            updateTradeStatus('Reponse recue. Connexion en cours...');
+          }
+        })
+        .catch(function () {
+          updateTradeStatus('Reponse RTC invalide.');
+        });
+      return;
+    }
+
     const payload = decodeTradeShortCode(encoded);
     if (!payload) {
       updateTradeStatus('Code d\'echange invalide.');
@@ -1429,10 +1625,7 @@
     tradeProtocol.receiveOffer(payload.offerId);
     tradePeerOfferId = payload.offerId;
     tradeProtocol.acceptOffer();
-
-    if (payload.acceptedByOwner) {
-      tradeProtocol.receiveAccept();
-    }
+    tradeProtocol.receiveAccept();
 
     updateTradeDecisionUi();
     refreshTradeLocalCode();
@@ -1473,6 +1666,7 @@
   }
 
   async function openTradeScanner() {
+    if (tradeCompleted) return;
     if (!tradeScannerOverlay || !tradeScannerVideo) return;
     if (!window.BarcodeDetector || !window.navigator || !window.navigator.mediaDevices) {
       updateTradeStatus('Scanner indisponible ici. Saisie manuelle du code.');
@@ -1523,6 +1717,8 @@
       window.clearTimeout(tradeSessionTimeout);
       tradeSessionTimeout = null;
     }
+    stopTradeCountdown();
+    closeTradeRtcSession();
     tradeProtocol = null;
     tradeLocalOfferId = null;
     tradePeerOfferId = null;
@@ -1531,13 +1727,18 @@
   }
 
   function armTradeSessionTimeout() {
+    const timeoutMs = 300000;
     if (tradeSessionTimeout) {
       window.clearTimeout(tradeSessionTimeout);
     }
+    startTradeCountdown(timeoutMs);
     tradeSessionTimeout = window.setTimeout(function () {
+      if (!tradeProtocol || tradeCommitApplied) {
+        return;
+      }
       closeTradeOverlay(true);
-      showGameNotice('Echange expire. Recommencez le scan.');
-    }, 60000);
+      showGameNotice('Temps ecoule: echange annule.');
+    }, timeoutMs);
   }
 
   function closeTradeOverlay(skipNotice) {
@@ -1555,12 +1756,27 @@
     }
   }
 
+  function blockManualCloseDuringTrade() {
+    if (!tradeCompleted) {
+      showGameNotice('Echange en cours: fermeture indisponible.');
+      return true;
+    }
+    return false;
+  }
+
   function maybeCommitTrade() {
     if (!tradeProtocol) return;
     if (!tradeProtocol.canCommit()) return;
     const snapshot = tradeProtocol.getSnapshot();
     if (!snapshot.localOfferId || !snapshot.peerOfferId) return;
     if (tradeCommitApplied) return;
+    if (tradeRtcConnected && tradeRtcSession) {
+      tradeRtcSession.send({
+        type: 'commit',
+        localOfferId: snapshot.localOfferId,
+        peerOfferId: snapshot.peerOfferId
+      });
+    }
     applyTradeCommit(snapshot.localOfferId, snapshot.peerOfferId);
   }
 
@@ -1579,11 +1795,11 @@
     tradeProtocol.setPairing();
     tradeLocalOfferId = entryId;
     tradeProtocol.createOffer(entryId);
-    tradeProtocol.setConnected();
     updateTradeStatus('Montre ton QR et scanne celui du joueur en face.');
     revealTradeDecisionStep();
     updateTradeDecisionUi();
     refreshTradeLocalCode();
+    startTradeRtcHost();
     armTradeSessionTimeout();
   }
 
@@ -2968,63 +3184,88 @@
   }
 
   async function runTradeCrossSequence(localOfferId, peerOfferId) {
-    if (!captureOverlay) return;
     const mine = collectionApi.parseId(localOfferId);
     const peer = collectionApi.parseId(peerOfferId);
     if (!mine || !peer) return;
+    if (!tradeOverlay || tradeOverlay.classList.contains('hidden') || !tradeStepDecision || !tradeMyConfirmBtn || !tradePeerConfirmBtn) {
+      return;
+    }
+    const hostRect = tradeStepDecision.getBoundingClientRect();
+    const myRect = tradeMyConfirmBtn.getBoundingClientRect();
+    const peerRect = tradePeerConfirmBtn.getBoundingClientRect();
+    const startLeftX = myRect.left + myRect.width / 2 - hostRect.left - 36;
+    const startLeftY = myRect.top + myRect.height / 2 - hostRect.top - 36;
+    const startRightX = peerRect.left + peerRect.width / 2 - hostRect.left - 36;
+    const startRightY = peerRect.top + peerRect.height / 2 - hostRect.top - 36;
 
-    captureOverlay.innerHTML = '';
-    captureOverlay.classList.remove('hidden');
-    captureOverlay.classList.add('is-active');
-
-    const card = document.createElement('div');
-    card.className = 'capture-card';
-    const title = document.createElement('h3');
-    title.className = 'capture-name';
-    title.textContent = 'Echange!';
-    const stage = document.createElement('div');
-    stage.className = 'trade-cross-stage';
+    const layer = document.createElement('div');
+    layer.className = 'trade-cross-layer';
     const left = document.createElement('img');
-    left.className = 'trade-cross-malix left';
+    left.className = 'trade-cross-malix';
     const right = document.createElement('img');
-    right.className = 'trade-cross-malix right';
+    right.className = 'trade-cross-malix';
+    left.style.left = startLeftX + 'px';
+    left.style.top = startLeftY + 'px';
+    right.style.left = startRightX + 'px';
+    right.style.top = startRightY + 'px';
     setTypeVariantImage(left, mine.type, mine.variant);
     setTypeVariantImage(right, peer.type, peer.variant);
-    stage.appendChild(left);
-    stage.appendChild(right);
-    card.appendChild(title);
-    card.appendChild(stage);
-    captureOverlay.appendChild(card);
+    layer.appendChild(left);
+    layer.appendChild(right);
+    tradeStepDecision.appendChild(layer);
 
     if (!reduceMotion) {
+      const duration = 1450;
       const leftAnim = left.animate(
         [
           { transform: 'translate3d(0, 0, 0) scale(1)' },
-          { transform: 'translate3d(115px, 0, 0) scale(1.05)' }
+          { transform: 'translate3d(' + (startRightX - startLeftX) + 'px, ' + (startRightY - startLeftY) + 'px, 0) scale(1.08)' }
         ],
-        { duration: 700, easing: 'ease-in-out', fill: 'forwards' }
+        { duration: duration, easing: 'cubic-bezier(0.22, 0.61, 0.36, 1)', fill: 'forwards' }
       );
       const rightAnim = right.animate(
         [
           { transform: 'translate3d(0, 0, 0) scale(1)' },
-          { transform: 'translate3d(-115px, 0, 0) scale(1.05)' }
+          { transform: 'translate3d(' + (startLeftX - startRightX) + 'px, ' + (startLeftY - startRightY) + 'px, 0) scale(1.08)' }
         ],
-        { duration: 700, easing: 'ease-in-out', fill: 'forwards' }
+        { duration: duration, easing: 'cubic-bezier(0.22, 0.61, 0.36, 1)', fill: 'forwards' }
       );
       await Promise.all([leftAnim.finished.catch(function () {}), rightAnim.finished.catch(function () {})]);
     } else {
       await new Promise(function (resolve) {
-        window.setTimeout(resolve, 300);
+        window.setTimeout(resolve, 650);
       });
     }
 
-    captureOverlay.classList.add('hidden');
-    captureOverlay.classList.remove('is-active');
-    captureOverlay.innerHTML = '';
+    if (tradeMyConfirmImg) {
+      setTypeVariantImage(tradeMyConfirmImg, peer.type, peer.variant);
+    }
+    if (tradePeerConfirmImg) {
+      setTypeVariantImage(tradePeerConfirmImg, mine.type, mine.variant);
+    }
+    if (tradeMyConfirmLabel) {
+      tradeMyConfirmLabel.textContent = formatEntryLabel(peerOfferId);
+    }
+    if (tradePeerConfirmLabel) {
+      tradePeerConfirmLabel.textContent = formatEntryLabel(localOfferId);
+    }
+    if (tradePeerConfirmBtn) {
+      tradePeerConfirmBtn.classList.remove('is-placeholder');
+    }
+    if (tradeMyConfirmBtn) {
+      tradeMyConfirmBtn.classList.remove('is-flipped');
+    }
+    tradeMyCardFlipped = false;
+    layer.remove();
   }
 
   async function applyTradeCommit(localOfferId, peerOfferId) {
     if (tradeCommitApplied) return;
+    if (tradeSessionTimeout) {
+      window.clearTimeout(tradeSessionTimeout);
+      tradeSessionTimeout = null;
+    }
+    stopTradeCountdown();
     const next = collectionApi.applyTrade(collection, captureCounts, localOfferId, peerOfferId);
     const incoming = collectionApi.parseId(peerOfferId);
     if (!incoming) {
@@ -3040,9 +3281,28 @@
     persistCollection();
     updateProgress();
     renderMalidex();
-    closeTradeOverlay(true);
     await runTradeCrossSequence(localOfferId, peerOfferId);
-    await runTradeWelcomeSequence(incoming.type, incoming.variant, next.receivedWasNew);
+    tradeCompleted = true;
+    if (tradeMyConfirmBtn) {
+      tradeMyConfirmBtn.disabled = true;
+    }
+    if (tradePeerConfirmBtn) {
+      tradePeerConfirmBtn.disabled = true;
+    }
+    updateTradeStatus('Echange valide !');
+    if (tradeHelpText) {
+      tradeHelpText.textContent = 'Echange reussi !';
+    }
+    await new Promise(function (resolve) {
+      window.setTimeout(resolve, 450);
+    });
+    if (tradeSuccessText) {
+      tradeSuccessText.textContent =
+        formatEntryLabel(localOfferId) + ' et ' + formatEntryLabel(peerOfferId) + ' ont ete echanges.';
+    }
+    if (tradeSuccessPanel) {
+      tradeSuccessPanel.classList.remove('hidden');
+    }
     if (collectionApi.isComplete(collection)) {
       showFinish();
     }
@@ -3377,6 +3637,7 @@
   if (tradeMyConfirmBtn) {
     tradeMyConfirmBtn.addEventListener('click', function (event) {
       event.preventDefault();
+      if (tradeCompleted) return;
       tradeMyCardFlipped = !tradeMyCardFlipped;
       tradeMyConfirmBtn.classList.toggle('is-flipped', tradeMyCardFlipped);
       if (tradeMyCardFlipped) {
@@ -3392,6 +3653,7 @@
   if (tradePeerConfirmBtn) {
     tradePeerConfirmBtn.addEventListener('click', function (event) {
       event.preventDefault();
+      if (tradeCompleted) return;
       if (!tradeMyCardFlipped) {
         tradeMyCardFlipped = true;
         tradeMyConfirmBtn.classList.add('is-flipped');
@@ -3416,13 +3678,20 @@
   }
   if (tradeCancelBtn) {
     tradeCancelBtn.addEventListener('click', function () {
-      closeTradeOverlay(false);
+      if (blockManualCloseDuringTrade()) return;
+      closeTradeOverlay(true);
+    });
+  }
+  if (tradeDoneBtn) {
+    tradeDoneBtn.addEventListener('click', function () {
+      closeTradeOverlay(true);
     });
   }
   if (tradeOverlay) {
     tradeOverlay.addEventListener('click', function (event) {
       if (event.target === tradeOverlay) {
-        closeTradeOverlay(false);
+        if (blockManualCloseDuringTrade()) return;
+        closeTradeOverlay(true);
       }
     });
   }

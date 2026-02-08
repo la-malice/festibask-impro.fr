@@ -176,6 +176,7 @@
           <h3 id="tradeDialogTitle">Echange de Malix</h3>
           <div class="trade-step" id="tradeStepDecision">
             <p class="trade-help" id="tradeHelpText">Tape sur ton Malix lorsque tu es pret a echanger.</p>
+            <p class="trade-countdown" id="tradeCountdown" aria-live="polite"></p>
             <div class="trade-confirm-zone">
               <button class="trade-malix-card" id="tradeMyConfirmBtn" type="button">
                 <span class="trade-malix-flip" id="tradeMyFlip">
@@ -193,6 +194,10 @@
                 <img id="tradePeerConfirmImg" alt="" />
                 <span id="tradePeerConfirmLabel">Malix du joueur 2</span>
               </button>
+            </div>
+            <div class="trade-success hidden" id="tradeSuccessPanel">
+              <p id="tradeSuccessText">Echange reussi !</p>
+              <button class="chip" id="tradeDoneBtn" type="button">Fermer</button>
             </div>
           </div>
         </div>
