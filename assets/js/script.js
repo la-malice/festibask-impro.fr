@@ -1213,7 +1213,7 @@
     },
     'spectacle-dimanche-format-long': {
       type: 'format-long',
-      time: '19:00',
+      time: '18:00',
       label: 'Impro longue',
       title: 'Promo 2006',
       image: 'assets/img/long/promo-2006-640w.avif',
