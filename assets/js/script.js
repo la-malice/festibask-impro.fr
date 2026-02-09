@@ -821,6 +821,10 @@
   document.querySelectorAll('footer a').forEach(function (a) {
     a.addEventListener('click', function () { if (window.posthog) window.posthog.capture('nav_click', { target: a.getAttribute('href') || '', source: 'footer' }); });
   });
+  // PostHog : navigation depuis le programme (liens ateliers + boutons spectacle)
+  document.querySelectorAll('#programme a[href^="#"]').forEach(function (a) {
+    a.addEventListener('click', function () { if (window.posthog) window.posthog.capture('nav_click', { target: a.getAttribute('href') || '', source: 'programme' }); });
+  });
 
   // PostHog : clic spécifique sur le lien Chasse aux Malix (footer)
   document.querySelectorAll('footer a[href*="/malix/"]').forEach(function (a) {
@@ -1323,6 +1327,10 @@
       const targetElement = document.getElementById(spectacleId);
       if (targetElement) {
         targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      // PostHog : navigation depuis le programme (slot spectacle cliqué dans #programme ou fullscreen)
+      if (button.closest('#programme, #programFullscreenContainer') && window.posthog) {
+        window.posthog.capture('nav_click', { target: '#' + spectacleId, source: 'programme' });
       }
     });
   });
