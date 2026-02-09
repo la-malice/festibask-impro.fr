@@ -1221,7 +1221,7 @@
     },
     'spectacle-dimanche-match': {
       type: 'match',
-      time: '21:00',
+      time: '20:00',
       label: 'Match',
       title: 'La Malice vs Suisse',
       image: 'assets/img/equipe-suisse-640w.avif',
