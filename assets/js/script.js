@@ -733,11 +733,15 @@
       if (window.posthog) {
         var ctaName = a.classList.contains('btn-inscription') ? 'inscription_stage' : 'billetterie';
         var section = (a.closest('section') && a.closest('section').id) || (a.closest('[id]') && a.closest('[id]').id) || 'unknown';
-        window.posthog.capture('cta_click', { cta_name: ctaName, section: section });
+        var ctaPayload = { cta_name: ctaName, section: section };
         if (a.classList.contains('btn-inscription')) {
           var card = a.closest('.atelier-card');
-          if (card && card.id) window.posthog.capture('stage_inscription_click', { stage_id: card.id });
+          if (card && card.id) {
+            ctaPayload.stage_id = card.id;
+            window.posthog.capture('stage_inscription_click', { stage_id: card.id });
+          }
         }
+        window.posthog.capture('cta_click', ctaPayload);
       }
     });
   });
@@ -1258,8 +1262,9 @@
       }
       const blockId = block.id;
       if (blockId && spectaclesData && spectaclesData[blockId]) {
-        if (window.posthog) window.posthog.capture('spectacle_details_open', { spectacle_id: blockId });
-        initSpectacleSingleSlide(block, spectaclesData[blockId]);
+        var data = spectaclesData[blockId];
+        if (window.posthog) window.posthog.capture('spectacle_details_open', { spectacle_id: blockId, spectacle_name: data.title });
+        initSpectacleSingleSlide(block, data);
       }
     });
   });
@@ -1590,7 +1595,10 @@
         return '';
       }
 
-      if (blockId && window.posthog) window.posthog.capture('spectacle_details_open', { spectacle_id: blockId });
+      if (blockId && window.posthog) {
+        var spectacleName = spectaclesData && spectaclesData[blockId] ? spectaclesData[blockId].title : '';
+        window.posthog.capture('spectacle_details_open', { spectacle_id: blockId, spectacle_name: spectacleName });
+      }
       if (isFranceMatch && edfPlayers && edfPlayers.length > 0) {
         const originalImageSrc = getOriginalImageSrc(block);
         const edfIntro = {
