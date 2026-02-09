@@ -64,7 +64,7 @@ Pour tester sans changer l’heure du système :
     { "publishAt": "2026-02-06T18:00:00+01:00", "youtubeId": "xRlKmZgSxd0", "label": "Teaser J-3" },
     { "publishAt": "2026-02-07T17:00:00+01:00", "youtubeId": "xPV8R_ZR0g8", "label": "Teaser J-2" },
     { "publishAt": "2026-02-08T17:00:00+01:00", "youtubeId": "pntN-GNdlC0", "label": "Teaser J-1" },
-    { "publishAt": "2026-02-09T18:00:00+01:00", "youtubeId": "yF2rYy8qMv8", "label": "Officielle J" }
+    { "publishAt": "2026-02-09T18:00:00+01:00", "youtubeId": "CP-bjkvzUuo", "label": "Officielle J" }
   ]
 }
 ```
