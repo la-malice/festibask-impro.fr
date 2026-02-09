@@ -19,7 +19,7 @@ Suivi des visites et des actions clés (conversions, engagement) sur le site Fes
 | **stage_details_open** | Clic sur « Détails » ou ouverture du verso d’une carte stage | `stage_id`: id de l’atelier, `intervenant`: nom de l'intervenant, `stage_titre`: titre du stage |
 | **stage_inscription_click** | Clic sur « S’inscrire » (stage) | `stage_id`: id de l’atelier, `intervenant`: nom de l'intervenant, `stage_titre`: titre du stage |
 | **pass_details_open** | Ouverture des détails d'un pass (section billetterie, clic pour retourner la carte tarif) | `pass_id`: `'pass-1j'`, `'pass-3j'` ou `'stage'` |
-| **cta_click** | Clic sur « Prendre mon ticket » ou « S’inscrire » (billetterie / inscription stage) | `cta_name`, `section` ; `stage_id` (id atelier) si clic inscription stage |
+| **cta_click** | Clic sur « Prendre mon ticket » ou « S’inscrire » (billetterie / inscription stage / verso pass) | `cta_name`, `section` ; `stage_id` (id atelier) si clic inscription stage ; `pass_id` (`pass-1j`, `pass-3j`, `stage`) si clic « J'achète » sur le verso d'un pass |
 | **modal_open** | Ouverture de la modale newsletter (« Tenez-moi au courant ») ou liste d’attente (« Ça m’intéresse! ») | `modal`: `'newsletter'` ou `'waitlist'` |
 | **form_submit** | Soumission d’un formulaire Sibforms (avant réponse serveur) | `form`: `'newsletter'` ou `'waitlist'` |
 | **form_submit_success** | Succès affiché après soumission du formulaire (détection via MutationObserver sur les panneaux succès Sibforms) | `form`: `'newsletter'` ou `'waitlist'` |

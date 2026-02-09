@@ -735,6 +735,10 @@
         var ctaName = a.classList.contains('btn-inscription') ? 'inscription_stage' : 'billetterie';
         var section = (a.closest('section') && a.closest('section').id) || (a.closest('[id]') && a.closest('[id]').id) || 'unknown';
         var ctaPayload = { cta_name: ctaName, section: section };
+        var priceEl = a.closest('.price');
+        if (priceEl && priceEl.id) {
+          ctaPayload.pass_id = priceEl.id;
+        }
         if (a.classList.contains('btn-inscription')) {
           var card = a.closest('.atelier-card');
           if (card && card.id) {

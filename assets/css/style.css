@@ -6128,6 +6128,15 @@ button.slot-spectacle:active {
   opacity: 0.9;
 }
 
+.price-back-cta {
+  margin: 16px 0 0;
+  text-align: center;
+}
+
+.price-back-cta .btn {
+  text-decoration: none;
+}
+
 /* Pied de carte tarif : texte + bouton Détails alignés en bas */
 .price-front-footer {
   display: flex;
