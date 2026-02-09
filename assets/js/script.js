@@ -1951,7 +1951,7 @@
     malixDoodlePopup.setAttribute('role', 'dialog');
     malixDoodlePopup.setAttribute('aria-label', 'Malix attrapé');
     malixDoodlePopup.setAttribute('aria-hidden', 'true');
-    malixDoodlePopup.innerHTML = '<p>Vous venez d\'attraper un <a href="/malix/">malix</a> !<br><br>Ces petits dessins représentent chacun un souvenir d\'une impro vécue par un.e Malicieux.se. Ils peuvent apparaître spontanément un peu n\'importe et se balladent puis rebondissent dans n\'importe quelle direction, puis ils disparaissent.<br>À l\'image de nos impros. Ils arrivent d\'on ne sait pas trop où et sont un peu lourdingues parfois, mais toujours attachants !</p>';
+    malixDoodlePopup.innerHTML = '<p>Vous venez d\'attraper un <a href="/malix/">malix</a> !<br><br>Ces petits dessins représentent chacun un souvenir d\'une impro vécue par un.e Malicieux.se. Ils peuvent apparaître spontanément un peu n\'importe où et se balladent puis rebondissent dans n\'importe quelle direction, puis ils disparaissent.<br>À l\'image de nos impros. Ils arrivent d\'on ne sait pas trop où et sont un peu lourdingues parfois, mais toujours attachants !</p>';
     malixDoodlePopup.addEventListener('click', function (e) {
       const link = e.target.closest('a[href*="/malix/"]');
       if (link) {
