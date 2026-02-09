@@ -42,7 +42,9 @@ module.exports = {
       'tooltip-left',
       'tooltip-right',
       'tooltip-top',
-      'tooltip-bottom'
+      'tooltip-bottom',
+      'malix-doodle-popin',
+      'tooltip-popup-charte'
     ],
     greedy: [
       /^tooltip-/,

@@ -1729,7 +1729,7 @@
     if (!popup) {
       popup = document.createElement('div');
       popup.id = `tooltip-${tooltipId}`;
-      popup.className = 'tooltip-popup';
+      popup.className = (tooltipId === 'format-long' || tooltipId === 'match') ? 'tooltip-popup tooltip-popup-charte' : 'tooltip-popup';
       popup.setAttribute('role', 'tooltip');
       popup.setAttribute('aria-hidden', 'true');
       document.body.appendChild(popup);
@@ -1806,8 +1806,8 @@
       popup.style.transform = 'translate(-50%, -50%) scale(0.95)';
       popup.style.maxWidth = 'calc(100vw - 32px)';
       popup.style.width = 'calc(100vw - 32px)';
-      popup.className = 'tooltip-popup';
-      
+      popup.className = (tooltipId === 'format-long' || tooltipId === 'match') ? 'tooltip-popup tooltip-popup-charte' : 'tooltip-popup';
+
       // Afficher avec animation
       requestAnimationFrame(() => {
         popup.classList.add('show');
@@ -1820,8 +1820,8 @@
       popup.style.position = 'absolute';
       popup.style.top = '0';
       popup.style.left = '0';
-      popup.className = 'tooltip-popup';
-      
+      popup.className = (tooltipId === 'format-long' || tooltipId === 'match') ? 'tooltip-popup tooltip-popup-charte' : 'tooltip-popup';
+
       // Calculer la position après que le popup soit rendu
       requestAnimationFrame(() => {
         const pos = calculateTooltipPosition(trigger, popup);
@@ -1829,7 +1829,7 @@
         popup.style.left = `${pos.left}px`;
         popup.style.transform = 'translateX(-50%) translateY(-8px)';
         popup.style.visibility = 'visible';
-        popup.className = `tooltip-popup tooltip-${pos.position}`;
+        popup.className = (tooltipId === 'format-long' || tooltipId === 'match') ? `tooltip-popup tooltip-popup-charte tooltip-${pos.position}` : `tooltip-popup tooltip-${pos.position}`;
         
         // Afficher avec animation
         requestAnimationFrame(() => {
@@ -1947,11 +1947,11 @@
     malixDoodleOverlay.setAttribute('aria-hidden', 'true');
     malixDoodlePopup = document.createElement('div');
     malixDoodlePopup.id = 'malix-doodle-popin';
-    malixDoodlePopup.className = 'tooltip-popup';
+    malixDoodlePopup.className = 'tooltip-popup tooltip-popup-charte';
     malixDoodlePopup.setAttribute('role', 'dialog');
     malixDoodlePopup.setAttribute('aria-label', 'Malix attrapé');
     malixDoodlePopup.setAttribute('aria-hidden', 'true');
-    malixDoodlePopup.innerHTML = '<p>Vous venez d\'attraper un <a href="/malix/">malix</a> !<br><br>Ces petits dessins représentent chacun un souvenir d\'une impro vécue par un.e Malicieux.se. Ils peuvent apparaître spontanément un peu n\'importe où et se balladent puis rebondissent dans n\'importe quelle direction, puis ils disparaissent.<br>À l\'image de nos impros. Ils arrivent d\'on ne sait pas trop où et sont un peu lourdingues parfois, mais toujours attachants !</p>';
+    malixDoodlePopup.innerHTML = '<p><strong>Vous venez d\'attraper un <a href="/malix/">malix</a> ✨</strong><br><br>Les malix sont de petits souvenirs d\'impros passées.<br>Ils apparaissent sans prévenir, se baladent, rebondissent, puis disparaissent.💫<br><br>Comme nos impros : on ne sait jamais d\'où ils viennent, ils sont parfois un peu lourdingues… mais toujours attachants. 🧡</p>';
     malixDoodlePopup.addEventListener('click', function (e) {
       const link = e.target.closest('a[href*="/malix/"]');
       if (link) {
@@ -1974,7 +1974,7 @@
     popup.style.transform = 'translate(-50%, -50%) scale(0.95)';
     popup.style.maxWidth = 'calc(100vw - 32px)';
     popup.style.width = 'min(400px, calc(100vw - 32px))';
-    popup.className = 'tooltip-popup';
+    popup.className = 'tooltip-popup tooltip-popup-charte';
     requestAnimationFrame(function () {
       popup.classList.add('show');
       popup.style.transform = 'translate(-50%, -50%) scale(1)';
