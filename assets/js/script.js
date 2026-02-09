@@ -347,6 +347,7 @@
         wrap.addEventListener('click', function (e) {
           e.stopPropagation();
           e.preventDefault();
+          if (window.posthog) window.posthog.capture('floating_doodle_click');
           doSmash();
         }, { passive: false });
 
@@ -551,6 +552,7 @@
       }
 
       heroVideoPlayOverlay.addEventListener('click', function () {
+        if (window.posthog) window.posthog.capture('hero_video_play', { source: 'youtube' });
         if (window.YT && window.YT.Player) {
           createYoutubePlayer();
         } else {
@@ -581,6 +583,7 @@
       }
 
       function startVideo() {
+        if (window.posthog) window.posthog.capture('hero_video_play', { source: 'self' });
         heroVideoContainer.style.backgroundImage = '';
         heroVideoContainer.classList.add('hero-video-playing');
         heroVideo.classList.remove('hidden');
@@ -695,6 +698,7 @@
     ensureSibScriptLoaded().then(() => {
     dlgWaitlist.close();
     dlg.showModal();
+    if (window.posthog) window.posthog.capture('modal_open', { modal: 'newsletter' });
   });
   }));
   dlg.addEventListener('click',e=>{
@@ -710,6 +714,7 @@
     ensureSibScriptLoaded().then(() => {
     dlg.close();
     dlgWaitlist.showModal();
+    if (window.posthog) window.posthog.capture('modal_open', { modal: 'waitlist' });
   });
   }));
   dlgWaitlist.addEventListener('click', e => {
@@ -723,10 +728,54 @@
     a.href = BILETTERIE_URL;
     a.target = '_blank';
     a.rel = 'noopener noreferrer';
+    a.addEventListener('click', function () {
+      if (window.posthog) {
+        var ctaName = a.classList.contains('btn-inscription') ? 'inscription_stage' : 'billetterie';
+        var section = (a.closest('section') && a.closest('section').id) || (a.closest('[id]') && a.closest('[id]').id) || 'unknown';
+        window.posthog.capture('cta_click', { cta_name: ctaName, section: section });
+        if (a.classList.contains('btn-inscription')) {
+          var card = a.closest('.atelier-card');
+          if (card && card.id) window.posthog.capture('stage_inscription_click', { stage_id: card.id });
+        }
+      }
+    });
   });
 
   // Brevo gère automatiquement le masquage du formulaire avec AUTOHIDE = Boolean(1)
   // Le bouton "Fermer" dans le message de succès permet de fermer la popup explicitement
+
+  // PostHog : soumission formulaire Sibforms
+  var sibFormNewsletter = document.getElementById('sib-form');
+  var sibFormWaitlist = document.getElementById('sib-form-waitlist');
+  if (sibFormNewsletter) sibFormNewsletter.addEventListener('submit', function () { if (window.posthog) window.posthog.capture('form_submit', { form: 'newsletter' }); });
+  if (sibFormWaitlist) sibFormWaitlist.addEventListener('submit', function () { if (window.posthog) window.posthog.capture('form_submit', { form: 'waitlist' }); });
+
+  // PostHog : FAQ (ouverture d'une question)
+  var faqEl = document.getElementById('faq');
+  if (faqEl) {
+    faqEl.addEventListener('toggle', function (e) {
+      if (!e.target.open || e.target.tagName !== 'DETAILS') return;
+      var summary = e.target.querySelector('summary');
+      var question = summary ? (summary.textContent || '').trim().slice(0, 200) : '';
+      if (window.posthog) window.posthog.capture('faq_question_open', { question: question });
+    }, true);
+  }
+
+  // PostHog : brochure partenaire (téléchargement PDF)
+  document.querySelectorAll('a[href*="plaquette-sponsoring"][download]').forEach(function (a) {
+    a.addEventListener('click', function () { if (window.posthog) window.posthog.capture('brochure_download'); });
+  });
+
+  // PostHog : navigation (header, drawer, footer)
+  document.querySelectorAll('header .primary a').forEach(function (a) {
+    a.addEventListener('click', function () { if (window.posthog) window.posthog.capture('nav_click', { target: a.getAttribute('href') || '', source: 'header' }); });
+  });
+  document.querySelectorAll('#drawer a').forEach(function (a) {
+    a.addEventListener('click', function () { if (window.posthog) window.posthog.capture('nav_click', { target: a.getAttribute('href') || '', source: 'drawer' }); });
+  });
+  document.querySelectorAll('footer a').forEach(function (a) {
+    a.addEventListener('click', function () { if (window.posthog) window.posthog.capture('nav_click', { target: a.getAttribute('href') || '', source: 'footer' }); });
+  });
 
   // Slider jour par jour — setCurrentDay permet à Programme et Stages de synchroniser le slider
   let setCurrentDay = function() {};
@@ -797,6 +846,7 @@
         tab.addEventListener('click',()=>{
           currentDaySlide = index;
           updateDaySlider();
+          if (window.posthog) window.posthog.capture('day_switch', { section: (daySliderContainer.closest('section') && daySliderContainer.closest('section').id) || 'valeur', day_index: index });
         });
       });
     }
@@ -933,6 +983,7 @@
     stagesDayTabs.forEach((tab, index) => {
       tab.addEventListener('click', () => {
         setCurrentDay(index);
+        if (window.posthog) window.posthog.capture('day_switch', { section: 'stages', day_index: index });
       });
     });
   }
@@ -1023,6 +1074,8 @@
       e.stopPropagation();
       const flipContainer = link.closest('.flip-container');
       if (flipContainer) openStageVerso(flipContainer);
+      var stageCard = link.closest('.atelier-card');
+      if (stageCard && stageCard.id && window.posthog) window.posthog.capture('stage_details_open', { stage_id: stageCard.id });
     });
   });
 
@@ -1033,6 +1086,8 @@
       if (e.target.closest('.instructor-flip-container')) return;
       const flipContainer = front.closest('.flip-container');
       if (flipContainer) openStageVerso(flipContainer);
+      var stageCard = front.closest('.atelier-card');
+      if (stageCard && stageCard.id && window.posthog) window.posthog.capture('stage_details_open', { stage_id: stageCard.id });
     });
   });
 
@@ -1056,6 +1111,8 @@
       e.stopPropagation();
       const flipContainer = tag.closest('.flip-container');
       if (flipContainer) openStageVerso(flipContainer);
+      var stageCard = tag.closest('.atelier-card');
+      if (stageCard && stageCard.id && window.posthog) window.posthog.capture('stage_details_open', { stage_id: stageCard.id });
     });
   });
 
@@ -1110,7 +1167,13 @@
         return;
       }
       e.preventDefault();
+      var wasFlipped = container.classList.contains('flipped');
       container.classList.toggle('flipped');
+      if (!wasFlipped && container.classList.contains('flipped') && window.posthog) {
+        var priceEl = container.closest('.price');
+        var passId = priceEl && priceEl.id ? priceEl.id : 'unknown';
+        window.posthog.capture('pass_details_open', { pass_id: passId });
+      }
     });
   });
 
@@ -1188,6 +1251,7 @@
       }
       const blockId = block.id;
       if (blockId && spectaclesData && spectaclesData[blockId]) {
+        if (window.posthog) window.posthog.capture('spectacle_details_open', { spectacle_id: blockId });
         initSpectacleSingleSlide(block, spectaclesData[blockId]);
       }
     });
@@ -1519,6 +1583,7 @@
         return '';
       }
 
+      if (blockId && window.posthog) window.posthog.capture('spectacle_details_open', { spectacle_id: blockId });
       if (isFranceMatch && edfPlayers && edfPlayers.length > 0) {
         const originalImageSrc = getOriginalImageSrc(block);
         const edfIntro = {

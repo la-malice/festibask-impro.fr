@@ -7,7 +7,7 @@ Static marketing site for **Festibask'Impro**, the improvisation theatre festiva
 ## Scope
 
 - **In scope:** Single-page layout with hero (logo, dates, countdown, teaser video, bandes doodles décoratives, liens hero-tags); section “À l’affiche” (spectacles by day: format long + match); programme (three days, fullscreen mode); stages/ateliers (flip cards, registration/waitlist); tarifs (flip cards); FAQ; à propos; témoignages carousel (from JSON); sponsors; newsletter and waitlist modals (Brevo/Sibforms); legal/contact/footer.
-- **Out of scope:** Ticketing, user accounts, backend CMS, server-side rendering. No routing; single HTML document. Google Analytics is commented out in code; Brevo, Sibforms and PostHog (analytics: visites, optionally custom events) are the active third-party integrations.
+- **Out of scope:** Ticketing, user accounts, backend CMS, server-side rendering. No routing; single HTML document. Google Analytics is commented out in code; Brevo, Sibforms and PostHog (analytics: visites et événements custom) are the active third-party integrations. See [docs/analytics-posthog.md](analytics-posthog.md) for the event catalogue.
 - **Mini-jeu Malix :** Jeu enfant autonome (collection de Malix), disponible **uniquement** sous **/malix**. Comportement et périmètre détaillés dans [docs/SPEC-Malix.md](SPEC-Malix.md). Le site principal (index.html, assets/) ne charge rien depuis /malix ; aucun code du jeu dans le bundle principal.
 
 ## Main Capabilities
@@ -35,7 +35,7 @@ Static marketing site for **Festibask'Impro**, the improvisation theatre festiva
 
 - **Inputs:** User visits URL; testimonials from local JSON; form submissions to Brevo/Sibforms (external).
 - **Outputs:** HTML/CSS/JS and static assets served to the browser; form data sent to Brevo.
-- **External dependencies:** Brevo (tracker + forms), Sibforms (form UI), PostHog (analytics, snippet in index.html, api_host EU), Google Fonts (Hubot Sans). [UNCERTAIN] Apple touch icon path (root vs assets/favicon) may vary by deploy.
+- **External dependencies:** Brevo (tracker + forms), Sibforms (form UI), PostHog (analytics, snippet in index.html, api_host EU; see [docs/analytics-posthog.md](analytics-posthog.md) for event catalogue), Google Fonts (Hubot Sans). [UNCERTAIN] Apple touch icon path (root vs assets/favicon) may vary by deploy.
 - **Charte graphique:** Typography and colors are aligned with the Festi'Bask Impro graphic charter: Hubot Sans (Titre 1/2/3, Text, Description) and a 6-color palette (navy, blue-charte, cyan; coral, orange, pink). Variables and usage are documented in docs/slices/charte-graphique.md.
 
 ## Assumptions and Uncertainties
