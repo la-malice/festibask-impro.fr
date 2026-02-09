@@ -348,6 +348,7 @@
         wrap.addEventListener('click', function (e) {
           e.stopPropagation();
           e.preventDefault();
+          showMalixDoodlePopin();
           if (window.posthog) window.posthog.capture('floating_doodle_click');
           doSmash();
         }, { passive: false });
@@ -793,9 +794,11 @@
     }, true);
   }
 
-  // PostHog : brochure partenaire (téléchargement PDF)
+  // PostHog : brochure partenaire (téléchargement PDF) — source = 'button' (lien texte) ou 'logo' (Votre logo ici)
   document.querySelectorAll('a[href*="plaquette-sponsoring"][download]').forEach(function (a) {
-    a.addEventListener('click', function () { if (window.posthog) window.posthog.capture('brochure_download'); });
+    a.addEventListener('click', function () {
+      if (window.posthog) window.posthog.capture('brochure_download', { source: a.classList.contains('sponsor-placeholder') ? 'logo' : 'button' });
+    });
   });
 
   // PostHog : navigation (header, drawer, footer)
@@ -807,6 +810,11 @@
   });
   document.querySelectorAll('footer a').forEach(function (a) {
     a.addEventListener('click', function () { if (window.posthog) window.posthog.capture('nav_click', { target: a.getAttribute('href') || '', source: 'footer' }); });
+  });
+
+  // PostHog : clic spécifique sur le lien Chasse aux Malix (footer)
+  document.querySelectorAll('footer a[href*="/malix/"]').forEach(function (a) {
+    a.addEventListener('click', function () { if (window.posthog) window.posthog.capture('malix_link_click', { source: 'footer' }); });
   });
 
   // Slider jour par jour — setCurrentDay permet à Programme et Stages de synchroniser le slider
@@ -1928,6 +1936,80 @@
     }, 250);
   });
 
+  // Popin Malix au clic sur un doodle flottant (même style que tooltips format long / match)
+  let malixDoodleOverlay = null;
+  let malixDoodlePopup = null;
+
+  function getOrCreateMalixDoodlePopin() {
+    if (malixDoodlePopup) return { overlay: malixDoodleOverlay, popup: malixDoodlePopup };
+    malixDoodleOverlay = document.createElement('div');
+    malixDoodleOverlay.className = 'tooltip-overlay';
+    malixDoodleOverlay.setAttribute('aria-hidden', 'true');
+    malixDoodlePopup = document.createElement('div');
+    malixDoodlePopup.id = 'malix-doodle-popin';
+    malixDoodlePopup.className = 'tooltip-popup';
+    malixDoodlePopup.setAttribute('role', 'dialog');
+    malixDoodlePopup.setAttribute('aria-label', 'Malix attrapé');
+    malixDoodlePopup.setAttribute('aria-hidden', 'true');
+    malixDoodlePopup.innerHTML = '<p>Vous venez d\'attraper un <a href="/malix/">malix</a> !<br><br>Ces petits dessins représentent chacun un souvenir d\'une impro vécue par un.e Malicieux.se. Ils peuvent apparaître spontanément un peu n\'importe et se balladent puis rebondissent dans n\'importe quelle direction, puis ils disparaissent.<br>À l\'image de nos impros. Ils arrivent d\'on ne sait pas trop où et sont un peu lourdingues parfois, mais toujours attachants !</p>';
+    malixDoodlePopup.addEventListener('click', function (e) {
+      const link = e.target.closest('a[href*="/malix/"]');
+      if (link) {
+        if (window.posthog) window.posthog.capture('malix_link_click', { source: 'doodle_popin' });
+      }
+    });
+    document.body.appendChild(malixDoodleOverlay);
+    document.body.appendChild(malixDoodlePopup);
+    return { overlay: malixDoodleOverlay, popup: malixDoodlePopup };
+  }
+
+  function showMalixDoodlePopin() {
+    const { overlay, popup } = getOrCreateMalixDoodlePopin();
+    overlay.classList.add('show');
+    overlay.setAttribute('aria-hidden', 'false');
+    popup.setAttribute('aria-hidden', 'false');
+    popup.style.position = 'fixed';
+    popup.style.left = '50%';
+    popup.style.top = '50%';
+    popup.style.transform = 'translate(-50%, -50%) scale(0.95)';
+    popup.style.maxWidth = 'calc(100vw - 32px)';
+    popup.style.width = 'min(400px, calc(100vw - 32px))';
+    popup.className = 'tooltip-popup';
+    requestAnimationFrame(function () {
+      popup.classList.add('show');
+      popup.style.transform = 'translate(-50%, -50%) scale(1)';
+    });
+    function onOverlayClick(e) {
+      if (e.target === overlay) hideMalixDoodlePopin();
+    }
+    function onEscape(e) {
+      if (e.key === 'Escape') hideMalixDoodlePopin();
+    }
+    overlay.addEventListener('click', onOverlayClick);
+    document.addEventListener('keydown', onEscape);
+    overlay._malixOnOverlayClick = onOverlayClick;
+    overlay._malixOnEscape = onEscape;
+  }
+
+  function hideMalixDoodlePopin() {
+    if (malixDoodleOverlay) {
+      malixDoodleOverlay.classList.remove('show');
+      malixDoodleOverlay.setAttribute('aria-hidden', 'true');
+      if (malixDoodleOverlay._malixOnOverlayClick) {
+        malixDoodleOverlay.removeEventListener('click', malixDoodleOverlay._malixOnOverlayClick);
+        malixDoodleOverlay._malixOnOverlayClick = null;
+      }
+      if (malixDoodleOverlay._malixOnEscape) {
+        document.removeEventListener('keydown', malixDoodleOverlay._malixOnEscape);
+        malixDoodleOverlay._malixOnEscape = null;
+      }
+    }
+    if (malixDoodlePopup) {
+      malixDoodlePopup.classList.remove('show');
+      malixDoodlePopup.setAttribute('aria-hidden', 'true');
+    }
+  }
+
   // ============================================
   // MODE PLEIN ÉCRAN POUR LE PROGRAMME
   // ============================================
@@ -2106,6 +2188,14 @@
   if (programFullscreenBtn) {
     programFullscreenBtn.addEventListener('click', (e) => {
       e.preventDefault();
+      if (window.posthog) {
+        const resolution = `${window.screen.width}x${window.screen.height}`;
+        window.posthog.capture('programme_fullscreen_click', {
+          resolution: resolution,
+          screen_width: window.screen.width,
+          screen_height: window.screen.height
+        });
+      }
       openProgramFullscreen();
     });
   }

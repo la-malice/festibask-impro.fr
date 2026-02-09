@@ -24,9 +24,11 @@ Suivi des visites et des actions clés (conversions, engagement) sur le site Fes
 | **form_submit** | Soumission d’un formulaire Sibforms (avant réponse serveur) | `form`: `'newsletter'` ou `'waitlist'` |
 | **form_submit_success** | Succès affiché après soumission du formulaire (détection via MutationObserver sur les panneaux succès Sibforms) | `form`: `'newsletter'` ou `'waitlist'` |
 | **faq_question_open** | Ouverture d’une question FAQ (clic sur un `<details>`) | `question`, `question_id` (ex. faq-0), `section`: `'faq'` |
-| **brochure_download** | Clic sur le lien de téléchargement de la brochure partenaire (PDF) | — |
+| **brochure_download** | Clic sur le lien de téléchargement de la brochure partenaire (PDF) | `source`: `'button'` (lien « Téléchargez la brochure ») ou `'logo'` (« Votre logo ici ») |
 | **nav_click** | Clic sur un lien du menu (header, drawer mobile, footer) | `target`: href (ex. `#tarifs`), `source`: `'header'`, `'drawer'` ou `'footer'` |
 | **floating_doodle_click** | Clic sur un doodle flottant (smash) | — |
+| **programme_fullscreen_click** | Clic sur le bouton plein écran du programme | `resolution` (ex. `1920x1080`), `screen_width`, `screen_height` |
+| **malix_link_click** | Clic sur le lien « Chasse aux Malix » | `source`: `'footer'` (lien footer) ou `'doodle_popin'` (lien dans le popin après clic sur un doodle) |
 
 ## RGPD
 
