@@ -16,8 +16,8 @@ Suivi des visites et des actions clés (conversions, engagement) sur le site Fes
 | **hero_video_play** | Clic sur le bouton play pour (re)voir la vidéo hero | `source`: `'youtube'` ou `'self'` |
 | **day_switch** | Clic sur un onglet de journée (Vendredi / Samedi / Dimanche) dans la section Spectacles ou Stages | `section`: id technique (`valeur`, `stages`), `section_name`: `'Spectacles'`, `'Stages'` ou `'Programme'`, `day_index`: 0, 1 ou 2, `day_name`: `'Vendredi'`, `'Samedi'` ou `'Dimanche'` |
 | **spectacle_details_open** | Ouverture du détail d’un spectacle (clic sur un bloc format long ou match) | `spectacle_id`: id technique, `spectacle_name`: titre (ex. Braquage, La Malice vs France, Commis d'Office) |
-| **stage_details_open** | Clic sur « Détails » ou ouverture du verso d’une carte stage | `stage_id`: id de l’atelier (ex. `atelier-vendredi-11h-initiation`) |
-| **stage_inscription_click** | Clic sur « S’inscrire » (stage) | `stage_id`: id de l’atelier |
+| **stage_details_open** | Clic sur « Détails » ou ouverture du verso d’une carte stage | `stage_id`: id de l’atelier, `intervenant`: nom de l'intervenant, `stage_titre`: titre du stage |
+| **stage_inscription_click** | Clic sur « S’inscrire » (stage) | `stage_id`: id de l’atelier, `intervenant`: nom de l'intervenant, `stage_titre`: titre du stage |
 | **pass_details_open** | Ouverture des détails d'un pass (section billetterie, clic pour retourner la carte tarif) | `pass_id`: `'pass-1j'`, `'pass-3j'` ou `'stage'` |
 | **cta_click** | Clic sur « Prendre mon ticket » ou « S’inscrire » (billetterie / inscription stage) | `cta_name`, `section` ; `stage_id` (id atelier) si clic inscription stage |
 | **modal_open** | Ouverture de la modale newsletter (« Tenez-moi au courant ») ou liste d’attente (« Ça m’intéresse! ») | `modal`: `'newsletter'` ou `'waitlist'` |

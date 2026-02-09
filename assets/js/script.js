@@ -738,8 +738,14 @@
         if (a.classList.contains('btn-inscription')) {
           var card = a.closest('.atelier-card');
           if (card && card.id) {
+            var stageTitleEl = card.querySelector('h3');
+            var intervenantEl = card.querySelector('.instructor-name, .instructor-name-small');
             ctaPayload.stage_id = card.id;
-            window.posthog.capture('stage_inscription_click', { stage_id: card.id });
+            window.posthog.capture('stage_inscription_click', {
+              stage_id: card.id,
+              intervenant: intervenantEl ? intervenantEl.textContent.trim() : '',
+              stage_titre: stageTitleEl ? stageTitleEl.textContent.trim() : ''
+            });
           }
         }
         window.posthog.capture('cta_click', ctaPayload);
@@ -1136,7 +1142,15 @@
       const flipContainer = link.closest('.flip-container');
       if (flipContainer) openStageVerso(flipContainer);
       var stageCard = link.closest('.atelier-card');
-      if (stageCard && stageCard.id && window.posthog) window.posthog.capture('stage_details_open', { stage_id: stageCard.id });
+      if (stageCard && stageCard.id && window.posthog) {
+        var stageTitleEl = stageCard.querySelector('h3');
+        var intervenantEl = stageCard.querySelector('.instructor-name, .instructor-name-small');
+        window.posthog.capture('stage_details_open', {
+          stage_id: stageCard.id,
+          intervenant: intervenantEl ? intervenantEl.textContent.trim() : '',
+          stage_titre: stageTitleEl ? stageTitleEl.textContent.trim() : ''
+        });
+      }
     });
   });
 
@@ -1148,7 +1162,15 @@
       const flipContainer = front.closest('.flip-container');
       if (flipContainer) openStageVerso(flipContainer);
       var stageCard = front.closest('.atelier-card');
-      if (stageCard && stageCard.id && window.posthog) window.posthog.capture('stage_details_open', { stage_id: stageCard.id });
+      if (stageCard && stageCard.id && window.posthog) {
+        var stageTitleEl = stageCard.querySelector('h3');
+        var intervenantEl = stageCard.querySelector('.instructor-name, .instructor-name-small');
+        window.posthog.capture('stage_details_open', {
+          stage_id: stageCard.id,
+          intervenant: intervenantEl ? intervenantEl.textContent.trim() : '',
+          stage_titre: stageTitleEl ? stageTitleEl.textContent.trim() : ''
+        });
+      }
     });
   });
 
@@ -1173,7 +1195,15 @@
       const flipContainer = tag.closest('.flip-container');
       if (flipContainer) openStageVerso(flipContainer);
       var stageCard = tag.closest('.atelier-card');
-      if (stageCard && stageCard.id && window.posthog) window.posthog.capture('stage_details_open', { stage_id: stageCard.id });
+      if (stageCard && stageCard.id && window.posthog) {
+        var stageTitleEl = stageCard.querySelector('h3');
+        var intervenantEl = stageCard.querySelector('.instructor-name, .instructor-name-small');
+        window.posthog.capture('stage_details_open', {
+          stage_id: stageCard.id,
+          intervenant: intervenantEl ? intervenantEl.textContent.trim() : '',
+          stage_titre: stageTitleEl ? stageTitleEl.textContent.trim() : ''
+        });
+      }
     });
   });
 
