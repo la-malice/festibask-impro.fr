@@ -782,9 +782,14 @@
   if (faqEl) {
     faqEl.addEventListener('toggle', function (e) {
       if (!e.target.open || e.target.tagName !== 'DETAILS') return;
-      var summary = e.target.querySelector('summary');
+      var details = e.target;
+      var summary = details.querySelector('summary');
       var question = summary ? (summary.textContent || '').trim().slice(0, 200) : '';
-      if (window.posthog) window.posthog.capture('faq_question_open', { question: question });
+      var detailsList = faqEl.querySelectorAll('.faq-list details');
+      var questionIndex = -1;
+      for (var i = 0; i < detailsList.length; i++) { if (detailsList[i] === details) { questionIndex = i; break; } }
+      var questionId = questionIndex >= 0 ? 'faq-' + questionIndex : '';
+      if (window.posthog) window.posthog.capture('faq_question_open', { question: question, question_id: questionId, section: 'faq' });
     }, true);
   }
 
