@@ -3720,7 +3720,7 @@ nav.primary a:hover {
 }
 
 .atelier-card .flip-container.flipped .flip-back {
-  /* max-height défini en JS = hauteur contenu, pas de scroll */
+  /* max-height défini en JS = hauteur du contenu ; la carte s'agrandit, pas de scroll interne */
 }
 
 .atelier-card .header {
@@ -3772,6 +3772,30 @@ nav.primary a:hover {
   cursor: pointer;
   padding-top: 0;
   border-top: none;
+}
+
+/* Mobile faible résolution : empiler description, intervenant et bouton pour éviter tout chevauchement */
+@media (max-width: 480px) {
+  .atelier-card .flip-back .instructor-button-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-top: 20px;
+    margin-bottom: 8px;
+  }
+  .atelier-card .flip-back .instructor-flip-container {
+    width: 100%;
+    min-width: 0;
+  }
+  .atelier-card .flip-back .footer-mobile {
+    width: 100%;
+    justify-content: center;
+  }
+  .atelier-card .flip-back .footer-mobile .btn {
+    flex: 1;
+    min-width: 0;
+    justify-content: center;
+  }
 }
 
 @media (min-width: 768px) {
@@ -4248,7 +4272,7 @@ nav.primary a:hover {
   line-height: 1.6;
   color: var(--white);
   margin-top: 0;
-  flex: 0 1 auto;
+  flex: 0 0 auto;
   min-height: 0;
 }
 

@@ -1077,23 +1077,38 @@
     }, true);
   });
 
-  // Cartes stage : verso déroulé DEDANS (overlay). Seul le .flip-container a une min-height
-  // (pas l’article .atelier-card, pour éviter les conflits). Recto mesuré avant .measuring.
-  const STAGE_VERSO_MAX_TOTAL = Math.min(960, Math.round(0.88 * window.innerHeight));
+  // Cartes stage : verso déroulé DEDANS (overlay). La carte s'agrandit en hauteur pour tout le contenu (pas de scroll interne).
+  /** Re-mesure la hauteur du verso et met à jour la carte (ex. après dépliage de la mini-bio intervenant). */
+  function resizeStageVerso(flipContainer, bufferPx) {
+    const back = flipContainer && flipContainer.querySelector('.flip-back');
+    if (!back) return;
+    flipContainer.classList.add('measuring');
+    // Annuler le maxHeight inline pour que le contenu puisse s'étendre et être mesuré correctement
+    back.style.maxHeight = 'none';
+    const extra = typeof bufferPx === 'number' ? bufferPx : 0;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const backContent = back.querySelector('.content');
+        const backHeight = (backContent ? backContent.offsetHeight : back.offsetHeight) + extra;
+        flipContainer.classList.remove('measuring');
+        const sameHeight = backHeight + 'px';
+        flipContainer.style.minHeight = sameHeight;
+        back.style.maxHeight = sameHeight;
+      });
+    });
+  }
 
   function openStageVerso(flipContainer) {
     const front = flipContainer.querySelector('.flip-front');
     const back = flipContainer.querySelector('.flip-back');
     if (!front || !back) return;
-    const frontHeight = front.offsetHeight;
     flipContainer.classList.add('flipped', 'measuring');
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         const backContent = back.querySelector('.content');
         const backHeight = backContent ? backContent.offsetHeight : back.offsetHeight;
         flipContainer.classList.remove('measuring');
-        const backMax = Math.min(backHeight, STAGE_VERSO_MAX_TOTAL - frontHeight);
-        const sameHeight = backMax + 'px';
+        const sameHeight = backHeight + 'px';
         flipContainer.style.minHeight = sameHeight;
         back.style.maxHeight = '0';
         requestAnimationFrame(() => {
@@ -1162,7 +1177,7 @@
     });
   });
 
-  // Flip pour afficher la bio de l'intervenant (recto et verso : overlay au lieu de flipper la carte)
+  // Flip pour afficher la bio de l'intervenant (recto et verso : overlay au lieu de flipper la carte). La carte stage s'agrandit pour afficher toute la bio.
   const instructorFlipHandler = (container) => {
     container.addEventListener('click',e=>{
       if (e.target.closest('a')) return; /* laisser les liens (ex. @insta) ouvrir sans fermer la bio */
@@ -1172,32 +1187,23 @@
       
       if(!back) return; // Si pas de back, on ne fait rien
       
-      if(!isFlipped){
-        // On va flip, on calcule la hauteur nécessaire pour la bio
-        // On fait une copie temporaire pour mesurer
-        const tempBack = back.cloneNode(true);
-        tempBack.style.position = 'absolute';
-        tempBack.style.visibility = 'hidden';
-        tempBack.style.transform = 'none';
-        tempBack.style.width = back.offsetWidth + 'px';
-        document.body.appendChild(tempBack);
-        const measuredHeight = tempBack.scrollHeight + 28; // + padding
-        document.body.removeChild(tempBack);
-        // Plafonner la hauteur pour ne pas déformer la ligne de stages (bio scrollable si besoin)
-        const maxInstructorFlipHeight = 280;
-        const backHeight = Math.min(measuredHeight, maxInstructorFlipHeight);
+      const stageFlipContainer = container.closest('.flip-container');
+      const isOnStageVerso = !!container.closest('.flip-back');
 
-        // On applique la hauteur au container
-        container.style.minHeight = backHeight + 'px';
-        // Petit délai pour que la hauteur soit appliquée avant le flip
-        setTimeout(()=>{
-          container.classList.add('flipped');
-        }, 10);
+      if(!isFlipped){
+        // Déplier la bio : la hauteur du bloc suit le contenu (height: auto), pas de minHeight imposé
+        container.classList.add('flipped');
+        // Agrandir la carte stage après que le layout ait pris en compte la bio (délai + marge pour éviter toute troncature)
+        if (isOnStageVerso && stageFlipContainer && stageFlipContainer.classList.contains('flipped')) {
+          setTimeout(() => resizeStageVerso(stageFlipContainer, 48), 120);
+        }
       } else {
-        // On revient en arrière, on remet la hauteur minimale
         container.classList.remove('flipped');
         setTimeout(()=>{
-          container.style.minHeight = '60px';
+          container.style.minHeight = '';
+          if (isOnStageVerso && stageFlipContainer && stageFlipContainer.classList.contains('flipped')) {
+            resizeStageVerso(stageFlipContainer);
+          }
         }, 600);
       }
     });
