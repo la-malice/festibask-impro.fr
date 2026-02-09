@@ -755,6 +755,28 @@
   if (sibFormNewsletter) sibFormNewsletter.addEventListener('submit', function () { if (window.posthog) window.posthog.capture('form_submit', { form: 'newsletter' }); });
   if (sibFormWaitlist) sibFormWaitlist.addEventListener('submit', function () { if (window.posthog) window.posthog.capture('form_submit', { form: 'waitlist' }); });
 
+  // PostHog : succès affiché après soumission Sibforms (MutationObserver sur les panneaux succès)
+  function observeSibSuccessPanel(panelId, formName) {
+    var el = document.getElementById(panelId);
+    if (!el || !window.posthog) return;
+    var sent = false;
+    function checkVisible() {
+      if (sent) return;
+      var style = window.getComputedStyle(el);
+      if (style.display !== 'none' && style.visibility !== 'hidden' && el.offsetParent !== null) {
+        sent = true;
+        window.posthog.capture('form_submit_success', { form: formName });
+        observer.disconnect();
+      }
+    }
+    var observer = new MutationObserver(function () { checkVisible(); });
+    observer.observe(el, { attributes: true, attributeFilter: ['class', 'style'] });
+    var parent = el.parentElement;
+    if (parent) observer.observe(parent, { attributes: true, attributeFilter: ['class', 'style'] });
+  }
+  observeSibSuccessPanel('success-message', 'newsletter');
+  observeSibSuccessPanel('success-message-waitlist', 'waitlist');
+
   // PostHog : FAQ (ouverture d'une question)
   var faqEl = document.getElementById('faq');
   if (faqEl) {
