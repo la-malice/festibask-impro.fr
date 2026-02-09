@@ -14,7 +14,7 @@ Suivi des visites et des actions clés (conversions, engagement) sur le site Fes
 | Événement | Déclencheur | Propriétés |
 |-----------|-------------|------------|
 | **hero_video_play** | Clic sur le bouton play pour (re)voir la vidéo hero | `source`: `'youtube'` ou `'self'` |
-| **day_switch** | Clic sur un onglet de journée (Vendredi / Samedi / Dimanche) dans la section Spectacles ou Stages | `section`: `'valeur'` (spectacles) ou `'stages'`, `day_index`: 0, 1 ou 2 |
+| **day_switch** | Clic sur un onglet de journée (Vendredi / Samedi / Dimanche) dans la section Spectacles ou Stages | `section`: id technique (`valeur`, `stages`), `section_name`: `'Spectacles'`, `'Stages'` ou `'Programme'`, `day_index`: 0, 1 ou 2, `day_name`: `'Vendredi'`, `'Samedi'` ou `'Dimanche'` |
 | **spectacle_details_open** | Ouverture du détail d’un spectacle (clic sur un bloc format long ou match) | `spectacle_id`: ex. `spectacle-vendredi-format-long`, `spectacle-samedi-match` |
 | **stage_details_open** | Clic sur « Détails » ou ouverture du verso d’une carte stage | `stage_id`: id de l’atelier (ex. `atelier-vendredi-11h-initiation`) |
 | **stage_inscription_click** | Clic sur « S’inscrire » (stage) | `stage_id`: id de l’atelier |

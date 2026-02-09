@@ -1,4 +1,5 @@
   const BILETTERIE_URL = 'https://www.helloasso.com/associations/arteateou/evenements/festibask-impro';
+  var DAY_SWITCH_DAY_NAMES = ['Vendredi', 'Samedi', 'Dimanche'];
 
   // Données des joueurs de l'Équipe de France (ordre alphabétique du prénom pour les slides)
   const edfPlayers = [
@@ -846,7 +847,11 @@
         tab.addEventListener('click',()=>{
           currentDaySlide = index;
           updateDaySlider();
-          if (window.posthog) window.posthog.capture('day_switch', { section: (daySliderContainer.closest('section') && daySliderContainer.closest('section').id) || 'valeur', day_index: index });
+          if (window.posthog) {
+            var sectionId = (daySliderContainer.closest('section') && daySliderContainer.closest('section').id) || 'valeur';
+            var sectionName = sectionId === 'valeur' ? 'Spectacles' : (sectionId === 'stages' ? 'Stages' : 'Programme');
+            window.posthog.capture('day_switch', { section: sectionId, section_name: sectionName, day_index: index, day_name: DAY_SWITCH_DAY_NAMES[index] || '' });
+          }
         });
       });
     }
@@ -983,7 +988,9 @@
     stagesDayTabs.forEach((tab, index) => {
       tab.addEventListener('click', () => {
         setCurrentDay(index);
-        if (window.posthog) window.posthog.capture('day_switch', { section: 'stages', day_index: index });
+        if (window.posthog) {
+          window.posthog.capture('day_switch', { section: 'stages', section_name: 'Stages', day_index: index, day_name: DAY_SWITCH_DAY_NAMES[index] || '' });
+        }
       });
     });
   }
