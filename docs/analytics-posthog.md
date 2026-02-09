@@ -14,7 +14,7 @@ Suivi des visites et des actions clés (conversions, engagement) sur le site Fes
 | Événement | Déclencheur | Propriétés |
 |-----------|-------------|------------|
 | **hero_video_play** | Clic sur le bouton play pour (re)voir la vidéo hero | `source`: `'youtube'` ou `'self'` |
-| **day_switch** | Clic sur un onglet de journée (Vendredi / Samedi / Dimanche) dans la section Spectacles ou Stages | `section`: id technique (`valeur`, `stages`), `section_name`: `'Spectacles'`, `'Stages'` ou `'Programme'`, `day_index`: 0, 1 ou 2, `day_name`: `'Vendredi'`, `'Samedi'` ou `'Dimanche'` |
+| **day_switch** | Clic sur un onglet ou une colonne de journée (Vendredi / Samedi / Dimanche) : onglets Spectacles, onglets Stages, colonnes du programme, en-tête ou carte stage (sélection du jour) | `section`: id technique (`valeur`, `stages`, `programme`), `section_name`: `'Spectacles'`, `'Stages'` ou `'Programme'`, `day_index`: 0, 1 ou 2, `day_name`: `'Vendredi'`, `'Samedi'` ou `'Dimanche'` |
 | **spectacle_details_open** | Ouverture du détail d’un spectacle (clic sur un bloc format long ou match) | `spectacle_id`: id technique, `spectacle_name`: titre (ex. Braquage, La Malice vs France, Commis d'Office) |
 | **stage_details_open** | Clic sur « Détails » ou ouverture du verso d’une carte stage | `stage_id`: id de l’atelier, `intervenant`: nom de l'intervenant, `stage_titre`: titre du stage |
 | **stage_inscription_click** | Clic sur « S’inscrire » (stage) | `stage_id`: id de l’atelier, `intervenant`: nom de l'intervenant, `stage_titre`: titre du stage |

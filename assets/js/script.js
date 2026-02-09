@@ -1060,11 +1060,13 @@
         e.preventDefault();
         e.stopPropagation();
         setCurrentDay(dayIndex);
+        if (window.posthog) window.posthog.capture('day_switch', { section: 'programme', section_name: 'Programme', day_index: dayIndex, day_name: DAY_SWITCH_DAY_NAMES[dayIndex] || '' });
         return;
       }
       // Colonne déjà en surbrillance : ne pas consommer le clic sur lien/bouton (laisser flip ou navigation)
       if (e.target.closest('a, button')) return;
       setCurrentDay(dayIndex);
+      if (window.posthog) window.posthog.capture('day_switch', { section: 'programme', section_name: 'Programme', day_index: dayIndex, day_name: DAY_SWITCH_DAY_NAMES[dayIndex] || '' });
     }, true);
   });
 
@@ -1076,6 +1078,7 @@
       const dayIndex = parseInt(card.getAttribute('data-day'), 10);
       if (Number.isNaN(dayIndex)) return;
       setCurrentDay(dayIndex);
+      if (window.posthog) window.posthog.capture('day_switch', { section: 'stages', section_name: 'Stages', day_index: dayIndex, day_name: DAY_SWITCH_DAY_NAMES[dayIndex] || '' });
     });
   });
 
@@ -1086,7 +1089,10 @@
         e.preventDefault();
         e.stopPropagation();
         const dayIndex = parseInt(card.getAttribute('data-day'), 10);
-        if (!Number.isNaN(dayIndex)) setCurrentDay(dayIndex);
+        if (!Number.isNaN(dayIndex)) {
+          setCurrentDay(dayIndex);
+          if (window.posthog) window.posthog.capture('day_switch', { section: 'stages', section_name: 'Stages', day_index: dayIndex, day_name: DAY_SWITCH_DAY_NAMES[dayIndex] || '' });
+        }
       }
     }, true);
   });
