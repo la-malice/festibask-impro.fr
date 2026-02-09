@@ -1957,8 +1957,10 @@
     malixDoodlePopup.setAttribute('role', 'dialog');
     malixDoodlePopup.setAttribute('aria-label', 'Malix attrapé');
     malixDoodlePopup.setAttribute('aria-hidden', 'true');
-    malixDoodlePopup.innerHTML = '<p><strong>Vous venez d\'attraper un <a href="/malix/">malix</a> ✨</strong><br><br>Les malix sont de petits souvenirs d\'impros passées.<br>Ils apparaissent sans prévenir, se baladent, rebondissent, puis disparaissent.💫<br><br>Comme nos impros : on ne sait jamais d\'où ils viennent, ils sont parfois un peu lourdingues… mais toujours attachants. 🧡</p>';
+    malixDoodlePopup.innerHTML = '<p><strong>✨ Vous venez d\'attraper un <a href="/malix/">malix</a>!</strong><br><br>Chacun malix évoque le souvenir d\'une impro jouée par les comédien.nes de La Malice. Ils apparaissent sans prévenir, se baladent, rebondissent, puis disparaissent.<br><br>Comme nos impros, on ne sait jamais d\'où ils viennent, ils sont parfois un peu lourdingues… mais toujours attachants. 🧡</p>';
     malixDoodlePopup.addEventListener('click', function (e) {
+      e.stopPropagation();
+      hideMalixDoodlePopin();
       const link = e.target.closest('a[href*="/malix/"]');
       if (link) {
         if (window.posthog) window.posthog.capture('malix_link_click', { source: 'doodle_popin' });
