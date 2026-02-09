@@ -2383,41 +2383,10 @@ nav.primary a:hover {
   box-shadow: var(--shadow-xl);
 }
 
-/* Bouton Détails : en haut à droite des bannières, au-dessus des images */
+/* Bouton Détails format long : plus en ::after, déplacé dans l’overlay (en bas à droite de la partie texte) */
 .format-long-block::after {
-  content: "D\00e9tails";
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--white);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-  white-space: nowrap;
-  opacity: 1;
-  transition: background 0.3s ease;
-  pointer-events: none;
-  z-index: 5;
-}
-
-.format-long-block:hover::after {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.format-long-block.flipped::after {
+  content: none;
   display: none;
-}
-
-@media (max-width: 768px) {
-  .format-long-block::after,
-  .match-details-btn {
-    font-size: 0.7rem;
-    padding: 4px 10px;
-  }
 }
 
 .format-long-image-wrapper {
@@ -2456,11 +2425,67 @@ nav.primary a:hover {
   color: var(--white);
   transition: opacity 0.3s ease;
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .format-long-block.flipped .format-long-overlay {
   opacity: 0;
   pointer-events: none;
+}
+
+/* Ligne « Impro longue » + heure côte à côte */
+.format-long-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.format-long-meta .format-long-time,
+.format-long-meta .format-long-label {
+  margin-bottom: 0;
+}
+
+/* Description dans l’overlay (desktop) : début du texte, 2–3 lignes */
+.format-long-overlay-description {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0 0 12px;
+  color: rgba(255, 255, 255, 0.95);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Bouton Détails en bas à droite de la partie texte */
+.format-long-details-btn {
+  display: inline-block;
+  margin-top: auto;
+  align-self: flex-end;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  transition: background 0.3s ease;
+  pointer-events: none;
+}
+
+.format-long-block:hover .format-long-details-btn {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.format-long-block.flipped .format-long-details-btn,
+.format-long-block.slider-active .format-long-details-btn {
+  display: none;
 }
 
 .format-long-pitch {
@@ -2537,6 +2562,10 @@ nav.primary a:hover {
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
   line-height: 1.2;
   letter-spacing: 0;
+}
+
+.format-long-overlay .format-long-title {
+  margin-bottom: 8px;
 }
 
 /* Match block */
@@ -2916,9 +2945,6 @@ nav.primary a:hover {
   transition: opacity 0.3s ease;
 }
 
-.format-long-block.slider-active::after {
-  display: none;
-}
 
 .match-block.slider-active .match-details-btn {
   display: none;
@@ -3220,6 +3246,16 @@ nav.primary a:hover {
     width: 100%;
     left: 0;
     right: 0;
+  }
+  
+  .format-long-overlay-description {
+    display: none;
+  }
+  
+  .format-long-details-btn,
+  .match-details-btn {
+    font-size: 0.7rem;
+    padding: 4px 10px;
   }
   
   .format-long-block {
@@ -3872,6 +3908,7 @@ nav.primary a:hover {
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
 }
