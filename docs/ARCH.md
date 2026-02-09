@@ -52,7 +52,7 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 ## Dependencies
 
 - **Internal:** index.html references assets/css, assets/js, assets/img, assets/data, assets/video; script.js fetches temoignages.json and manipulates DOM; no internal modules.
-- **External:** Brevo (cdn.brevo.com/js/sdk-loader.js), Sibforms (forms, styles, main.js), PostHog (snippet in index.html, api_host https://eu.i.posthog.com; see docs/analytics-posthog.md for custom events), Google Fonts. No npm runtime deps; devDependencies: vite, postcss, postcss-cli, cssnano, purgecss, terser.
+- **External:** Brevo (cdn.brevo.com/js/sdk-loader.js), Sibforms (forms, styles, main.js), PostHog (snippet in index.html; ingestion via reverse proxy Cloudflare Worker, code in worker-posthog/, deploy via Wrangler; api_host points to proxy, ui_host to eu.posthog.com; see docs/analytics-posthog.md for custom events), Google Fonts. No npm runtime deps; devDependencies: vite, postcss, postcss-cli, cssnano, purgecss, terser.
 
 ## Key Files and Directories
 
