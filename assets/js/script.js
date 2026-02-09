@@ -1982,13 +1982,23 @@
     function onOverlayClick(e) {
       if (e.target === overlay) hideMalixDoodlePopin();
     }
+    function onDocumentClick(e) {
+      if (malixDoodlePopup && malixDoodlePopup.classList.contains('show') && !malixDoodlePopup.contains(e.target)) {
+        hideMalixDoodlePopin();
+      }
+    }
     function onEscape(e) {
       if (e.key === 'Escape') hideMalixDoodlePopin();
     }
     overlay.addEventListener('click', onOverlayClick);
-    document.addEventListener('keydown', onEscape);
     overlay._malixOnOverlayClick = onOverlayClick;
+    overlay._malixOnDocumentClick = onDocumentClick;
     overlay._malixOnEscape = onEscape;
+    document.addEventListener('keydown', onEscape);
+    // Clic en dehors du popup : fermer (délai pour ne pas fermer sur le clic qui a ouvert)
+    setTimeout(function () {
+      document.addEventListener('click', onDocumentClick);
+    }, 0);
   }
 
   function hideMalixDoodlePopin() {
@@ -1998,6 +2008,10 @@
       if (malixDoodleOverlay._malixOnOverlayClick) {
         malixDoodleOverlay.removeEventListener('click', malixDoodleOverlay._malixOnOverlayClick);
         malixDoodleOverlay._malixOnOverlayClick = null;
+      }
+      if (malixDoodleOverlay._malixOnDocumentClick) {
+        document.removeEventListener('click', malixDoodleOverlay._malixOnDocumentClick);
+        malixDoodleOverlay._malixOnDocumentClick = null;
       }
       if (malixDoodleOverlay._malixOnEscape) {
         document.removeEventListener('keydown', malixDoodleOverlay._malixOnEscape);
