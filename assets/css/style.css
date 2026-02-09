@@ -1972,6 +1972,11 @@ nav.primary a:hover {
   background-repeat: no-repeat;
 }
 
+/* Mode self-hosted : fond noir pendant la lecture (vidéo portrait = bandes latérales noires) */
+.hero-video-container.hero-video-playing {
+  background: #000;
+}
+
 .hero-video-container iframe,
 .hero-video-container video {
   position: absolute;

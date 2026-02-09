@@ -5,7 +5,7 @@ Composant hero : la vidéo teaser affichée peut être programmée via un fichie
 ## Emplacement
 
 - **Bloc** : `#heroVideoContainer` (hero, bloc vidéo / poster).
-- **Condition** : mode YouTube activé (`data-hero-video="youtube"` et `data-hero-youtube-id` sur le container). Le calendrier ne s’applique qu’en mode YouTube.
+- **Modes** : youtube (toujours YT + calendrier), self (toujours auto-hébergée), scheduled (avant dernier slot = YT calendrier ; après = data-hero-official-source : self ou youtube) (`data-hero-video="youtube"` et `data-hero-youtube-id` sur le container). Le calendrier ne s’applique qu’en mode YouTube.
 
 ## Fichiers concernés
 
@@ -54,6 +54,17 @@ Pour tester sans changer l’heure du système :
 - `?hero-video-simulate=2026-02-06T17:00:00+01:00` → avant J-3 → fallback.
 - `?hero-video-simulate=2026-02-06T18:00:00+01:00` → J-3.
 - `?hero-video-simulate=2026-02-09T18:00:00+01:00` → J officielle.
+
+## Mode scheduled : choix du reveal (officielle)
+
+En `data-hero-video="scheduled"`, après l’heure du **dernier** slot (ex. 9 fév. 2026 18h), la vidéo affichée dépend de `data-hero-official-source` sur `#heroVideoContainer` :
+
+| Valeur | Effet après l’heure officielle |
+|--------|--------------------------------|
+| `self` | Vidéo auto-hébergée (MP4/WebM). |
+| `youtube` (ou absent) | Vidéo YouTube du dernier slot (ex. Short officiel). |
+
+Pour basculer : changer uniquement `data-hero-official-source="self"` en `data-hero-official-source="youtube"` (ou l’inverse) dans `index.html`.
 
 ## Exemple (février 2026, Paris UTC+1)
 
