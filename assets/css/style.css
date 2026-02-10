@@ -1355,6 +1355,20 @@ nav.primary a:hover {
   opacity: 0.7;
 }
 
+/* Desktop : lieu complet ; mobile : version courte */
+.hero-location-venue-short {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .hero-location-venue-full {
+    display: none;
+  }
+  .hero-location-venue-short {
+    display: inline;
+  }
+}
+
 .hero > .container {
   position: absolute;
   bottom: 48px;
