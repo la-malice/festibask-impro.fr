@@ -17,7 +17,7 @@
     const type = Number.parseInt(parts[0], 10);
     const variant = Number.parseInt(parts[1], 10);
     if (!Number.isInteger(type) || !Number.isInteger(variant)) return null;
-    if (type < 1 || type > 26 || variant < 1 || variant > 4) return null;
+    if (type < 1 || type > 27 || variant < 1 || variant > 4) return null;
     return { type: type, variant: variant, id: type + '-' + variant };
   }
 

@@ -1,7 +1,7 @@
 (function (globalScope) {
   const STORAGE_KEY = 'malix-collection';
   const COUNTS_KEY = 'malix-capture-counts';
-  const MAX_TYPES = 26;
+  const MAX_TYPES = 27;
   const MAX_VARIANTS = 4;
   const MAX_ENTRIES = MAX_TYPES * MAX_VARIANTS;
 

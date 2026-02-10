@@ -75,7 +75,7 @@
       return s;
     }
 
-    Promise.all(Array.from({ length: 26 }, (_, i) => {
+    Promise.all(Array.from({ length: 27 }, (_, i) => {
       const n = String(i + 1).padStart(2, '0');
       return fetch('assets/img/doodles/' + n + '.svg').then(r => r.text());
     })).then(function (svgTexts) {
@@ -151,7 +151,7 @@
           const neighbors = getNeighborSlotIndices(k, n, colsUsed);
           const used = new Set(neighbors.map(function (j) { return arr[j]; }).filter(function (v) { return v !== undefined; }));
           let pick;
-          do { pick = Math.floor(Math.random() * 26); } while (used.has(pick));
+          do { pick = Math.floor(Math.random() * 27); } while (used.has(pick));
           arr[k] = pick;
         }
         return arr;
@@ -266,7 +266,7 @@
     let floatSvgTextsCache = null;
     function loadFloatSvgTexts() {
       if (floatSvgTextsCache) return Promise.resolve(floatSvgTextsCache);
-      return Promise.all(Array.from({ length: 26 }, (_, i) => {
+      return Promise.all(Array.from({ length: 27 }, (_, i) => {
         const n = String(i + 1).padStart(2, '0');
         return fetch('assets/img/doodles/' + n + '.svg').then(function (r) { return r.text(); });
       })).then(function (texts) {
@@ -309,7 +309,7 @@
         let vx = (Math.random() * 2 - 1) * FLOAT_VELOCITY;
         let vy = (Math.random() * 2 - 1) * FLOAT_VELOCITY * 0.5;
         let rotation = (Math.random() * 2 - 1) * 180;
-        const svgIndex = Math.floor(Math.random() * 26);
+        const svgIndex = Math.floor(Math.random() * 27);
         const color = FLOAT_DOODLE_COLORS[Math.floor(Math.random() * FLOAT_DOODLE_COLORS.length)];
         const coloredSvg = colorizeSvgTextFloat(svgTexts[svgIndex], color);
 

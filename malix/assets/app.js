@@ -76,7 +76,8 @@
     'Solix',
     'Lunix',
     'Fourchix',
-    'Cerix'
+    'Cerix',
+    'Clownix'
   ];
   const typeRarityWeights = Array.from({ length: collectionApi.MAX_TYPES }, function (_, index) {
     const type = index + 1;

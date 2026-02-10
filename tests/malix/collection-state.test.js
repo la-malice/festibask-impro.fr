@@ -10,7 +10,7 @@ test('addCapture stores each type/variant only once', function () {
   assert.equal(state.has('1-2'), true);
 });
 
-test('isComplete is true only with all 104 entries', function () {
+test('isComplete is true only with all 108 entries', function () {
   let state = collection.emptyState();
   for (let type = 1; type <= collection.MAX_TYPES; type += 1) {
     for (let variant = 1; variant <= collection.MAX_VARIANTS; variant += 1) {

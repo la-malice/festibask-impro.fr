@@ -30,7 +30,7 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 | **Terser** | Minify JS (invoked in npm run build on source script.js → dist) | npm script |
 | **PWA / Brevo** | Service worker loads Brevo by query key | sw.js (root) |
 | **CI/CD** | Build and deploy to GitHub Pages | .github/workflows/pages.yml |
-| **Mini-jeu Malix** | App autonome sous /malix ; HTML/CSS/JS propres ; 26 SVG doodles ; stockage local | malix/ (dans dist après build) ; spec docs/SPEC-Malix.md |
+| **Mini-jeu Malix** | App autonome sous /malix ; HTML/CSS/JS propres ; 27 SVG doodles ; stockage local | malix/ (dans dist après build) ; spec docs/SPEC-Malix.md |
 | **Malix trade-session** | Session d’échange P2P: signalisation WebRTC par QR (offer/answer), DataChannel pour synchronisation directe, fallback QR court sans backend | malix/assets/trade-session.js |
 
 ## Technology Stack
@@ -40,7 +40,7 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 - **Front-end:** Vanilla HTML/CSS/JS; no framework. Google Fonts (Hubot Sans) loaded async. Styles follow the graphic charter (Hubot Sans hierarchy, 6-color palette); see docs/slices/charte-graphique.md.
 - **Data:** Static JSON (temoignages); EDF players and spectacle data in script.js.
 - **Deploy:** GitHub Actions (ubuntu-latest, Node 20); artifact `dist/` → deploy-pages. Environment: github-pages.
-- **Malix:** Application statique dans `dist/malix/` (index.html, assets dédiés, copies des 26 doodles). Aucun impact sur index.html ni sur le bundle principal (script.js, style.css). Le build inclut `malix/` dans `dist/`. La config d’accès du garde (`malix/assets/access-config.js`) est versionnée avec les valeurs par défaut prod ; un override local non versionné (`malix/assets/access-config.local.js`) peut être injecté au build pour les tests dev.
+- **Malix:** Application statique dans `dist/malix/` (index.html, assets dédiés, copies des 27 doodles). Aucun impact sur index.html ni sur le bundle principal (script.js, style.css). Le build inclut `malix/` dans `dist/`. La config d’accès du garde (`malix/assets/access-config.js`) est versionnée avec les valeurs par défaut prod ; un override local non versionné (`malix/assets/access-config.local.js`) peut être injecté au build pour les tests dev.
 - **Malix échange:** WebRTC DataChannel prioritaire (signalisation par QR), fallback QR court ; aucun backend ni stockage serveur.
 
 ## Execution Model

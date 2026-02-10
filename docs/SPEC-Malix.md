@@ -22,9 +22,9 @@
 
 ### 1.3 Réutilisation des doodles
 
-- Les **Malix** sont les **doodles** déjà présents dans le dépôt : 26 fichiers SVG dans `assets/img/doodles/` (`01.svg` à `26.svg`).
-- Le jeu **réutilise** ces 26 types. Les fichiers SVG du site principal **ne sont pas modifiés**.
-- **Où vivent les assets du jeu** : pour une **isolation totale**, le build doit copier ou exposer les 26 SVG dans le dossier du jeu (ex. `malix/assets/doodles/` ou `malix/doodles/`). Les chemins dans le jeu pointent alors vers ces copies. Alternative : références relatives depuis `malix/index.html` vers `../assets/img/doodles/` si le build place `malix/` au même niveau que `assets/` dans `dist/`. La SPEC impose : **aucune requête du jeu ne doit charger des ressources hors du sous-arbre /malix en production** si cela peut impacter le site principal (ex. erreur 404 sur une URL du site). Donc **copier les 26 SVG dans l’arbre malix/** est recommandé.
+- Les **Malix** sont les **doodles** déjà présents dans le dépôt : 27 fichiers SVG dans `assets/img/doodles/` (`01.svg` à `27.svg`).
+- Le jeu **réutilise** ces 27 types. Les fichiers SVG du site principal **ne sont pas modifiés**.
+- **Où vivent les assets du jeu** : pour une **isolation totale**, le build doit copier ou exposer les 27 SVG dans le dossier du jeu (ex. `malix/assets/doodles/` ou `malix/doodles/`). Les chemins dans le jeu pointent alors vers ces copies. Alternative : références relatives depuis `malix/index.html` vers `../assets/img/doodles/` si le build place `malix/` au même niveau que `assets/` dans `dist/`. La SPEC impose : **aucune requête du jeu ne doit charger des ressources hors du sous-arbre /malix en production** si cela peut impacter le site principal (ex. erreur 404 sur une URL du site). Donc **copier les 27 SVG dans l’arbre malix/** est recommandé.
 
 ---
 
@@ -39,7 +39,7 @@
 
 ### 2.2 Objectif utilisateur
 
-- Collectionner **26 Malix différents**, chacun en **4 variantes de couleur** (26 × 4 = 104 entrées).
+- Collectionner **27 Malix différents**, chacun en **4 variantes de couleur** (27 × 4 = 108 entrées).
 - Une fois la **collection complète** : le jeu affiche une fin spectaculaire ; l’enfant peut aller retirer un petit cadeau au stand du festival.
 
 ### 2.3 Inspirations
@@ -67,7 +67,7 @@
 - Stockage local uniquement ; persistance ; option de réinitialisation.
 - **Mobile-first, portrait uniquement** (voir section Design).
 - Effets visuels et vibration (si supportée).
-- **Identité visuelle propre au jeu** (voir section Design) ; **point commun avec le site : uniquement les 26 doodles**.
+- **Identité visuelle propre au jeu** (voir section Design) ; **point commun avec le site : uniquement les 27 doodles**.
 - PWA optionnelle (installation, icône, hors-ligne basique) si simple à intégrer sans impacter l’isolement.
 
 ### 3.2 Out of scope
@@ -88,13 +88,13 @@
 
 | Terme | Définition |
 |-------|------------|
-| **Malix** | Un doodle (un des 26 SVG) dans une des 4 variantes de couleur ; unité collectable. |
-| **Malidex** | La collection / catalogue dans le jeu : liste des 26 types avec les 4 couleurs chacune ; vue dédiée dans l’UI. |
+| **Malix** | Un doodle (un des 27 SVG) dans une des 4 variantes de couleur ; unité collectable. |
+| **Malidex** | La collection / catalogue dans le jeu : liste des 27 types avec les 4 couleurs chacune ; vue dédiée dans l’UI. |
 | **Spawn** | Apparition d’un Malix à l’écran (position et variante aléatoires). |
 | **Capture** | Tap ou clic sur un Malix → ajout à la collection, feedback, disparition. |
-| **Type** | Identifiant du doodle : 1 à 26 (correspondant aux fichiers `01.svg` … `26.svg`). |
+| **Type** | Identifiant du doodle : 1 à 27 (correspondant aux fichiers `01.svg` … `27.svg`). |
 | **Variante (couleur)** | Une des 4 couleurs appliquées au SVG (par remplissage CSS ou équivalent). Identifiants 1 à 4 ou noms de couleur définis dans la SPEC. |
-| **Entrée de collection** | Paire (type, variante). Une entrée est soit collectée soit manquante. 26 × 4 = 104 entrées au total. |
+| **Entrée de collection** | Paire (type, variante). Une entrée est soit collectée soit manquante. 27 × 4 = 108 entrées au total. |
 | **Échange** | Transaction 1↔1 entre deux joueurs: chaque joueur propose une entrée du Malidex, les deux valident, puis transfert croisé. |
 
 ---
@@ -105,7 +105,7 @@
 
 - **Intervalle** : apparition pseudo-aléatoire dans le temps. Fourchette cible : **3 à 12 secondes** entre deux spawns, avec un **premier spawn plus rapide** après lancement (environ 1 à 2 secondes) pour démarrer immédiatement le jeu. Un seul Malix à l’écran à la fois (spawn suivant uniquement après disparition du précédent, par capture ou timeout).
 - **Position** : aléatoire dans la **zone visible** de l’écran, avec **marges** (ex. 10 % des bords) pour que le Malix reste entièrement visible.
-- **Type et variante** : à chaque spawn, choix aléatoire parmi les 26 types et les 4 variantes (pas d’obligation d’éviter les déjà collectés ; l’enfant peut avoir des “doublons” visuels mais une entrée (type, variante) n’est enregistrée qu’une fois dans la collection).
+- **Type et variante** : à chaque spawn, choix aléatoire parmi les 27 types et les 4 variantes (pas d’obligation d’éviter les déjà collectés ; l’enfant peut avoir des “doublons” visuels mais une entrée (type, variante) n’est enregistrée qu’une fois dans la collection).
 - **Durée de vie** : si le Malix n’est **pas attrapé**, il disparaît après une durée limitée (recommandation : **5 à 10 secondes**). Aucun ajout à la collection dans ce cas.
 - **Mouvement** : flottement, rebonds doux, **gravité faible**. Comportement type “cosmonaute” : légère dérive, rebonds sur les bords. Les constantes (vitesse, gravité, jitter) sont à définir dans le code du jeu ; s’inspirer si besoin des ordres de grandeur utilisés pour les doodles flottants du site (sans importer le script du site).
 
@@ -121,19 +121,19 @@
 
 ### 5.3 Malidex (collection)
 
-- **Vue dédiée** : liste ou grille des **26 Malix** (26 types).
+- **Vue dédiée** : liste ou grille des **27 Malix** (27 types).
 - **Pour chaque type** : afficher les **4 variantes de couleur** ; pour chaque variante, indiquer **collectée** ou **non collectée** (icône, couleur, ou case cochée / vide).
-- **Progression** : affichage clair du nombre d’entrées collectées, ex. « 42 / 104 » ou « 12 / 26 types » avec détail des couleurs. L’objectif est que l’enfant comprenne qu’il doit remplir toutes les cases.
+- **Progression** : affichage clair du nombre d’entrées collectées, ex. « 42 / 108 » ou « 12 / 27 types » avec détail des couleurs. L’objectif est que l’enfant comprenne qu’il doit remplir toutes les cases.
 - **Accès** : depuis l’écran de jeu, un bouton ou un onglet (ex. « Collection » / « Malidex ») ouvre cette vue ; retour simple vers l’écran de jeu.
 
 ### 5.4 Fin de jeu
 
-- **Condition** : collection **complète** (les 104 entrées : 26 types × 4 variantes).
-- **Détection** : automatique après chaque capture (vérifier si le nombre d’entrées collectées atteint 104).
+- **Condition** : collection **complète** (les 108 entrées : 27 types × 4 variantes).
+- **Détection** : automatique après chaque capture (vérifier si le nombre d’entrées collectées atteint 108).
 - **Comportement** :
   - Affichage d’un **écran de fin spectaculaire**.
   - **Grand « Bravo »** bien visible (texte principal).
-  - **Super animation des doodles** : animation marquante mettant en scène les 26 doodles (ex. pluie, parade, explosion de couleurs, tous les types qui défilent ou rebondissent). L’objectif est que la fin soit **mémorable et joyeuse**.
+  - **Super animation des doodles** : animation marquante mettant en scène les 27 doodles (ex. pluie, parade, explosion de couleurs, tous les types qui défilent ou rebondissent). L’objectif est que la fin soit **mémorable et joyeuse**.
   - **Message** invitant à aller chercher le cadeau au stand (ex. « Tu as tout collecté ! Va chercher ton cadeau au stand du festival. »).
 - Aucun compte ni envoi de données ; la preuve de complétion est locale (l’enfant peut montrer l’écran ou le Malidex complet au stand).
 
@@ -191,11 +191,11 @@
 ### 6.2 Stockage local
 
 - **Choix** : **localStorage**.
-- **Justification** : la collection contient au plus 104 entrées (paires type + variante). Un tableau JSON ou une structure sérialisée reste très petite (< 10 Ko). localStorage est suffisant, simple, et compatible avec tous les environnements ciblés (mobile, GitHub Pages). IndexedDB n’est pas nécessaire pour ce volume.
+- **Justification** : la collection contient au plus 108 entrées (paires type + variante). Un tableau JSON ou une structure sérialisée reste très petite (< 10 Ko). localStorage est suffisant, simple, et compatible avec tous les environnements ciblés (mobile, GitHub Pages). IndexedDB n’est pas nécessaire pour ce volume.
 - **Schéma recommandé** :
   - **Clé** : `malix-collection` (préfixe ou nom unique pour éviter les collisions avec d’éventuelles autres clés du même domaine).
-  - **Valeur** : JSON. Exemple : tableau de paires `[{ "type": 1, "variant": 2 }, ...]` ou ensemble de chaînes `["1-2", "3-1", ...]`. Chaque paire (type, variante) n’apparaît qu’une fois. Type : entier 1–26, Variant : entier 1–4.
-- **Persistance** : à chaque capture, sauvegarder la collection mise à jour. Au chargement de la page, recharger la collection depuis localStorage pour afficher le Malidex à jour et détecter une éventuelle complétion (redirection vers écran de fin si déjà 104).
+  - **Valeur** : JSON. Exemple : tableau de paires `[{ "type": 1, "variant": 2 }, ...]` ou ensemble de chaînes `["1-2", "3-1", ...]`. Chaque paire (type, variante) n’apparaît qu’une fois. Type : entier 1–27, Variant : entier 1–4.
+- **Persistance** : à chaque capture, sauvegarder la collection mise à jour. Au chargement de la page, recharger la collection depuis localStorage pour afficher le Malidex à jour et détecter une éventuelle complétion (redirection vers écran de fin si déjà 108).
 - **Échange** : après commit d’un échange bilatéral, sauvegarder immédiatement la collection et les compteurs mis à jour. Les états intermédiaires de négociation ne sont pas persistés.
 
 ### 6.3 Réinitialisation
@@ -220,12 +220,12 @@
 ### 7.3 Build et déploiement
 
 - **Compatible** avec le workflow actuel (GitHub Actions, `scripts/copy-to-dist.js`). Le build doit **inclure** la copie ou la génération du dossier **malix/** dans **dist/**.
-- **Options** : (1) Ajouter `malix` à la liste des dossiers copiés par `copy-to-dist.js` (si le dossier source `malix/` existe à la racine du repo). (2) Ou script de build dédié qui produit `dist/malix/` (HTML, CSS, JS, copies des 26 SVG). La SPEC n’impose pas l’outil, seulement le résultat : après build, `dist/malix/index.html` existe et le jeu fonctionne sous /malix.
+- **Options** : (1) Ajouter `malix` à la liste des dossiers copiés par `copy-to-dist.js` (si le dossier source `malix/` existe à la racine du repo). (2) Ou script de build dédié qui produit `dist/malix/` (HTML, CSS, JS, copies des 27 SVG). La SPEC n’impose pas l’outil, seulement le résultat : après build, `dist/malix/index.html` existe et le jeu fonctionne sous /malix.
 - **Zéro backend** ; chargement rapide ; **aucun impact** sur le bundle ou les perfs du site principal (fichiers entièrement séparés).
 
 ### 7.4 Assets du jeu
 
-- **26 SVG** : copiés dans l’arbre du jeu (ex. `malix/assets/doodles/01.svg` … `26.svg`) pour isolation et chemins relatifs simples.
+- **27 SVG** : copiés dans l’arbre du jeu (ex. `malix/assets/doodles/01.svg` … `27.svg`) pour isolation et chemins relatifs simples.
 - **Couleurs** : les 4 variantes sont appliquées en **CSS** (ou en JS par remplacement de couleurs dans le SVG, comme sur le site pour les doodles flottants). Les SVG sources utilisent du blanc `#fff` / `#ffffff` ; le jeu remplace par une des 4 couleurs de la palette du jeu (voir Design).
 
 ---
@@ -235,7 +235,7 @@
 ### 8.1 Identité visuelle
 
 - Le jeu **peut avoir sa propre identité visuelle**. Il **n’est pas obligatoire** de réutiliser la charte graphique du site (Hubot Sans, palette navy/bleu/cyan/coral/orange/rose).
-- **Seul point commun avec le site** : les **26 doodles** (mêmes visuels que sur le site et sur le programme). Le reste (couleurs, typo, fonds, boutons) peut être **propre au jeu** : fun, rigolo, joli, adapté aux enfants.
+- **Seul point commun avec le site** : les **27 doodles** (mêmes visuels que sur le site et sur le programme). Le reste (couleurs, typo, fonds, boutons) peut être **propre au jeu** : fun, rigolo, joli, adapté aux enfants.
 - **Couleurs des 4 variantes** : **fun et rigolotes**, appliquées en CSS. Exemples possibles : couleurs vives et contrastées (ex. bleu, rose, orange, vert menthe), ou palette cohérente mais gaie. À définir dans l’implémentation ; la SPEC impose seulement « 4 variantes de couleur distinctes et sympas pour les enfants ».
 
 ### 8.2 Orientation : portrait uniquement
@@ -245,8 +245,8 @@
 
 ### 8.3 Écrans
 
-1. **Écran de jeu** : zone où les Malix apparaissent (spawn), flottent et sont attrapables ; accès au Malidex (bouton ou onglet) ; éventuellement indicateur de progression (ex. X/104).
-2. **Malidex** : liste/grille des 26 types × 4 couleurs avec état collecté / non collecté ; bouton retour vers l’écran de jeu ; option « Recommencer » avec confirmation.
+1. **Écran de jeu** : zone où les Malix apparaissent (spawn), flottent et sont attrapables ; accès au Malidex (bouton ou onglet) ; éventuellement indicateur de progression (ex. X/108).
+2. **Malidex** : liste/grille des 27 types × 4 couleurs avec état collecté / non collecté ; bouton retour vers l’écran de jeu ; option « Recommencer » avec confirmation.
 3. **Écran de fin** : affiché quand la collection est complète ; grand « Bravo » ; super animation des doodles ; message pour aller chercher le cadeau au stand.
 
 ### 8.4 Principes UI
@@ -279,7 +279,7 @@ L’agent qui implémente le jeu doit prévoir ou exécuter :
 ### 11.1 Tests unitaires (logique de collection)
 
 - Ajout d’une entrée (type, variante) à la collection : l’entrée est présente une seule fois (pas de doublon).
-- Détection de la complétion : lorsque 104 entrées sont présentes, la condition « fin de jeu » est vraie.
+- Détection de la complétion : lorsque 108 entrées sont présentes, la condition « fin de jeu » est vraie.
 - Persistance : après sauvegarde puis rechargement (simulation localStorage), la collection est identique.
 
 ### 11.2 Tests de non-régression (site principal)
@@ -320,7 +320,7 @@ Optionnel : Schema.org **WebApplication** (applicationCategory "Game") en JSON-L
 
 ## 13. Hypothèses et incertitudes
 
-- [ASSUMPTION] Les 26 types correspondent aux fichiers `01.svg` … `26.svg` dans `assets/img/doodles/`.
+- [ASSUMPTION] Les 27 types correspondent aux fichiers `01.svg` … `27.svg` dans `assets/img/doodles/`.
 - [ASSUMPTION] Les 4 variantes sont des couleurs appliquées au SVG (remplacement du blanc) ; pas de fichier SVG différent par couleur.
 - [ASSUMPTION] L’URL de production du site est du type `https://festibask-impro.fr` ; /malix donne donc `https://festibask-impro.fr/malix/`.
 - [UNCERTAIN] Comportement exact si localStorage est plein (quota) : afficher un message d’erreur simple et ne pas bloquer la lecture ; l’écriture peut échouer silencieusement ou avec message.
