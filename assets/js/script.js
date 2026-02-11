@@ -811,6 +811,18 @@
     });
   });
 
+  // PostHog : clic sur logo partenaire (section sponsors)
+  document.querySelectorAll('#sponsors a.sponsor-link').forEach(function (a) {
+    a.addEventListener('click', function () {
+      if (window.posthog) {
+        window.posthog.capture('partner_logo_click', {
+          partner: a.getAttribute('data-partner') || '',
+          url: a.getAttribute('href') || ''
+        });
+      }
+    });
+  });
+
   // PostHog : navigation (header, drawer, footer)
   document.querySelectorAll('header .primary a').forEach(function (a) {
     a.addEventListener('click', function () { if (window.posthog) window.posthog.capture('nav_click', { target: a.getAttribute('href') || '', source: 'header' }); });
