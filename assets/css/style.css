@@ -2827,9 +2827,11 @@ nav.primary a:hover {
   padding: 0;
 }
 
-/* Belgique : titre centré ; MATCH à 24px du bord image (comme 21:00 du bord droit, via zone padding) */
+/* Match image-left : titre centré dans la zone bleue (Belgique, France, Suisse) */
 @media (min-width: 769px) {
-  #spectacle-vendredi-match.match-block.image-left .match-zone-text .match-label {
+  #spectacle-vendredi-match.match-block.image-left .match-zone-text .match-label,
+  #spectacle-samedi-match.match-block.image-left .match-zone-text .match-label,
+  #spectacle-dimanche-match.match-block.image-left .match-zone-text .match-label {
     text-align: center;
   }
 }
