@@ -2771,6 +2771,7 @@ nav.primary a:hover {
 .match-block.image-left .match-image-wrapper {
   left: 0;
   right: auto;
+  max-width: min(50%, 442px); /* aligner sur la frontière zone bleue (éviter débordement ~80px) */
 }
 
 .match-block.image-left::before {
@@ -2824,6 +2825,18 @@ nav.primary a:hover {
   flex-direction: column;
   gap: 8px;
   padding: 0;
+}
+
+/* Belgique : titre centré ; MATCH à 24px du bord image (comme 21:00 du bord droit, via zone padding) */
+@media (min-width: 769px) {
+  #spectacle-vendredi-match.match-block.image-left .match-zone-text .match-label {
+    text-align: center;
+  }
+}
+
+/* Belgique : ancrer l'image à droite pour rogner à gauche ; récupérer la marge droite (~20px) */
+#spectacle-vendredi-match.match-block.image-left .match-image {
+  object-position: 93% center;
 }
 
 .match-meta-row {
