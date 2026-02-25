@@ -708,7 +708,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
 <section id="stages" class="section section-bg-5">
   <div class="container">
     <h2>Stages d'impro</h2>
-    <p class="small mb-16">Chaque jour des ateliers d'improvisation animés vous sont proposés. Que vous souhaitiez vous initier seul ou en famille, ou que vous souhaitiez vous perfectionner ou prendre une master class, il y aura forcément un atelier pour vous.</p>
+    <p class="small mb-16">Chaque jour des ateliers d'improvisation animés vous sont proposés. Que vous souhaitiez vous initier seul ou en famille, ou que vous souhaitiez vous perfectionner ou suivre un stage confirmé, il y aura forcément un atelier pour vous.</p>
 
     <!-- Switcher jour par jour (synchronisé avec Spectacles et Programme détaillé) -->
     <div class="day-tabs" id="stagesDayTabs">
@@ -726,10 +726,11 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
       </button>
     </div>
 
-    <div class="ateliers-grid">
-      <!-- Stage Initiation Adulte -->
-      <!-- CTA stages : "S'inscrire" → billetterie (lien HelloAsso), "Ça m'intéresse!" → waitlist (liste d'attente). -->
-      <article id="atelier-vendredi-11h-initiation" class="atelier-card" data-day="0">
+    <div class="grid grid-3 ateliers-grid mt-18">
+      <!-- Vendredi -->
+      <div class="day card stages-day active" data-day="0">
+        <!-- CTA stages : "S'inscrire" → billetterie (lien HelloAsso), "Ça m'intéresse!" → waitlist (liste d'attente). -->
+        <article id="atelier-vendredi-11h-initiation" class="atelier-card" data-day="0">
         <div class="header">
           <div class="day-header">Vendredi 15 mai · 11:00</div>
         </div>
@@ -765,6 +766,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
                 <span class="meta-chip">2H</span>
                 <span class="meta-chip">Adultes</span>
                 <span class="meta-chip">Débutant.es</span>
+                <span class="meta-chip">15 places</span>
                 <span class="meta-chip">20 €</span>
                 <a href="#" class="stage-details-btn">Détails</a>
               </div>
@@ -813,8 +815,93 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
         </div>
       </article>
 
-      <!-- Masterclass Perfectionnement -->
-      <article id="atelier-samedi-10h-masterclass" class="atelier-card" data-day="1">
+        <article id="atelier-vendredi-14h-initiation" class="atelier-card" data-day="0">
+        <div class="header">
+          <div class="day-header">Vendredi 15 mai · 14:00</div>
+        </div>
+        <div class="flip-container">
+          <div class="flip-front">
+            <div class="content">
+              <div class="stage-recto-title-row">
+                <div class="instructor-flip-container instructor-flip-recto" data-flip="instructor-4">
+                  <div class="instructor-flip-front">
+                    <img src="assets/img/long/laetitia-landelle.avif" alt="Laëtitia Landelle" class="instructor-avatar-small">
+                    <div class="instructor-name-block" aria-hidden="true">
+                      <span class="instructor-name-small">Laëtitia Landelle</span>
+                      <a class="instructor-insta" href="https://www.instagram.com/laetitia.landelle?igsh=MWNpZjc1dHl6ZmczNg==" target="_blank" rel="noopener noreferrer">@laetitia.landelle</a>
+                    </div>
+                  </div>
+                  <div class="instructor-flip-back">
+                    <div class="instructor-flip-back-header">
+                      <img src="assets/img/long/laetitia-landelle.avif" alt="Laëtitia Landelle">
+                      <div class="instructor-name-block">
+                        <span class="instructor-name">Laëtitia Landelle</span>
+                        <a class="instructor-insta" href="https://www.instagram.com/laetitia.landelle?igsh=MWNpZjc1dHl6ZmczNg==" target="_blank" rel="noopener noreferrer">@laetitia.landelle</a>
+                      </div>
+                    </div>
+                    <p class="instructor-bio">Comédienne professionnelle tous terrains, directrice artistique de plusieurs projets et spectacles.</p>
+                  </div>
+                </div>
+                <h3>Découvrir le théâtre d'impro</h3>
+              </div>
+              <span class="complet-tag" role="button" tabindex="0">COMPLET</span>
+              <p class="waitlist-explanation-front" style="display: none;">Ce stage est complet. Mais inscrivez-vous sur liste d'attente et on vous appelle dès qu'une place se libère! 👌</p>
+              <div class="meta-info">
+                <span class="meta-chip">2H</span>
+                <span class="meta-chip">Adultes</span>
+                <span class="meta-chip">Débutant.es</span>
+                <span class="meta-chip">15 places</span>
+                <span class="meta-chip">20 €</span>
+                <a href="#" class="stage-details-btn">Détails</a>
+              </div>
+              <div class="footer">
+                <a class="link-billetterie btn btn-inscription" href="#">S'inscrire au stage</a><button class="btn btn-waitlist" data-open="waitlist">Ça m'intéresse!</button>
+              </div>
+            </div>
+          </div>
+          <div class="flip-back">
+            <div class="content">
+              <div class="complet-overlay">
+                <p class="waitlist-explanation-overlay">Ce stage est complet. Mais inscrivez-vous sur liste d'attente et on vous appelle dès qu'une place se libère! 👌</p>
+              </div>
+              <h3>Découvrir le théâtre d'impro</h3>
+              <p class="description">Découvrir l'impro dans un cadre chaleureux, détendu et complice, à travers des jeux collectifs, exercices et scénettes. Oser ce saut dans le vide finalement pas si effrayant ;)</p>
+              <div class="instructor-button-row">
+                <div class="instructor-flip-container" data-flip="instructor-4">
+                  <div class="instructor-flip-front">
+                    <img src="assets/img/long/laetitia-landelle.avif" alt="Laëtitia Landelle">
+                    <div class="instructor-name-block">
+                      <span class="instructor-name">Laëtitia Landelle</span>
+                      <a class="instructor-insta" href="https://www.instagram.com/laetitia.landelle?igsh=MWNpZjc1dHl6ZmczNg==" target="_blank" rel="noopener noreferrer">@laetitia.landelle</a>
+                    </div>
+                  </div>
+                  <div class="instructor-flip-back">
+                    <div class="instructor-flip-back-header">
+                      <img src="assets/img/long/laetitia-landelle.avif" alt="Laëtitia Landelle">
+                      <div class="instructor-name-block">
+                        <span class="instructor-name">Laëtitia Landelle</span>
+                        <a class="instructor-insta" href="https://www.instagram.com/laetitia.landelle?igsh=MWNpZjc1dHl6ZmczNg==" target="_blank" rel="noopener noreferrer">@laetitia.landelle</a>
+                      </div>
+                    </div>
+                    <p class="instructor-bio">Comédienne professionnelle tous terrains, directrice artistique de plusieurs projets et spectacles.</p>
+                  </div>
+                </div>
+                <div class="footer-mobile">
+                  <a class="link-billetterie btn btn-inscription" href="#">S'inscrire au stage</a><button class="btn btn-waitlist" data-open="waitlist">Ça m'intéresse!</button>
+                </div>
+              </div>
+              <div class="footer footer-desktop">
+                <a class="link-billetterie btn btn-inscription" href="#">S'inscrire au stage</a><button class="btn btn-waitlist" data-open="waitlist">Ça m'intéresse!</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      </div>
+
+      <!-- Samedi -->
+      <div class="day card stages-day" data-day="1">
+        <article id="atelier-samedi-10h-salle1" class="atelier-card" data-day="1">
         <div class="header">
           <div class="day-header">Samedi 16 mai · 10:00</div>
         </div>
@@ -822,29 +909,31 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
           <div class="flip-front">
             <div class="content">
               <div class="stage-recto-title-row">
-                <div class="instructor-flip-container instructor-flip-recto" data-flip="instructor-2">
+                <div class="instructor-flip-container instructor-flip-recto" data-flip="instructor-sam10s1">
                   <div class="instructor-flip-front">
-                    <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Bientôt dévoilé" class="instructor-avatar-small">
+                    <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Jeremy Belhadj" class="instructor-avatar-small">
                     <div class="instructor-name-block" aria-hidden="true">
-                      <span class="instructor-name-small instructor-name--placeholder">Intervenant.e bientôt dévoilé.e</span>
+                      <span class="instructor-name-small">Jeremy Belhadj</span>
                     </div>
                   </div>
                   <div class="instructor-flip-back">
                     <div class="instructor-flip-back-header">
-                      <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Bientôt dévoilé">
-                      <span class="instructor-name instructor-name--placeholder">Intervenant.e bientôt dévoilé.e</span>
+                      <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Jeremy Belhadj">
+                      <span class="instructor-name">Jeremy Belhadj</span>
                     </div>
-                    <p class="instructor-bio">Nous sommes en train de sélectionner les intervenants masterclass.</p>
+                    <p class="instructor-bio">Comédien Improvisateur pro depuis 15 ans – formé au clown, art dramatique et animation.</p>
                   </div>
                 </div>
-                <h3>Master class impro</h3>
+                <h3>Les émotions comme moteur d'écriture spontanée</h3>
               </div>
               <span class="complet-tag" role="button" tabindex="0">COMPLET</span>
               <p class="waitlist-explanation-front" style="display: none;">Ce stage est complet. Mais inscrivez-vous sur liste d'attente et on vous appelle dès qu'une place se libère! 👌</p>
               <div class="meta-info">
+                <span class="meta-chip">Salle 1</span>
                 <span class="meta-chip">3H</span>
                 <span class="meta-chip">Adultes</span>
                 <span class="meta-chip">Confirmé.es</span>
+                <span class="meta-chip">12 places</span>
                 <span class="meta-chip">30 €</span>
                 <a href="#" class="stage-details-btn">Détails</a>
               </div>
@@ -858,20 +947,20 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
               <div class="complet-overlay">
                 <p class="waitlist-explanation-overlay">Ce stage est complet. Mais inscrivez-vous sur liste d'attente et on vous appelle dès qu'une place se libère! 👌</p>
               </div>
-              <h3>Master class impro</h3>
-              <p class="description">Une session intensive pour travailler un jeu précis, habité et riche. Technique, émotion, présence : un stage conçu pour faire progresser.</p>
+              <h3>Les émotions comme moteur d'écriture spontanée</h3>
+              <p class="description">Comment les choix arbitraires d'émotions peuvent définir l'histoire plus que l'inverse. Après une prise en main de l'« émotion » grâce à un outil simple, nous verrons comment la scène peut s'écrire à partir de l'émotion et comment la moduler pour un jeu réaliste et captivant.</p>
               <div class="instructor-button-row">
-                <div class="instructor-flip-container" data-flip="instructor-2">
+                <div class="instructor-flip-container" data-flip="instructor-sam10s1">
                   <div class="instructor-flip-front">
-                    <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Bientôt dévoilé">
-                    <span class="instructor-name instructor-name--placeholder">Intervenant.e bientôt dévoilé.e</span>
+                    <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Jeremy Belhadj">
+                    <span class="instructor-name">Jeremy Belhadj</span>
                   </div>
                   <div class="instructor-flip-back">
                     <div class="instructor-flip-back-header">
-                      <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Bientôt dévoilé">
-                      <span class="instructor-name instructor-name--placeholder">Intervenant.e bientôt dévoilé.e</span>
+                      <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Jeremy Belhadj">
+                      <span class="instructor-name">Jeremy Belhadj</span>
                     </div>
-                    <p class="instructor-bio">Nous sommes en train de sélectionner les intervenants masterclass.</p>
+                    <p class="instructor-bio">Comédien Improvisateur pro depuis 15 ans – formé au clown, art dramatique et animation.</p>
                   </div>
                 </div>
                 <div class="footer-mobile">
@@ -886,8 +975,245 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
         </div>
       </article>
 
-      <!-- Stage Family – Émilie -->
-      <article id="atelier-dimanche-famille" class="atelier-card" data-day="2">
+      <!-- Stage confirmé Samedi 10h Salle 2 -->
+      <article id="atelier-samedi-10h-salle2" class="atelier-card" data-day="1">
+        <div class="header">
+          <div class="day-header">Samedi 16 mai · 10:00</div>
+        </div>
+        <div class="flip-container">
+          <div class="flip-front">
+            <div class="content">
+              <div class="stage-recto-title-row">
+                <div class="instructor-flip-container instructor-flip-recto" data-flip="instructor-sam10s2">
+                  <div class="instructor-flip-front">
+                    <img src="assets/img/long/laetitia-landelle.avif" alt="Laetitia Landelle" class="instructor-avatar-small">
+                    <div class="instructor-name-block" aria-hidden="true">
+                      <span class="instructor-name-small">Laetitia Landelle</span>
+                      <a class="instructor-insta" href="https://www.instagram.com/laetitia.landelle?igsh=MWNpZjc1dHl6ZmczNg==" target="_blank" rel="noopener noreferrer">@laetitia.landelle</a>
+                    </div>
+                  </div>
+                  <div class="instructor-flip-back">
+                    <div class="instructor-flip-back-header">
+                      <img src="assets/img/long/laetitia-landelle.avif" alt="Laetitia Landelle">
+                      <div class="instructor-name-block">
+                        <span class="instructor-name">Laetitia Landelle</span>
+                        <a class="instructor-insta" href="https://www.instagram.com/laetitia.landelle?igsh=MWNpZjc1dHl6ZmczNg==" target="_blank" rel="noopener noreferrer">@laetitia.landelle</a>
+                      </div>
+                    </div>
+                    <p class="instructor-bio">Comédienne professionnelle tous terrains, directrice artistique et pédagogue.</p>
+                  </div>
+                </div>
+                <h3>EEET... ACTION !</h3>
+              </div>
+              <span class="complet-tag" role="button" tabindex="0">COMPLET</span>
+              <p class="waitlist-explanation-front" style="display: none;">Ce stage est complet. Mais inscrivez-vous sur liste d'attente et on vous appelle dès qu'une place se libère! 👌</p>
+              <div class="meta-info">
+                <span class="meta-chip">Salle 2</span>
+                <span class="meta-chip">3H</span>
+                <span class="meta-chip">Adultes</span>
+                <span class="meta-chip">Confirmé.es</span>
+                <span class="meta-chip">15 places</span>
+                <span class="meta-chip">30 €</span>
+                <a href="#" class="stage-details-btn">Détails</a>
+              </div>
+              <div class="footer">
+                <a class="link-billetterie btn btn-inscription" href="#">S'inscrire au stage</a><button class="btn btn-waitlist" data-open="waitlist">Ça m'intéresse!</button>
+              </div>
+            </div>
+          </div>
+          <div class="flip-back">
+            <div class="content">
+              <div class="complet-overlay">
+                <p class="waitlist-explanation-overlay">Ce stage est complet. Mais inscrivez-vous sur liste d'attente et on vous appelle dès qu'une place se libère! 👌</p>
+              </div>
+              <h3>EEET... ACTION !</h3>
+              <p class="description">Être capable de faire une impro semi longue à longue, en utilisant la dramaturgie, une trame narrative commune et les codes du cinéma de différents genres.</p>
+              <div class="instructor-button-row">
+                <div class="instructor-flip-container" data-flip="instructor-sam10s2">
+                  <div class="instructor-flip-front">
+                    <img src="assets/img/long/laetitia-landelle.avif" alt="Laetitia Landelle">
+                    <div class="instructor-name-block">
+                      <span class="instructor-name">Laetitia Landelle</span>
+                      <a class="instructor-insta" href="https://www.instagram.com/laetitia.landelle?igsh=MWNpZjc1dHl6ZmczNg==" target="_blank" rel="noopener noreferrer">@laetitia.landelle</a>
+                    </div>
+                  </div>
+                  <div class="instructor-flip-back">
+                    <div class="instructor-flip-back-header">
+                      <img src="assets/img/long/laetitia-landelle.avif" alt="Laetitia Landelle">
+                      <div class="instructor-name-block">
+                        <span class="instructor-name">Laetitia Landelle</span>
+                        <a class="instructor-insta" href="https://www.instagram.com/laetitia.landelle?igsh=MWNpZjc1dHl6ZmczNg==" target="_blank" rel="noopener noreferrer">@laetitia.landelle</a>
+                      </div>
+                    </div>
+                    <p class="instructor-bio">Comédienne professionnelle tous terrains, directrice artistique et pédagogue.</p>
+                  </div>
+                </div>
+                <div class="footer-mobile">
+                  <a class="link-billetterie btn btn-inscription" href="#">S'inscrire au stage</a><button class="btn btn-waitlist" data-open="waitlist">Ça m'intéresse!</button>
+                </div>
+              </div>
+              <div class="footer footer-desktop">
+                <a class="link-billetterie btn btn-inscription" href="#">S'inscrire au stage</a><button class="btn btn-waitlist" data-open="waitlist">Ça m'intéresse!</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Stage confirmé Samedi 14h Salle 1 -->
+      <article id="atelier-samedi-14h-salle1" class="atelier-card" data-day="1">
+        <div class="header">
+          <div class="day-header">Samedi 16 mai · 14:00</div>
+        </div>
+        <div class="flip-container">
+          <div class="flip-front">
+            <div class="content">
+              <div class="stage-recto-title-row">
+                <div class="instructor-flip-container instructor-flip-recto" data-flip="instructor-sam14s1">
+                  <div class="instructor-flip-front">
+                    <img src="assets/img/long/lorraine-91w.avif" alt="Loraine Bégard" class="instructor-avatar-small">
+                    <div class="instructor-name-block" aria-hidden="true">
+                      <span class="instructor-name-small">Loraine Bégard</span>
+                    </div>
+                  </div>
+                  <div class="instructor-flip-back">
+                    <div class="instructor-flip-back-header">
+                      <img src="assets/img/long/lorraine-170w.avif" alt="Loraine Bégard">
+                      <span class="instructor-name">Loraine Bégard</span>
+                    </div>
+                    <p class="instructor-bio">Low est musicienne, danseuse, improvisatrice et pédagogue. Elle développe un travail pédagogique reliant émotions, mouvement et musique dans une improvisation sensible et incarnée.</p>
+                  </div>
+                </div>
+                <h3>Les émotions et la musique au coeur des improvisations</h3>
+              </div>
+              <span class="complet-tag" role="button" tabindex="0">COMPLET</span>
+              <p class="waitlist-explanation-front" style="display: none;">Ce stage est complet. Mais inscrivez-vous sur liste d'attente et on vous appelle dès qu'une place se libère! 👌</p>
+              <div class="meta-info">
+                <span class="meta-chip">Salle 1</span>
+                <span class="meta-chip">3H</span>
+                <span class="meta-chip">Adultes</span>
+                <span class="meta-chip">Confirmé.es</span>
+                <span class="meta-chip">15 places</span>
+                <span class="meta-chip">30 €</span>
+                <a href="#" class="stage-details-btn">Détails</a>
+              </div>
+              <div class="footer">
+                <a class="link-billetterie btn btn-inscription" href="#">S'inscrire au stage</a><button class="btn btn-waitlist" data-open="waitlist">Ça m'intéresse!</button>
+              </div>
+            </div>
+          </div>
+          <div class="flip-back">
+            <div class="content">
+              <div class="complet-overlay">
+                <p class="waitlist-explanation-overlay">Ce stage est complet. Mais inscrivez-vous sur liste d'attente et on vous appelle dès qu'une place se libère! 👌</p>
+              </div>
+              <h3>Les émotions et la musique au coeur des improvisations</h3>
+              <p class="description">Dans ce stage de 3 heures, nous plongerons au cœur des émotions et de la musique comme moteurs puissants de l'improvisation. Comment une sensation intérieure transforme le mouvement, comment une musique influence l'état de jeu, le rythme et les relations sur scène. À travers des explorations guidées, les participant·es apprendront à se laisser traverser, à affiner leur écoute et à faire naître une écriture instantanée, sensible et vivante.</p>
+              <div class="instructor-button-row">
+                <div class="instructor-flip-container" data-flip="instructor-sam14s1">
+                  <div class="instructor-flip-front">
+                    <img src="assets/img/long/lorraine-170w.avif" alt="Loraine Bégard">
+                    <span class="instructor-name">Loraine Bégard</span>
+                  </div>
+                  <div class="instructor-flip-back">
+                    <div class="instructor-flip-back-header">
+                      <img src="assets/img/long/lorraine-170w.avif" alt="Loraine Bégard">
+                      <span class="instructor-name">Loraine Bégard</span>
+                    </div>
+                    <p class="instructor-bio">Low est musicienne, danseuse, improvisatrice et pédagogue. Elle développe un travail pédagogique reliant émotions, mouvement et musique dans une improvisation sensible et incarnée.</p>
+                  </div>
+                </div>
+                <div class="footer-mobile">
+                  <a class="link-billetterie btn btn-inscription" href="#">S'inscrire au stage</a><button class="btn btn-waitlist" data-open="waitlist">Ça m'intéresse!</button>
+                </div>
+              </div>
+              <div class="footer footer-desktop">
+                <a class="link-billetterie btn btn-inscription" href="#">S'inscrire au stage</a><button class="btn btn-waitlist" data-open="waitlist">Ça m'intéresse!</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Stage confirmé Samedi 14h Salle 2 -->
+      <article id="atelier-samedi-14h-salle2" class="atelier-card" data-day="1">
+        <div class="header">
+          <div class="day-header">Samedi 16 mai · 14:00</div>
+        </div>
+        <div class="flip-container">
+          <div class="flip-front">
+            <div class="content">
+              <div class="stage-recto-title-row">
+                <div class="instructor-flip-container instructor-flip-recto" data-flip="instructor-sam14s2">
+                  <div class="instructor-flip-front">
+                    <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Jeremy Belhadj" class="instructor-avatar-small">
+                    <div class="instructor-name-block" aria-hidden="true">
+                      <span class="instructor-name-small">Jeremy Belhadj</span>
+                    </div>
+                  </div>
+                  <div class="instructor-flip-back">
+                    <div class="instructor-flip-back-header">
+                      <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Jeremy Belhadj">
+                      <span class="instructor-name">Jeremy Belhadj</span>
+                    </div>
+                    <p class="instructor-bio">Comédien Improvisateur pro depuis 15 ans – formé au clown, art dramatique et animation.</p>
+                  </div>
+                </div>
+                <h3>Le free form et sa technique</h3>
+              </div>
+              <span class="complet-tag" role="button" tabindex="0">COMPLET</span>
+              <p class="waitlist-explanation-front" style="display: none;">Ce stage est complet. Mais inscrivez-vous sur liste d'attente et on vous appelle dès qu'une place se libère! 👌</p>
+              <div class="meta-info">
+                <span class="meta-chip">Salle 2</span>
+                <span class="meta-chip">3H</span>
+                <span class="meta-chip">Adultes</span>
+                <span class="meta-chip">Confirmé.es</span>
+                <span class="meta-chip">12 places</span>
+                <span class="meta-chip">30 €</span>
+                <a href="#" class="stage-details-btn">Détails</a>
+              </div>
+              <div class="footer">
+                <a class="link-billetterie btn btn-inscription" href="#">S'inscrire au stage</a><button class="btn btn-waitlist" data-open="waitlist">Ça m'intéresse!</button>
+              </div>
+            </div>
+          </div>
+          <div class="flip-back">
+            <div class="content">
+              <div class="complet-overlay">
+                <p class="waitlist-explanation-overlay">Ce stage est complet. Mais inscrivez-vous sur liste d'attente et on vous appelle dès qu'une place se libère! 👌</p>
+              </div>
+              <h3>Le free form et sa technique</h3>
+              <p class="description">Le free form c'est la liberté absolue pour l'improvisateur qui est libre de jouer ce qui lui vient et de changer d'impro à tout moment. Nous nous entraînerons aux différentes transitions (tuilage, morphing et pont visuel) pour un spectacle propre et propice au voyage du spectateur et veillerons à la richesse des couleurs de jeu.</p>
+              <div class="instructor-button-row">
+                <div class="instructor-flip-container" data-flip="instructor-sam14s2">
+                  <div class="instructor-flip-front">
+                    <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Jeremy Belhadj">
+                    <span class="instructor-name">Jeremy Belhadj</span>
+                  </div>
+                  <div class="instructor-flip-back">
+                    <div class="instructor-flip-back-header">
+                      <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Jeremy Belhadj">
+                      <span class="instructor-name">Jeremy Belhadj</span>
+                    </div>
+                    <p class="instructor-bio">Comédien Improvisateur pro depuis 15 ans – formé au clown, art dramatique et animation.</p>
+                  </div>
+                </div>
+                <div class="footer-mobile">
+                  <a class="link-billetterie btn btn-inscription" href="#">S'inscrire au stage</a><button class="btn btn-waitlist" data-open="waitlist">Ça m'intéresse!</button>
+                </div>
+              </div>
+              <div class="footer footer-desktop">
+                <a class="link-billetterie btn btn-inscription" href="#">S'inscrire au stage</a><button class="btn btn-waitlist" data-open="waitlist">Ça m'intéresse!</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      </div>
+
+      <!-- Dimanche -->
+      <div class="day card stages-day" data-day="2">
+        <article id="atelier-dimanche-famille" class="atelier-card" data-day="2">
         <div class="header">
           <div class="day-header">Dimanche 17 mai · 10:30</div>
         </div>
@@ -922,6 +1248,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
                 <span class="meta-chip">2H</span>
                 <span class="meta-chip">6–10 ans</span>
                 <span class="meta-chip">Débutant.es</span>
+                <span class="meta-chip">8 duos</span>
                 <span class="meta-chip">20 € le duo</span>
                 <a href="#" class="stage-details-btn">Détails</a>
               </div>
@@ -969,162 +1296,6 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
         </div>
       </article>
 
-      <!-- Stage Initiation Adulte - Après-midi -->
-      <article id="atelier-vendredi-14h-initiation" class="atelier-card" data-day="0">
-        <div class="header">
-          <div class="day-header">Vendredi 15 mai · 14:00</div>
-        </div>
-        <div class="flip-container">
-          <div class="flip-front">
-            <div class="content">
-              <div class="stage-recto-title-row">
-                <div class="instructor-flip-container instructor-flip-recto" data-flip="instructor-4">
-                  <div class="instructor-flip-front">
-                    <img src="assets/img/long/laetitia-landelle.avif" alt="Laëtitia Landelle" class="instructor-avatar-small">
-                    <div class="instructor-name-block" aria-hidden="true">
-                      <span class="instructor-name-small">Laëtitia Landelle</span>
-                      <a class="instructor-insta" href="https://www.instagram.com/laetitia.landelle?igsh=MWNpZjc1dHl6ZmczNg==" target="_blank" rel="noopener noreferrer">@laetitia.landelle</a>
-                    </div>
-                  </div>
-                  <div class="instructor-flip-back">
-                    <div class="instructor-flip-back-header">
-                      <img src="assets/img/long/laetitia-landelle.avif" alt="Laëtitia Landelle">
-                      <div class="instructor-name-block">
-                        <span class="instructor-name">Laëtitia Landelle</span>
-                        <a class="instructor-insta" href="https://www.instagram.com/laetitia.landelle?igsh=MWNpZjc1dHl6ZmczNg==" target="_blank" rel="noopener noreferrer">@laetitia.landelle</a>
-                      </div>
-                    </div>
-                    <p class="instructor-bio">Comédienne professionnelle tous terrains, directrice artistique de plusieurs projets et spectacles.</p>
-                  </div>
-                </div>
-                <h3>Découvrir le théâtre d'impro</h3>
-              </div>
-              <span class="complet-tag" role="button" tabindex="0">COMPLET</span>
-              <p class="waitlist-explanation-front" style="display: none;">Ce stage est complet. Mais inscrivez-vous sur liste d'attente et on vous appelle dès qu'une place se libère! 👌</p>
-              <div class="meta-info">
-                <span class="meta-chip">2H</span>
-                <span class="meta-chip">Adultes</span>
-                <span class="meta-chip">Débutant.es</span>
-                <span class="meta-chip">20 €</span>
-                <a href="#" class="stage-details-btn">Détails</a>
-              </div>
-              <div class="footer">
-                <a class="link-billetterie btn btn-inscription" href="#">S'inscrire au stage</a><button class="btn btn-waitlist" data-open="waitlist">Ça m'intéresse!</button>
-              </div>
-            </div>
-          </div>
-          <div class="flip-back">
-            <div class="content">
-              <div class="complet-overlay">
-                <p class="waitlist-explanation-overlay">Ce stage est complet. Mais inscrivez-vous sur liste d'attente et on vous appelle dès qu'une place se libère! 👌</p>
-              </div>
-              <h3>Découvrir le théâtre d'impro</h3>
-              <p class="description">Découvrir l'impro dans un cadre chaleureux, détendu et complice, à travers des jeux collectifs, exercices et scénettes. Oser ce saut dans le vide finalement pas si effrayant ;)</p>
-              <div class="instructor-button-row">
-                <div class="instructor-flip-container" data-flip="instructor-4">
-                  <div class="instructor-flip-front">
-                    <img src="assets/img/long/laetitia-landelle.avif" alt="Laëtitia Landelle">
-                    <div class="instructor-name-block">
-                      <span class="instructor-name">Laëtitia Landelle</span>
-                      <a class="instructor-insta" href="https://www.instagram.com/laetitia.landelle?igsh=MWNpZjc1dHl6ZmczNg==" target="_blank" rel="noopener noreferrer">@laetitia.landelle</a>
-                    </div>
-                  </div>
-                  <div class="instructor-flip-back">
-                    <div class="instructor-flip-back-header">
-                      <img src="assets/img/long/laetitia-landelle.avif" alt="Laëtitia Landelle">
-                      <div class="instructor-name-block">
-                        <span class="instructor-name">Laëtitia Landelle</span>
-                        <a class="instructor-insta" href="https://www.instagram.com/laetitia.landelle?igsh=MWNpZjc1dHl6ZmczNg==" target="_blank" rel="noopener noreferrer">@laetitia.landelle</a>
-                      </div>
-                    </div>
-                    <p class="instructor-bio">Comédienne professionnelle tous terrains, directrice artistique de plusieurs projets et spectacles.</p>
-                  </div>
-                </div>
-                <div class="footer-mobile">
-                  <a class="link-billetterie btn btn-inscription" href="#">S'inscrire au stage</a><button class="btn btn-waitlist" data-open="waitlist">Ça m'intéresse!</button>
-                </div>
-              </div>
-              <div class="footer footer-desktop">
-                <a class="link-billetterie btn btn-inscription" href="#">S'inscrire au stage</a><button class="btn btn-waitlist" data-open="waitlist">Ça m'intéresse!</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- Masterclass Perfectionnement - Après-midi -->
-      <article id="atelier-samedi-14h-masterclass" class="atelier-card" data-day="1">
-        <div class="header">
-          <div class="day-header">Samedi 16 mai · 14:00</div>
-        </div>
-        <div class="flip-container">
-          <div class="flip-front">
-            <div class="content">
-              <div class="stage-recto-title-row">
-                <div class="instructor-flip-container instructor-flip-recto" data-flip="instructor-5">
-                  <div class="instructor-flip-front">
-                    <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Bientôt dévoilé" class="instructor-avatar-small">
-                    <div class="instructor-name-block" aria-hidden="true">
-                      <span class="instructor-name-small instructor-name--placeholder">Intervenant.e bientôt dévoilé.e</span>
-                    </div>
-                  </div>
-                  <div class="instructor-flip-back">
-                    <div class="instructor-flip-back-header">
-                      <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Bientôt dévoilé">
-                      <span class="instructor-name instructor-name--placeholder">Intervenant.e bientôt dévoilé.e</span>
-                    </div>
-                    <p class="instructor-bio">Nous sommes en train de sélectionner les intervenants masterclass.</p>
-                  </div>
-                </div>
-                <h3>Master class impro</h3>
-              </div>
-              <span class="complet-tag" role="button" tabindex="0">COMPLET</span>
-              <p class="waitlist-explanation-front" style="display: none;">Ce stage est complet. Mais inscrivez-vous sur liste d'attente et on vous appelle dès qu'une place se libère! 👌</p>
-              <div class="meta-info">
-                <span class="meta-chip">3H</span>
-                <span class="meta-chip">Adultes</span>
-                <span class="meta-chip">Confirmé.es</span>
-                <span class="meta-chip">30 €</span>
-                <a href="#" class="stage-details-btn">Détails</a>
-              </div>
-              <div class="footer">
-                <a class="link-billetterie btn btn-inscription" href="#">S'inscrire au stage</a><button class="btn btn-waitlist" data-open="waitlist">Ça m'intéresse!</button>
-              </div>
-            </div>
-          </div>
-          <div class="flip-back">
-            <div class="content">
-              <div class="complet-overlay">
-                <p class="waitlist-explanation-overlay">Ce stage est complet. Mais inscrivez-vous sur liste d'attente et on vous appelle dès qu'une place se libère! 👌</p>
-              </div>
-              <h3>Master class impro</h3>
-              <p class="description">Une session intensive pour travailler un jeu précis, habité et riche. Technique, émotion, présence : un stage conçu pour faire progresser.</p>
-              <div class="instructor-button-row">
-                <div class="instructor-flip-container" data-flip="instructor-5">
-                  <div class="instructor-flip-front">
-                    <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Bientôt dévoilé">
-                    <span class="instructor-name instructor-name--placeholder">Intervenant.e bientôt dévoilé.e</span>
-                  </div>
-                  <div class="instructor-flip-back">
-                    <div class="instructor-flip-back-header">
-                      <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Bientôt dévoilé">
-                      <span class="instructor-name instructor-name--placeholder">Intervenant.e bientôt dévoilé.e</span>
-                    </div>
-                    <p class="instructor-bio">Nous sommes en train de sélectionner les intervenants masterclass.</p>
-                  </div>
-                </div>
-                <div class="footer-mobile">
-                  <a class="link-billetterie btn btn-inscription" href="#">S'inscrire au stage</a><button class="btn btn-waitlist" data-open="waitlist">Ça m'intéresse!</button>
-                </div>
-              </div>
-              <div class="footer footer-desktop">
-                <a class="link-billetterie btn btn-inscription" href="#">S'inscrire au stage</a><button class="btn btn-waitlist" data-open="waitlist">Ça m'intéresse!</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </article>
-
       <!-- Découverte de l'impro pour ado (après-midi) – Anneke -->
       <article id="atelier-dimanche-ados" class="atelier-card" data-day="2">
         <div class="header">
@@ -1156,6 +1327,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
                 <span class="meta-chip">13–18 ans</span>
                 <span class="meta-chip">Ados</span>
                 <span class="meta-chip">Débutant.es</span>
+                <span class="meta-chip">12 places</span>
                 <span class="meta-chip">20 €</span>
                 <a href="#" class="stage-details-btn">Détails</a>
               </div>
@@ -1196,6 +1368,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
           </div>
         </div>
       </article>
+      </div>
     </div>
 
     <div class="card pass-gagnant mt-18">
@@ -1249,10 +1422,12 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
             <a href="#atelier-vendredi-11h-initiation" class="salle-box">
               <div class="slot-content">
                 <div class="time">11:00</div>
-                <div class="salle-label">Salle 1</div>
                 <div class="atelier-name">Initiation au théâtre d'improvisation</div>
               </div>
-              <img src="assets/img/long/quentin-ostanel.avif" alt="Quentin Ostanel" class="instructor-avatar slot-image">
+              <div class="slot-avatar-block">
+                <img src="assets/img/long/quentin-ostanel.avif" alt="Quentin Ostanel" class="instructor-avatar slot-image">
+                <div class="salle-label">Salle 1</div>
+              </div>
             </a>
           </div>
         </div>
@@ -1261,10 +1436,12 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
             <a href="#atelier-vendredi-14h-initiation" class="salle-box">
               <div class="slot-content">
                 <div class="time">14:00</div>
-                <div class="salle-label">Salle 2</div>
                 <div class="atelier-name">Découvrir le théâtre d'impro</div>
               </div>
-              <img src="assets/img/long/laetitia-landelle.avif" alt="Laëtitia Landelle" class="instructor-avatar slot-image">
+              <div class="slot-avatar-block">
+                <img src="assets/img/long/laetitia-landelle.avif" alt="Laëtitia Landelle" class="instructor-avatar slot-image">
+                <div class="salle-label">Salle 2</div>
+              </div>
             </a>
           </div>
         </div>
@@ -1311,25 +1488,44 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
         <div class="slot"><div class="time">09:30</div><div class="meta">🥐☕ Accueil des stages d'impro</div></div>
         <div class="slot slot-atelier">
           <div class="salles-container">
-            <a href="#atelier-samedi-10h-masterclass" class="salle-box">
-              <div class="slot-content">
-                <div class="time">10:00</div>
-                <div class="salle-label">Salle 2</div>
-                <div class="atelier-name">Master class impro</div>
+            <a href="#atelier-samedi-10h-salle1" class="salle-box">
+              <div class="time">10:00</div>
+              <div class="slot-avatar-block">
+                <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Jeremy Belhadj" class="instructor-avatar slot-image">
               </div>
-              <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Bientôt dévoilé" class="instructor-avatar slot-image">
+              <div class="salle-label">Salle 1</div>
+              <div class="atelier-name">Les émotions comme moteur d'écriture spontanée</div>
+            </a>
+            <a href="#atelier-samedi-10h-salle2" class="salle-box">
+              <div class="time">10:00</div>
+              <div class="slot-avatar-block">
+                <img src="assets/img/long/laetitia-landelle.avif" alt="Laetitia Landelle" class="instructor-avatar slot-image">
+              </div>
+              <div class="salle-label">Salle 2</div>
+              <div class="atelier-name">EEET... ACTION !</div>
             </a>
           </div>
         </div>
         <div class="slot slot-atelier">
           <div class="salles-container">
-            <a href="#atelier-samedi-14h-masterclass" class="salle-box">
-              <div class="slot-content">
-                <div class="time">14:00</div>
-                <div class="salle-label">Salle 1</div>
-                <div class="atelier-name">Master class impro</div>
+            <a href="#atelier-samedi-14h-salle1" class="salle-box">
+              <div class="time">14:00</div>
+              <div class="slot-avatar-block">
+                <picture>
+                  <source type="image/avif" srcset="assets/img/long/lorraine-91w.avif 91w, assets/img/long/lorraine-170w.avif 170w, assets/img/long/lorraine-655w.avif 655w" sizes="(max-width: 600px) 72px, 170px">
+                  <img src="assets/img/long/lorraine-170w.avif" alt="Loraine Bégard" class="instructor-avatar slot-image">
+                </picture>
               </div>
-              <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Bientôt dévoilé" class="instructor-avatar slot-image">
+              <div class="salle-label">Salle 1</div>
+              <div class="atelier-name">Les émotions et la musique au coeur des improvisations</div>
+            </a>
+            <a href="#atelier-samedi-14h-salle2" class="salle-box">
+              <div class="time">14:00</div>
+              <div class="slot-avatar-block">
+                <img src="festival-2026/ateliers/instructor-placeholder.svg" alt="Jeremy Belhadj" class="instructor-avatar slot-image">
+              </div>
+              <div class="salle-label">Salle 2</div>
+              <div class="atelier-name">Le free form et sa technique</div>
             </a>
           </div>
         </div>
@@ -1370,10 +1566,12 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
             <a href="#atelier-dimanche-famille" class="salle-box">
               <div class="slot-content">
                 <div class="time">10:30</div>
-                <div class="salle-label">Salle 1</div>
                 <div class="atelier-name">Stage Family</div>
               </div>
-              <img src="assets/img/long/emilie-coeurdevache.avif" alt="Émilie Coeurdevache" class="instructor-avatar slot-image">
+              <div class="slot-avatar-block">
+                <img src="assets/img/long/emilie-coeurdevache.avif" alt="Émilie Coeurdevache" class="instructor-avatar slot-image">
+                <div class="salle-label">Salle 1</div>
+              </div>
             </a>
           </div>
         </div>
@@ -1382,10 +1580,12 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
             <a href="#atelier-dimanche-ados" class="salle-box">
               <div class="slot-content">
                 <div class="time">13:30</div>
-                <div class="salle-label">Salle 2</div>
                 <div class="atelier-name">Découverte de l'impro pour ados</div>
               </div>
-              <img src="assets/img/long/anneke-bossis.avif" alt="Anneke Bossis" class="instructor-avatar slot-image">
+              <div class="slot-avatar-block">
+                <img src="assets/img/long/anneke-bossis.avif" alt="Anneke Bossis" class="instructor-avatar slot-image">
+                <div class="salle-label">Salle 2</div>
+              </div>
             </a>
           </div>
         </div>
@@ -1934,7 +2134,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
                   <div class="entry__choice">
                     <label>
                       <input type="radio" name="STAGE" class="input_replaced" value="2" required />
-                      <span class="radio-button"></span><span>Master class</span>
+                      <span class="radio-button"></span><span>Stage confirmé</span>
                     </label>
                   </div>
                   <div class="entry__choice">

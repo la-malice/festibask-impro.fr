@@ -951,6 +951,17 @@ footer .footer-impro {
   #programme .grid.grid-3:has(.day.card[data-day="2"].active) {
     grid-template-columns: 1fr 1fr 1.4fr;
   }
+
+  /* Stages : colonne highlightée (aligné sur le programme) */
+  #stages .grid.grid-3:has(.stages-day[data-day="0"].active) {
+    grid-template-columns: 1.4fr 1fr 1fr;
+  }
+  #stages .grid.grid-3:has(.stages-day[data-day="1"].active) {
+    grid-template-columns: 1fr 1.4fr 1fr;
+  }
+  #stages .grid.grid-3:has(.stages-day[data-day="2"].active) {
+    grid-template-columns: 1fr 1fr 1.4fr;
+  }
 }
 
 /* ============================================
@@ -3636,20 +3647,9 @@ nav.primary a:hover {
 .ateliers-grid {
   display: grid;
   gap: 20px;
-  margin-top: 32px;
 }
 
-@media (min-width: 800px) {
-  .ateliers-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1200px) {
-  .ateliers-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
+/* grid-3 fournit les colonnes (1 en mobile, 3 en desktop) */
 
 .atelier-card {
   background: rgba(255, 250, 243, 0.95);
@@ -3669,30 +3669,42 @@ nav.primary a:hover {
   border-color: var(--orange);
 }
 
-/* Surbrillance par jour : mêmes ombre et lisière que le programme (.program .day.card) */
-#stages .atelier-card {
+/* Colonnes par jour : Vendredi | Samedi | Dimanche (aligné sur le programme) */
+#stages .stages-day {
+  display: grid;
+  gap: 20px;
+  align-content: start;
   opacity: 0.6;
-  box-shadow: var(--shadow-sm);
   transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  /* Pas de fond clair sur les colonnes (seules les cartes atelier ont un fond) */
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
 }
 
-#stages .atelier-card.active {
+#stages .stages-day.active {
   opacity: 1;
-  transform: scale(1.03);
+}
+
+#stages .atelier-card {
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.3s ease;
+}
+
+#stages .stages-day.active .atelier-card {
   box-shadow: var(--shadow-md);
-  background: rgba(255, 250, 243, 0.98);
 }
 
 @media (max-width: 768px) {
-  /* Sur mobile, masquer les stages des jours non sélectionnés (comportement identique au programme) */
-  #stages .atelier-card:not(.active) {
+  /* Sur mobile, masquer les colonnes des jours non sélectionnés (comportement identique au programme) */
+  #stages .stages-day:not(.active) {
     display: none;
   }
 
-  #stages .atelier-card.active {
-    display: flex;
+  #stages .stages-day.active {
+    display: grid;
     opacity: 1;
-    transform: scale(1);
   }
 }
 
@@ -4172,11 +4184,11 @@ nav.primary a:hover {
 }
 
 /* Carte stage atténuée (pas en surbrillance) : @ Instagram plus foncé pour contraste */
-#stages .atelier-card:not(.active) .flip-front .instructor-flip-front .instructor-insta {
+#stages .stages-day:not(.active) .atelier-card .flip-front .instructor-flip-front .instructor-insta {
   color: var(--blue-charte);
 }
 
-#stages .atelier-card:not(.active) .flip-front .instructor-flip-front .instructor-insta:hover {
+#stages .stages-day:not(.active) .atelier-card .flip-front .instructor-flip-front .instructor-insta:hover {
   color: var(--navy);
   text-decoration: underline;
 }
@@ -4288,12 +4300,6 @@ nav.primary a:hover {
   font-size: 0.95rem;
   color: var(--accent);
   margin: 0;
-}
-
-/* Placeholder intervenant masterclass : nom en orange (charte) */
-#atelier-samedi-10h-masterclass .instructor-name--placeholder,
-#atelier-samedi-14h-masterclass .instructor-name--placeholder {
-  color: var(--orange);
 }
 
 .atelier-card .flip-back .description {
@@ -4793,15 +4799,6 @@ nav.primary a:hover {
   margin-left: -8px;
 }
 
-.slot-atelier .salle-box .salle-label {
-  font-size: 0.8rem;
-  font-weight: 800;
-  color: var(--blue-accent);
-  text-transform: uppercase;
-  line-height: 1.2;
-  margin: 0;
-}
-
 .slot-atelier .salle-box .atelier-name {
   display: block;
   margin: 0;
@@ -4809,6 +4806,8 @@ nav.primary a:hover {
   color: var(--orange);
   font-weight: 600;
   font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .slot-atelier .salle-box {
@@ -4817,13 +4816,30 @@ nav.primary a:hover {
   border-radius: 0;
 }
 
-/* Avatar intervenant à droite : zone carrée (1:1) = hauteur du slot, pleine hauteur sans bourrage */
-.slot-atelier .salle-box .instructor-avatar.slot-image {
+/* Bloc avatar + salle : image au-dessus, SALLE X en dessous */
+.slot-atelier .salle-box .slot-avatar-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 4px;
+}
+.slot-atelier .salle-box .slot-avatar-block .salle-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--blue-accent);
+  text-transform: uppercase;
+  white-space: nowrap;
+  margin: 0;
+  line-height: 1.1;
+}
+/* Avatar intervenant : zone carrée (1:1) = hauteur du slot, pleine hauteur sans bourrage */
+.slot-atelier .salle-box .instructor-avatar.slot-image,
+.slot-atelier .salle-box .slot-avatar-block picture img {
   width: 170px;
   height: 170px;
   object-fit: cover;
   object-position: center;
-  flex-shrink: 0;
   display: block;
   border-radius: 0;
   border: none;
@@ -4831,8 +4847,75 @@ nav.primary a:hover {
   background: var(--orange-bg);
 }
 
+/* 2 salles côte à côte : layout grille (heure alignée, titre sur 1fr), avatar réduit */
+#programme .slot-atelier:has(.salles-container .salle-box:nth-child(2)) {
+  min-height: 100px;
+  height: auto;
+}
+#programme .slot-atelier .salles-container:has(.salle-box:nth-child(2)) {
+  align-items: start;
+}
+/* 2 salles : grille | 10:00 | IMAGE |
+ *                    | SALLE X |           |
+ *                    | TITRE (span 2 cols) | */
+#programme .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr;
+  grid-template-rows: auto auto auto;
+  gap: 2px 8px;
+  align-items: start;
+  padding: 0 0 10px 16px;
+}
+#programme .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box > .time {
+  grid-column: 1;
+  grid-row: 1;
+  margin-left: 0;
+  font-weight: 700;
+}
+#programme .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box > .atelier-name {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-clamp: 2;
+}
+#programme .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box > .salle-label {
+  grid-column: 1;
+  grid-row: 2;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--blue-accent);
+  text-transform: uppercase;
+  white-space: nowrap;
+  margin: 0;
+  line-height: 1.1;
+}
+#programme .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box > .slot-avatar-block {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+}
+#programme .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box .slot-avatar-block {
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+#programme .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box .instructor-avatar.slot-image,
+#programme .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box .slot-avatar-block picture img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 0 8px 0 0;
+}
+
 /* Programme : images uniquement dans la colonne highlightée (active) */
+#programme .day.card:not(.active) .slot-atelier .slot-avatar-block,
 #programme .day.card:not(.active) .instructor-avatar.slot-image,
+#programme .day.card:not(.active) .slot-atelier picture,
 #programme .day.card:not(.active) .slot-format-long .slot-image,
 #programme .day.card:not(.active) .slot-format-long picture,
 #programme .day.card:not(.active) .slot-spectacle .slot-image,
@@ -5054,6 +5137,20 @@ nav.primary a:hover {
   margin-top: 4px;
 }
 
+/* 2 salles côte à côte (Samedi 10h et 14h) — min 200px par salle pour laisser place au titre */
+#programme .slot-atelier .salles-container:has(.salle-box:nth-child(2)) {
+  grid-template-columns: repeat(2, minmax(200px, 1fr));
+}
+.slot-atelier .salles-container:has(.salle-box:nth-child(2)) {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 600px) {
+  .slot-atelier .salles-container:has(.salle-box:nth-child(2)) {
+    grid-template-columns: 1fr;
+  }
+}
+
 .salle-box {
   background: transparent;
   border: 1px solid var(--blue-border-medium);
@@ -5068,6 +5165,7 @@ nav.primary a:hover {
   font-size: 0.85rem;
   margin-bottom: 4px;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .salle-box .atelier-name {
@@ -5360,7 +5458,8 @@ button.slot-spectacle:active {
   margin-left: -6px;
 }
 
-.program-fullscreen .slot-atelier .salle-box .instructor-avatar.slot-image {
+.program-fullscreen .slot-atelier .salle-box .slot-avatar-block .instructor-avatar.slot-image,
+.program-fullscreen .slot-atelier .salle-box .slot-avatar-block picture img {
   width: 140px;
   height: 140px;
   object-fit: cover;
@@ -5516,7 +5615,7 @@ button.slot-spectacle:active {
 .program-fullscreen.program-fullscreen--single-day .day.card.active {
   display: grid;
   width: 100%;
-  max-width: min(520px, 55vw);
+  max-width: min(900px, 85vw);
   margin-left: auto;
   margin-right: auto;
   max-height: 100%;
@@ -5569,10 +5668,9 @@ button.slot-spectacle:active {
 
 .program-fullscreen.program-fullscreen--single-day .slot-atelier .salle-box .slot-content {
   display: grid;
-  grid-template-columns: 4.5rem 1fr auto;
-  grid-template-rows: auto auto;
+  grid-template-columns: 4.5rem 1fr;
+  grid-template-rows: auto;
   gap: 0 8px;
-  row-gap: 0;
   align-items: baseline;
   align-content: start;
   padding: 3px 8px;
@@ -5584,34 +5682,69 @@ button.slot-spectacle:active {
   grid-row: 1;
 }
 
-.program-fullscreen.program-fullscreen--single-day .slot-atelier .salle-box .salle-label {
-  font-weight: 800;
-  color: var(--blue-accent);
-  font-size: clamp(0.75rem, 0.9vw, 0.8rem);
-  text-transform: uppercase;
-  line-height: 1.15;
-  margin: 0;
-  grid-column: 3;
-  grid-row: 2;
-  justify-self: end;
-  white-space: nowrap;
-}
-
-.program-fullscreen.program-fullscreen--single-day .slot-atelier .salle-box .atelier-name {
+.program-fullscreen.program-fullscreen--single-day .slot-atelier .salle-box .slot-content .atelier-name {
   font-size: clamp(0.8rem, 1vw, 0.95rem);
   margin: 0;
   line-height: 1.15;
   grid-column: 2;
-  grid-row: 2;
+  grid-row: 1;
   min-width: 0;
 }
 
-.program-fullscreen.program-fullscreen--single-day .slot-atelier .salle-box .instructor-avatar.slot-image {
+/* Fullscreen 2 salles : même layout (time | IMAGE, SALLE X, titre span) */
+.program-fullscreen.program-fullscreen--single-day .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  grid-template-rows: auto auto auto;
+  gap: 2px 8px;
+  padding: 0 0 4px 10px;
+}
+.program-fullscreen.program-fullscreen--single-day .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box > .time {
+  grid-column: 1;
+  grid-row: 1;
+}
+.program-fullscreen.program-fullscreen--single-day .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box > .salle-label {
+  grid-column: 1;
+  grid-row: 2;
+  font-size: clamp(0.65rem, 0.8vw, 0.7rem);
+  font-weight: 800;
+  color: var(--blue-accent);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.program-fullscreen.program-fullscreen--single-day .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box > .atelier-name {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  font-size: clamp(0.75rem, 0.9vw, 0.85rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-clamp: 2;
+}
+.program-fullscreen.program-fullscreen--single-day .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box > .slot-avatar-block {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+}
+
+.program-fullscreen.program-fullscreen--single-day .slot-atelier .salle-box .slot-avatar-block .salle-label {
+  font-weight: 800;
+  color: var(--blue-accent);
+  font-size: clamp(0.7rem, 0.85vw, 0.75rem);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.program-fullscreen.program-fullscreen--single-day .slot-atelier .salle-box .instructor-avatar.slot-image,
+.program-fullscreen.program-fullscreen--single-day .slot-atelier .salle-box .slot-avatar-block picture img {
   width: 56px;
   height: 56px;
   object-fit: cover;
   object-position: center;
   background: var(--orange-bg);
+  border-radius: 0 6px 0 0;
 }
 
 .program-fullscreen.program-fullscreen--single-day .slot-format-long,
