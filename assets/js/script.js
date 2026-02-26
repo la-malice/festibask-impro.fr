@@ -1028,12 +1028,12 @@
     updateStagesDayHighlight(dayIndex);
   }
 
-  // Fonction pour mettre en surbrillance les stages du jour sélectionné
+  // Fonction pour mettre en surbrillance la colonne stages du jour sélectionné
   function updateStagesDayHighlight(dayIndex) {
-    const atelierCards = document.querySelectorAll('#stages .atelier-card');
-    atelierCards.forEach((card) => {
-      const cardDay = parseInt(card.getAttribute('data-day'), 10);
-      card.classList.toggle('active', !Number.isNaN(cardDay) && cardDay === dayIndex);
+    const stagesDayCards = document.querySelectorAll('#stages .stages-day');
+    stagesDayCards.forEach((dayCard) => {
+      const cardDay = parseInt(dayCard.getAttribute('data-day'), 10);
+      dayCard.classList.toggle('active', !Number.isNaN(cardDay) && cardDay === dayIndex);
     });
   }
 
@@ -1094,10 +1094,11 @@
     });
   });
 
-  // Section stages : si la carte n'est pas en surbrillance (jour non sélectionné), tout clic ne fait que sélectionner le jour (pas de flip)
+  // Section stages : si la colonne n'est pas en surbrillance (jour non sélectionné), tout clic ne fait que sélectionner le jour (pas de flip)
   document.querySelectorAll('#stages .atelier-card').forEach((card) => {
     card.addEventListener('click', (e) => {
-      if (!card.classList.contains('active')) {
+      const dayColumn = card.closest('.stages-day');
+      if (dayColumn && !dayColumn.classList.contains('active')) {
         e.preventDefault();
         e.stopPropagation();
         const dayIndex = parseInt(card.getAttribute('data-day'), 10);

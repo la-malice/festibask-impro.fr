@@ -1,17 +1,21 @@
 # Stages masterclass → stages confirmés (wording)
 
 Slice: **Renommer stages masterclass en stages confirmés**  
-Status: **Planned**
+Status: **Done** (implémenté avec 4 stages distincts Samedi)
 
 ## Context and rationale
 
 The festival will offer **confirmed internships** (stages confirmés) instead of positioning them as "masterclasses". Speakers will be less prestigious than initially expected but more accessible, still interesting, and better suited to **filling the workshops**. This slice is content/UX only: terminology and copy changes, no new features.
 
+## Implementation note (fév. 2026)
+
+Implémentation dépassant le scope initial : au lieu de 2 slots génériques, **4 stages confirmés distincts** ont été ajoutés (Samedi 10h Salle 1 & 2, Samedi 14h Salle 1 & 2) avec titres, descriptions et intervenants réels. IDs : `atelier-samedi-10h-salle1`, `atelier-samedi-10h-salle2`, `atelier-samedi-14h-salle1`, `atelier-samedi-14h-salle2`.
+
 ## What we keep (no change)
 
 - **Stages section:** Same layout, flip cards, registration and waitlist buttons, Sibforms modals.
-- **Two Saturday slots:** 10h and 14h atelier slots; only their labels and copy change.
-- **IDs / anchors:** Can be renamed for consistency (e.g. `atelier-samedi-10h-confirme`) but all internal links and CSS selectors must be updated together so anchors stay consistent.
+- **Saturday slots:** 10h and 14h atelier slots; now 2 salles per slot (4 stages total).
+- **IDs / anchors:** Updated to `atelier-samedi-10h-salle1`, etc.; programme grid links updated.
 
 We do not change behaviour, forms, or data schema.
 

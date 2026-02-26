@@ -15,7 +15,7 @@ Vocabulary and concepts for the Festibask'Impro festival site: event, spectacles
 | **Match** | Match d'impro: two teams, referee, short rounds; hockey-inspired format. Opponents: Belgique, France (EDF), Suisse. |
 | **Équipe de France (EDF)** | French national improvisation team; appears as opponent (Samedi) and with player bios/slider. |
 | **Témoignage** | Quote from a person (e.g. marraine); displayed in carousel; data from `temoignages.json` (name, role, quote, image, optional signature/AVIF). |
-| **Atelier / Stage** | Workshop (initiation, masterclass, famille); has title, time, description, instructor; some “COMPLET” (waitlist); registration via Sibforms. |
+| **Atelier / Stage** | Workshop (initiation, stage confirmé, famille); has title, time, description, instructor; some “COMPLET” (waitlist); registration via Sibforms. |
 | **Pass 1 jour / Pass 3 jours** | Day pass (2 spectacles + 1 drink); 3-day pass (all three evenings). |
 | **Programme** | Schedule by day (Vendredi, Samedi, Dimanche); each day has format long + match. |
 | **Malix** | Mini-jeu enfant (collection de doodles). Un Malix = un doodle (un des 27 SVG) dans une des 4 variantes de couleur ; unité collectable. Jeu autonome sous /malix ; spec : docs/SPEC-Malix.md. |
