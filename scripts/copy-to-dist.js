@@ -20,9 +20,7 @@ const toCopy = [
   'apple-touch-icon.png',
   'assets',
   'malix',
-  'festival-2026',
-  'festibask-impro-mentions-legales.pdf',
-  'plaquette-sponsoring-festibak-impro-2026.pdf'
+  'festival-2026'
 ];
 
 function copyRecursive(src, dest) {
