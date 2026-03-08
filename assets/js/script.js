@@ -36,11 +36,11 @@
   const maliceSamediPlayers = [
     { name: 'Stéphanie Balligand', role: 'MC', image: 'assets/img/malice-stephanie-balligand.avif', bio: '' },
     { name: 'Sophie Le Bourhis', role: 'Arbitre', image: 'assets/img/malice-sophie-le-bourhis.avif', bio: '' },
-    { name: 'Eve Arlandis', role: 'Arbitre assistant', image: 'assets/img/malice-eve-arlandis.avif', bio: '' },
+    { name: 'Eve Arlandis', role: 'Arbitre assistante', image: 'assets/img/malice-eve-arlandis.avif', bio: '' },
     { name: 'Patrice Lamarque', role: 'Arbitre assistant', image: 'assets/img/malice-patrice-lamarque.avif', bio: '' },
     { name: 'Camille Mortreux', role: 'Coach', image: 'assets/img/malice-camille-mortreux.avif', bio: '' },
-    { name: 'Hélène Morreel', role: 'Joueur', image: 'assets/img/malice-helene-morreel.avif', bio: '' },
-    { name: 'Marjory Pinto', role: 'Joueur', image: 'assets/img/malice-marjory-pinto.avif', bio: '' },
+    { name: 'Hélène Morreel', role: 'Joueuse', image: 'assets/img/malice-helene-morreel.avif', bio: '' },
+    { name: 'Marjory Pinto', role: 'Joueuse', image: 'assets/img/malice-marjory-pinto.avif', bio: '' },
     { name: 'Nicolas Teboul', role: 'Joueur', image: 'assets/img/malice-nicolas-teboul.avif', bio: '' },
     { name: 'Pierrick Deredin', role: 'Joueur', image: 'assets/img/malice-pierrick-deredin.avif', bio: '' }
   ];
