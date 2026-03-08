@@ -3210,6 +3210,52 @@ nav.primary a:hover {
   transform: scale(0.95);
 }
 
+/* Chevrons gauche / droite */
+.match-slider-prev,
+.match-slider-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  background: rgba(0, 0, 0, 0.5);
+  color: var(--white);
+  font-size: 1.4rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 12;
+  padding: 0;
+  margin: 0;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.match-slider-prev {
+  left: 12px;
+}
+
+.match-slider-next {
+  right: 12px;
+}
+
+.match-slider-prev:hover:not(:disabled),
+.match-slider-next:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.8);
+  border-color: var(--white);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.match-slider-prev:disabled,
+.match-slider-next:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
 /* Indicateurs de navigation (dots) */
 .match-slider-dots {
   position: absolute;
@@ -3304,6 +3350,21 @@ nav.primary a:hover {
   .match-slider-dot.active {
     width: 10px;
     height: 10px;
+  }
+  
+  .match-slider-prev,
+  .match-slider-next {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+  
+  .match-slider-prev {
+    left: 8px;
+  }
+  
+  .match-slider-next {
+    right: 8px;
   }
   
   /* S'assurer que le slider est visible même quand l'image-wrapper est masqué */

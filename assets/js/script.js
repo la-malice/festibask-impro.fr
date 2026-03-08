@@ -5,31 +5,54 @@
   const edfPlayers = [
     {
       name: 'Aurélie Desert',
-      image: 'assets/img/edf-aurelie.jpeg',
+      image: 'assets/img/edf-aurelie-desert.avif',
       bio: 'Comédienne, chanteuse et auteure, formée au théâtre et à l\'improvisation à Bordeaux. Membre de l\'Équipe de France depuis 2018, elle évolue entre scène, rue et formats improvisés. Représente Bordeaux.'
     },
     {
       name: 'Cécile Giroud',
       role: 'Capitaine',
-      image: 'assets/img/edf-cecile.jpeg',
+      image: 'assets/img/edf-cecile-giroud.avif',
       bio: 'Comédienne, humoriste et musicienne. Figure majeure de l\'impro française, multiple championne du monde. Capitaine de l\'Équipe de France, reconnue pour sa polyvalence, son énergie collective et son sens du jeu. Représente Lyon.'
     },
     {
       name: 'Félix Philippart',
-      image: 'assets/img/edf-felix.JPEG',
+      image: 'assets/img/edf-felix-philippart.avif',
       bio: 'Formé à Caen puis à Paris, improvisateur professionnel et pilier de l\'Équipe de France depuis 2021. Il joue dans de nombreux spectacles et enseigne le théâtre à la Manufacture de l\'Acteur. Représente Caen.'
     },
     {
       name: 'Igor Potoczny',
-      image: 'assets/img/edf-igor.jpeg',
+      image: 'assets/img/edf-igor-potoczny.avif',
       bio: 'Improvisateur parmi les plus titrés de France, membre de l\'Équipe de France depuis 1997. Triple champion du monde, habitué des scènes internationales, notamment au festival Juste pour Rire à Montréal. Représente Niort.'
     },
     {
       name: 'Olivier Descargues',
       role: 'Coach',
-      image: 'assets/img/edf-olivier.png',
+      image: 'assets/img/edf-olivier-descargues.avif',
       bio: 'Improvisateur depuis 1987, membre historique de l\'Équipe de France, triple champion du monde. Coach de l\'équipe depuis 2015. Cofondateur de la Ligue Majeure, créateur et interprète de nombreux spectacles de référence.'
     }
+  ];
+
+  // Données de l'équipe La Malice pour le samedi (match vs France) — MC, arbitres, coach, joueurs (sans commis d'office)
+  const maliceSamediPlayers = [
+    { name: 'Stéphanie Balligand', role: 'MC', image: 'assets/img/malice-stephanie-balligand.avif', bio: '' },
+    { name: 'Sophie Le Bourhis', role: 'Arbitre', image: 'assets/img/malice-sophie-le-bourhis.avif', bio: '' },
+    { name: 'Eve Arlandis', role: 'Arbitre assistant', image: 'assets/img/malice-eve-arlandis.avif', bio: '' },
+    { name: 'Patrice Lamarque', role: 'Arbitre assistant', image: 'assets/img/malice-patrice-lamarque.avif', bio: '' },
+    { name: 'Camille Mortreux', role: 'Coach', image: 'assets/img/malice-camille-mortreux.avif', bio: '' },
+    { name: 'Hélène Morreel', role: 'Joueur', image: 'assets/img/malice-helene-morreel.avif', bio: '' },
+    { name: 'Marjory Pinto', role: 'Joueur', image: 'assets/img/malice-marjory-pinto.avif', bio: '' },
+    { name: 'Nicolas Teboul', role: 'Joueur', image: 'assets/img/malice-nicolas-teboul.avif', bio: '' },
+    { name: 'Pierrick Deredin', role: 'Joueur', image: 'assets/img/malice-pierrick-deredin.avif', bio: '' }
+  ];
+
+  // Cast du spectacle Commis d'Office (format long, samedi) — réutilise les images malice-* (mêmes personnes)
+  const commisDOfficeCast = [
+    { name: 'Olivier Lebailly', image: 'assets/img/malice-olivier-lebailly.avif', bio: '' },
+    { name: 'Émilie Coeurdevache', image: 'assets/img/malice-emilie-coeurdevache.avif', bio: '' },
+    { name: 'Céline Fabisch', image: 'assets/img/malice-celine-fabisch.avif', bio: '' },
+    { name: 'Bruno Cellan', image: 'assets/img/malice-bruno-cellan.avif', bio: '' },
+    { name: 'Aurélien Silvestre', image: 'assets/img/malice-aurelien-silvestre.avif', bio: '' },
+    { name: 'Anneke Bossis', image: 'assets/img/malice-anneke-bossis.avif', bio: '' }
   ];
 
   // Données des joueurs de l'Équipe de Belgique (ordre alphabétique du prénom pour les slides)
@@ -1354,6 +1377,22 @@
     });
   });
 
+  function getBlockImageSrc(blk) {
+    const matchImg = blk.querySelector('.match-image');
+    const formatLongImg = blk.querySelector('.format-long-image');
+    const img = matchImg || formatLongImg;
+    if (img) {
+      const src = img.currentSrc || img.getAttribute('src');
+      return src ? encodeURI(src) : '';
+    }
+    const bgImage = window.getComputedStyle(blk).backgroundImage;
+    if (bgImage && bgImage !== 'none') {
+      const match = bgImage.match(/url\(["']?([^"']+)["']?\)/);
+      if (match && match[1]) return match[1];
+    }
+    return '';
+  }
+
   // Slider spectacle pour format long (mobile et desktop)
   document.querySelectorAll('.format-long-block').forEach(block=>{
     block.addEventListener('click',e=>{
@@ -1366,7 +1405,13 @@
       if (blockId && spectaclesData && spectaclesData[blockId]) {
         var data = spectaclesData[blockId];
         if (window.posthog) window.posthog.capture('spectacle_details_open', { spectacle_id: blockId, spectacle_name: data.title });
-        initSpectacleSingleSlide(block, data);
+        if (blockId === 'spectacle-samedi-format-long' && commisDOfficeCast && commisDOfficeCast.length > 0) {
+          const originalImageSrc = getBlockImageSrc(block) || data.image;
+          const intro = { title: 'Commis d\'Office', pitch: data.pitch || '' };
+          initMatchSlider(block, [{ intro: intro, players: commisDOfficeCast }], originalImageSrc);
+        } else {
+          initSpectacleSingleSlide(block, data);
+        }
       }
     });
   });
@@ -1378,10 +1423,15 @@
     return match ? match[0].trim() : stripped;
   }
 
-  function initMatchSlider(matchBlock, players, originalImageSrc, intro) {
-    // intro optionnel : { title, pitch } pour la slide 1 ; sinon défaut France
-    const introTitle = intro?.title ?? 'L\'Équipe de France';
-    const introPitch = intro?.pitch ?? 'Champions du monde, artistes reconnus et figures majeures de l\'improvisation professionnelle. Une équipe d\'excellence réunissant expérience, créativité et intensité scénique, au service de spectacles uniques et exigeants. Photo : © J.DUFRESNE';
+  // teams: tableau de { intro: { title, pitch }, players: [...] } ; ou (players, originalImageSrc, intro) pour rétrocompat
+  function initMatchSlider(matchBlock, teamsOrPlayers, originalImageSrc, introOptional) {
+    let teams;
+    if (Array.isArray(teamsOrPlayers) && teamsOrPlayers.length > 0 && teamsOrPlayers[0].players !== undefined) {
+      teams = teamsOrPlayers;
+    } else {
+      const players = Array.isArray(teamsOrPlayers) ? teamsOrPlayers : [];
+      teams = [{ intro: introOptional || { title: 'L\'Équipe de France', pitch: 'Champions du monde, artistes reconnus et figures majeures de l\'improvisation professionnelle. Une équipe d\'excellence réunissant expérience, créativité et intensité scénique, au service de spectacles uniques et exigeants. Photo : © J.DUFRESNE' }, players }];
+    }
 
     // Vérifier si le slider existe déjà
     let sliderContainer = matchBlock.querySelector('.match-slider-container');
@@ -1394,64 +1444,71 @@
       const sliderTrack = document.createElement('div');
       sliderTrack.className = 'match-slider-track';
       
-      // Slide 1 : Image en background calée à droite (comme la bannière)
-      const originalSlide = document.createElement('div');
-      originalSlide.className = 'match-slide match-slide-bg-right';
-      originalSlide.style.backgroundImage = `url("${originalImageSrc}")`;
-      
-      const originalOverlay = document.createElement('div');
-      originalOverlay.className = 'match-slide-overlay';
-      
-      const title = document.createElement('div');
-      title.className = 'match-slide-name';
-      title.textContent = introTitle;
-      
-      const pitchShort = document.createElement('div');
-      pitchShort.className = 'match-slide-bio match-slide-bio-short';
-      pitchShort.textContent = getFirstSentence(introPitch);
-      const pitchFull = document.createElement('div');
-      pitchFull.className = 'match-slide-bio match-slide-bio-full';
-      pitchFull.textContent = introPitch;
-      
-      originalOverlay.appendChild(title);
-      originalOverlay.appendChild(pitchShort);
-      originalOverlay.appendChild(pitchFull);
-      originalSlide.appendChild(originalOverlay);
-      sliderTrack.appendChild(originalSlide);
-      
-      // Slides suivants : Joueurs (image en background calée à droite)
-      players.forEach(player => {
-        const playerSlide = document.createElement('div');
-        playerSlide.className = 'match-slide match-slide-bg-right';
-        playerSlide.style.backgroundImage = `url("${encodeURI(player.image)}")`;
+      teams.forEach(function (team) {
+        const intro = team.intro || {};
+        const introTitle = intro.title ?? '';
+        const introPitch = intro.pitch ?? '';
+        const teamPlayers = team.players || [];
         
-        const playerOverlay = document.createElement('div');
-        playerOverlay.className = 'match-slide-overlay';
+        // Slide d'intro de l'équipe
+        const introSlide = document.createElement('div');
+        introSlide.className = 'match-slide match-slide-bg-right';
+        introSlide.style.backgroundImage = `url("${originalImageSrc}")`;
         
-        const playerName = document.createElement('div');
-        playerName.className = 'match-slide-name';
-        playerName.textContent = player.name;
+        const introOverlay = document.createElement('div');
+        introOverlay.className = 'match-slide-overlay';
         
-        playerOverlay.appendChild(playerName);
+        const title = document.createElement('div');
+        title.className = 'match-slide-name';
+        title.textContent = introTitle;
         
-        if (player.role) {
-          const playerRole = document.createElement('div');
-          playerRole.className = 'match-slide-role';
-          playerRole.textContent = player.role;
-          playerOverlay.appendChild(playerRole);
-        }
+        const pitchShort = document.createElement('div');
+        pitchShort.className = 'match-slide-bio match-slide-bio-short';
+        pitchShort.textContent = getFirstSentence(introPitch);
+        const pitchFull = document.createElement('div');
+        pitchFull.className = 'match-slide-bio match-slide-bio-full';
+        pitchFull.innerHTML = introPitch;
         
-        const playerBioShort = document.createElement('div');
-        playerBioShort.className = 'match-slide-bio match-slide-bio-short';
-        playerBioShort.textContent = getFirstSentence(player.bio);
-        const playerBioFull = document.createElement('div');
-        playerBioFull.className = 'match-slide-bio match-slide-bio-full';
-        playerBioFull.textContent = player.bio;
-        playerOverlay.appendChild(playerBioShort);
-        playerOverlay.appendChild(playerBioFull);
+        introOverlay.appendChild(title);
+        introOverlay.appendChild(pitchShort);
+        introOverlay.appendChild(pitchFull);
+        introSlide.appendChild(introOverlay);
+        sliderTrack.appendChild(introSlide);
         
-        playerSlide.appendChild(playerOverlay);
-        sliderTrack.appendChild(playerSlide);
+        // Slides joueurs
+        teamPlayers.forEach(function (player) {
+          const playerSlide = document.createElement('div');
+          playerSlide.className = 'match-slide match-slide-bg-right';
+          playerSlide.style.backgroundImage = `url("${encodeURI(player.image)}")`;
+          
+          const playerOverlay = document.createElement('div');
+          playerOverlay.className = 'match-slide-overlay';
+          
+          const playerName = document.createElement('div');
+          playerName.className = 'match-slide-name';
+          playerName.textContent = player.name;
+          
+          playerOverlay.appendChild(playerName);
+          
+          if (player.role) {
+            const playerRole = document.createElement('div');
+            playerRole.className = 'match-slide-role';
+            playerRole.textContent = player.role;
+            playerOverlay.appendChild(playerRole);
+          }
+          
+          const playerBioShort = document.createElement('div');
+          playerBioShort.className = 'match-slide-bio match-slide-bio-short';
+          playerBioShort.textContent = getFirstSentence(player.bio || '');
+          const playerBioFull = document.createElement('div');
+          playerBioFull.className = 'match-slide-bio match-slide-bio-full';
+          playerBioFull.textContent = player.bio || '';
+          playerOverlay.appendChild(playerBioShort);
+          playerOverlay.appendChild(playerBioFull);
+          
+          playerSlide.appendChild(playerOverlay);
+          sliderTrack.appendChild(playerSlide);
+        });
       });
       
       // Bouton de fermeture
@@ -1464,10 +1521,30 @@
         closeMatchSlider(matchBlock);
       });
       
+      // Boutons chevron précédent / suivant
+      const totalSlides = teams.reduce(function (s, t) { return s + 1 + (t.players || []).length; }, 0);
+      const prevBtn = document.createElement('button');
+      prevBtn.className = 'match-slider-prev';
+      prevBtn.setAttribute('aria-label', 'Slide précédent');
+      prevBtn.innerHTML = '‹';
+      prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const cur = matchBlock._currentSlide !== undefined ? matchBlock._currentSlide : 0;
+        if (cur > 0) goToSlide(matchBlock, cur - 1);
+      });
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'match-slider-next';
+      nextBtn.setAttribute('aria-label', 'Slide suivant');
+      nextBtn.innerHTML = '›';
+      nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const cur = matchBlock._currentSlide !== undefined ? matchBlock._currentSlide : 0;
+        if (cur < totalSlides - 1) goToSlide(matchBlock, cur + 1);
+      });
+      
       // Créer les points de navigation (dots)
       const dotsContainer = document.createElement('div');
       dotsContainer.className = 'match-slider-dots';
-      const totalSlides = 1 + players.length; // 1 slide original + slides joueurs
       
       for (let i = 0; i < totalSlides; i++) {
         const dot = document.createElement('button');
@@ -1483,6 +1560,8 @@
       }
       
       sliderContainer.appendChild(sliderTrack);
+      sliderContainer.appendChild(prevBtn);
+      sliderContainer.appendChild(nextBtn);
       sliderContainer.appendChild(closeButton);
       sliderContainer.appendChild(dotsContainer);
       matchBlock.appendChild(sliderContainer);
@@ -1490,6 +1569,10 @@
     
     // Activer le slider
     matchBlock.classList.add('slider-active');
+    
+    // État initial des chevrons
+    matchBlock._currentSlide = 0;
+    updateMatchSliderChevrons(matchBlock, 0);
     
     // Initialiser l'auto-défilement
     startSliderAutoPlay(matchBlock);
@@ -1543,6 +1626,24 @@
     block.classList.add('slider-active');
   }
   
+  // Mettre à jour l'état des chevrons (prev/next) selon le slide actuel
+  function updateMatchSliderChevrons(matchBlock, slideIndex) {
+    const sliderTrack = matchBlock.querySelector('.match-slider-track');
+    if (!sliderTrack) return;
+    const slides = sliderTrack.querySelectorAll('.match-slide');
+    const totalSlides = slides.length;
+    const prevBtn = matchBlock.querySelector('.match-slider-prev');
+    const nextBtn = matchBlock.querySelector('.match-slider-next');
+    if (prevBtn) {
+      prevBtn.disabled = slideIndex <= 0;
+      prevBtn.setAttribute('aria-disabled', prevBtn.disabled);
+    }
+    if (nextBtn) {
+      nextBtn.disabled = slideIndex >= totalSlides - 1;
+      nextBtn.setAttribute('aria-disabled', nextBtn.disabled);
+    }
+  }
+
   // Fonction pour aller à un slide spécifique
   function goToSlide(matchBlock, slideIndex) {
     const sliderTrack = matchBlock.querySelector('.match-slider-track');
@@ -1559,6 +1660,9 @@
     dots.forEach((dot, index) => {
       dot.classList.toggle('active', index === slideIndex);
     });
+    
+    // Mettre à jour les chevrons
+    updateMatchSliderChevrons(matchBlock, slideIndex);
     
     // Réinitialiser l'auto-défilement à partir de ce slide
     matchBlock._currentSlide = slideIndex;
@@ -1605,6 +1709,9 @@
       dots.forEach((dot, index) => {
         dot.classList.toggle('active', index === currentSlide);
       });
+      
+      // Mettre à jour les chevrons
+      updateMatchSliderChevrons(matchBlock, currentSlide);
     }
     
     // Démarrer l'auto-défilement (4 secondes par slide)
@@ -1662,6 +1769,9 @@
     dots.forEach((dot, index) => {
       dot.classList.toggle('active', index === 0);
     });
+    
+    // Réinitialiser les chevrons
+    updateMatchSliderChevrons(matchBlock, 0);
   }
 
   // Flip pour afficher le pitch du match (desktop) ou modal (mobile)
@@ -1683,33 +1793,26 @@
       const isFranceMatch = blockId === 'spectacle-samedi-match';
       const isBelgiumMatch = blockId === 'spectacle-vendredi-match';
 
-      function getOriginalImageSrc(blk) {
-        const originalImage = blk.querySelector('.match-image');
-        if (originalImage) {
-          const src = originalImage.currentSrc || originalImage.getAttribute('src');
-          return src ? encodeURI(src) : '';
-        }
-        const bgImage = window.getComputedStyle(blk).backgroundImage;
-        if (bgImage && bgImage !== 'none') {
-          const match = bgImage.match(/url\(["']?([^"']+)["']?\)/);
-          if (match && match[1]) return match[1];
-        }
-        return '';
-      }
-
       if (blockId && window.posthog) {
         var spectacleName = spectaclesData && spectaclesData[blockId] ? spectaclesData[blockId].title : '';
         window.posthog.capture('spectacle_details_open', { spectacle_id: blockId, spectacle_name: spectacleName });
       }
-      if (isFranceMatch && edfPlayers && edfPlayers.length > 0) {
-        const originalImageSrc = getOriginalImageSrc(block);
+      if (isFranceMatch && edfPlayers && maliceSamediPlayers) {
+        const originalImageSrc = getBlockImageSrc(block);
         const edfIntro = {
           title: 'L\'Équipe de France',
           pitch: 'Champions du monde, artistes reconnus et figures majeures de l\'improvisation professionnelle. Une équipe d\'excellence réunissant expérience, créativité et intensité scénique, au service de spectacles uniques et exigeants. Photo : © J.DUFRESNE'
         };
-        initMatchSlider(block, edfPlayers, originalImageSrc, edfIntro);
+        const maliceIntro = {
+          title: 'La Malice',
+          pitch: 'L\'équipe de La Malice qui affronte l\'Équipe de France le samedi : MC, arbitres, coach et joueurs.'
+        };
+        initMatchSlider(block, [
+          { intro: edfIntro, players: edfPlayers },
+          { intro: maliceIntro, players: maliceSamediPlayers }
+        ], originalImageSrc);
       } else if (isBelgiumMatch && belgPlayers && belgPlayers.length > 0) {
-        const originalImageSrc = getOriginalImageSrc(block);
+        const originalImageSrc = getBlockImageSrc(block);
         const belgIntro = {
           title: 'L\'Équipe de Belgique',
           pitch: 'Depuis la Belgique, Les Zatilas ont traversé frontières et bière pour chatouiller vos zygomatiques. Troupe passionnée, délicieusement zinzin : un mot devient épopée, un regard comédie. Anglet, prépare-toi : impro totale, avec un goût de Belgique qui colle aux doigts.'
