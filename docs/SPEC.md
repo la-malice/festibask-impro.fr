@@ -6,7 +6,7 @@ Static marketing site for **Festibask'Impro**, the improvisation theatre festiva
 
 ## Scope
 
-- **In scope:** Single-page layout with hero (logo, dates, countdown, teaser video, bandes doodles décoratives, liens hero-tags); section “À l’affiche” (spectacles by day: format long + match); programme (three days, fullscreen mode); stages/ateliers (flip cards, registration/waitlist); tarifs (flip cards); FAQ; à propos; témoignages carousel (from JSON); sponsors; newsletter and waitlist modals (Brevo/Sibforms); legal/contact/footer.
+- **In scope:** Single-page layout with hero (logo, dates, countdown, teaser video, bandes doodles décoratives, liens hero-tags); section “À l’affiche” (spectacles by day: format long + match); programme (three days, fullscreen mode); stages/ateliers (flip cards, registration/waitlist); tarifs (flip cards); FAQ; à propos; témoignages carousel (from JSON); sponsors; waitlist modal (Brevo/Sibforms). Modal « Tenez-moi au courant » (newsletter) retiré ; voir docs/ISSUES.md pour remise éventuelle. legal/contact/footer.
 - **Out of scope:** Ticketing, user accounts, backend CMS, server-side rendering. No routing; single HTML document. Google Analytics is commented out in code; Brevo, Sibforms and PostHog (analytics: visites et événements custom) are the active third-party integrations. See [docs/analytics-posthog.md](analytics-posthog.md) for the event catalogue.
 - **Mini-jeu Malix :** Jeu enfant autonome (collection de Malix), disponible **uniquement** sous **/malix**. Comportement et périmètre détaillés dans [docs/SPEC-Malix.md](SPEC-Malix.md). Le site principal (index.html, assets/) ne charge rien depuis /malix ; aucun code du jeu dans le bundle principal.
 
@@ -19,7 +19,7 @@ Static marketing site for **Festibask'Impro**, the improvisation theatre festiva
 5. **Tarifs:** Pass 1 jour, Pass 3 jours, Stage; flip cards for details.
 6. **Témoignages:** Carousel built from `assets/data/temoignages.json`; section hidden if JSON empty or invalid. Fields: name, role, quote, image; optional signature, imageAvif128/256.
 7. **Navigation:** Fixed header on scroll; burger + drawer on mobile; desktop nav links.
-8. **Modals:** Newsletter (notify), waitlist; Sibforms CSS/JS loaded on first open. Spectacle details are shown in a slider within the block (not a modal).
+8. **Modals:** Waitlist (stages « Ça m'intéresse! ») ; Sibforms CSS/JS loaded on first open. Newsletter modal (notify) retiré (voir ISSUES.md). Spectacle details are shown in a slider within the block (not a modal).
 9. **Tooltips:** “Format long” and “Match” explained (desktop: hover; mobile: click popup).
 10. **SEO / meta:** Canonical, OpenGraph, Twitter Card, Schema.org Event (2026-05-15 to 2026-05-17, location, offers, organizer La Malice). La page /malix a son propre jeu de meta (description, canonical, OpenGraph, Twitter Card, entrée sitemap) pour le référencement et le partage, en cohérence avec l’accueil (voir docs/SPEC-Malix.md § SEO / découvrabilité).
 11. **Doodles flottants au scroll:** Pendant le scroll vers le bas, un petit doodle peut apparaître de façon aléatoire, dériver lentement à l’écran (effet « cosmonaute », faible gravité) devant le contenu, et disparaître au clic avec un effet « smash » (écrasement). Un seul doodle flottant à la fois ; désactivé si l’utilisateur a `prefers-reduced-motion: reduce`.

@@ -716,28 +716,11 @@
     });
   }
 
-  // Modal open/close
-  const dlg=document.getElementById('notify');
-  document.querySelectorAll('[data-open="notify"]').forEach(b=>b.addEventListener('click',()=>{
-    ensureSibStylesLoaded();
-    ensureSibScriptLoaded().then(() => {
-    dlgWaitlist.close();
-    dlg.showModal();
-    if (window.posthog) window.posthog.capture('modal_open', { modal: 'newsletter' });
-  });
-  }));
-  dlg.addEventListener('click',e=>{
-    const r=dlg.querySelector('.modal-card').getBoundingClientRect();
-    const inside=r.top<=e.clientY && e.clientY<=r.bottom && r.left<=e.clientX && e.clientX<=r.right;
-    if(!inside) dlg.close();
-  });
-
   // Modal waitlist open/close
   const dlgWaitlist = document.getElementById('waitlist');
   document.querySelectorAll('[data-open="waitlist"]').forEach(b => b.addEventListener('click', () => {
     ensureSibStylesLoaded();
     ensureSibScriptLoaded().then(() => {
-    dlg.close();
     dlgWaitlist.showModal();
     if (window.posthog) window.posthog.capture('modal_open', { modal: 'waitlist' });
   });
@@ -783,10 +766,8 @@
   // Brevo gère automatiquement le masquage du formulaire avec AUTOHIDE = Boolean(1)
   // Le bouton "Fermer" dans le message de succès permet de fermer la popup explicitement
 
-  // PostHog : soumission formulaire Sibforms
-  var sibFormNewsletter = document.getElementById('sib-form');
+  // PostHog : soumission formulaire Sibforms (modal waitlist uniquement ; formulaire « Tenez-moi au courant » retiré, voir docs/ISSUES.md)
   var sibFormWaitlist = document.getElementById('sib-form-waitlist');
-  if (sibFormNewsletter) sibFormNewsletter.addEventListener('submit', function () { if (window.posthog) window.posthog.capture('form_submit', { form: 'newsletter' }); });
   if (sibFormWaitlist) sibFormWaitlist.addEventListener('submit', function () { if (window.posthog) window.posthog.capture('form_submit', { form: 'waitlist' }); });
 
   // PostHog : succès affiché après soumission Sibforms (MutationObserver sur les panneaux succès)
@@ -808,7 +789,6 @@
     var parent = el.parentElement;
     if (parent) observer.observe(parent, { attributes: true, attributeFilter: ['class', 'style'] });
   }
-  observeSibSuccessPanel('success-message', 'newsletter');
   observeSibSuccessPanel('success-message-waitlist', 'waitlist');
 
   // PostHog : FAQ (ouverture d'une question)

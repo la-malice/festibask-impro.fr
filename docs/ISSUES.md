@@ -15,4 +15,4 @@
 ## Deferred
 
 - **Google Analytics:** Commented out in index.html (perf/RGPD); Search Console + Cloudflare used instead. Re-enable only if decided.
-- (Add deferred items here as needed.)
+- **Formulaire « Tenez-moi au courant » (modal notify):** Retiré car la billetterie est ouverte (peu d’intérêt). Pour remettre le bouton et le modal ou une variante (ex. newsletter générique) plus tard : voir l’historique git avant le retrait — bloc `<dialog id="notify">` dans index.html, bouton `[data-open="notify"]` dans l’encart billetterie, et dans assets/js/script.js le bloc `const dlg=...` + listeners associés ; formulaire Sibforms (Brevo), même pattern que le modal waitlist.

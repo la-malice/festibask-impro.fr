@@ -20,9 +20,9 @@ Suivi des visites et des actions clés (conversions, engagement) sur le site Fes
 | **stage_inscription_click** | Clic sur « S’inscrire » (stage) | `stage_id`: id de l’atelier, `intervenant`: nom de l'intervenant, `stage_titre`: titre du stage |
 | **pass_details_open** | Ouverture des détails d'un pass (section billetterie, clic pour retourner la carte tarif) | `pass_id`: `'pass-1j'`, `'pass-3j'` ou `'stage'` |
 | **cta_click** | Clic sur « Prendre mon ticket » ou « S’inscrire » (billetterie / inscription stage / verso pass) | `cta_name`, `section` ; `stage_id` (id atelier) si clic inscription stage ; `pass_id` (`pass-1j`, `pass-3j`, `stage`) si clic « J'achète » sur le verso d'un pass |
-| **modal_open** | Ouverture de la modale newsletter (« Tenez-moi au courant ») ou liste d’attente (« Ça m’intéresse! ») | `modal`: `'newsletter'` ou `'waitlist'` |
-| **form_submit** | Soumission d’un formulaire Sibforms (avant réponse serveur) | `form`: `'newsletter'` ou `'waitlist'` |
-| **form_submit_success** | Succès affiché après soumission du formulaire (détection via MutationObserver sur les panneaux succès Sibforms) | `form`: `'newsletter'` ou `'waitlist'` |
+| **modal_open** | Ouverture de la modale newsletter (« Tenez-moi au courant ») ou liste d’attente (« Ça m’intéresse! ») | `modal`: `'waitlist'` (modal newsletter retiré) |
+| **form_submit** | Soumission d’un formulaire Sibforms (avant réponse serveur) | `form`: `'waitlist'` (formulaire newsletter retiré) |
+| **form_submit_success** | Succès affiché après soumission (MutationObserver sur panneaux succès Sibforms). (Formulaire newsletter retiré.) | `form`: `'waitlist'` |
 | **faq_question_open** | Ouverture d’une question FAQ (clic sur un `<details>`) | `question`, `question_id` (ex. faq-0), `section`: `'faq'` |
 | **brochure_download** | Clic sur le lien de téléchargement de la brochure partenaire (PDF) | `source`: `'button'` (lien « Téléchargez la brochure ») ou `'logo'` (« Votre logo ici ») |
 | **partner_logo_click** | Clic sur un logo partenaire (section sponsors) | `partner`: slug (`anglet`, `aperock`, `rtl2`, `atlantic-change`), `url`: URL du site partenaire |
