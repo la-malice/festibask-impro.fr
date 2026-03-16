@@ -37,7 +37,7 @@ Vocabulary and concepts for the Festibask'Impro festival site: event, spectacles
 - **Spectacle:** Either “format long” or “match”; has time, title, image, pitch. Match has opponent (Belgique, France, Suisse). France match (Samedi) has Malice team slider. Belgique match has Belgique player slider. IDs e.g. `spectacle-vendredi-format-long`, `spectacle-samedi-match`.
 - **Malice team member (samedi):** name, role (MC, Arbitre, Arbitre assistant, Coach, Joueur), image, bio. Hardcoded in `script.js` as `maliceSamediPlayers`; images in `assets/img/malice-*.avif`.
 - **Commis d'Office cast member:** name, image, bio. Hardcoded in `script.js` as `commisDOfficeCast`; images in `assets/img/commis-*.avif`..
-- **EDF player:** name, role (optional, e.g. Coach, Capitaine), image, bio. Hardcoded in `script.js`; no separate JSON. (Belgique: `belgPlayers`.)
+- **EDF player:** name, role (optional, e.g. Coach, Capitaine), image, bio. Hardcoded in `script.js`; no separate JSON. (Belgique: `belgPlayers`; Suisse: `suissePlayers`.)
 - **Témoignage:** name, role, quote, image; optional signature, imageAvif128, imageAvif256. Stored in `temoignages.json` array; order by array index.
 - **Atelier:** id (e.g. atelier-vendredi-11h-initiation), title, time, description, instructor(s), flip-back content; optional “COMPLET” and waitlist. Registration/waitlist forms point to Sibforms.
 - **Tarif:** Pass 1 jour, Pass 3 jours, Stage; each has price, description, flip-back details; anchors #pass-1j, #pass-3j, #stage.
@@ -46,7 +46,7 @@ Vocabulary and concepts for the Festibask'Impro festival site: event, spectacles
 ## Domain Rules (Observed in Code)
 
 1. Testimonials: array in `temoignages.json`; each item must have name, role, quote, image for a card to be rendered; section hidden if list empty or fetch fails.
-2. Spectacles: three days; each day exactly one format long + one match. Match France (Samedi) has combined slider: Équipe de France (intro + players) then La Malice (intro + players: MC, arbitres, coach, joueurs); Commis d'Office (format long, Samedi) has cast carousel (intro + 6 members); match Belgique has Belgique player slider; other spectacles (Braquage, Promo 2006, match Suisse) open a single-slide slider (image + details). No fullscreen modal for spectacles.
+2. Spectacles: three days; each day exactly one format long + one match. Match France (Samedi) has combined slider: Équipe de France (intro + players) then La Malice (intro + players: MC, arbitres, coach, joueurs); Commis d'Office (format long, Samedi) has cast carousel (intro + 6 members); match Belgique has Belgique player slider; match Suisse has Suisse player slider (intro + players); other spectacles (Braquage, Promo 2006) open a single-slide slider (image + details). No fullscreen modal for spectacles.
 3. Programme day tabs and “À l’affiche” day slider are synchronized (same day index).
 4. Images: under `assets/img/`; logos in `assets/img/logos/`; long-form show images in `assets/img/long/`.
 5. Brevo: client_key in index.html and sw.js (key from query in sw); forms are Sibforms (Brevo backend).

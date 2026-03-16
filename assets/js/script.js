@@ -64,6 +64,12 @@
     { name: 'Sophie Normand', image: 'assets/img/belg-sophie-normand.avif', bio: 'Depuis plus de dix ans, Sophie navigue dans l\'impro comme une tour de contrôle : calme, précise, elle transforme le moindre détail en récit cohérent. Elle écoute, relie et équilibre pour faire décoller les histoires. Sous sa rigueur, une Sophie délicieusement déjantée : voix improbables, personnages barrés. Carrée et folle, toujours au service du jeu.' }
   ];
 
+  // Données des joueurs de l'Équipe de Suisse (slider bannière match vs Suisse)
+  const suissePlayers = [
+    { name: 'Loïc Vazquez', role: 'Joueur', image: 'assets/img/suisse-loic.jpeg', bio: '' },
+    { name: 'Romain Genolet', role: 'Joueur', image: 'assets/img/suisse-romain.avif', bio: '' }
+  ];
+
   // Révéler le header quand le hero sort du viewport
   const hero = document.getElementById('hero');
   const header = document.getElementById('siteHeader');
@@ -1772,6 +1778,7 @@
       const blockId = block.id;
       const isFranceMatch = blockId === 'spectacle-samedi-match';
       const isBelgiumMatch = blockId === 'spectacle-vendredi-match';
+      const isSuisseMatch = blockId === 'spectacle-dimanche-match';
 
       if (blockId && window.posthog) {
         var spectacleName = spectaclesData && spectaclesData[blockId] ? spectaclesData[blockId].title : '';
@@ -1798,6 +1805,13 @@
           pitch: 'Depuis la Belgique, Les Zatilas ont traversé frontières et bière pour chatouiller vos zygomatiques. Troupe passionnée, délicieusement zinzin : un mot devient épopée, un regard comédie. Anglet, prépare-toi : impro totale, avec un goût de Belgique qui colle aux doigts.'
         };
         initMatchSlider(block, belgPlayers, originalImageSrc, belgIntro);
+      } else if (isSuisseMatch && suissePlayers && suissePlayers.length > 0) {
+        const originalImageSrc = getBlockImageSrc(block);
+        const suisseIntro = {
+          title: 'L\'Équipe de Suisse',
+          pitch: 'L\'équipe de Suisse qui affronte La Malice le dimanche.'
+        };
+        initMatchSlider(block, suissePlayers, originalImageSrc, suisseIntro);
       } else if (blockId && spectaclesData && spectaclesData[blockId]) {
         initSpectacleSingleSlide(block, spectaclesData[blockId]);
       }
