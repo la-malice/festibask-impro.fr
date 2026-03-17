@@ -35,9 +35,9 @@ Vocabulary and concepts for the Festibask'Impro festival site: event, spectacles
 
 - **Event:** One festival edition; dates 2026-05-15 to 2026-05-17; location Patinoire de la Barre; organizer La Malice. Represented in Schema.org and hero.
 - **Spectacle:** Either “format long” or “match”; has time, title, image, pitch. Match has opponent (Belgique, France, Suisse). France match (Samedi) has Malice team slider. Belgique match has Belgique player slider. IDs e.g. `spectacle-vendredi-format-long`, `spectacle-samedi-match`.
-- **Malice team member (samedi):** name, role (MC, Arbitre, Arbitre assistant, Coach, Joueur), image, bio. Hardcoded in `script.js` as `maliceSamediPlayers`; images in `assets/img/malice-*.avif`.
-- **Commis d'Office cast member:** name, image, bio. Hardcoded in `script.js` as `commisDOfficeCast`; images in `assets/img/commis-*.avif`..
-- **EDF player:** name, role (optional, e.g. Coach, Capitaine), image, bio. Hardcoded in `script.js`; no separate JSON. (Belgique: `belgPlayers`; Suisse: `suissePlayers`.)
+- **Malice team member (samedi):** name, role (MC, Arbitre, Arbitre assistant, Coach, Joueur), image, bio. Hardcoded in `script.js` as `maliceSamediPlayers`; images AVIF responsive in `assets/img/long/` (malice-*-320w/442w/640w.avif). Voir docs/portraits-carrousels.md.
+- **Commis d'Office cast member:** name, image, bio. Hardcoded in `script.js` as `commisDOfficeCast`; réutilise les images malice-* dans `assets/img/long/`.
+- **EDF player:** name, role (optional, e.g. Coach, Capitaine), image, bio. Hardcoded in `script.js`; images AVIF responsive in `assets/img/long/` (edf-*-320w/442w/640w.avif). Belgique : `belgPlayers` (belg-* dans long/). Suisse : `suissePlayers` (suisse-* dans long/).
 - **Témoignage:** name, role, quote, image; optional signature, imageAvif128, imageAvif256. Stored in `temoignages.json` array; order by array index.
 - **Atelier:** id (e.g. atelier-vendredi-11h-initiation), title, time, description, instructor(s), flip-back content; optional “COMPLET” and waitlist. Registration/waitlist forms point to Sibforms.
 - **Tarif:** Pass 1 jour, Pass 3 jours, Stage; each has price, description, flip-back details; anchors #pass-1j, #pass-3j, #stage.

@@ -28,5 +28,6 @@ Code and changes must align with these. Do not document or implement behavior th
 ## Project-specific
 
 - **Témoignages:** Schema and usage are in `docs/temoignages-carousel.md`. Data: `assets/data/temoignages.json`. Do not invent fields; add only what the schema and script support.
+- **Portraits joueurs (sliders matchs / format long):** Dimensions, long/, responsive et script de génération AVIF dans `docs/portraits-carrousels.md`. Données en dur dans script.js ; images dans `assets/img/long/` (préfixes edf-*, malice-*, belg-*, suisse-*).
 - **Build:** Sources live in repo; only `dist/` is built and deployed. Do not commit minified sources; build runs in CI (GitHub Actions) and locally via `npm run build`.
 - **Malix:** Mini-jeu enfant sous /malix ; spec dans docs/SPEC-Malix.md. Strictement isolé du site principal (aucun code Malix dans index.html, script.js, style.css ; chargement uniquement sous /malix).

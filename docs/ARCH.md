@@ -74,6 +74,8 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 | malix/assets/access-config.js | Config d’accès Malix versionnée (coordonnées/date/rayon par défaut prod) |
 | malix/assets/access-config.local.js | Override local dev non versionné, injecté dans dist au build si présent |
 | docs/temoignages-carousel.md | Documented schema for temoignages.json |
+| docs/portraits-carrousels.md | Portraits joueurs (EDF, Malice, Belgique, Suisse) : dimensions, long/, script AVIF |
+| scripts/build-player-portraits-avif.sh | Génère les AVIF 320w/442w/640w des portraits depuis les PNG sources → assets/img/long/ |
 | malix/ | Mini-jeu Malix (sources) ; copié ou généré dans dist/malix/ ; entrée malix/index.html ; isolation totale du site principal |
 | docs/SPEC-Malix.md | Spécification fonctionnelle normative du mini-jeu Malix |
 

@@ -1,73 +1,74 @@
   const BILETTERIE_URL = 'https://www.helloasso.com/associations/arteateou/evenements/festibask-impro';
   var DAY_SWITCH_DAY_NAMES = ['Vendredi', 'Samedi', 'Dimanche'];
 
-  // Données des joueurs de l'Équipe de France (ordre alphabétique du prénom pour les slides)
+  // Données des joueurs de l'Équipe de France — portraits AVIF responsive (long/)
   const edfPlayers = [
     {
       name: 'Aurélie Desert',
-      image: 'assets/img/edf-aurelie-desert.avif',
+      image: 'assets/img/long/edf-aurelie-desert-640w.avif',
       bio: 'Comédienne, chanteuse et auteure, formée au théâtre et à l\'improvisation à Bordeaux. Membre de l\'Équipe de France depuis 2018, elle évolue entre scène, rue et formats improvisés. Représente Bordeaux.'
     },
     {
       name: 'Cécile Giroud',
       role: 'Capitaine',
-      image: 'assets/img/edf-cecile-giroud.avif',
+      image: 'assets/img/long/edf-cecile-giroud-640w.avif',
       bio: 'Comédienne, humoriste et musicienne. Figure majeure de l\'impro française, multiple championne du monde. Capitaine de l\'Équipe de France, reconnue pour sa polyvalence, son énergie collective et son sens du jeu. Représente Lyon.'
     },
     {
       name: 'Félix Philippart',
-      image: 'assets/img/edf-felix-philippart.avif',
+      image: 'assets/img/long/edf-felix-philippart-640w.avif',
       bio: 'Formé à Caen puis à Paris, improvisateur professionnel et pilier de l\'Équipe de France depuis 2021. Il joue dans de nombreux spectacles et enseigne le théâtre à la Manufacture de l\'Acteur. Représente Caen.'
     },
     {
       name: 'Igor Potoczny',
-      image: 'assets/img/edf-igor-potoczny.avif',
+      image: 'assets/img/long/edf-igor-potoczny-640w.avif',
       bio: 'Improvisateur parmi les plus titrés de France, membre de l\'Équipe de France depuis 1997. Triple champion du monde, habitué des scènes internationales, notamment au festival Juste pour Rire à Montréal. Représente Niort.'
     },
     {
       name: 'Olivier Descargues',
       role: 'Coach',
-      image: 'assets/img/edf-olivier-descargues.avif',
+      image: 'assets/img/long/edf-olivier-descargues-640w.avif',
       bio: 'Improvisateur depuis 1987, membre historique de l\'Équipe de France, triple champion du monde. Coach de l\'équipe depuis 2015. Cofondateur de la Ligue Majeure, créateur et interprète de nombreux spectacles de référence.'
     }
   ];
 
-  // Données de l'équipe La Malice pour le samedi (match vs France) — MC, arbitres, coach, joueurs (sans commis d'office)
+  // Données de l'équipe La Malice pour le samedi (match vs France) — portraits AVIF responsive (long/)
   const maliceSamediPlayers = [
-    { name: 'Stéphanie Balligand', role: 'MC', image: 'assets/img/malice-stephanie-balligand.avif', bio: '' },
-    { name: 'Sophie Le Bourhis', role: 'Arbitre', image: 'assets/img/malice-sophie-le-bourhis.avif', bio: '' },
-    { name: 'Eve Arlandis', role: 'Arbitre assistante', image: 'assets/img/malice-eve-arlandis.avif', bio: '' },
-    { name: 'Patrice Lamarque', role: 'Arbitre assistant', image: 'assets/img/malice-patrice-lamarque.avif', bio: '' },
-    { name: 'Camille Mortreux', role: 'Coach', image: 'assets/img/malice-camille-mortreux.avif', bio: '' },
-    { name: 'Hélène Morreel', role: 'Joueuse', image: 'assets/img/malice-helene-morreel.avif', bio: '' },
-    { name: 'Marjory Pinto', role: 'Joueuse', image: 'assets/img/malice-marjory-pinto.avif', bio: '' },
-    { name: 'Nicolas Teboul', role: 'Joueur', image: 'assets/img/malice-nicolas-teboul.avif', bio: '' },
-    { name: 'Pierrick Deredin', role: 'Joueur', image: 'assets/img/malice-pierrick-deredin.avif', bio: '' }
+    { name: 'Stéphanie Balligand', role: 'MC', image: 'assets/img/long/malice-stephanie-balligand-640w.avif', bio: '' },
+    { name: 'Sophie Le Bourhis', role: 'Arbitre', image: 'assets/img/long/malice-sophie-le-bourhis-640w.avif', bio: '' },
+    { name: 'Eve Arlandis', role: 'Arbitre assistante', image: 'assets/img/long/malice-eve-arlandis-640w.avif', bio: '' },
+    { name: 'Patrice Lamarque', role: 'Arbitre assistant', image: 'assets/img/long/malice-patrice-lamarque-640w.avif', bio: '' },
+    { name: 'Camille Mortreux', role: 'Coach', image: 'assets/img/long/malice-camille-mortreux-640w.avif', bio: '' },
+    { name: 'Hélène Morreel', role: 'Joueuse', image: 'assets/img/long/malice-helene-morreel-640w.avif', bio: '' },
+    { name: 'Marjory Pinto', role: 'Joueuse', image: 'assets/img/long/malice-marjory-pinto-640w.avif', bio: '' },
+    { name: 'Nicolas Teboul', role: 'Joueur', image: 'assets/img/long/malice-nicolas-teboul-640w.avif', bio: '' },
+    { name: 'Pierrick Deredin', role: 'Joueur', image: 'assets/img/long/malice-pierrick-deredin-640w.avif', bio: '' }
   ];
 
   // Cast du spectacle Commis d'Office (format long, samedi) — réutilise les images malice-* (mêmes personnes)
   const commisDOfficeCast = [
-    { name: 'Olivier Lebailly', image: 'assets/img/malice-olivier-lebailly.avif', bio: '' },
-    { name: 'Émilie Coeurdevache', image: 'assets/img/malice-emilie-coeurdevache.avif', bio: '' },
-    { name: 'Céline Fabisch', image: 'assets/img/malice-celine-fabisch.avif', bio: '' },
-    { name: 'Bruno Cellan', image: 'assets/img/malice-bruno-cellan.avif', bio: '' },
-    { name: 'Aurélien Silvestre', image: 'assets/img/malice-aurelien-silvestre.avif', bio: '' },
-    { name: 'Anneke Bossis', image: 'assets/img/malice-anneke-bossis.avif', bio: '' }
+    { name: 'Olivier Lebailly', image: 'assets/img/long/malice-olivier-lebailly-640w.avif', bio: '' },
+    { name: 'Émilie Coeurdevache', image: 'assets/img/long/malice-emilie-coeurdevache-640w.avif', bio: '' },
+    { name: 'Céline Fabisch', image: 'assets/img/long/malice-celine-fabisch-640w.avif', bio: '' },
+    { name: 'Bruno Cellan', image: 'assets/img/long/malice-bruno-cellan-640w.avif', bio: '' },
+    { name: 'Aurélien Silvestre', image: 'assets/img/long/malice-aurelien-silvestre-640w.avif', bio: '' },
+    { name: 'Anneke Bossis', image: 'assets/img/long/malice-anneke-bossis-640w.avif', bio: '' }
   ];
 
-  // Données des joueurs de l'Équipe de Belgique (ordre alphabétique du prénom pour les slides)
+  // Données des joueurs de l'Équipe de Belgique — portraits AVIF responsive (long/)
   const belgPlayers = [
-    { name: 'Adrien De Goes', image: 'assets/img/belg-adrien.avif', bio: '42 ans, dont 20 à improviser. L\'un des jouteurs les plus complets de sa génération : il construit les histoires, sublime celles des autres, transforme chaque scène en terrain de jeu. Humour tenace, imagination débordante, charisme fou. Bête de scène et partenaire en or ; avec lui, l\'impro est un voyage dont on ne revient pas pareil.' },
-    { name: 'François Ghislain', image: 'assets/img/belg-francois.avif', bio: 'Meneur au sourire facile et à l\'imagination turbo : lancer une impro, rattraper un partenaire en chute libre et écouter profondément, tout ça dans la même minute. Perfectionniste, à l\'écoute, chaleureux ; il fédère, fait briller les autres et transforme le grain de folie en moment magique. Avec lui ça part en vrille, toujours avec bienveillance, humour et l\'envie de partager.' },
-    { name: 'Julie De Greef', image: 'assets/img/belg-julie.avif', bio: 'Julie a l\'air tranquille, presque sage… puis sur scène, BOUM : énergie explosive. Créative discrète dans la vie, tornade sous les projecteurs, elle embarque tout le monde dans son univers sensible, drôle et parfois barré. Elle improvise avec ses tripes, son cœur et une belle dose de folie.' },
-    { name: 'Marielle Chuffart', image: 'assets/img/belg-marielle.avif', bio: 'Pile électrique au cœur XXL, humour délicieusement douteux. Énergique, elle plonge dans les personnages les plus improbables et transforme les catégories en terrain de jeu déjanté. Spontanéité contagieuse, générosité sur scène. Avec Marielle : énergie brute, vannes assumées et une présence chaleureuse qui embarque tout le monde.' },
-    { name: 'Sophie Normand', image: 'assets/img/belg-sophie-normand.avif', bio: 'Depuis plus de dix ans, Sophie navigue dans l\'impro comme une tour de contrôle : calme, précise, elle transforme le moindre détail en récit cohérent. Elle écoute, relie et équilibre pour faire décoller les histoires. Sous sa rigueur, une Sophie délicieusement déjantée : voix improbables, personnages barrés. Carrée et folle, toujours au service du jeu.' }
+    { name: 'Adrien De Goes', image: 'assets/img/long/belg-adrien-640w.avif', bio: '42 ans, dont 20 à improviser. L\'un des jouteurs les plus complets de sa génération : il construit les histoires, sublime celles des autres, transforme chaque scène en terrain de jeu. Humour tenace, imagination débordante, charisme fou. Bête de scène et partenaire en or ; avec lui, l\'impro est un voyage dont on ne revient pas pareil.' },
+    { name: 'François Ghislain', image: 'assets/img/long/belg-francois-640w.avif', bio: 'Meneur au sourire facile et à l\'imagination turbo : lancer une impro, rattraper un partenaire en chute libre et écouter profondément, tout ça dans la même minute. Perfectionniste, à l\'écoute, chaleureux ; il fédère, fait briller les autres et transforme le grain de folie en moment magique. Avec lui ça part en vrille, toujours avec bienveillance, humour et l\'envie de partager.' },
+    { name: 'Julie De Greef', image: 'assets/img/long/belg-julie-640w.avif', bio: 'Julie a l\'air tranquille, presque sage… puis sur scène, BOUM : énergie explosive. Créative discrète dans la vie, tornade sous les projecteurs, elle embarque tout le monde dans son univers sensible, drôle et parfois barré. Elle improvise avec ses tripes, son cœur et une belle dose de folie.' },
+    { name: 'Marielle Chuffart', image: 'assets/img/long/belg-marielle-640w.avif', bio: 'Pile électrique au cœur XXL, humour délicieusement douteux. Énergique, elle plonge dans les personnages les plus improbables et transforme les catégories en terrain de jeu déjanté. Spontanéité contagieuse, générosité sur scène. Avec Marielle : énergie brute, vannes assumées et une présence chaleureuse qui embarque tout le monde.' },
+    { name: 'Sophie Normand', image: 'assets/img/long/belg-sophie-normand-640w.avif', bio: 'Depuis plus de dix ans, Sophie navigue dans l\'impro comme une tour de contrôle : calme, précise, elle transforme le moindre détail en récit cohérent. Elle écoute, relie et équilibre pour faire décoller les histoires. Sous sa rigueur, une Sophie délicieusement déjantée : voix improbables, personnages barrés. Carrée et folle, toujours au service du jeu.' }
   ];
 
-  // Données des joueurs de l'Équipe de Suisse (slider bannière match vs Suisse)
+  // Données des joueurs de l'Équipe de Suisse — portraits AVIF responsive (long/)
   const suissePlayers = [
-    { name: 'Loïc Vazquez', role: 'Joueur', image: 'assets/img/suisse-loic.jpeg', bio: '' },
-    { name: 'Romain Genolet', role: 'Joueur', image: 'assets/img/suisse-romain.avif', bio: '' }
+    { name: 'Loïc Vazquez', role: 'Joueur', image: 'assets/img/long/suisse-loic-640w.avif', bio: '' },
+    { name: 'Romain Genolet', role: 'Joueur', image: 'assets/img/long/suisse-romain-640w.avif', bio: '' },
+    { name: 'Virginie Van De Moortele', role: 'Joueuse', image: 'assets/img/long/suisse-virginie-640w.avif', bio: '' }
   ];
 
   // Révéler le header quand le hero sort du viewport
@@ -1461,11 +1462,26 @@
         introSlide.appendChild(introOverlay);
         sliderTrack.appendChild(introSlide);
         
-        // Slides joueurs
+        // Slides joueurs : portrait responsive (picture + srcset 320w / 442w / 640w) dans calque inset
         teamPlayers.forEach(function (player) {
           const playerSlide = document.createElement('div');
           playerSlide.className = 'match-slide match-slide-bg-right';
-          playerSlide.style.backgroundImage = `url("${encodeURI(player.image)}")`;
+          const bgLayer = document.createElement('div');
+          bgLayer.className = 'match-slide-bg-inner';
+          const base = player.image.replace(/-640w\.avif$/, '');
+          const picture = document.createElement('picture');
+          const source = document.createElement('source');
+          source.type = 'image/avif';
+          source.srcset = base + '-320w.avif 320w, ' + base + '-442w.avif 442w, ' + base + '-640w.avif 640w';
+          source.sizes = '(max-width: 768px) calc(100vw - 88px), calc(100vw - 112px)';
+          const img = document.createElement('img');
+          img.src = player.image;
+          img.alt = 'Photo de ' + (player.name || '');
+          img.loading = 'lazy';
+          picture.appendChild(source);
+          picture.appendChild(img);
+          bgLayer.appendChild(picture);
+          playerSlide.appendChild(bgLayer);
           
           const playerOverlay = document.createElement('div');
           playerOverlay.className = 'match-slide-overlay';

@@ -1,0 +1,39 @@
+# Portraits joueurs — sliders matchs et format long
+
+Documentation des images portrait utilisées dans les carrousels/sliders des équipes (EDF, La Malice, Belgique, Suisse) et du cast Commis d'Office.
+
+## Périmètre
+
+- **Sliders joueurs** : Équipe de France (`edfPlayers`), La Malice samedi (`maliceSamediPlayers`), Belgique (`belgPlayers`), Suisse (`suissePlayers`), cast Commis d'Office (`commisDOfficeCast`).
+- **Emplacement** : données en dur dans `assets/js/script.js` ; images dans `assets/img/long/` (cache long Cloudflare).
+
+## Dimensions et format
+
+- **Ratio cible** : 3:4 portrait (640×853 px).
+- **Variantes générées** : 320w (320×427), 442w (442×589), 640w (640×853), en AVIF.
+- **Nommage** : `<préfixe>-320w.avif`, `<préfixe>-442w.avif`, `<préfixe>-640w.avif` dans `assets/img/long/`.
+
+## Responsive
+
+Le rendu utilise `<picture>` + `<source type="image/avif" srcset="...">` avec les trois largeurs ; le navigateur choisit la variante selon la taille du calque (insets réservés aux flèches et à la croix). Référence dans le JS : `player.image` pointe vers la version 640w ; les URLs 320w/442w sont dérivées pour le `srcset`.
+
+## Génération des AVIF
+
+Script : **`scripts/build-player-portraits-avif.sh`**.
+
+- **Entrée** : PNG sources 640×853 dans `assets/img/` (noms listés dans la variable `MAP` du script).
+- **Sortie** : AVIF 320w, 442w, 640w dans `assets/img/long/`.
+- **Prérequis** : ImageMagick 7 avec support AVIF (libheif). Ex. macOS : `brew install imagemagick libheif`.
+
+Pour ajouter une équipe ou un joueur : ajouter une ligne `fichier.png:préfixe-sortie` dans `MAP`, placer le PNG dans `assets/img/`, lancer le script, puis mettre à jour dans `script.js` le champ `image` du joueur vers `assets/img/long/<préfixe>-640w.avif`.
+
+## Fichiers concernés
+
+| Équipe / usage      | Préfixes (ex.)                    | Sources PNG (ex.)              |
+|---------------------|------------------------------------|--------------------------------|
+| EDF                 | edf-aurelie-desert, edf-cecile-giroud, … | edf-aurelie-desert.png, …      |
+| La Malice / Commis  | malice-stephanie-balligand, malice-olivier-lebailly, … | malice-*.png                   |
+| Belgique            | belg-adrien, belg-francois, belg-sophie-normand, … | adrien.png → belg-adrien, …    |
+| Suisse              | suisse-loic, suisse-romain, suisse-virginie | suisse-*.png                   |
+
+Voir la variable `MAP` dans `scripts/build-player-portraits-avif.sh` pour la liste à jour.

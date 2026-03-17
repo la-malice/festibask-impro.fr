@@ -3069,6 +3069,31 @@ nav.primary a:hover {
   background-color: #000;
 }
 
+/* Calque portrait des slides joueurs : insets pour ne pas chevaucher flèches et croix */
+.match-slide-bg-inner {
+  position: absolute;
+  left: 56px;
+  right: 56px;
+  top: 0;
+  bottom: 0;
+  z-index: 0;
+  background-color: #000;
+}
+
+.match-slide-bg-inner picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.match-slide-bg-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: right center;
+  display: block;
+}
+
 /* Adoucir la transition image / fond noir : dégradé noir → transparent sur le bord gauche de l’image */
 .match-slide-bg-right::before,
 .spectacle-single-slide .match-slide::before {
@@ -3308,6 +3333,15 @@ nav.primary a:hover {
   .match-slide-bg-right,
   .spectacle-single-slide .match-slide {
     background-position: right top;
+  }
+
+  .match-slide-bg-inner {
+    left: 44px;
+    right: 44px;
+  }
+
+  .match-slide-bg-inner img {
+    object-position: right top;
   }
 
   .match-slide-overlay {
