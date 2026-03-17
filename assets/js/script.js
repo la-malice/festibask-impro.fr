@@ -36,8 +36,8 @@
   const maliceSamediPlayers = [
     { name: 'Stéphanie Balligand', role: 'MC', image: 'assets/img/long/malice-stephanie-balligand-640w.avif', bio: '' },
     { name: 'Sophie Le Bourhis', role: 'Arbitre', image: 'assets/img/long/malice-sophie-le-bourhis-640w.avif', bio: '' },
-    { name: 'Eve Arlandis', role: 'Arbitre assistante', image: 'assets/img/long/malice-eve-arlandis-640w.avif', bio: '' },
-    { name: 'Patrice Lamarque', role: 'Arbitre assistant', image: 'assets/img/long/malice-patrice-lamarque-640w.avif', bio: '' },
+    { name: 'Eve Arlandis', role: 'Arbitre\nassistante', image: 'assets/img/long/malice-eve-arlandis-640w.avif', bio: '' },
+    { name: 'Patrice Lamarque', role: 'Arbitre\nassistant', image: 'assets/img/long/malice-patrice-lamarque-640w.avif', bio: '' },
     { name: 'Camille Mortreux', role: 'Coach', image: 'assets/img/long/malice-camille-mortreux-640w.avif', bio: '' },
     { name: 'Hélène Morreel', role: 'Joueuse', image: 'assets/img/long/malice-helene-morreel-640w.avif', bio: '' },
     { name: 'Marjory Pinto', role: 'Joueuse', image: 'assets/img/long/malice-marjory-pinto-640w.avif', bio: '' },
