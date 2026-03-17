@@ -6,7 +6,7 @@ High-level structure and technology choices of the Festibask'Impro static site. 
 
 ## High-Level Overview
 
-Single-page static site: one `index.html`, CSS and JS in `assets/`. Build step copies files, then runs PurgeCSS (CSS), PostCSS (cssnano), and Terser (JS) on outputs in `dist/`. No bundler for HTML; Vite used only for dev server. Deployment: GitHub Actions builds and uploads `dist/` as GitHub Pages artifact.
+Static site: `index.html` (accueil) et `video/index.html` (watch page pour la vidéo teaser), CSS et JS dans `assets/`. Build copie les fichiers (dont video/, sitemap-video.xml), puis PurgeCSS (CSS), PostCSS (cssnano) et Terser (JS) sur les sorties dans `dist/`. Pas de bundler HTML ; Vite uniquement pour le dev server. Déploiement : GitHub Actions build et upload de `dist/` vers GitHub Pages.
 
 ```
 Sources (index.html, assets/) → copy-to-dist → dist/
@@ -21,10 +21,11 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 | Component | Responsibility | Location / Tech |
 |-----------|----------------|-----------------|
 | **Markup** | Structure and content; critical CSS inline; preloads; meta, OG, Schema.org | index.html |
+| **Watch page** | Page de lecture dédiée pour la vidéo teaser (VideoObject, og:video) ; SEO vidéo Google | video/index.html |
 | **Styles** | Layout, theme, components; PurgeCSS scans index.html + script.js | assets/css/style.css |
 | **Scripts** | Header, countdown, hero video (YouTube iframe or self-hosted &lt;video&gt; per HTML config), nav, modals, sliders, carousel, tooltips, fullscreen | assets/js/script.js |
 | **Data** | Testimonials (carousel), hero video schedule (optional) | assets/data/temoignages.json, assets/data/hero-video-schedule.json |
-| **Copy build** | Copy index.html, CNAME, favicons, robots, sitemap, sw.js, assets, festival-2026, PDFs to dist/ ; optionnellement remplacer `dist/malix/assets/access-config.js` par `malix/assets/access-config.local.js` si présent | scripts/copy-to-dist.js |
+| **Copy build** | Copy index.html, video/, sitemap.xml, sitemap-video.xml, CNAME, favicons, robots, sw.js, assets, festival-2026, PDFs to dist/ ; optionnellement remplacer `dist/malix/assets/access-config.js` par `malix/assets/access-config.local.js` si présent | scripts/copy-to-dist.js |
 | **PurgeCSS** | Remove unused CSS for dist; safelist dynamic classes | purgecss.config.js |
 | **PostCSS** | Minify CSS (cssnano) | postcss.config.js |
 | **Terser** | Minify JS (invoked in npm run build on source script.js → dist) | npm script |
@@ -58,7 +59,9 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 
 | Path | Role |
 |------|------|
-| index.html | Single entry; all sections, modals, inline critical CSS |
+| index.html | Page d'accueil ; sections, modals, critical CSS inline |
+| video/index.html | Watch page vidéo teaser (VideoObject, og:video) ; lien depuis le footer |
+| sitemap-video.xml | Sitemap vidéo (extension Google) pour /video/ ; soumis ou référencé Search Console |
 | assets/css/style.css | Full stylesheet; source for PurgeCSS/PostCSS |
 | assets/js/script.js | All client logic; source for Terser |
 | assets/data/temoignages.json | Testimonials array for carousel |

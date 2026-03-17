@@ -15,10 +15,12 @@ const toCopy = [
   'favicon.ico',
   'robots.txt',
   'sitemap.xml',
+  'sitemap-video.xml',
   'sw.js',
   'brevo-frame.html',
   'apple-touch-icon.png',
   'assets',
+  'video',
   'malix',
   'festival-2026'
 ];

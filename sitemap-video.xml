@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+  <url>
+    <loc>https://festibask-impro.fr/video/</loc>
+    <lastmod>2026-03-17</lastmod>
+    <video:video>
+      <video:thumbnail_loc>https://festibask-impro.fr/assets/img/long/festibask-impro__logo_ss-baseline_fd-fonce-720w.avif</video:thumbnail_loc>
+      <video:title>Vidéo teaser Festibask'Impro – Festival d'improvisation à Anglet</video:title>
+      <video:description>Découvrez la vidéo teaser du Festibask'Impro, le festival d'improvisation théâtrale d'Anglet : 15–17 mai 2026 à la Patinoire de la Barre. Spectacles, matchs internationaux et ateliers.</video:description>
+      <video:content_loc>https://festibask-impro.fr/assets/video/festibask-impro-presentation.mp4</video:content_loc>
+    </video:video>
+  </url>
+</urlset>
