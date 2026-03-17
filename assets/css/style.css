@@ -3372,8 +3372,7 @@ nav.primary a:hover {
   }
   
   .match-slider-dots {
-    bottom: 12px;
-    gap: 6px;
+    display: none;
   }
   
   .match-slider-dot {
