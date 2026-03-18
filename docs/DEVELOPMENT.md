@@ -44,6 +44,7 @@ Le script de build injecte automatiquement `malix/assets/access-config.local.js`
 - Sources (index.html, assets/css, assets/js) stay in repo; only `dist/` is build output. Do not commit minified sources; build runs in CI on push to `main`.
 - **Témoignages:** Edit `assets/data/temoignages.json`; schema and examples in `docs/temoignages-carousel.md`. Empty array hides the carousel.
 - **Vidéo hero programmée:** Edit `assets/data/hero-video-schedule.json`; schema and test params in `docs/slices/hero-video-schedule.md`.
+- **Logos partenaires (AVIF):** Les logos de la section Partenaires & sponsors sont servis en AVIF. Après ajout ou modification d’un logo (PNG/JPG/JPEG dans `assets/img/logos/`), exécuter `./scripts/build-sponsor-logos-avif.sh` pour régénérer les .avif ; prérequis : ImageMagick 7 avec libheif (`brew install imagemagick libheif`). Atlantic Change est déjà fourni en .avif ; le script convertit Cornec, Anglet, RTL2, Aperock.
 
 ## Tester les vidéos hero programmées
 

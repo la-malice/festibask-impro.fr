@@ -79,6 +79,8 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 | docs/temoignages-carousel.md | Documented schema for temoignages.json |
 | docs/portraits-carrousels.md | Portraits joueurs (EDF, Malice, Belgique, Suisse) : dimensions, long/, script AVIF |
 | scripts/build-player-portraits-avif.sh | Génère les AVIF 320w/442w/640w des portraits depuis les PNG sources → assets/img/long/ |
+| scripts/build-instructor-avif.sh | Génère les AVIF des intervenants stages (640/340/192/96w) → assets/img/long/ |
+| scripts/build-sponsor-logos-avif.sh | Génère les AVIF des logos partenaires (section Partenaires & sponsors) → assets/img/logos/ |
 | malix/ | Mini-jeu Malix (sources) ; copié ou généré dans dist/malix/ ; entrée malix/index.html ; isolation totale du site principal |
 | docs/SPEC-Malix.md | Spécification fonctionnelle normative du mini-jeu Malix |
 
