@@ -1343,7 +1343,7 @@
       time: '20:00',
       label: 'Match',
       title: 'La Malice vs Suisse',
-      image: 'assets/img/equipe-suisse-640w.avif',
+      image: 'assets/img/long/equipe-suisse-640w.avif',
       pitch: '' // à remplir quand reçu
     }
   };
