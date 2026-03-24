@@ -47,8 +47,18 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 ## Execution Model
 
 - **Development:** `npm run dev` → Vite serves at http://localhost:8000; no build. Use `./scripts/start-dev.sh` (or `npm run dev -- --host`) to listen on all interfaces for access from the LAN (e.g. mobile at http://&lt;machine-ip&gt;:8000). JSON and assets served from repo.
-- **Production:** User requests site URL; server (GitHub Pages) serves files from `dist/`. Single document; no routing. JS fetches `temoignages.json` (relative to document base); modals load Sibforms/Brevo when opened.
+- **Production:** User requests site URL; server (GitHub Pages) serves files from `dist/`. Single document; no routing. JS fetches `temoignages.json` (URL avec paramètre de version, voir ci‑dessous); modals load Sibforms/Brevo when opened.
 - **Service worker:** sw.js is copied to dist root; loads Brevo SDK with key from query string. [UNCERTAIN] Whether it is registered in production; no cache strategy in the observed snippet.
+
+### Cache busting et versioning des assets (prod)
+
+Les navigateurs (notamment sur mobile) et le CDN peuvent conserver longtemps des fichiers statiques **à URL identique**. **Purger le cache Cloudflare ne vide pas** le cache local du navigateur : les utilisateurs peuvent donc voir d’anciens CSS/JS ou un ancien JSON tant que l’URL ne change pas.
+
+**Conventions (à appliquer lors des déploiements concernés) :**
+
+1. **`index.html`** : les références à la feuille de styles et au script principal incluent un paramètre de requête **`?v=N`** sur `assets/css/style.css` et `assets/js/script.js` (preload, noscript et balise `script`). **Incrémenter `N` de concert** pour une même livraison lorsqu’un changement CSS ou JS doit être pris en compte immédiatement en prod sans dépendre d’une purge côté utilisateur.
+2. **`assets/js/script.js`** : constante **`TEMOIGNAGES_JSON_QUERY_BUST`** — l’URL du `fetch` vers `assets/data/temoignages.json` inclut `?v=…` (même valeur que la constante). **Incrémenter** après modification du contenu du fichier JSON (données témoignages) pour éviter un JSON obsolète servi depuis le cache HTTP.
+3. **Cloudflare (hors dépôt)** : ne pas placer `assets/data/` dans une règle qui impose un **Browser TTL** long (ex. semaines) ; une règle **Bypass cache** ou un TTL court pour ce chemin est cohérent avec le point 2. Les points 1–2 restent la garantie principale côté site quelle que soit la config CDN.
 
 ## Dependencies
 
