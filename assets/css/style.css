@@ -2504,7 +2504,7 @@ nav.primary a:hover {
   right: 33.333%;
   bottom: 0;
   padding: 24px;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.85) 100%);
+  background: rgba(0, 0, 0, 0.88);
   color: var(--white);
   backdrop-filter: blur(4px);
   display: flex;
@@ -2734,7 +2734,7 @@ nav.primary a:hover {
 .match-block.flipped .match-pitch {
   opacity: 1;
   pointer-events: auto;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.85) 100%);
+  background: rgba(0, 0, 0, 0.88);
   backdrop-filter: blur(4px);
 }
 
@@ -3078,7 +3078,7 @@ nav.primary a:hover {
   display: block;
 }
 
-/* Adoucir la transition image / fond noir : dégradé noir → transparent sur le bord gauche de l’image */
+/* Pas de voile sur toute l’image : la lisibilité est portée par .match-slide-overlay uniquement */
 .match-slide-bg-right::before,
 .spectacle-single-slide .match-slide::before {
   content: '';
@@ -3120,9 +3120,25 @@ nav.primary a:hover {
   left: 0;
   right: 0;
   padding: 24px 60px;
+  box-sizing: border-box;
+  /* Par défaut (portraits, intros équipe) : pas de bandeau pour ne pas masquer l’image */
   background: transparent;
   color: var(--white);
   z-index: 2;
+}
+
+/* Résumé spectacle (texte long) : bandeau lisible uniquement pour ce cas */
+.spectacle-single-slide .match-slide-overlay {
+  background: rgba(0, 0, 0, 0.72);
+}
+
+/* Portraits calés à droite : le texte ne déborde pas sur le visage (noms longs, ex. Virginie Van De Moortele) */
+.match-slide-bg-right .match-slide-overlay {
+  left: 0;
+  right: 42%;
+  width: auto;
+  padding: 24px 16px 24px 60px;
+  box-sizing: border-box;
 }
 
 .match-slide-name {
@@ -3133,6 +3149,12 @@ nav.primary a:hover {
   margin: 0 0 8px;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
   line-height: 1.2;
+}
+
+.match-slide-bg-right .match-slide-name {
+  font-size: clamp(1.05rem, 2.2vw, 1.75rem);
+  line-height: 1.18;
+  overflow-wrap: break-word;
 }
 
 .match-slide-role {
@@ -3150,7 +3172,8 @@ nav.primary a:hover {
   line-height: 1.6;
   margin: 0;
   padding: 12px 16px;
-  background: rgba(0, 0, 0, 0.5);
+  /* Sur résumé spectacle le fond parent est sombre ; sur portrait, léger fond local si besoin */
+  background: rgba(0, 0, 0, 0.28);
   border-radius: 8px;
   color: rgba(255, 255, 255, 0.95);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
@@ -3333,9 +3356,18 @@ nav.primary a:hover {
     padding: 20px 48px;
   }
 
+  .match-slide-bg-right .match-slide-overlay {
+    right: 36%;
+    padding: 20px 12px 20px 48px;
+  }
+
   .match-slide-name {
     font-size: clamp(1.2rem, 4vw, 1.8rem);
     margin-bottom: 6px;
+  }
+
+  .match-slide-bg-right .match-slide-name {
+    font-size: clamp(1rem, 3.6vw, 1.5rem);
   }
 
   .match-slide-role {

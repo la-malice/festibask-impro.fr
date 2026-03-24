@@ -1304,7 +1304,7 @@
       label: 'Impro longue',
       title: 'Braquage',
       image: 'assets/img/long/braquage-640w.avif',
-      pitch: 'Un braquage est en cours, portes closes. Otages et braqueurs se font face, chacun avec ses raisons, ses choix… et ce qu\'il préfère taire. Un format tendu et cinématographique, où le public désigne les positions de chacun avant de plonger dans une fiction en temps réel.'
+      pitch: 'Un braquage en cours, portes closes. Otages et braqueurs s\'affrontent : raisons, choix… et ce qu\'on préfère taire. Le public désigne les rôles ; fiction tendue et cinématographique en temps réel.'
     },
     'spectacle-vendredi-match': {
       type: 'match',
@@ -1320,7 +1320,7 @@
       label: 'Impro longue',
       title: 'Commis d\'Office',
       image: 'assets/img/long/commis-d-office-640w.avif',
-      pitch: 'L\'un·e est accusé·e<br>L\'autre est avocat·e<br>L\'un·e est coupable<br>L\'autre devra trouver des circonstances atténuante.<br>Venez découvrir son histoire, son passé son crime et les raisons qui l\'ont poussées à commettre l\'irréparable'
+      pitch: 'L\'un·e est accusé·e, l\'autre est avocat·e<br>L\'un·e est coupable, l\'autre devra trouver des circonstances atténuantes.<br>Venez découvrir son histoire, son passé son crime et les raisons qui l\'ont poussées à commettre l\'irréparable'
     },
     'spectacle-samedi-match': {
       type: 'match',
