@@ -2531,10 +2531,12 @@
           track.scrollBy({ left: getCardWidth(), behavior: 'smooth' });
         });
       }
-      track.addEventListener('scroll', () => {
-        updateButtons();
-        updateActiveDot();
-      }, { passive: true });
+      if (track) {
+        track.addEventListener('scroll', () => {
+          updateButtons();
+          updateActiveDot();
+        }, { passive: true });
+      }
       dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
           const card = cards[index];
@@ -2545,49 +2547,53 @@
       updateActiveDot();
     }
 
-    const temoignagesUrl = new URL('assets/data/temoignages.json', document.documentElement.baseURI || window.location.href).href;
-    fetch(temoignagesUrl)
-      .then(res => res.ok ? res.json() : [])
-      .then(data => {
-        const list = Array.isArray(data) ? data : [];
-        if (list.length === 0) {
-          testimonialsSection.style.display = 'none';
-          return;
-        }
-        list.forEach(item => {
-          const valid =
-            item &&
-            item.quote &&
-            item.image &&
-            item.name &&
-            (item.omitHeader || item.role);
-          if (valid) {
-            track.appendChild(buildTestimonialCard(item));
+    if (track) {
+      const temoignagesUrl = new URL('assets/data/temoignages.json', document.documentElement.baseURI || window.location.href).href;
+      // no-cache : évite un JSON vide (ou ancien) servi depuis le cache HTTP sur mobile / CDN
+      fetch(temoignagesUrl, { cache: 'no-cache' })
+        .then(res => res.ok ? res.json() : [])
+        .then(data => {
+          const list = Array.isArray(data) ? data : [];
+          if (list.length === 0) {
+            testimonialsSection.style.display = 'none';
+            return;
           }
+          list.forEach(item => {
+            const valid =
+              item &&
+              item.quote &&
+              item.image &&
+              item.name &&
+              (item.omitHeader || item.role);
+            if (valid) {
+              track.appendChild(buildTestimonialCard(item));
+            }
+          });
+          const count = track.children.length;
+          if (count === 0) {
+            testimonialsSection.style.display = 'none';
+            return;
+          }
+          if (count === 1) {
+            testimonialsSection.classList.add('testimonials-single');
+          } else if (dotsContainer) {
+            for (let i = 0; i < count; i++) {
+              const dot = document.createElement('button');
+              dot.type = 'button';
+              dot.className = 'testimonials-dot' + (i === 0 ? ' active' : '');
+              dot.setAttribute('role', 'tab');
+              dot.setAttribute('aria-label', 'Témoignage ' + (i + 1));
+              dot.setAttribute('aria-selected', i === 0);
+              dot.setAttribute('data-index', String(i));
+              dotsContainer.appendChild(dot);
+            }
+          }
+          testimonialsSection.style.display = 'block';
+          testimonialsSection.classList.add('is-visible');
+          initCarousel();
+        })
+        .catch(() => {
+          testimonialsSection.style.display = 'none';
         });
-        const count = track.children.length;
-        if (count === 0) {
-          testimonialsSection.style.display = 'none';
-          return;
-        }
-        if (count === 1) {
-          testimonialsSection.classList.add('testimonials-single');
-        } else {
-          for (let i = 0; i < count; i++) {
-            const dot = document.createElement('button');
-            dot.type = 'button';
-            dot.className = 'testimonials-dot' + (i === 0 ? ' active' : '');
-            dot.setAttribute('role', 'tab');
-            dot.setAttribute('aria-label', 'Témoignage ' + (i + 1));
-            dot.setAttribute('aria-selected', i === 0);
-            dot.setAttribute('data-index', String(i));
-            dotsContainer.appendChild(dot);
-          }
-        }
-        testimonialsSection.classList.add('is-visible');
-        initCarousel();
-      })
-      .catch(() => {
-        testimonialsSection.style.display = 'none';
-      });
+    }
   }
