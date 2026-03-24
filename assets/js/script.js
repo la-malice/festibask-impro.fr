@@ -1834,55 +1834,40 @@
     });
   });
 
-  // Appliquer l'image en background sur mobile (matchs + format long)
-  function applyMatchBackgroundOnMobile() {
-    if (window.matchMedia('(max-width: 768px)').matches) {
-      document.querySelectorAll('.match-block').forEach(block => {
-        let src;
-        if (block.id === 'spectacle-samedi-match') {
-          src = 'assets/img/long/edf-colisee-mobile.avif';
-        } else {
-          const img = block.querySelector('.match-image');
-          src = img ? (img.currentSrc || img.getAttribute('src')) : null;
-        }
-        if (src) {
-          const encodedSrc = encodeURI(src);
-          block.style.backgroundImage = `url("${encodedSrc}")`;
-          block.style.backgroundSize = 'cover';
-          block.style.backgroundPosition = 'center';
-          block.style.backgroundRepeat = 'no-repeat';
-        }
-      });
-      document.querySelectorAll('.format-long-block').forEach(block => {
-        const img = block.querySelector('.format-long-image');
-        const src = img ? (img.currentSrc || img.getAttribute('src')) : null;
-        if (src) {
-          const encodedSrc = encodeURI(src);
-          block.style.backgroundImage = `url("${encodedSrc}")`;
-          block.style.backgroundSize = 'cover';
-          block.style.backgroundPosition = 'center';
-          block.style.backgroundRepeat = 'no-repeat';
-        }
-      });
-    } else {
-      document.querySelectorAll('.match-block').forEach(block => {
-        block.style.backgroundImage = '';
-        block.style.backgroundSize = '';
-        block.style.backgroundPosition = '';
-        block.style.backgroundRepeat = '';
-      });
-      document.querySelectorAll('.format-long-block').forEach(block => {
-        block.style.backgroundImage = '';
-        block.style.backgroundSize = '';
-        block.style.backgroundPosition = '';
-        block.style.backgroundRepeat = '';
-      });
-    }
+  // Images de fond pour bannières « compactes » (mobile + desktop #valeur en 2 colonnes)
+  function applySpectacleBannerBackgrounds() {
+    document.querySelectorAll('#valeur .match-block').forEach(block => {
+      let src;
+      if (block.id === 'spectacle-samedi-match') {
+        src = 'assets/img/long/edf-colisee-mobile.avif';
+      } else {
+        const img = block.querySelector('.match-image');
+        src = img ? (img.currentSrc || img.getAttribute('src')) : null;
+      }
+      if (src) {
+        const encodedSrc = encodeURI(src);
+        block.style.backgroundImage = `url("${encodedSrc}")`;
+        block.style.backgroundSize = 'cover';
+        block.style.backgroundPosition = 'center';
+        block.style.backgroundRepeat = 'no-repeat';
+      }
+    });
+    document.querySelectorAll('#valeur .format-long-block').forEach(block => {
+      const img = block.querySelector('.format-long-image');
+      const src = img ? (img.currentSrc || img.getAttribute('src')) : null;
+      if (src) {
+        const encodedSrc = encodeURI(src);
+        block.style.backgroundImage = `url("${encodedSrc}")`;
+        block.style.backgroundSize = 'cover';
+        block.style.backgroundPosition = 'center';
+        block.style.backgroundRepeat = 'no-repeat';
+      }
+    });
   }
 
-  // Appliquer au chargement et au franchissement du breakpoint
-  applyMatchBackgroundOnMobile();
-  window.matchMedia('(max-width: 768px)').addEventListener('change', applyMatchBackgroundOnMobile);
+  applySpectacleBannerBackgrounds();
+  window.addEventListener('load', applySpectacleBannerBackgrounds);
+  window.matchMedia('(max-width: 768px)').addEventListener('change', applySpectacleBannerBackgrounds);
 
   // Popins explicatifs "format long" et "match" – même UX que Malix : centrée, overlay, fermeture au clic
   const tooltipTexts = {

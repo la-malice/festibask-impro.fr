@@ -3566,6 +3566,257 @@ nav.primary a:hover {
   }
 }
 
+/* Spectacles (#valeur) : desktop — deux bannières compactes (rendu type mobile) côte à côte, format long puis match */
+@media (min-width: 769px) {
+  #valeur .day-slide {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  #valeur .day-slide > .format-long-block,
+  #valeur .day-slide > .match-block {
+    min-width: 0;
+    width: 100%;
+    height: 300px;
+    min-height: 300px;
+  }
+
+  #valeur .format-long-block::before {
+    width: 100%;
+    background: rgba(33, 37, 78, 0.4);
+    backdrop-filter: none;
+  }
+
+  #valeur .format-long-block.flipped::before {
+    width: calc(100% - 33.333%);
+    background: #000;
+  }
+
+  #valeur .format-long-image-wrapper {
+    display: none;
+  }
+
+  #valeur .format-long-overlay {
+    width: 100%;
+    left: 0;
+    right: 0;
+  }
+
+  #valeur .format-long-overlay-description {
+    display: none;
+  }
+
+  #valeur .format-long-details-btn,
+  #valeur .match-details-btn {
+    font-size: 0.7rem;
+    padding: 4px 10px;
+  }
+
+  #valeur .match-image-wrapper {
+    display: none;
+  }
+
+  #valeur .match-block::before {
+    width: 100%;
+    background: rgba(33, 37, 78, 0.4);
+    backdrop-filter: none;
+  }
+
+  #valeur .match-block.image-left::before {
+    backdrop-filter: none;
+  }
+
+  #valeur .match-block.flipped::before {
+    width: calc(100% - min(50%, 442px));
+    background: #000;
+  }
+
+  #valeur .match-block.image-left.flipped::before {
+    left: 0;
+    right: auto;
+    width: min(50%, 442px);
+    background: #000;
+  }
+
+  #valeur .match-block.image-left.flipped .match-gap-filler {
+    left: 0;
+    right: calc(100% - min(50%, 442px));
+  }
+
+  #valeur .format-long-overlay {
+    padding: 18px;
+  }
+
+  #valeur .match-overlay {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  #valeur .match-team-logo img {
+    width: 72px;
+    height: 72px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+  }
+
+  #valeur .match-vs {
+    font-size: 1.1rem;
+    padding: 0 6px;
+    text-shadow: 0 3px 8px rgba(0, 0, 0, 0.9);
+  }
+
+  #valeur .match-teams-overlay {
+    top: 56px;
+    left: 18px;
+    right: 18px;
+    transform: none;
+    gap: 10px;
+    flex-wrap: nowrap;
+    max-width: none;
+    padding: 0;
+    box-sizing: border-box;
+    justify-content: center;
+  }
+
+  #valeur .match-block.image-left .match-zone-text {
+    left: 0;
+    right: 0;
+    padding: 18px;
+    padding-bottom: 68px;
+  }
+
+  #valeur .match-block.image-left .match-teams-overlay {
+    left: 18px;
+    right: 18px;
+    top: 56px;
+    justify-content: center;
+  }
+
+  #valeur .match-block.image-left .match-overlay {
+    left: 0;
+    right: 0;
+  }
+
+  #valeur .match-time,
+  #valeur .match-label-small {
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+  }
+
+  #valeur .format-long-pitch {
+    right: 0;
+  }
+
+  #valeur .match-pitch {
+    right: 0;
+  }
+
+  #valeur .match-block.image-left .match-photo-credit {
+    left: 18px;
+    right: auto;
+    bottom: 22px;
+  }
+
+  #valeur .format-long-block.flipped .format-long-image-wrapper {
+    max-width: 33.333%;
+  }
+
+  #valeur .format-long-block .format-long-title,
+  #valeur .match-block .match-label {
+    font-size: clamp(1.15rem, 1.8vw, 1.65rem);
+  }
+}
+
+/* Spectacles #valeur : horaire en haut à droite (lisible), même colonne que le bouton Détails */
+#valeur .format-long-overlay {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  padding: 18px;
+  box-sizing: border-box;
+  justify-content: flex-start;
+}
+
+#valeur .format-long-time {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  z-index: 4;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
+}
+
+#valeur .format-long-meta {
+  justify-content: flex-start;
+  width: 100%;
+}
+
+#valeur .format-long-title {
+  padding-right: 5.5rem;
+}
+
+#valeur .match-time {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  z-index: 4;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
+}
+
+#valeur .match-meta-row {
+  justify-content: flex-start;
+}
+
+#valeur .match-label {
+  padding-right: 5.5rem;
+}
+
+#valeur .match-details-btn {
+  bottom: 18px;
+  right: 18px;
+}
+
+#valeur .format-long-details-btn {
+  margin-top: auto;
+  align-self: flex-end;
+}
+
+/* Spectacles #valeur : titres match en haut à gauche (comme format long) */
+/* Un seul retrait de 18px comme .format-long-overlay : pas de padding doublé zone-text + match-overlay */
+#valeur .match-block.image-left .match-zone-text .match-overlay {
+  padding: 0;
+}
+
+#valeur .match-block.image-left .match-zone-text {
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+#valeur .match-block.image-left .match-zone-text .match-label {
+  text-align: left;
+}
+
+#valeur .match-zone-text .match-teams-overlay {
+  flex: 1 1 auto;
+  align-self: stretch;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Day tabs - Navigation par onglets pour mobile */
 .day-tabs {
   display: flex;
