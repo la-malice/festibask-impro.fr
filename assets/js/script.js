@@ -1410,6 +1410,74 @@
     return match ? match[0].trim() : stripped;
   }
 
+  /** Règle générale : prénom (1re ligne) puis nom (2e ligne), au premier espace — tous les joueurs du slider + titre calque bio */
+  function appendPlayerDisplayNameLines(container, fullName) {
+    container.textContent = '';
+    const t = (fullName || '').trim();
+    const i = t.indexOf(' ');
+    if (i <= 0) {
+      const span = document.createElement('span');
+      span.className = 'match-slide-name-line';
+      span.textContent = t;
+      container.appendChild(span);
+      return;
+    }
+    const first = document.createElement('span');
+    first.className = 'match-slide-name-line match-slide-name-line--first';
+    first.textContent = t.slice(0, i);
+    const second = document.createElement('span');
+    second.className = 'match-slide-name-line match-slide-name-line--second';
+    second.textContent = t.slice(i + 1).trim();
+    container.appendChild(first);
+    container.appendChild(second);
+  }
+
+  function closeMatchPlayerBioLayer(matchBlock) {
+    const c = matchBlock.querySelector('.match-slider-container');
+    if (!c || !c.classList.contains('match-player-bio-open')) return;
+    c.classList.remove('match-player-bio-open');
+    const layer = c.querySelector('.match-player-bio-layer');
+    if (layer) {
+      layer.hidden = true;
+      layer.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  function openMatchPlayerBioLayer(matchBlock, name, bio) {
+    const c = matchBlock.querySelector('.match-slider-container');
+    if (!c) return;
+    const layer = c.querySelector('.match-player-bio-layer');
+    if (!layer) return;
+    appendPlayerDisplayNameLines(layer.querySelector('.match-player-bio-layer-name'), name);
+    layer.querySelector('.match-player-bio-layer-text').textContent = bio;
+    layer.hidden = false;
+    layer.setAttribute('aria-hidden', 'false');
+    c.classList.add('match-player-bio-open');
+    if (matchBlock._sliderInterval) {
+      clearInterval(matchBlock._sliderInterval);
+      matchBlock._sliderInterval = null;
+    }
+  }
+
+  function resumeMatchSliderAfterBioClose(matchBlock) {
+    if (matchBlock.classList.contains('slider-active')) {
+      startSliderAutoPlay(matchBlock);
+    }
+  }
+
+  if (!window._matchPlayerBioEscapeBound) {
+    window._matchPlayerBioEscapeBound = true;
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      const open = document.querySelector('.match-slider-container.match-player-bio-open');
+      if (!open) return;
+      const block = open.closest('.match-block');
+      if (!block) return;
+      closeMatchPlayerBioLayer(block);
+      resumeMatchSliderAfterBioClose(block);
+    });
+  }
+
   // teams: tableau de { intro: { title, pitch }, players: [...] } ; ou (players, originalImageSrc, intro) pour rétrocompat
   function initMatchSlider(matchBlock, teamsOrPlayers, originalImageSrc, introOptional) {
     let teams;
@@ -1436,39 +1504,43 @@
         const introTitle = intro.title ?? '';
         const introPitch = intro.pitch ?? '';
         const teamPlayers = team.players || [];
+        const omitIntro = team.omitIntro === true;
         
-        // Slide d'intro de l'équipe (formats longs : fond noir sans image, comme les portraits)
-        const introSlide = document.createElement('div');
-        const isFormatLongBanner = matchBlock.classList.contains('format-long-block');
-        introSlide.className = isFormatLongBanner
-          ? 'match-slide match-slide-bg-right match-slide-format-long-intro'
-          : 'match-slide match-slide-bg-right';
-        if (isFormatLongBanner) {
-          introSlide.style.backgroundColor = '#000';
-          introSlide.style.backgroundImage = 'none';
-        } else {
-          introSlide.style.backgroundImage = `url("${originalImageSrc}")`;
+        if (!omitIntro) {
+          // Slide d'intro : format long = fond noir ; match = fond blanc lisible, sans image bannière
+          const introSlide = document.createElement('div');
+          const isFormatLongBanner = matchBlock.classList.contains('format-long-block');
+          introSlide.className = isFormatLongBanner
+            ? 'match-slide match-slide-bg-right match-slide-format-long-intro'
+            : 'match-slide match-slide-bg-right match-slide-match-intro';
+          if (isFormatLongBanner) {
+            introSlide.style.backgroundColor = '#000';
+            introSlide.style.backgroundImage = 'none';
+          } else {
+            introSlide.style.backgroundColor = '#ffffff';
+            introSlide.style.backgroundImage = 'none';
+          }
+          
+          const introOverlay = document.createElement('div');
+          introOverlay.className = 'match-slide-overlay';
+          
+          const title = document.createElement('div');
+          title.className = 'match-slide-name';
+          title.textContent = introTitle;
+          
+          const pitchShort = document.createElement('div');
+          pitchShort.className = 'match-slide-bio match-slide-bio-short';
+          pitchShort.textContent = getFirstSentence(introPitch);
+          const pitchFull = document.createElement('div');
+          pitchFull.className = 'match-slide-bio match-slide-bio-full';
+          pitchFull.innerHTML = introPitch;
+          
+          introOverlay.appendChild(title);
+          introOverlay.appendChild(pitchShort);
+          introOverlay.appendChild(pitchFull);
+          introSlide.appendChild(introOverlay);
+          sliderTrack.appendChild(introSlide);
         }
-        
-        const introOverlay = document.createElement('div');
-        introOverlay.className = 'match-slide-overlay';
-        
-        const title = document.createElement('div');
-        title.className = 'match-slide-name';
-        title.textContent = introTitle;
-        
-        const pitchShort = document.createElement('div');
-        pitchShort.className = 'match-slide-bio match-slide-bio-short';
-        pitchShort.textContent = getFirstSentence(introPitch);
-        const pitchFull = document.createElement('div');
-        pitchFull.className = 'match-slide-bio match-slide-bio-full';
-        pitchFull.innerHTML = introPitch;
-        
-        introOverlay.appendChild(title);
-        introOverlay.appendChild(pitchShort);
-        introOverlay.appendChild(pitchFull);
-        introSlide.appendChild(introOverlay);
-        sliderTrack.appendChild(introSlide);
         
         // Slides joueurs : portrait responsive (picture + srcset 320w / 442w / 640w) dans calque inset
         teamPlayers.forEach(function (player) {
@@ -1494,11 +1566,24 @@
           const playerOverlay = document.createElement('div');
           playerOverlay.className = 'match-slide-overlay';
           
-          const playerName = document.createElement('div');
-          playerName.className = 'match-slide-name';
-          playerName.textContent = player.name;
-          
-          playerOverlay.appendChild(playerName);
+          const hasBio = (player.bio || '').trim().length > 0;
+          if (hasBio) {
+            const playerName = document.createElement('button');
+            playerName.type = 'button';
+            playerName.className = 'match-slide-name match-slide-name--has-bio';
+            appendPlayerDisplayNameLines(playerName, player.name);
+            playerName.setAttribute('aria-label', player.name + ' — afficher la biographie');
+            playerName.addEventListener('click', function (e) {
+              e.stopPropagation();
+              openMatchPlayerBioLayer(matchBlock, player.name, player.bio.trim());
+            });
+            playerOverlay.appendChild(playerName);
+          } else {
+            const playerName = document.createElement('div');
+            playerName.className = 'match-slide-name';
+            appendPlayerDisplayNameLines(playerName, player.name);
+            playerOverlay.appendChild(playerName);
+          }
           
           if (player.role) {
             const playerRole = document.createElement('div');
@@ -1507,14 +1592,16 @@
             playerOverlay.appendChild(playerRole);
           }
           
-          const playerBioShort = document.createElement('div');
-          playerBioShort.className = 'match-slide-bio match-slide-bio-short';
-          playerBioShort.textContent = getFirstSentence(player.bio || '');
-          const playerBioFull = document.createElement('div');
-          playerBioFull.className = 'match-slide-bio match-slide-bio-full';
-          playerBioFull.textContent = player.bio || '';
-          playerOverlay.appendChild(playerBioShort);
-          playerOverlay.appendChild(playerBioFull);
+          if (!hasBio) {
+            const playerBioShort = document.createElement('div');
+            playerBioShort.className = 'match-slide-bio match-slide-bio-short';
+            playerBioShort.textContent = getFirstSentence(player.bio || '');
+            const playerBioFull = document.createElement('div');
+            playerBioFull.className = 'match-slide-bio match-slide-bio-full';
+            playerBioFull.textContent = player.bio || '';
+            playerOverlay.appendChild(playerBioShort);
+            playerOverlay.appendChild(playerBioFull);
+          }
           
           playerSlide.appendChild(playerOverlay);
           sliderTrack.appendChild(playerSlide);
@@ -1532,7 +1619,10 @@
       });
       
       // Boutons chevron précédent / suivant
-      const totalSlides = teams.reduce(function (s, t) { return s + 1 + (t.players || []).length; }, 0);
+      const totalSlides = teams.reduce(function (s, t) {
+        const introCount = t.omitIntro === true ? 0 : 1;
+        return s + introCount + (t.players || []).length;
+      }, 0);
       const prevBtn = document.createElement('button');
       prevBtn.className = 'match-slider-prev';
       prevBtn.setAttribute('aria-label', 'Slide précédent');
@@ -1569,20 +1659,55 @@
         dotsContainer.appendChild(dot);
       }
       
+      const bioLayer = document.createElement('div');
+      bioLayer.className = 'match-player-bio-layer';
+      bioLayer.hidden = true;
+      bioLayer.setAttribute('aria-hidden', 'true');
+      bioLayer.setAttribute('role', 'dialog');
+      bioLayer.setAttribute('aria-modal', 'true');
+      const bioClose = document.createElement('button');
+      bioClose.type = 'button';
+      bioClose.className = 'match-player-bio-layer-close';
+      bioClose.setAttribute('aria-label', 'Fermer la biographie');
+      bioClose.innerHTML = '×';
+      const bioInner = document.createElement('div');
+      bioInner.className = 'match-player-bio-layer-inner';
+      const bioNameEl = document.createElement('h2');
+      bioNameEl.className = 'match-player-bio-layer-name';
+      const bioTextEl = document.createElement('p');
+      bioTextEl.className = 'match-player-bio-layer-text';
+      bioInner.appendChild(bioNameEl);
+      bioInner.appendChild(bioTextEl);
+      bioLayer.appendChild(bioClose);
+      bioLayer.appendChild(bioInner);
+      bioClose.addEventListener('click', function (e) {
+        e.stopPropagation();
+        closeMatchPlayerBioLayer(matchBlock);
+        resumeMatchSliderAfterBioClose(matchBlock);
+      });
+      bioLayer.addEventListener('click', function (e) {
+        if (e.target === bioLayer) {
+          closeMatchPlayerBioLayer(matchBlock);
+          resumeMatchSliderAfterBioClose(matchBlock);
+        }
+      });
+      
       sliderContainer.appendChild(sliderTrack);
       sliderContainer.appendChild(prevBtn);
       sliderContainer.appendChild(nextBtn);
       sliderContainer.appendChild(closeButton);
       sliderContainer.appendChild(dotsContainer);
+      sliderContainer.appendChild(bioLayer);
       matchBlock.appendChild(sliderContainer);
     }
     
     // Activer le slider
     matchBlock.classList.add('slider-active');
     
-    // État initial des chevrons
+    // État initial des chevrons et thème (slide intro match = fond clair)
     matchBlock._currentSlide = 0;
     updateMatchSliderChevrons(matchBlock, 0);
+    updateMatchSliderLightTheme(matchBlock, 0);
     
     // Initialiser l'auto-défilement
     startSliderAutoPlay(matchBlock);
@@ -1632,6 +1757,16 @@
     block.classList.add('slider-active');
   }
   
+  /** Slider match : slide intro sur fond blanc → points et UI adaptés au contraste */
+  function updateMatchSliderLightTheme(matchBlock, slideIndex) {
+    const sliderContainer = matchBlock.querySelector('.match-slider-container');
+    if (!sliderContainer) return;
+    const slides = matchBlock.querySelectorAll('.match-slider-track .match-slide');
+    const slide = slides[slideIndex];
+    const light = slide && slide.classList.contains('match-slide-match-intro');
+    sliderContainer.classList.toggle('match-slider-light-slide', Boolean(light));
+  }
+
   // Mettre à jour l'état des chevrons (prev/next) selon le slide actuel
   function updateMatchSliderChevrons(matchBlock, slideIndex) {
     const sliderTrack = matchBlock.querySelector('.match-slider-track');
@@ -1652,6 +1787,7 @@
 
   // Fonction pour aller à un slide spécifique
   function goToSlide(matchBlock, slideIndex) {
+    closeMatchPlayerBioLayer(matchBlock);
     const sliderTrack = matchBlock.querySelector('.match-slider-track');
     if (!sliderTrack) return;
     
@@ -1669,6 +1805,7 @@
     
     // Mettre à jour les chevrons
     updateMatchSliderChevrons(matchBlock, slideIndex);
+    updateMatchSliderLightTheme(matchBlock, slideIndex);
     
     // Réinitialiser l'auto-défilement à partir de ce slide
     matchBlock._currentSlide = slideIndex;
@@ -1706,6 +1843,7 @@
     
     // Fonction pour passer au slide suivant
     function nextSlide() {
+      closeMatchPlayerBioLayer(matchBlock);
       currentSlide = (currentSlide + 1) % totalSlides;
       matchBlock._currentSlide = currentSlide;
       sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
@@ -1718,6 +1856,7 @@
       
       // Mettre à jour les chevrons
       updateMatchSliderChevrons(matchBlock, currentSlide);
+      updateMatchSliderLightTheme(matchBlock, currentSlide);
     }
     
     // Démarrer l'auto-défilement (4 secondes par slide)
@@ -1745,6 +1884,7 @@
   
   // Fonction pour fermer le slider
   function closeMatchSlider(matchBlock) {
+    closeMatchPlayerBioLayer(matchBlock);
     matchBlock.classList.remove('slider-active');
     
     // Nettoyer le timer
@@ -1778,6 +1918,7 @@
     
     // Réinitialiser les chevrons
     updateMatchSliderChevrons(matchBlock, 0);
+    updateMatchSliderLightTheme(matchBlock, 0);
   }
 
   // Flip pour afficher le pitch du match (desktop) ou modal (mobile)
@@ -1806,32 +1947,17 @@
       }
       if (isFranceMatch && edfPlayers && maliceSamediPlayers) {
         const originalImageSrc = getBlockImageSrc(block);
-        const edfIntro = {
-          title: 'L\'Équipe de France',
-          pitch: 'Champions du monde, artistes reconnus et figures majeures de l\'improvisation professionnelle. Une équipe d\'excellence réunissant expérience, créativité et intensité scénique, au service de spectacles uniques et exigeants. Photo : © J.DUFRESNE'
-        };
-        const maliceIntro = {
-          title: 'La Malice',
-          pitch: 'L\'équipe de La Malice qui affronte l\'Équipe de France le samedi : MC, arbitres, coach et joueurs.'
-        };
+        // Pas de slides d’intro équipe (Équipe de France / La Malice) : uniquement les portraits
         initMatchSlider(block, [
-          { intro: edfIntro, players: edfPlayers },
-          { intro: maliceIntro, players: maliceSamediPlayers }
+          { omitIntro: true, players: edfPlayers },
+          { omitIntro: true, players: maliceSamediPlayers }
         ], originalImageSrc);
       } else if (isBelgiumMatch && belgPlayers && belgPlayers.length > 0) {
         const originalImageSrc = getBlockImageSrc(block);
-        const belgIntro = {
-          title: 'L\'Équipe de Belgique',
-          pitch: 'Depuis la Belgique, Les Zatilas ont traversé frontières et bière pour chatouiller vos zygomatiques. Troupe passionnée, délicieusement zinzin : un mot devient épopée, un regard comédie. Anglet, prépare-toi : impro totale, avec un goût de Belgique qui colle aux doigts.'
-        };
-        initMatchSlider(block, belgPlayers, originalImageSrc, belgIntro);
+        initMatchSlider(block, [{ omitIntro: true, players: belgPlayers }], originalImageSrc);
       } else if (isSuisseMatch && suissePlayers && suissePlayers.length > 0) {
         const originalImageSrc = getBlockImageSrc(block);
-        const suisseIntro = {
-          title: 'L\'Équipe de Suisse',
-          pitch: 'L\'équipe de Suisse qui affronte La Malice le dimanche.'
-        };
-        initMatchSlider(block, suissePlayers, originalImageSrc, suisseIntro);
+        initMatchSlider(block, [{ omitIntro: true, players: suissePlayers }], originalImageSrc);
       } else if (blockId && spectaclesData && spectaclesData[blockId]) {
         initSpectacleSingleSlide(block, spectaclesData[blockId]);
       }

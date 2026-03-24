@@ -3186,13 +3186,65 @@ nav.primary a:hover {
   flex-shrink: 0;
 }
 
-/* Portraits calés à droite : le texte ne déborde pas sur le visage (noms longs, ex. Virginie Van De Moortele) */
-.match-slide-bg-right:not(.match-slide-format-long-intro) .match-slide-overlay {
+/* Intro équipe (matchs, pas format long) : fond blanc, texte lisible, zone pleine largeur */
+.match-slide-match-intro.match-slide-bg-right {
+  background-color: #fff !important;
+  background-image: none !important;
+}
+
+.match-slide-match-intro .match-slide-overlay {
   left: 0;
-  right: 42%;
-  width: auto;
-  padding: 24px 16px 24px 60px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 52px 48px 80px;
   box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  background: transparent;
+  color: var(--navy);
+}
+
+.match-slide-match-intro .match-slide-overlay::-webkit-scrollbar {
+  display: none;
+}
+
+.match-slide-match-intro .match-slide-name {
+  color: var(--navy);
+  text-shadow: none;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+  font-size: clamp(1.35rem, 2.8vw, 2rem);
+}
+
+.match-slide-match-intro .match-slide-bio {
+  color: var(--navy);
+  text-shadow: none;
+  background: rgba(33, 37, 78, 0.06);
+  border: 1px solid rgba(33, 37, 78, 0.12);
+  max-width: none;
+  line-height: 1.45;
+  font-size: clamp(0.88rem, 1.7vw, 1rem);
+  flex-shrink: 0;
+}
+
+/* Portraits calés à droite : prénom + nom sur 2 lignes (JS) ; colonne texte volontairement étroite pour limiter le chevauchement avec le visage */
+.match-slide-bg-right:not(.match-slide-format-long-intro):not(.match-slide-match-intro) .match-slide-overlay {
+  top: 0;
+  bottom: auto;
+  left: 0;
+  right: 48%;
+  width: auto;
+  padding: 48px 12px 24px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .match-slide-name {
@@ -3205,10 +3257,26 @@ nav.primary a:hover {
   line-height: 1.2;
 }
 
-.match-slide-bg-right:not(.match-slide-format-long-intro) .match-slide-name {
+/* Prénom / nom sur deux lignes (slider joueurs + calque bio) */
+.match-slide-name-line {
+  display: block;
+}
+
+.match-slide-name-line--second {
+  margin-top: 0.06em;
+}
+
+.match-slide-bg-right:not(.match-slide-format-long-intro):not(.match-slide-match-intro) .match-slide-name {
   font-size: clamp(1.05rem, 2.2vw, 1.75rem);
   line-height: 1.18;
+  max-width: 100%;
   overflow-wrap: break-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+.match-slide-bg-right:not(.match-slide-format-long-intro):not(.match-slide-match-intro) .match-slide-name-line {
+  overflow-wrap: anywhere;
 }
 
 .match-slide-role {
@@ -3389,6 +3457,142 @@ nav.primary a:hover {
   transform: scale(0.9);
 }
 
+/* Slide intro sur fond blanc : points visibles */
+.match-slider-container.match-slider-light-slide .match-slider-dot {
+  background: rgba(33, 37, 78, 0.25);
+  border-color: rgba(33, 37, 78, 0.45);
+}
+
+.match-slider-container.match-slider-light-slide .match-slider-dot:hover {
+  background: rgba(33, 37, 78, 0.4);
+  border-color: rgba(33, 37, 78, 0.65);
+}
+
+.match-slider-container.match-slider-light-slide .match-slider-dot.active {
+  background: var(--navy);
+  border-color: var(--navy);
+  box-shadow: 0 0 6px rgba(33, 37, 78, 0.35);
+}
+
+/* Biographie joueur : fond noir plein écran au clic sur le nom (pas de texte long sur le slide portrait) */
+/* [hidden] doit rester masqué : display:flex sur la classe ne doit pas annuler display:none du navigateur */
+.match-player-bio-layer[hidden] {
+  display: none !important;
+}
+
+.match-player-bio-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  background: #000;
+  color: var(--white);
+  overflow: hidden;
+  padding: 44px 40px 28px;
+  box-sizing: border-box;
+}
+
+.match-player-bio-layer-inner {
+  flex: 1;
+  min-height: 0;
+  max-width: 36rem;
+  margin: 0 auto;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.match-player-bio-layer-inner::-webkit-scrollbar {
+  display: none;
+}
+
+.match-player-bio-layer-name {
+  font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
+  font-size: clamp(0.95rem, 1.9vw, 1.15rem);
+  font-weight: 600;
+  color: var(--white);
+  margin: 0 0 0.5rem;
+  line-height: 1.2;
+}
+
+.match-player-bio-layer-text {
+  font-size: clamp(0.8rem, 1.35vw, 0.9rem);
+  line-height: 1.45;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.95);
+  white-space: pre-wrap;
+}
+
+.match-player-bio-layer-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--white);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.match-player-bio-layer-close:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.match-slider-container.match-player-bio-open .match-slider-prev,
+.match-slider-container.match-player-bio-open .match-slider-next,
+.match-slider-container.match-player-bio-open .match-slider-dots {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.match-slider-container.match-player-bio-open .match-slider-close {
+  z-index: 26;
+}
+
+.match-slide-name--has-bio {
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  border: none;
+  background: transparent;
+  color: inherit;
+  padding: 4px 8px;
+  margin: 0 0 8px;
+  width: 100%;
+  box-sizing: border-box;
+  text-shadow: inherit;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.match-slide-name--has-bio .match-slide-name-line {
+  text-decoration: none;
+}
+
+.match-slide-name--has-bio:hover {
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.22);
+}
+
+.match-slide-name--has-bio:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
 /* Responsive pour mobile */
 @media (max-width: 768px) {
   /* Caler l'image vers le haut pour éviter la bande bleue (navy) en haut */
@@ -3409,9 +3613,11 @@ nav.primary a:hover {
     padding: 20px 48px;
   }
 
-  .match-slide-bg-right:not(.match-slide-format-long-intro) .match-slide-overlay {
-    right: 36%;
-    padding: 20px 12px 20px 48px;
+  .match-slide-bg-right:not(.match-slide-format-long-intro):not(.match-slide-match-intro) .match-slide-overlay {
+    top: 0;
+    bottom: auto;
+    right: 42%;
+    padding: 44px 10px 20px 48px;
   }
 
   .match-slide-format-long-intro .match-slide-overlay {
@@ -3420,12 +3626,35 @@ nav.primary a:hover {
     padding: 48px 40px 76px;
   }
 
+  .match-slide-match-intro .match-slide-overlay {
+    left: 0;
+    right: 0;
+    padding: 48px 40px 76px;
+  }
+
+  .match-player-bio-layer {
+    padding: 40px 28px 24px;
+  }
+
+  .match-player-bio-layer-name {
+    font-size: clamp(0.9rem, 3.2vw, 1.05rem);
+  }
+
+  .match-player-bio-layer-text {
+    font-size: clamp(0.78rem, 2.8vw, 0.88rem);
+  }
+
+  .match-player-bio-layer-close {
+    top: 8px;
+    right: 8px;
+  }
+
   .match-slide-name {
     font-size: clamp(1.2rem, 4vw, 1.8rem);
     margin-bottom: 6px;
   }
 
-  .match-slide-bg-right:not(.match-slide-format-long-intro) .match-slide-name {
+  .match-slide-bg-right:not(.match-slide-format-long-intro):not(.match-slide-match-intro) .match-slide-name {
     font-size: clamp(1rem, 3.6vw, 1.5rem);
   }
 
