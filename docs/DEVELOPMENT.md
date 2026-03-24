@@ -4,7 +4,7 @@
 
 - Node 18+ (CI uses Node 20)
 - npm (or pnpm; CI uses npm)
-- **ImageMagick 7** avec écriture **AVIF** (délégué libheif) pour `npm run build` : ex. macOS `brew install imagemagick libheif`. La CI installe `imagemagick` via apt. Pour ignorer la génération d’images (déconseillé) : `SKIP_IMAGE_BUILD=1 npm run build`.
+- **ImageMagick** avec écriture **AVIF** (`convert -list format` → ligne AVIF en **rw+**, pas **r--**) : ex. macOS `brew install imagemagick libheif`. Sous Ubuntu, si AVIF est en lecture seule, installer aussi **`libheif-plugin-aomenc`** (la CI GitHub Actions installe `imagemagick` et ce plugin). Pour ignorer la génération d’images (déconseillé) : `SKIP_IMAGE_BUILD=1 npm run build`.
 
 ## Setup
 

@@ -27,10 +27,12 @@ jobs:
           cache: "npm"
       - name: Install dependencies
         run: npm ci
+      # imagemagick seul fournit souvent AVIF en lecture seule (r--) ; l’encodeur
+      # est fourni par le plugin libheif (AOM) pour l’écriture (rw+).
       - name: Install ImageMagick (AVIF)
         run: |
           sudo apt-get update
-          sudo apt-get install -y imagemagick
+          sudo apt-get install -y imagemagick libheif-plugin-aomenc
           IM="$(command -v magick || command -v convert)"
           "$IM" -list format | grep AVIF
           "$IM" -list format | grep AVIF | grep -q rw+ || { echo 'Écriture AVIF non disponible'; exit 1; }
