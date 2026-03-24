@@ -941,26 +941,10 @@ footer .footer-impro {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  /* Programme : colonne highlightée plus large pour afficher les images */
-  #programme .grid.grid-3:has(.day.card[data-day="0"].active) {
-    grid-template-columns: 1.4fr 1fr 1fr;
-  }
-  #programme .grid.grid-3:has(.day.card[data-day="1"].active) {
-    grid-template-columns: 1fr 1.4fr 1fr;
-  }
-  #programme .grid.grid-3:has(.day.card[data-day="2"].active) {
-    grid-template-columns: 1fr 1fr 1.4fr;
-  }
-
-  /* Stages : colonne highlightée (aligné sur le programme) */
-  #stages .grid.grid-3:has(.stages-day[data-day="0"].active) {
-    grid-template-columns: 1.4fr 1fr 1fr;
-  }
-  #stages .grid.grid-3:has(.stages-day[data-day="1"].active) {
-    grid-template-columns: 1fr 1.4fr 1fr;
-  }
-  #stages .grid.grid-3:has(.stages-day[data-day="2"].active) {
-    grid-template-columns: 1fr 1fr 1.4fr;
+  /* Programme et Stages : un jour à la fois en page (pas de 3 colonnes côte à côte) */
+  #programme .grid.grid-3,
+  #stages .grid.grid-3 {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -3766,10 +3750,9 @@ nav.primary a:hover {
 
 /* Colonnes par jour : Vendredi | Samedi | Dimanche (aligné sur le programme) */
 #stages .stages-day {
-  display: grid;
+  display: none;
   gap: 20px;
   align-content: start;
-  opacity: 0.6;
   transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   /* Pas de fond clair sur les colonnes (seules les cartes atelier ont un fond) */
   background: transparent;
@@ -3779,7 +3762,16 @@ nav.primary a:hover {
 }
 
 #stages .stages-day.active {
+  display: grid;
+  grid-template-columns: 1fr;
   opacity: 1;
+}
+
+/* Deux cartes stage par ligne dès qu’il y a assez de largeur */
+@media (min-width: 640px) {
+  #stages .stages-day.active {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 #stages .atelier-card {
@@ -3789,18 +3781,6 @@ nav.primary a:hover {
 
 #stages .stages-day.active .atelier-card {
   box-shadow: var(--shadow-md);
-}
-
-@media (max-width: 768px) {
-  /* Sur mobile, masquer les colonnes des jours non sélectionnés (comportement identique au programme) */
-  #stages .stages-day:not(.active) {
-    display: none;
-  }
-
-  #stages .stages-day.active {
-    display: grid;
-    opacity: 1;
-  }
 }
 
 #stages .atelier-card .header {
@@ -4798,15 +4778,17 @@ nav.primary a:hover {
   background: rgba(255, 255, 255, 0.85);
 }
 
+/* En page : un seul jour du programme visible (comme le switcher mobile) */
+#programme .day.card:not(.active) {
+  display: none;
+}
+
+#programme .day.card.active {
+  display: grid;
+}
+
 @media (max-width: 768px) {
-  /* Sur mobile, masquer les jours non actifs et n'afficher que le jour sélectionné */
-  .program .day.card:not(.active) {
-    display: none;
-  }
-  
-  .program .day.card.active {
-    display: grid;
-    opacity: 1;
+  #programme .day.card.active {
     transform: scale(1);
   }
 }
