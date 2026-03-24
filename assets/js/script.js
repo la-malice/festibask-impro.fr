@@ -2548,9 +2548,12 @@
     }
 
     if (track) {
-      const temoignagesUrl = new URL('assets/data/temoignages.json', document.documentElement.baseURI || window.location.href).href;
-      // no-cache : évite un JSON vide (ou ancien) servi depuis le cache HTTP sur mobile / CDN
-      fetch(temoignagesUrl, { cache: 'no-cache' })
+      // Incrémenter après changement des données pour forcer une nouvelle URL (cache navigateur / CDN).
+      const TEMOIGNAGES_JSON_QUERY_BUST = '2';
+      const temoignagesUrl = new URL('assets/data/temoignages.json', document.documentElement.baseURI || window.location.href);
+      temoignagesUrl.searchParams.set('v', TEMOIGNAGES_JSON_QUERY_BUST);
+      // no-cache : revalidation ; le ?v= évite une réponse servie depuis une entrée cache trop longue
+      fetch(temoignagesUrl.href, { cache: 'no-cache' })
         .then(res => res.ok ? res.json() : [])
         .then(data => {
           const list = Array.isArray(data) ? data : [];
