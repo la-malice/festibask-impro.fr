@@ -35,6 +35,7 @@ module.exports = {
       'match-slider-dot',
       'spectacle-single-slide',
       'match-slide-bg-right',
+      'match-slide-format-long-intro',
       'match-slide-bio-short',
       'match-slide-bio-full',
       'tooltip-overlay',

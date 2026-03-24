@@ -3044,13 +3044,19 @@ nav.primary a:hover {
   display: none;
 }
 
-/* Slide avec image en background calée à droite (Équipe de France + single-slide spectacle) */
-.match-slide-bg-right,
-.spectacle-single-slide .match-slide {
+/* Slide avec image en background calée à droite (Équipe de France, intros match) */
+.match-slide-bg-right {
   background-position: right center;
   background-size: contain;
   background-repeat: no-repeat;
   background-color: #000;
+}
+
+/* Résumé format long (Braquage, Promo 2006…) : une slide, fond noir uniquement — pas d’image */
+.spectacle-single-slide .match-slide {
+  background-color: #000;
+  background-image: none;
+  background-repeat: no-repeat;
 }
 
 /* Calque portrait des slides joueurs : insets pour ne pas chevaucher flèches et croix */
@@ -3127,13 +3133,61 @@ nav.primary a:hover {
   z-index: 2;
 }
 
-/* Résumé spectacle (texte long) : bandeau lisible uniquement pour ce cas */
+/* Résumé format long (slide unique) : texte sur fond noir, zone pleine hauteur, pas de bandeau gris */
 .spectacle-single-slide .match-slide-overlay {
-  background: rgba(0, 0, 0, 0.72);
+  background: transparent;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(24px, 4vh, 40px) 60px;
+  overflow: hidden;
+}
+
+/* Intro format long (slider avec cast, ex. Commis d’Office) : même rendu que la slide unique */
+.match-slide-format-long-intro.match-slide-bg-right {
+  background-image: none !important;
+}
+
+.match-slide-format-long-intro .match-slide-overlay {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 52px 48px 80px;
+  box-sizing: border-box;
+  /* Espace sous les points de navigation ; défilement sans barre visible si besoin */
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  background: transparent;
+}
+
+.match-slide-format-long-intro .match-slide-overlay::-webkit-scrollbar {
+  display: none;
+}
+
+.match-slide-format-long-intro .match-slide-name {
+  margin-bottom: 10px;
+  flex-shrink: 0;
+}
+
+.match-slide-format-long-intro .match-slide-bio {
+  line-height: 1.42;
+  padding: 8px 12px;
+  font-size: clamp(0.82rem, 1.65vw, 0.95rem);
+  flex-shrink: 0;
 }
 
 /* Portraits calés à droite : le texte ne déborde pas sur le visage (noms longs, ex. Virginie Van De Moortele) */
-.match-slide-bg-right .match-slide-overlay {
+.match-slide-bg-right:not(.match-slide-format-long-intro) .match-slide-overlay {
   left: 0;
   right: 42%;
   width: auto;
@@ -3151,7 +3205,7 @@ nav.primary a:hover {
   line-height: 1.2;
 }
 
-.match-slide-bg-right .match-slide-name {
+.match-slide-bg-right:not(.match-slide-format-long-intro) .match-slide-name {
   font-size: clamp(1.05rem, 2.2vw, 1.75rem);
   line-height: 1.18;
   overflow-wrap: break-word;
@@ -3338,8 +3392,7 @@ nav.primary a:hover {
 /* Responsive pour mobile */
 @media (max-width: 768px) {
   /* Caler l'image vers le haut pour éviter la bande bleue (navy) en haut */
-  .match-slide-bg-right,
-  .spectacle-single-slide .match-slide {
+  .match-slide-bg-right {
     background-position: right top;
   }
 
@@ -3356,9 +3409,15 @@ nav.primary a:hover {
     padding: 20px 48px;
   }
 
-  .match-slide-bg-right .match-slide-overlay {
+  .match-slide-bg-right:not(.match-slide-format-long-intro) .match-slide-overlay {
     right: 36%;
     padding: 20px 12px 20px 48px;
+  }
+
+  .match-slide-format-long-intro .match-slide-overlay {
+    left: 0;
+    right: 0;
+    padding: 48px 40px 76px;
   }
 
   .match-slide-name {
@@ -3366,7 +3425,7 @@ nav.primary a:hover {
     margin-bottom: 6px;
   }
 
-  .match-slide-bg-right .match-slide-name {
+  .match-slide-bg-right:not(.match-slide-format-long-intro) .match-slide-name {
     font-size: clamp(1rem, 3.6vw, 1.5rem);
   }
 

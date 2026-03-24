@@ -1320,7 +1320,7 @@
       label: 'Impro longue',
       title: 'Commis d\'Office',
       image: 'assets/img/long/commis-d-office-640w.avif',
-      pitch: 'L\'un·e est accusé·e, l\'autre est avocat·e<br>L\'un·e est coupable, l\'autre devra trouver des circonstances atténuantes.<br>Venez découvrir son histoire, son passé son crime et les raisons qui l\'ont poussées à commettre l\'irréparable'
+      pitch: 'L\'un·e est accusé·e, l\'autre est avocat·e<br>L\'un·e est coupable, l\'autre devra trouver des circonstances atténuantes.<br>Venez découvrir son histoire, son crime et les raisons de l\'irréparable.'
     },
     'spectacle-samedi-match': {
       type: 'match',
@@ -1437,10 +1437,18 @@
         const introPitch = intro.pitch ?? '';
         const teamPlayers = team.players || [];
         
-        // Slide d'intro de l'équipe
+        // Slide d'intro de l'équipe (formats longs : fond noir sans image, comme les portraits)
         const introSlide = document.createElement('div');
-        introSlide.className = 'match-slide match-slide-bg-right';
-        introSlide.style.backgroundImage = `url("${originalImageSrc}")`;
+        const isFormatLongBanner = matchBlock.classList.contains('format-long-block');
+        introSlide.className = isFormatLongBanner
+          ? 'match-slide match-slide-bg-right match-slide-format-long-intro'
+          : 'match-slide match-slide-bg-right';
+        if (isFormatLongBanner) {
+          introSlide.style.backgroundColor = '#000';
+          introSlide.style.backgroundImage = 'none';
+        } else {
+          introSlide.style.backgroundImage = `url("${originalImageSrc}")`;
+        }
         
         const introOverlay = document.createElement('div');
         introOverlay.className = 'match-slide-overlay';
@@ -1593,12 +1601,9 @@
     sliderTrack.className = 'match-slider-track';
     const slide = document.createElement('div');
     slide.className = 'match-slide';
-    slide.style.backgroundImage = `url("${encodeURI(data.image)}")`;
+    slide.style.backgroundColor = '#000';
     const overlay = document.createElement('div');
     overlay.className = 'match-slide-overlay';
-    const meta = document.createElement('div');
-    meta.className = 'match-slide-role';
-    meta.textContent = data.time + ' — ' + data.label;
     const titleEl = document.createElement('div');
     titleEl.className = 'match-slide-name';
     titleEl.textContent = data.title;
@@ -1608,7 +1613,6 @@
     const pitchFull = document.createElement('div');
     pitchFull.className = 'match-slide-bio match-slide-bio-full';
     pitchFull.innerHTML = data.pitch;
-    overlay.appendChild(meta);
     overlay.appendChild(titleEl);
     overlay.appendChild(pitchShort);
     overlay.appendChild(pitchFull);
