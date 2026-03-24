@@ -24,7 +24,7 @@ See [Slices (detail)](#slices-detail) below for full behaviour.
 
 ## Tasks
 
-- [x] Témoignage Julie Ferrier actif (JSON + AVIF via `scripts/build-temoignages-avif.sh`) ; procédure [docs/temoignages-carousel.md](slices/temoignages-carousel.md) ; sauvegarde `docs/temoignages-sauvegarde.json`.
+- [x] Témoignage Julie Ferrier actif (JSON + AVIF via `npm run build:images` / `scripts/image-assets.json`) ; procédure [docs/temoignages-carousel.md](slices/temoignages-carousel.md) ; sauvegarde `docs/temoignages-sauvegarde.json`.
 - [ ] (Ongoing) Content and date updates as festival approaches (e.g. 2026-05-15 to 2026-05-17).
 - [ ] **Images PageSpeed + cache long** : déplacer les images optimisées vers `assets/img/long/` et mettre à jour les références (HTML, JS, doc Cloudflare). Détail : [docs/slices/images-pagespeed-long-cache.md](slices/images-pagespeed-long-cache.md).
 

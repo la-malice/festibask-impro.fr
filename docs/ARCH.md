@@ -88,10 +88,8 @@ Les navigateurs (notamment sur mobile) et le CDN peuvent conserver longtemps des
 | malix/assets/access-config.local.js | Override local dev non versionné, injecté dans dist au build si présent |
 | docs/temoignages-carousel.md | Documented schema for temoignages.json |
 | docs/portraits-carrousels.md | Portraits joueurs (EDF, Malice, Belgique, Suisse) : dimensions, long/, script AVIF |
-| scripts/build-player-portraits-avif.sh | Génère les AVIF 320w/442w/640w des portraits depuis les PNG sources → assets/img/long/ |
-| scripts/build-instructor-avif.sh | Génère les AVIF des intervenants stages (640/340/192/96w) → assets/img/long/ |
-| scripts/build-sponsor-logos-avif.sh | Génère les AVIF des logos partenaires (section Partenaires & sponsors) → assets/img/logos/ |
-| scripts/build-equipe-suisse-assets.sh | Bannière 16:9 match Suisse depuis `equipe-suisse.png` → AVIF dans assets/img/long/, JPEG de repli dans assets/img/ |
+| scripts/image-assets.json | Spec déclarative des dérivés images (portraits, intervenants, témoignages, équipe Suisse, logos partenaires) |
+| scripts/build-optimized-images.mjs | Lit la spec et appelle ImageMagick (`magick`) ; exécuté via `npm run build:images` au début de `npm run build` |
 | malix/ | Mini-jeu Malix (sources) ; copié ou généré dans dist/malix/ ; entrée malix/index.html ; isolation totale du site principal |
 | docs/SPEC-Malix.md | Spécification fonctionnelle normative du mini-jeu Malix |
 

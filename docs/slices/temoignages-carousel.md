@@ -12,6 +12,6 @@ Status: **Done**
 
 ## How to add a testimony
 
-To add a new testimony: edit `assets/data/temoignages.json`, add an object with at least `name`, `quote`, `image`, and `role` unless `omitHeader` is true; put the image in `assets/img/`. Optional: `signature`, `imageAvif128`, `imageAvif256` (AVIF via `scripts/build-temoignages-avif.sh` dans `assets/img/long/`).
+To add a new testimony: edit `assets/data/temoignages.json`, add an object with at least `name`, `quote`, `image`, and `role` unless `omitHeader` is true; put the image in `assets/img/`. Optional: `signature`, `imageAvif128`, `imageAvif256` (AVIF via `npm run build:images` / job `temoignages` dans `scripts/image-assets.json`, sortie dans `assets/img/long/`).
 
 **Full schema and step-by-step:** [docs/temoignages-carousel.md](../temoignages-carousel.md) (sections « Génération des AVIF » et « Comment ajouter un témoignage »). Backup sample: `docs/temoignages-sauvegarde.json`.

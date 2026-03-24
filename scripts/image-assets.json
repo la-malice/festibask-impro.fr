@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "defaults": {
+    "quality": 80
+  },
+  "jobs": [
+    {
+      "id": "instructors",
+      "mode": "fitSquare",
+      "quality": 80,
+      "widths": [640, 340, 192, 96],
+      "outputTemplate": "assets/img/long/{prefix}-{width}w.avif",
+      "entries": [
+        { "source": "assets/img/quentin.png", "prefix": "quentin-ostanel" },
+        { "source": "assets/img/laetitia.png", "prefix": "laetitia-landelle" },
+        { "source": "assets/img/jeremy.png", "prefix": "jeremy" },
+        { "source": "assets/img/loraine.png", "prefix": "lorraine" },
+        { "source": "assets/img/emilie.png", "prefix": "emilie-coeurdevache" },
+        { "source": "assets/img/anneke.png", "prefix": "anneke-bossis" }
+      ]
+    },
+    {
+      "id": "temoignages",
+      "mode": "fitSquare",
+      "quality": 80,
+      "widths": [128, 256],
+      "outputTemplate": "assets/img/long/{prefix}-{width}w.avif",
+      "entries": [
+        { "source": "assets/img/julie-ferrier.png", "prefix": "julie-ferrier" }
+      ]
+    },
+    {
+      "id": "player-portraits",
+      "mode": "fitBox",
+      "quality": 80,
+      "referenceSize": [640, 853],
+      "widths": [320, 442, 640],
+      "outputTemplate": "assets/img/long/{prefix}-{width}w.avif",
+      "entries": [
+        { "source": "assets/img/edf-aurelie-desert.png", "prefix": "edf-aurelie-desert" },
+        { "source": "assets/img/edf-cecile-giroud.png", "prefix": "edf-cecile-giroud" },
+        { "source": "assets/img/edf-felix-philippart.png", "prefix": "edf-felix-philippart" },
+        { "source": "assets/img/edf-igor-potoczny.png", "prefix": "edf-igor-potoczny" },
+        { "source": "assets/img/edf-olivier-descargues.png", "prefix": "edf-olivier-descargues" },
+        { "source": "assets/img/malice-anneke-bossis.png", "prefix": "malice-anneke-bossis" },
+        { "source": "assets/img/malice-aurelien-silvestre.png", "prefix": "malice-aurelien-silvestre" },
+        { "source": "assets/img/malice-bruno-cellan.png", "prefix": "malice-bruno-cellan" },
+        { "source": "assets/img/malice-camille-mortreux.png", "prefix": "malice-camille-mortreux" },
+        { "source": "assets/img/malice-celine-fabisch.png", "prefix": "malice-celine-fabisch" },
+        { "source": "assets/img/malice-emilie-coeurdevache.png", "prefix": "malice-emilie-coeurdevache" },
+        { "source": "assets/img/malice-eve-arlandis.png", "prefix": "malice-eve-arlandis" },
+        { "source": "assets/img/malice-helene-morreel.png", "prefix": "malice-helene-morreel" },
+        { "source": "assets/img/malice-marjory-pinto.png", "prefix": "malice-marjory-pinto" },
+        { "source": "assets/img/malice-nicolas-teboul.png", "prefix": "malice-nicolas-teboul" },
+        { "source": "assets/img/malice-olivier-lebailly.png", "prefix": "malice-olivier-lebailly" },
+        { "source": "assets/img/malice-patrice-lamarque.png", "prefix": "malice-patrice-lamarque" },
+        { "source": "assets/img/malice-pierrick-deredin.png", "prefix": "malice-pierrick-deredin" },
+        { "source": "assets/img/malice-sophie-le-bourhis.png", "prefix": "malice-sophie-le-bourhis" },
+        { "source": "assets/img/malice-stephanie-balligand.png", "prefix": "malice-stephanie-balligand" },
+        { "source": "assets/img/adrien.png", "prefix": "belg-adrien" },
+        { "source": "assets/img/francois.png", "prefix": "belg-francois" },
+        { "source": "assets/img/julie.png", "prefix": "belg-julie" },
+        { "source": "assets/img/marielle.png", "prefix": "belg-marielle" },
+        { "source": "assets/img/sophie.png", "prefix": "belg-sophie-normand" },
+        { "source": "assets/img/suisse-loic.png", "prefix": "suisse-loic" },
+        { "source": "assets/img/suisse-romain.png", "prefix": "suisse-romain" },
+        { "source": "assets/img/suisse-virginie.png", "prefix": "suisse-virginie" }
+      ]
+    },
+    {
+      "id": "equipe-suisse",
+      "mode": "coverBatch",
+      "source": "assets/img/equipe-suisse.png",
+      "outputs": [
+        {
+          "path": "assets/img/long/equipe-suisse-320w.avif",
+          "width": 320,
+          "height": 180,
+          "quality": 80,
+          "format": "avif"
+        },
+        {
+          "path": "assets/img/long/equipe-suisse-442w.avif",
+          "width": 442,
+          "height": 249,
+          "quality": 80,
+          "format": "avif"
+        },
+        {
+          "path": "assets/img/long/equipe-suisse-640w.avif",
+          "width": 640,
+          "height": 360,
+          "quality": 80,
+          "format": "avif"
+        },
+        {
+          "path": "assets/img/equipe-suisse-320w.jpg",
+          "width": 320,
+          "height": 180,
+          "quality": 85,
+          "format": "jpeg"
+        },
+        {
+          "path": "assets/img/equipe-suisse-640w.jpg",
+          "width": 640,
+          "height": 360,
+          "quality": 85,
+          "format": "jpeg"
+        },
+        {
+          "path": "assets/img/equipe-suisse.jpg",
+          "width": 640,
+          "height": 360,
+          "quality": 88,
+          "format": "jpeg"
+        }
+      ]
+    },
+    {
+      "id": "sponsor-logos",
+      "mode": "encodeOnly",
+      "quality": 80,
+      "entries": [
+        { "source": "assets/img/logos/logo-cornec.png", "out": "assets/img/logos/logo-cornec.avif" },
+        { "source": "assets/img/logos/rtl2-logo.png", "out": "assets/img/logos/rtl2-logo.avif" },
+        { "source": "assets/img/logos/logo-aperock.jpeg", "out": "assets/img/logos/logo-aperock.avif" },
+        {
+          "source": "assets/img/logos/Logo_de_la_ville_d'Anglet_2010.jpg",
+          "out": "assets/img/logos/logo-anglet.avif"
+        }
+      ]
+    }
+  ]
+}

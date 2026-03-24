@@ -27,6 +27,13 @@ jobs:
           cache: "npm"
       - name: Install dependencies
         run: npm ci
+      - name: Install ImageMagick (AVIF)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick
+          IM="$(command -v magick || command -v convert)"
+          "$IM" -list format | grep AVIF
+          "$IM" -list format | grep AVIF | grep -q rw+ || { echo 'Écriture AVIF non disponible'; exit 1; }
       - name: Build
         run: npm run build
       - name: Upload artifact

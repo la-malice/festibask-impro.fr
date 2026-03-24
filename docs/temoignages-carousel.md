@@ -93,20 +93,20 @@ Pour masquer le carrousel (par ex. en attendant une validation), laisser un tabl
 
 ## Génération des AVIF
 
-Script : **`scripts/build-temoignages-avif.sh`**.
+Spec : **`scripts/image-assets.json`**, job **`temoignages`** ; exécution : **`npm run build:images`** ou **`npm run build`**.
 
-- **Entrée** : image carrée (PNG ou JPEG) dans `assets/img/` ; ajouter une ligne `fichier.png:prefix-sortie` dans la variable `MAP` du script.
+- **Entrée** : image carrée (PNG ou JPEG) dans `assets/img/` ; ajouter un objet `{ "source", "prefix" }` dans le job `temoignages`.
 - **Sortie** : AVIF **128×128** et **256×256** (`<prefix>-128w.avif`, `<prefix>-256w.avif`) dans **`assets/img/long/`**.
 - **Prérequis** : ImageMagick 7 avec support AVIF (libheif). Ex. macOS : `brew install imagemagick libheif`.
 
-Ne pas utiliser le script des portraits joueurs (`build-player-portraits-avif.sh`) : il produit des ratios 3:4 (320/442/640), pas les carrés attendus par le carrousel.
+Ne pas utiliser le job **`player-portraits`** (même spec) pour les témoignages : il produit des ratios 3:4 (320/442/640), pas les carrés attendus par le carrousel.
 
 ## Comment ajouter un témoignage
 
 1. Éditer **`assets/data/temoignages.json`** (fichier **source**, à la racine du dépôt).
 2. Ajouter un objet au tableau avec au minimum : `name`, `quote`, `image`, et `role` **sauf** si `omitHeader` est `true` (dans ce cas l’attribution complète peut aller dans `signature` uniquement).
 3. Placer l'image source dans `assets/img/` (ex. `julie-ferrier.png`).
-4. Optionnel : exécuter `./scripts/build-temoignages-avif.sh` puis renseigner `imageAvif128` et `imageAvif256` vers les fichiers dans `assets/img/long/`.
+4. Optionnel : exécuter `npm run build:images` puis renseigner `imageAvif128` et `imageAvif256` vers les fichiers dans `assets/img/long/`.
 5. Rebuild / déploiement : le build copie `assets/` dans `dist/`, donc le JSON et les images sont inclus.
 
 **Test en local :** il faut **toujours** passer par un serveur HTTP. Ouvrir `index.html` ou `dist/index.html` en `file://` provoque une erreur CORS : le navigateur bloque les `fetch()` vers des URLs `file://` (origine `null`).

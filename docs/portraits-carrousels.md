@@ -19,13 +19,13 @@ Le rendu utilise `<picture>` + `<source type="image/avif" srcset="...">` avec le
 
 ## Génération des AVIF
 
-Script : **`scripts/build-player-portraits-avif.sh`**.
+Spec : **`scripts/image-assets.json`**, job **`player-portraits`** ; exécution : **`npm run build:images`** ou **`npm run build`**.
 
-- **Entrée** : PNG sources 640×853 dans `assets/img/` (noms listés dans la variable `MAP` du script).
+- **Entrée** : PNG sources 640×853 dans `assets/img/` (liste dans le job `entries`).
 - **Sortie** : AVIF 320w, 442w, 640w dans `assets/img/long/`.
 - **Prérequis** : ImageMagick 7 avec support AVIF (libheif). Ex. macOS : `brew install imagemagick libheif`.
 
-Pour ajouter une équipe ou un joueur : ajouter une ligne `fichier.png:préfixe-sortie` dans `MAP`, placer le PNG dans `assets/img/`, lancer le script, puis mettre à jour dans `script.js` le champ `image` du joueur vers `assets/img/long/<préfixe>-640w.avif`.
+Pour ajouter une équipe ou un joueur : ajouter un objet `{ "source", "prefix" }` dans le job `player-portraits`, placer le PNG dans `assets/img/`, lancer le build, puis mettre à jour dans `script.js` le champ `image` du joueur vers `assets/img/long/<préfixe>-640w.avif`.
 
 ## Fichiers concernés
 
@@ -36,4 +36,4 @@ Pour ajouter une équipe ou un joueur : ajouter une ligne `fichier.png:préfixe-
 | Belgique            | belg-adrien, belg-francois, belg-sophie-normand, … | adrien.png → belg-adrien, …    |
 | Suisse              | suisse-loic, suisse-romain, suisse-virginie | suisse-*.png                   |
 
-Voir la variable `MAP` dans `scripts/build-player-portraits-avif.sh` pour la liste à jour.
+Voir le job `player-portraits` dans `scripts/image-assets.json` pour la liste à jour.

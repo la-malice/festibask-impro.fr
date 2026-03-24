@@ -4,6 +4,7 @@
 
 - Node 18+ (CI uses Node 20)
 - npm (or pnpm; CI uses npm)
+- **ImageMagick 7** avec écriture **AVIF** (délégué libheif) pour `npm run build` : ex. macOS `brew install imagemagick libheif`. La CI installe `imagemagick` via apt. Pour ignorer la génération d’images (déconseillé) : `SKIP_IMAGE_BUILD=1 npm run build`.
 
 ## Setup
 
@@ -19,7 +20,8 @@ npm install
 |---------|---------|
 | `npm run dev` | Vite dev server at http://localhost:8000 (open in browser). Hot reload for HTML, CSS, JS, and data (e.g. temoignages.json). |
 | `./scripts/start-dev.sh` | Same as above but with `--host`: server listens on all interfaces so the site is reachable from the LAN (e.g. mobile at http://&lt;machine-ip&gt;:8000). |
-| `npm run build` | Copy site to `dist/`, then PurgeCSS + PostCSS (cssnano) on CSS, Terser on JS. Output in `dist/`. |
+| `npm run build:images` | Régénère les AVIF / JPEG dérivés (ImageMagick) selon `scripts/image-assets.json` → `assets/`. |
+| `npm run build` | `build:images`, puis copie vers `dist/`, PurgeCSS + PostCSS (cssnano) sur le CSS, Terser sur le JS. Sortie dans `dist/`. |
 | `npm run start` / `npm run serve` | Node HTTP server (server.js) for local testing if needed; avoid `file://` (CORS blocks JSON). |
 
 No `preview` script in package.json; after `npm run build`, serve `dist/` with any static server to preview production build.
@@ -44,9 +46,7 @@ Le script de build injecte automatiquement `malix/assets/access-config.local.js`
 - Sources (index.html, assets/css, assets/js) stay in repo; only `dist/` is build output. Do not commit minified sources; build runs in CI on push to `main`.
 - **Témoignages:** Edit `assets/data/temoignages.json`; schema and examples in `docs/temoignages-carousel.md`. Empty array hides the carousel.
 - **Vidéo hero programmée:** Edit `assets/data/hero-video-schedule.json`; schema and test params in `docs/slices/hero-video-schedule.md`.
-- **Logos partenaires (AVIF):** Les logos de la section Partenaires & sponsors sont servis en AVIF. Après ajout ou modification d’un logo (PNG/JPG/JPEG dans `assets/img/logos/`), exécuter `./scripts/build-sponsor-logos-avif.sh` pour régénérer les .avif ; prérequis : ImageMagick 7 avec libheif (`brew install imagemagick libheif`). Atlantic Change est déjà fourni en .avif ; le script convertit Cornec, Anglet, RTL2, Aperock.
-- **Bannière match La Malice vs Suisse :** Source `assets/img/equipe-suisse.png` (paysage 16:9 idéal). Après modification, exécuter `./scripts/build-equipe-suisse-assets.sh` pour produire les AVIF (`assets/img/long/equipe-suisse-{320,442,640}w.avif`) et les JPEG de repli ; puis `npm run build`.
-- **Photos témoignages (AVIF) :** Source carrée dans `assets/img/` (ex. `julie-ferrier.png`). Après ajout ou modification, exécuter `./scripts/build-temoignages-avif.sh` pour produire les variantes `128w` et `256w` dans `assets/img/long/` ; mettre à jour `assets/data/temoignages.json` (`image`, `imageAvif128`, `imageAvif256`). Prérequis : ImageMagick 7 avec libheif (`brew install imagemagick libheif`). Voir `docs/temoignages-carousel.md`.
+- **Images optimisées (AVIF / responsive) :** La spec est dans **`scripts/image-assets.json`** ; l’exécuteur est **`scripts/build-optimized-images.mjs`**, invoqué au début de **`npm run build`** (`npm run build:images`). Y ajouter une entrée (source, préfixe, job `temoignages`, `player-portraits`, `instructors`, `equipe-suisse`, `sponsor-logos`, etc.) après ajout d’une image source. Portraits joueurs (ratio 3:4) : job `player-portraits` ; témoignages (carrés 128/256) : job `temoignages` — ne pas confondre avec les portraits. Logos partenaires : job `sponsor-logos` (Atlantic Change reste fourni en .avif hors spec). Bannière Suisse : source `assets/img/equipe-suisse.png`, job `equipe-suisse` (AVIF dans `assets/img/long/`, JPEG de repli dans `assets/img/`). Pour les témoignages : après mise à jour du JSON, voir `docs/temoignages-carousel.md` (`image`, `imageAvif128`, `imageAvif256`).
 
 ## Tester les vidéos hero programmées
 
