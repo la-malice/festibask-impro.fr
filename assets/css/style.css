@@ -6800,6 +6800,13 @@ button.slot-spectacle:active {
   margin-top: 0;
 }
 
+/* Un seul témoignage : pas de flèches ni de points (rien à faire défiler) */
+#temoignages.testimonials-single .testimonials-prev,
+#temoignages.testimonials-single .testimonials-next,
+#temoignages.testimonials-single .testimonials-dots {
+  display: none;
+}
+
 #temoignages .testimonials-track {
   flex: 1;
   min-width: 0;
@@ -6813,48 +6820,76 @@ button.slot-spectacle:active {
   padding: 4px 0;
 }
 
+/* Cartes : même langage graphique que .card.pass-gagnant (section Tarifs) */
 #temoignages .testimonial-card {
   scroll-snap-align: start;
   flex: 0 0 100%;
   width: 100%;
   min-width: 0;
-  background: var(--white-overlay-medium);
-  border: 1px solid var(--blue-border-dark);
+  position: relative;
+  background: rgba(33, 37, 78, 0.4);
+  border: 2px solid rgba(1, 179, 228, 0.3);
   border-radius: 12px;
-  padding: 14px 16px;
-  backdrop-filter: blur(6px);
-  box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255, 255, 255, 0.5);
-  color: var(--text);
+  padding: 20px 22px;
+  backdrop-filter: blur(4px);
+  box-shadow: var(--shadow-md);
+  color: var(--white);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
 }
 
+#temoignages .testimonial-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(1, 179, 228, 0.45);
+  background: rgba(33, 37, 78, 0.52);
+}
+
+/* Grille : la colonne image prend la même hauteur que le texte (plus fiable que flex pour le remplissage) */
 #temoignages .testimonial-card-inner {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 14px;
+  display: grid;
+  grid-template-columns: minmax(96px, min(220px, 32vw)) 1fr;
+  gap: 18px;
+  align-items: stretch;
+  position: relative;
+  z-index: 1;
 }
 
 #temoignages .testimonial-card p,
 #temoignages .testimonial-card .small {
-  color: var(--text);
+  color: inherit;
 }
 
+/* Photo intégrée : pas de second cadre (fond / bordure), seulement un léger arrondi sur le recadrage */
 #temoignages .testimonial-photo {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
+  position: relative;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  border-radius: 10px;
   overflow: hidden;
   margin: 0;
-  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 #temoignages .testimonial-body {
-  flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
-#temoignages .testimonial-photo picture,
-#temoignages .testimonial-photo img {
+#temoignages .testimonial-photo picture {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: block;
+}
+
+#temoignages .testimonial-photo picture img,
+#temoignages .testimonial-photo > img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -6862,42 +6897,86 @@ button.slot-spectacle:active {
 }
 
 #temoignages .testimonial-name {
-  font-weight: 600;
-  font-size: 1.05rem;
-  margin: 0 0 2px;
-  color: inherit;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0 8px;
+  font-weight: 700;
+  font-size: clamp(1.05rem, 2.5vw, 1.2rem);
+  margin: 0 0 4px;
+  color: var(--white);
+}
+
+#temoignages .testimonial-name .testimonial-star-icon {
+  flex-shrink: 0;
+  margin-right: 0;
+}
+
+#temoignages .testimonial-name .testimonial-star-icon svg {
+  width: 32px;
+  height: 32px;
+  display: block;
 }
 
 #temoignages .testimonial-role {
-  font-size: 0.85rem;
-  color: var(--blue-accent);
-  margin: 0 0 6px;
-  opacity: 0.95;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin: 0 0 10px;
+  opacity: 1;
 }
 
+/* Citation : guillemets sur lignes dédiées (pas de superposition avec le corps) */
 #temoignages .testimonial-quote {
-  margin: 0 0 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 0 0 14px;
   padding: 0;
   border: none;
+}
+#temoignages .testimonial-quote::before {
+  content: '\201C';
+  display: block;
+  flex-shrink: 0;
+  align-self: flex-start;
+  font-size: clamp(2.25rem, 8vw, 3.75rem);
+  line-height: 1;
+  margin: 0 0 8px;
+  color: rgba(233, 88, 66, 0.38);
+  font-family: var(--font-heading);
+  font-weight: 800;
+  pointer-events: none;
+}
+#temoignages .testimonial-quote::after {
+  content: '\201D';
+  display: block;
+  flex-shrink: 0;
+  align-self: flex-end;
+  margin: 6px 0 0;
+  font-size: clamp(2rem, 7vw, 3.25rem);
+  line-height: 1;
+  color: rgba(233, 88, 66, 0.38);
+  font-family: var(--font-heading);
+  font-weight: 800;
+  pointer-events: none;
 }
 
 #temoignages .testimonial-quote p {
   margin: 0;
-  font-size: 0.9rem;
-  line-height: 1.45;
-  color: inherit;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  padding: 0;
+  font-size: clamp(1.05rem, 2.5vw, 1.2rem);
+  line-height: 1.58;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.94);
 }
 
 #temoignages .testimonial-signature {
-  font-size: 0.8rem;
+  font-size: clamp(0.9rem, 2vw, 1rem);
   font-style: italic;
   margin: 0;
-  opacity: 0.85;
+  color: rgba(255, 255, 255, 0.82);
+  opacity: 1;
 }
 
 #temoignages .testimonials-prev,
@@ -6906,17 +6985,17 @@ button.slot-spectacle:active {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  border: 2px solid var(--blue);
+  border: 2px solid var(--accent);
   background: transparent;
-  color: var(--blue);
+  color: var(--accent);
   font-size: 1.6rem;
   font-weight: bold;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s;
-  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
   backdrop-filter: blur(4px);
   padding: 0;
   margin: 0;
@@ -6924,10 +7003,11 @@ button.slot-spectacle:active {
 
 #temoignages .testimonials-prev:hover,
 #temoignages .testimonials-next:hover {
-  background: var(--blue);
-  color: var(--white);
-  transform: scale(1.05);
-  box-shadow: var(--shadow-lg);
+  background: rgba(233, 88, 66, 0.12);
+  border-color: var(--accent-dark);
+  color: var(--accent-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 #temoignages .testimonials-prev:disabled,
@@ -6948,15 +7028,17 @@ button.slot-spectacle:active {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: var(--blue-border-dark);
-  border: none;
+  background: rgba(255, 255, 255, 0.28);
+  border: 1px solid rgba(1, 179, 228, 0.35);
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s, border-color 0.3s, transform 0.2s;
   padding: 0;
 }
 
 #temoignages .testimonials-dot.active {
-  background: var(--blue);
+  background: var(--accent);
+  border-color: var(--accent-dark);
+  transform: scale(1.1);
 }
 
 @media (max-width: 768px) {
@@ -6965,6 +7047,47 @@ button.slot-spectacle:active {
     width: 40px;
     height: 40px;
     font-size: 1.3rem;
+  }
+
+  /* Empiler texte sous la photo : largeur utile pour le portrait, image entière visible (pas de crop) */
+  #temoignages .testimonial-card {
+    padding: 16px;
+  }
+
+  #temoignages .testimonial-card-inner {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  /* Même intégration qu’en desktop : pas de fond ni cadre interne ; image à toute la largeur utile */
+  #temoignages .testimonial-photo {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    display: block;
+    background: transparent;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  #temoignages .testimonial-photo picture {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    margin: 0;
+    display: block;
+  }
+
+  #temoignages .testimonial-photo picture img,
+  #temoignages .testimonial-photo > img {
+    position: static;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    display: block;
+    object-fit: contain;
   }
 }
 

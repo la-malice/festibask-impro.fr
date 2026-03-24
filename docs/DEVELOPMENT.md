@@ -46,6 +46,7 @@ Le script de build injecte automatiquement `malix/assets/access-config.local.js`
 - **Vidéo hero programmée:** Edit `assets/data/hero-video-schedule.json`; schema and test params in `docs/slices/hero-video-schedule.md`.
 - **Logos partenaires (AVIF):** Les logos de la section Partenaires & sponsors sont servis en AVIF. Après ajout ou modification d’un logo (PNG/JPG/JPEG dans `assets/img/logos/`), exécuter `./scripts/build-sponsor-logos-avif.sh` pour régénérer les .avif ; prérequis : ImageMagick 7 avec libheif (`brew install imagemagick libheif`). Atlantic Change est déjà fourni en .avif ; le script convertit Cornec, Anglet, RTL2, Aperock.
 - **Bannière match La Malice vs Suisse :** Source `assets/img/equipe-suisse.png` (paysage 16:9 idéal). Après modification, exécuter `./scripts/build-equipe-suisse-assets.sh` pour produire les AVIF (`assets/img/long/equipe-suisse-{320,442,640}w.avif`) et les JPEG de repli ; puis `npm run build`.
+- **Photos témoignages (AVIF) :** Source carrée dans `assets/img/` (ex. `julie-ferrier.png`). Après ajout ou modification, exécuter `./scripts/build-temoignages-avif.sh` pour produire les variantes `128w` et `256w` dans `assets/img/long/` ; mettre à jour `assets/data/temoignages.json` (`image`, `imageAvif128`, `imageAvif256`). Prérequis : ImageMagick 7 avec libheif (`brew install imagemagick libheif`). Voir `docs/temoignages-carousel.md`.
 
 ## Tester les vidéos hero programmées
 

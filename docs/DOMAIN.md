@@ -16,7 +16,7 @@ Vocabulary and concepts for the Festibask'Impro festival site: event, spectacles
 | **Équipe de France (EDF)** | French national improvisation team; opponent on Samedi. |
 | **Équipe Malice (samedi)** | La Malice team for Saturday match (vs France): MC, arbitres, coach, joueurs; appears in player slider after Équipe de France slides. |
 | **Commis d'Office (cast)** | Cast of the long-form spectacle Commis d'Office (Saturday): 6 members; appears in carousel on spectacle-samedi-format-long. |
-| **Témoignage** | Quote from a person (e.g. marraine); displayed in carousel; data from `temoignages.json` (name, role, quote, image, optional signature/AVIF). |
+| **Témoignage** | Quote from a person (e.g. marraine); carousel on home page after “À l’affiche”, before “Stages”; data from `temoignages.json` (name, role, quote, image, optional signature/AVIF). |
 | **Atelier / Stage** | Workshop (initiation, stage confirmé, famille); has title, time, description, instructor; some “COMPLET” (waitlist); registration via Sibforms. |
 | **Pass 1 jour / Pass 3 jours** | Day pass (2 spectacles + 1 drink); 3-day pass (all three evenings). |
 | **Programme** | Schedule by day (Vendredi, Samedi, Dimanche); each day has format long + match. |
@@ -38,14 +38,14 @@ Vocabulary and concepts for the Festibask'Impro festival site: event, spectacles
 - **Malice team member (samedi):** name, role (MC, Arbitre, Arbitre assistant, Coach, Joueur), image, bio. Hardcoded in `script.js` as `maliceSamediPlayers`; images AVIF responsive in `assets/img/long/` (malice-*-320w/442w/640w.avif). Voir docs/portraits-carrousels.md.
 - **Commis d'Office cast member:** name, image, bio. Hardcoded in `script.js` as `commisDOfficeCast`; réutilise les images malice-* dans `assets/img/long/`.
 - **EDF player:** name, role (optional, e.g. Coach, Capitaine), image, bio. Hardcoded in `script.js`; images AVIF responsive in `assets/img/long/` (edf-*-320w/442w/640w.avif). Belgique : `belgPlayers` (belg-* dans long/). Suisse : `suissePlayers` (suisse-* dans long/).
-- **Témoignage:** name, role, quote, image; optional signature, imageAvif128, imageAvif256. Stored in `temoignages.json` array; order by array index.
+- **Témoignage:** name, quote, image; role required unless `omitHeader` is true (then attribution may appear only in `signature`); optional signature, imageAvif128, imageAvif256. Stored in `temoignages.json` array; order by array index.
 - **Atelier:** id (e.g. atelier-vendredi-11h-initiation), title, time, description, instructor(s), flip-back content; optional “COMPLET” and waitlist. Registration/waitlist forms point to Sibforms.
 - **Tarif:** Pass 1 jour, Pass 3 jours, Stage; each has price, description, flip-back details; anchors #pass-1j, #pass-3j, #stage.
 - **Malix (jeu):** 27 types (fichiers 01.svg–27.svg dans assets/img/doodles/), 4 variantes de couleur ; entrée de collection = paire (type, variante). Collection complète = 108 entrées ; fin de jeu avec écran « Bravo » et animation. Spec : docs/SPEC-Malix.md.
 
 ## Domain Rules (Observed in Code)
 
-1. Testimonials: array in `temoignages.json`; each item must have name, role, quote, image for a card to be rendered; section hidden if list empty or fetch fails.
+1. Testimonials: array in `temoignages.json`; each item must have name, quote, image, and role unless `omitHeader` is set; section hidden if list empty or fetch fails. A single valid entry shows the card without carousel navigation (no arrows, no dots); two or more entries use arrows, dots, and horizontal scroll/swipe.
 2. Spectacles: three days; each day exactly one format long + one match. Match France (Samedi) has combined slider: Équipe de France (intro + players) then La Malice (intro + players: MC, arbitres, coach, joueurs); Commis d'Office (format long, Samedi) has cast carousel (intro + 6 members); match Belgique has Belgique player slider; match Suisse has Suisse player slider (intro + players); other spectacles (Braquage, Promo 2006) open a single-slide slider (image + details). No fullscreen modal for spectacles.
 3. Programme day tabs and “À l’affiche” day slider are synchronized (same day index).
 4. Images: under `assets/img/`; logos in `assets/img/logos/`; long-form show images in `assets/img/long/`.

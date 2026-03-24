@@ -2425,7 +2425,7 @@
         const source = document.createElement('source');
         source.type = 'image/avif';
         source.srcset = item.imageAvif128 + ' 128w, ' + item.imageAvif256 + ' 256w';
-        source.sizes = '64px';
+        source.sizes = '(max-width: 480px) 32vw, 220px';
         const img = document.createElement('img');
         img.src = item.image;
         img.alt = 'Photo de ' + (item.name || '');
@@ -2448,14 +2448,22 @@
 
       const body = document.createElement('div');
       body.className = 'testimonial-body';
-      const nameEl = document.createElement('p');
-      nameEl.className = 'testimonial-name';
-      nameEl.textContent = item.name || '';
-      body.appendChild(nameEl);
-      const roleEl = document.createElement('p');
-      roleEl.className = 'testimonial-role';
-      roleEl.textContent = item.role || '';
-      body.appendChild(roleEl);
+      if (!item.omitHeader) {
+        const nameEl = document.createElement('p');
+        nameEl.className = 'testimonial-name';
+        const starIcon = document.createElement('span');
+        starIcon.className = 'stage-star-icon testimonial-star-icon';
+        starIcon.setAttribute('aria-hidden', 'true');
+        starIcon.innerHTML =
+          '<svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>';
+        nameEl.appendChild(starIcon);
+        nameEl.appendChild(document.createTextNode(' ' + (item.name || '')));
+        body.appendChild(nameEl);
+        const roleEl = document.createElement('p');
+        roleEl.className = 'testimonial-role';
+        roleEl.textContent = item.role || '';
+        body.appendChild(roleEl);
+      }
       const quote = document.createElement('blockquote');
       quote.className = 'testimonial-quote';
       const quoteP = document.createElement('p');
@@ -2547,7 +2555,13 @@
           return;
         }
         list.forEach(item => {
-          if (item.name && item.role && item.quote && item.image) {
+          const valid =
+            item &&
+            item.quote &&
+            item.image &&
+            item.name &&
+            (item.omitHeader || item.role);
+          if (valid) {
             track.appendChild(buildTestimonialCard(item));
           }
         });
@@ -2556,15 +2570,19 @@
           testimonialsSection.style.display = 'none';
           return;
         }
-        for (let i = 0; i < count; i++) {
-          const dot = document.createElement('button');
-          dot.type = 'button';
-          dot.className = 'testimonials-dot' + (i === 0 ? ' active' : '');
-          dot.setAttribute('role', 'tab');
-          dot.setAttribute('aria-label', 'Témoignage ' + (i + 1));
-          dot.setAttribute('aria-selected', i === 0);
-          dot.setAttribute('data-index', String(i));
-          dotsContainer.appendChild(dot);
+        if (count === 1) {
+          testimonialsSection.classList.add('testimonials-single');
+        } else {
+          for (let i = 0; i < count; i++) {
+            const dot = document.createElement('button');
+            dot.type = 'button';
+            dot.className = 'testimonials-dot' + (i === 0 ? ' active' : '');
+            dot.setAttribute('role', 'tab');
+            dot.setAttribute('aria-label', 'Témoignage ' + (i + 1));
+            dot.setAttribute('aria-selected', i === 0);
+            dot.setAttribute('data-index', String(i));
+            dotsContainer.appendChild(dot);
+          }
         }
         testimonialsSection.classList.add('is-visible');
         initCarousel();
