@@ -2031,23 +2031,14 @@
     });
   });
 
-  // Images de fond pour bannières « compactes » (mobile + desktop #valeur en 2 colonnes)
+  // Images de fond pour bannières « compactes » (mobile + desktop #valeur en 2 colonnes) — match : style « verre » en CSS, pas d’inline
   function applySpectacleBannerBackgrounds() {
     document.querySelectorAll('#valeur .match-block').forEach(block => {
-      let src;
-      if (block.id === 'spectacle-samedi-match') {
-        src = 'assets/img/long/edf-colisee-mobile.avif';
-      } else {
-        const img = block.querySelector('.match-image');
-        src = img ? (img.currentSrc || img.getAttribute('src')) : null;
-      }
-      if (src) {
-        const encodedSrc = encodeURI(src);
-        block.style.backgroundImage = `url("${encodedSrc}")`;
-        block.style.backgroundSize = 'cover';
-        block.style.backgroundPosition = 'center';
-        block.style.backgroundRepeat = 'no-repeat';
-      }
+      block.style.removeProperty('background-image');
+      block.style.removeProperty('background-color');
+      block.style.removeProperty('background-size');
+      block.style.removeProperty('background-position');
+      block.style.removeProperty('background-repeat');
     });
     document.querySelectorAll('#valeur .format-long-block').forEach(block => {
       const img = block.querySelector('.format-long-image');

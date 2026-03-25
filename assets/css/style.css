@@ -2583,21 +2583,28 @@ nav.primary a:hover {
   margin-bottom: 8px;
 }
 
-/* Match block */
+/* Match block — vignettes : même « verre » bleu que #temoignages .testimonial-card (pas de photo d’équipe) */
 .match-block {
   position: relative;
   width: 100%;
   height: 320px;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid rgba(1, 179, 228, 0.3);
-  background-image: url('../img/long/image-fond-01_1920px.avif');
-  background-size: min(50%, 442px) 100%;
-  background-position: right center;
-  background-repeat: no-repeat;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+  border: 2px solid rgba(1, 179, 228, 0.3);
+  background: rgba(33, 37, 78, 0.4);
+  backdrop-filter: blur(4px);
+  background-image: none;
+}
+
+.match-block .match-image-wrapper {
+  display: none;
+}
+
+.match-block .match-photo-credit {
+  display: none;
 }
 
 .match-block::before {
@@ -2605,21 +2612,23 @@ nav.primary a:hover {
   position: absolute;
   top: 0;
   left: 0;
-  width: calc(100% - min(50%, 442px) + 2px);
+  right: 0;
+  width: 100%;
   bottom: 0;
-  background: rgba(33, 37, 78, 0.4);
-  backdrop-filter: blur(4px);
+  background: transparent;
   z-index: 0;
 }
 
 .match-block.flipped::before {
-  width: calc(100% - min(50%, 442px));
-  background: #000;
+  width: 100%;
+  background: transparent;
 }
 
 .match-block:hover {
   transform: scale(1.01);
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(1, 179, 228, 0.45);
+  background: rgba(33, 37, 78, 0.52);
 }
 
 /* Bouton Détails : en haut à droite des bannières, au-dessus des images (match + format long) */
@@ -2751,10 +2760,6 @@ nav.primary a:hover {
   backdrop-filter: blur(4px);
 }
 
-.match-block.flipped::before {
-  background: #000;
-}
-
 .match-gap-filler {
   display: none;
 }
@@ -2766,52 +2771,40 @@ nav.primary a:hover {
   left: calc(100% - min(50%, 442px));
   right: 0;
   bottom: 0;
-  background: #000;
+  background: rgba(33, 37, 78, 0.45);
   z-index: 0;
   pointer-events: none;
 }
 
-/* Match block — layout image à gauche, texte à droite (rompre la monotonie) */
-.match-block.image-left {
-  background-position: left center;
-}
-
-.match-block.image-left .match-image-wrapper {
-  left: 0;
-  right: auto;
-  max-width: min(50%, 442px); /* aligner sur la frontière zone bleue (éviter débordement ~80px) */
-}
-
+/* Match block — layout image-left (photo masquée via .match-image-wrapper { display: none }) */
 .match-block.image-left::before {
-  left: auto;
+  left: 0;
   right: 0;
-  width: calc(100% - min(50%, 442px) + 2px);
-  background: rgba(33, 37, 78, 0.4);
-  backdrop-filter: blur(4px);
+  width: 100%;
+  background: transparent;
 }
 
 .match-block.image-left .match-overlay {
-  left: min(50%, 442px);
+  left: 0;
   right: 0;
 }
 
 .match-block.image-left .match-teams-overlay {
   left: auto;
-  right: 96px; /* éviter le chevauchement avec le bouton Détails (right: 12px) */
-  top: 52px; /* descendre pour ne pas être à la même hauteur que le bouton */
-  justify-content: flex-end;
+  right: auto;
+  top: auto;
+  justify-content: center;
 }
 
 .match-block.image-left .match-pitch {
-  left: min(50%, 442px);
+  left: 0;
   right: 0;
 }
 
-/* Crédit photo sur l’image (à gauche) quand le bloc est en image-left (ex. bannière Équipe de France) */
-/* Zone texte match (image-left) : titre, meta, logos en colonne ; padding-bottom pour la ligne Détails (et crédit photo) */
+/* Zone texte match (image-left) : titre, meta, logos en colonne ; padding-bottom pour la ligne Détails */
 .match-block.image-left .match-zone-text {
   position: absolute;
-  left: min(50%, 442px);
+  left: 0;
   right: 0;
   top: 0;
   bottom: 0;
@@ -2842,11 +2835,6 @@ nav.primary a:hover {
   #spectacle-dimanche-match.match-block.image-left .match-zone-text .match-label {
     text-align: center;
   }
-}
-
-/* Belgique : ancrer l'image à droite pour rogner à gauche ; récupérer la marge droite (~20px) */
-#spectacle-vendredi-match.match-block.image-left .match-image {
-  object-position: 93% center;
 }
 
 .match-meta-row {
@@ -2888,15 +2876,14 @@ nav.primary a:hover {
 }
 
 .match-block.image-left.flipped .match-gap-filler {
-  left: 0;
-  right: calc(100% - min(50%, 442px));
+  display: none;
 }
 
 .match-block.image-left.flipped::before {
   left: 0;
-  right: auto;
-  width: min(50%, 442px);
-  background: #000;
+  right: 0;
+  width: 100%;
+  background: transparent;
 }
 
 .match-pitch h4,
@@ -2977,11 +2964,11 @@ nav.primary a:hover {
 }
 
 .match-team-logo img {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   object-fit: contain;
   background: rgba(0, 0, 0, 0.7);
-  padding: 8px;
+  padding: 10px;
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.9);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -3782,18 +3769,19 @@ nav.primary a:hover {
   }
   
   .match-block {
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background: rgba(33, 37, 78, 0.4);
+    backdrop-filter: none;
+    background-image: none;
   }
   
   .match-block::before {
     width: 100%;
-    background: rgba(33, 37, 78, 0.4);
+    background: transparent;
     backdrop-filter: none;
   }
   
   .match-block.image-left::before {
+    background: transparent;
     backdrop-filter: none;
   }
   
@@ -3813,8 +3801,8 @@ nav.primary a:hover {
   }
   
   .match-team-logo img {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
   }
   
@@ -3955,29 +3943,29 @@ nav.primary a:hover {
 
   #valeur .match-block::before {
     width: 100%;
-    background: rgba(33, 37, 78, 0.4);
+    background: transparent;
     backdrop-filter: none;
   }
 
   #valeur .match-block.image-left::before {
+    background: transparent;
     backdrop-filter: none;
   }
 
   #valeur .match-block.flipped::before {
-    width: calc(100% - min(50%, 442px));
-    background: #000;
+    width: 100%;
+    background: transparent;
   }
 
   #valeur .match-block.image-left.flipped::before {
     left: 0;
-    right: auto;
-    width: min(50%, 442px);
-    background: #000;
+    right: 0;
+    width: 100%;
+    background: transparent;
   }
 
   #valeur .match-block.image-left.flipped .match-gap-filler {
-    left: 0;
-    right: calc(100% - min(50%, 442px));
+    display: none;
   }
 
   #valeur .format-long-overlay {
@@ -3990,8 +3978,8 @@ nav.primary a:hover {
   }
 
   #valeur .match-team-logo img {
-    width: 72px;
-    height: 72px;
+    width: 90px;
+    height: 90px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
   }
 
