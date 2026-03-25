@@ -5888,6 +5888,7 @@ nav.primary a:hover {
   object-fit: cover;
   flex-shrink: 0;
   display: block;
+  background-color: var(--navy);
 }
 
 @media (min-width: 800px) {
