@@ -2470,26 +2470,32 @@ nav.primary a:hover {
   overflow: hidden;
 }
 
-/* Bouton Détails en bas à droite de la partie texte */
+/* Bouton Détails en bas à droite : même langage visuel que .match-slider-close (pastille lisible pour le texte) */
 .format-long-details-btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin-top: auto;
   align-self: flex-end;
-  background: rgba(255, 255, 255, 0.1);
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.7);
   color: var(--white);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  padding: 6px 12px;
-  border-radius: 8px;
+  border: none;
   font-size: 0.75rem;
   font-weight: 500;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.02em;
+  line-height: 1;
   white-space: nowrap;
-  transition: background 0.3s ease;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease, transform 0.2s ease;
   pointer-events: none;
 }
 
 .format-long-block:hover .format-long-details-btn {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.9);
+  transform: scale(1.06);
 }
 
 .format-long-block.flipped .format-long-details-btn,
@@ -2626,23 +2632,30 @@ nav.primary a:hover {
   position: absolute;
   bottom: 24px;
   right: 24px;
-  background: rgba(255, 255, 255, 0.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.7);
   color: var(--white);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  padding: 6px 12px;
-  border-radius: 8px;
+  border: none;
   font-size: 0.75rem;
   font-weight: 500;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.02em;
+  line-height: 1;
   white-space: nowrap;
   opacity: 1;
-  transition: background 0.3s ease;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease, transform 0.2s ease;
   pointer-events: none;
   z-index: 5;
 }
 
 .match-block:hover .match-details-btn {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.9);
+  transform: scale(1.06);
 }
 
 .match-image-wrapper {
@@ -3753,8 +3766,9 @@ nav.primary a:hover {
   
   .format-long-details-btn,
   .match-details-btn {
-    font-size: 0.7rem;
-    padding: 4px 10px;
+    min-height: 36px;
+    padding: 0 12px;
+    font-size: 0.65rem;
   }
   
   .format-long-block {
@@ -3930,8 +3944,9 @@ nav.primary a:hover {
 
   #valeur .format-long-details-btn,
   #valeur .match-details-btn {
-    font-size: 0.7rem;
-    padding: 4px 10px;
+    min-height: 36px;
+    padding: 0 12px;
+    font-size: 0.65rem;
   }
 
   #valeur .match-image-wrapper {

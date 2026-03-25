@@ -69,8 +69,8 @@
   const maliceVsBelgiquePlayers = [
     { name: 'Fermin Neme', role: 'MC', image: 'assets/img/long/malice-fermin-neme-640w.avif', bio: '' },
     { name: 'Nicolas Teboul', role: 'Arbitre', image: 'assets/img/long/malice-nicolas-teboul-640w.avif', bio: '' },
-    { name: 'Sandrine Voiement', role: 'Arbitre\nassistante 1', image: 'assets/img/long/malice-sandrine-voiement-640w.avif', bio: '' },
-    { name: 'Edouard Le Besnerais', role: 'Arbitre\nassistant 2', image: 'assets/img/long/malice-edouard-le-besnerais-640w.avif', bio: '' },
+    { name: 'Sandrine Voiement', role: 'Arbitre\nassistante', image: 'assets/img/long/malice-sandrine-voiement-640w.avif', bio: '' },
+    { name: 'Edouard Le Besnerais', role: 'Arbitre\nassistant', image: 'assets/img/long/malice-edouard-le-besnerais-640w.avif', bio: '' },
     { name: 'Anneke Bossis', role: 'Joueuse', image: 'assets/img/long/malice-anneke-bossis-640w.avif', bio: '' },
     { name: 'Rachid Falaki', role: 'Joueur', image: 'assets/img/long/malice-rachid-falaki-640w.avif', bio: '' },
     { name: 'Bruno Cellan', role: 'Joueur', image: 'assets/img/long/malice-bruno-cellan-640w.avif', bio: '' },
@@ -92,8 +92,8 @@
   const maliceVsSuissePlayers = [
     { name: 'Émilie Coeurdevache', role: 'MC', image: 'assets/img/long/malice-emilie-coeurdevache-640w.avif', bio: '' },
     { name: 'Bruno Cellan', role: 'Arbitre', image: 'assets/img/long/malice-bruno-cellan-640w.avif', bio: '' },
-    { name: 'Aurélien Silvestre', role: 'Arbitre\nassistant 1', image: 'assets/img/long/malice-aurelien-silvestre-640w.avif', bio: '' },
-    { name: 'Charlène Friconnet', role: 'Arbitre\nassistante 2', image: 'assets/img/long/malice-charlene-friconnet-640w.avif', bio: '' },
+    { name: 'Aurélien Silvestre', role: 'Arbitre\nassistant', image: 'assets/img/long/malice-aurelien-silvestre-640w.avif', bio: '' },
+    { name: 'Charlène Friconnet', role: 'Arbitre\nassistante', image: 'assets/img/long/malice-charlene-friconnet-640w.avif', bio: '' },
     { name: 'Ghislain Campistrau', role: 'Joueur', image: 'assets/img/long/malice-ghislain-campistrau-640w.avif', bio: '' },
     { name: 'Laura Soudre', role: 'Joueuse', image: 'assets/img/long/malice-laura-soudre-640w.avif', bio: '' },
     { name: 'Céline Fabisch', role: 'Joueuse', image: 'assets/img/long/malice-celine-fabisch-640w.avif', bio: '' },
@@ -1464,6 +1464,13 @@
     return match ? match[0].trim() : stripped;
   }
 
+  /** Masque le libellé générique Joueur / Joueuse ; les autres rôles (MC, Arbitre, etc.) restent affichés. */
+  function shouldShowSpectacleRoleLine(role) {
+    if (!role || typeof role !== 'string') return false;
+    const norm = role.replace(/\s+/g, ' ').trim();
+    return !/^Joueur$/i.test(norm) && !/^Joueuse$/i.test(norm);
+  }
+
   /** Règle générale : prénom (1re ligne) puis nom (2e ligne), au premier espace — tous les joueurs du slider + titre calque bio */
   function appendPlayerDisplayNameLines(container, fullName) {
     container.textContent = '';
@@ -1639,7 +1646,7 @@
             playerOverlay.appendChild(playerName);
           }
           
-          if (player.role) {
+          if (player.role && shouldShowSpectacleRoleLine(player.role)) {
             const playerRole = document.createElement('div');
             playerRole.className = 'match-slide-role';
             playerRole.textContent = player.role;
