@@ -55,6 +55,52 @@
     { name: 'Anneke Bossis', image: 'assets/img/long/malice-anneke-bossis-640w.avif', bio: '' }
   ];
 
+  // Braquage (vendredi, format long) — PNG / AVIF : voir scripts/image-assets.json (préfixes malice-*)
+  const maliceBraquagePlayers = [
+    { name: 'Camille Mortreux', role: 'Joueuse', image: 'assets/img/long/malice-camille-mortreux-640w.avif', bio: '' },
+    { name: 'Antoine Brousseau', role: 'Joueur', image: 'assets/img/long/malice-antoine-brousseau-640w.avif', bio: '' },
+    { name: 'Patrice Lamarque', role: 'Joueur', image: 'assets/img/long/malice-patrice-lamarque-640w.avif', bio: '' },
+    { name: 'William Drouet', role: 'Joueur', image: 'assets/img/long/malice-william-drouet-640w.avif', bio: '' },
+    { name: 'Véronique Duhart', role: 'Joueuse', image: 'assets/img/long/malice-veronique-duhart-640w.avif', bio: '' },
+    { name: 'Angélique Arambel', role: 'Joueuse', image: 'assets/img/long/malice-angelique-arambel-640w.avif', bio: '' }
+  ];
+
+  // La Malice — match vs Belgique (équipe locale, après la Belgique dans le slider)
+  const maliceVsBelgiquePlayers = [
+    { name: 'Fermin Neme', role: 'MC', image: 'assets/img/long/malice-fermin-neme-640w.avif', bio: '' },
+    { name: 'Nicolas Teboul', role: 'Arbitre', image: 'assets/img/long/malice-nicolas-teboul-640w.avif', bio: '' },
+    { name: 'Sandrine Voiement', role: 'Arbitre\nassistante 1', image: 'assets/img/long/malice-sandrine-voiement-640w.avif', bio: '' },
+    { name: 'Edouard Le Besnerais', role: 'Arbitre\nassistant 2', image: 'assets/img/long/malice-edouard-le-besnerais-640w.avif', bio: '' },
+    { name: 'Anneke Bossis', role: 'Joueuse', image: 'assets/img/long/malice-anneke-bossis-640w.avif', bio: '' },
+    { name: 'Rachid Falaki', role: 'Joueur', image: 'assets/img/long/malice-rachid-falaki-640w.avif', bio: '' },
+    { name: 'Bruno Cellan', role: 'Joueur', image: 'assets/img/long/malice-bruno-cellan-640w.avif', bio: '' },
+    { name: 'Eve Arlandis', role: 'Joueuse', image: 'assets/img/long/malice-eve-arlandis-640w.avif', bio: '' },
+    { name: 'Maxime Cieutat', role: 'Joueur', image: 'assets/img/long/malice-maxime-cieutat-640w.avif', bio: '' }
+  ];
+
+  // Promo 2006 (dimanche, format long)
+  const malicePromo2006Players = [
+    { name: 'Sophie Le Bourhis', role: 'Joueuse', image: 'assets/img/long/malice-sophie-le-bourhis-640w.avif', bio: '' },
+    { name: 'Hélène Morreel', role: 'Joueuse', image: 'assets/img/long/malice-helene-morreel-640w.avif', bio: '' },
+    { name: 'Pierrick Deredin', role: 'Joueur', image: 'assets/img/long/malice-pierrick-deredin-640w.avif', bio: '' },
+    { name: 'Nicolas Nasciet', role: 'Joueur', image: 'assets/img/long/malice-nicolas-nasciet-640w.avif', bio: '' },
+    { name: 'Nicolas Teboul', role: 'Joueur', image: 'assets/img/long/malice-nicolas-teboul-640w.avif', bio: '' },
+    { name: 'Viviane Herouard', role: 'Joueuse', image: 'assets/img/long/malice-viviane-herouard-640w.avif', bio: '' }
+  ];
+
+  // La Malice — match vs Suisse (équipe locale, après la Suisse dans le slider)
+  const maliceVsSuissePlayers = [
+    { name: 'Émilie Coeurdevache', role: 'MC', image: 'assets/img/long/malice-emilie-coeurdevache-640w.avif', bio: '' },
+    { name: 'Bruno Cellan', role: 'Arbitre', image: 'assets/img/long/malice-bruno-cellan-640w.avif', bio: '' },
+    { name: 'Aurélien Silvestre', role: 'Arbitre\nassistant 1', image: 'assets/img/long/malice-aurelien-silvestre-640w.avif', bio: '' },
+    { name: 'Charlène Friconnet', role: 'Arbitre\nassistante 2', image: 'assets/img/long/malice-charlene-friconnet-640w.avif', bio: '' },
+    { name: 'Ghislain Campistrau', role: 'Joueur', image: 'assets/img/long/malice-ghislain-campistrau-640w.avif', bio: '' },
+    { name: 'Laura Soudre', role: 'Joueuse', image: 'assets/img/long/malice-laura-soudre-640w.avif', bio: '' },
+    { name: 'Céline Fabisch', role: 'Joueuse', image: 'assets/img/long/malice-celine-fabisch-640w.avif', bio: '' },
+    { name: 'Edouard Le Besnerais', role: 'Joueur', image: 'assets/img/long/malice-edouard-le-besnerais-640w.avif', bio: '' },
+    { name: 'Fermin Neme', role: 'Joueur', image: 'assets/img/long/malice-fermin-neme-640w.avif', bio: '' }
+  ];
+
   // Données des joueurs de l'Équipe de Belgique — portraits AVIF responsive (long/)
   const belgPlayers = [
     { name: 'Adrien De Goes', image: 'assets/img/long/belg-adrien-640w.avif', bio: '42 ans, dont 20 à improviser. L\'un des jouteurs les plus complets de sa génération : il construit les histoires, sublime celles des autres, transforme chaque scène en terrain de jeu. Humour tenace, imagination débordante, charisme fou. Bête de scène et partenaire en or ; avec lui, l\'impro est un voyage dont on ne revient pas pareil.' },
@@ -1396,6 +1442,14 @@
           const originalImageSrc = getBlockImageSrc(block) || data.image;
           const intro = { title: 'Commis d\'Office', pitch: data.pitch || '' };
           initMatchSlider(block, [{ intro: intro, players: commisDOfficeCast }], originalImageSrc);
+        } else if (blockId === 'spectacle-vendredi-format-long' && maliceBraquagePlayers && maliceBraquagePlayers.length > 0) {
+          const originalImageSrc = getBlockImageSrc(block) || data.image;
+          const intro = { title: 'Braquage', pitch: data.pitch || '' };
+          initMatchSlider(block, [{ intro: intro, players: maliceBraquagePlayers }], originalImageSrc);
+        } else if (blockId === 'spectacle-dimanche-format-long' && malicePromo2006Players && malicePromo2006Players.length > 0) {
+          const originalImageSrc = getBlockImageSrc(block) || data.image;
+          const intro = { title: 'Promo 2006', pitch: data.pitch || '' };
+          initMatchSlider(block, [{ intro: intro, players: malicePromo2006Players }], originalImageSrc);
         } else {
           initSpectacleSingleSlide(block, data);
         }
@@ -1952,12 +2006,18 @@
           { omitIntro: true, players: edfPlayers },
           { omitIntro: true, players: maliceSamediPlayers }
         ], originalImageSrc);
-      } else if (isBelgiumMatch && belgPlayers && belgPlayers.length > 0) {
+      } else if (isBelgiumMatch && belgPlayers && belgPlayers.length > 0 && maliceVsBelgiquePlayers && maliceVsBelgiquePlayers.length > 0) {
         const originalImageSrc = getBlockImageSrc(block);
-        initMatchSlider(block, [{ omitIntro: true, players: belgPlayers }], originalImageSrc);
-      } else if (isSuisseMatch && suissePlayers && suissePlayers.length > 0) {
+        initMatchSlider(block, [
+          { omitIntro: true, players: belgPlayers },
+          { omitIntro: true, players: maliceVsBelgiquePlayers }
+        ], originalImageSrc);
+      } else if (isSuisseMatch && suissePlayers && suissePlayers.length > 0 && maliceVsSuissePlayers && maliceVsSuissePlayers.length > 0) {
         const originalImageSrc = getBlockImageSrc(block);
-        initMatchSlider(block, [{ omitIntro: true, players: suissePlayers }], originalImageSrc);
+        initMatchSlider(block, [
+          { omitIntro: true, players: suissePlayers },
+          { omitIntro: true, players: maliceVsSuissePlayers }
+        ], originalImageSrc);
       } else if (blockId && spectaclesData && spectaclesData[blockId]) {
         initSpectacleSingleSlide(block, spectaclesData[blockId]);
       }
