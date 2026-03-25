@@ -4368,11 +4368,12 @@ nav.primary a:hover {
   flex: 1;
   min-height: 0;
   cursor: pointer;
-  transition: transform 0.25s ease;
 }
 
+/* Aucun transform sur ce conteneur au hover : un transform ici aplatit le sous-arbre 3D et casse
+   backface-visibility du flip intervenant (face verso navy visible par-dessus le recto). */
 .atelier-card:hover .flip-container:not(.flipped) {
-  transform: translateY(-2px);
+  transform: none;
 }
 
 .atelier-card .flip-front {
@@ -4381,6 +4382,11 @@ nav.primary a:hover {
   flex-direction: column;
   box-sizing: border-box;
   position: relative;
+}
+
+/* Perspective sur le recto des cartes : flip Y fiable pour le bloc intervenant */
+#stages .atelier-card .flip-front {
+  perspective: 1000px;
 }
 
 /* Verso : overlay qui se déroule DEDANS la carte ; hauteur gérée en JS pour allonger le conteneur */
@@ -4700,48 +4706,109 @@ nav.primary a:hover {
   text-overflow: ellipsis;
 }
 
-/* Recto compact : photo intervenant à gauche du titre (sans description ni bloc nom/insta) */
-.stage-recto-title-row {
+/* Recto cartes stage : texte + badges à gauche, portrait animateur à droite (hauteur alignée sur le bloc) */
+#stages .stage-recto-body {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 14px;
   margin-bottom: 12px;
-}
-
-.stage-recto-title-row h3 {
-  margin: 0;
-  text-align: left;
-  flex: 1;
-  min-width: 0;
-}
-
-.stage-recto-title-row .instructor-flip-container {
-  margin-top: 0;
-  min-height: 0;
-  height: auto;
-  width: auto;
-  flex-shrink: 0;
-}
-
-.stage-recto-title-row .instructor-flip-front {
   position: relative;
   min-height: 0;
-  height: auto;
-  padding: 0;
-  width: auto;
 }
 
-.stage-recto-title-row .instructor-flip-front .instructor-name-block,
-.stage-recto-title-row .instructor-flip-front > .instructor-name-small {
+#stages .stage-recto-copy {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#stages .stage-recto-copy h3 {
+  margin: 0;
+  text-align: left;
+  width: 100%;
+}
+
+#stages .stage-recto-copy .meta-info {
+  padding-top: 8px;
+  margin-top: 0;
+  gap: 6px;
+}
+
+/* Badges légèrement plus discrets vs. le titre */
+#stages .atelier-card .meta-chip {
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  border-radius: 14px;
+}
+
+#stages .atelier-card .meta-info .stage-details-btn {
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  border-radius: 14px;
+}
+
+/* Colonne portrait à droite : image grande, coins arrondis, hauteur = bloc titre + badges */
+#stages .atelier-card .flip-front .stage-recto-portrait.instructor-flip-container {
+  margin-top: 0;
+  margin-bottom: 0;
+  min-height: 0;
+  height: auto;
+  width: 118px;
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+/* Les deux faces en absolute + même boîte : indispensable pour que backface-visibility masque le verso */
+#stages .atelier-card .flip-front .stage-recto-portrait .instructor-flip-front {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 128px;
+  display: block;
+  padding: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+#stages .atelier-card .flip-front .stage-recto-portrait .instructor-flip-back {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+#stages .atelier-card .flip-front .stage-recto-portrait .instructor-flip-front .instructor-avatar-small {
+  width: 100%;
+  height: 100%;
+  min-height: 128px;
+  border-radius: 12px;
+  object-fit: cover;
+  display: block;
+  border: 2px solid var(--blue-border);
+}
+
+#stages .stage-recto-portrait .instructor-flip-front .instructor-name-block,
+#stages .stage-recto-portrait .instructor-flip-front > .instructor-name-small {
   display: none;
 }
 
-.stage-recto-title-row .instructor-avatar-small {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  object-fit: cover;
-  display: block;
+@media (max-width: 380px) {
+  #stages .atelier-card .flip-front .stage-recto-portrait.instructor-flip-container {
+    width: 96px;
+  }
 }
 
 /* Aperçu intervenant sur le recto (layout ancien, conservé pour cohérence) */
@@ -4864,53 +4931,46 @@ nav.primary a:hover {
   position: absolute;
 }
 
-/* Recto compact : surcharge pour ne pas réserver 116px quand photo à côté du titre */
-.atelier-card .flip-front .stage-recto-title-row .instructor-flip-container {
+/* Recto stage : pas de réserve 116px pour la colonne portrait */
+.atelier-card .flip-front .stage-recto-body .stage-recto-portrait.instructor-flip-container {
   margin-top: 0;
   min-height: 0;
   height: auto;
 }
 
-/* Mini-bio ouvert : overlay au-dessus du titre (ne pousse plus le contenu) */
-.atelier-card .flip-front .stage-recto-title-row .instructor-flip-container.flipped {
+/* Mini-bio ouvert : overlay sur toute la zone titre + badges + portrait */
+.atelier-card .flip-front .stage-recto-body .stage-recto-portrait.instructor-flip-container.flipped {
   position: absolute;
   left: 0;
   right: 0;
   top: 0;
+  bottom: 0;
+  width: 100% !important;
   z-index: 20;
   max-width: 100%;
   min-width: 0;
+  /* Plus haut que le flip recto général (280px) pour une bio lisible en pleine largeur */
+  max-height: min(78vh, 480px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
 }
 
-.atelier-card .flip-front .stage-recto-title-row .instructor-flip-container.flipped .instructor-flip-back {
+.atelier-card .flip-front .stage-recto-body .stage-recto-portrait.instructor-flip-container.flipped .instructor-flip-back {
   min-width: 0;
   overflow-x: hidden;
   overflow-y: auto;
   box-sizing: border-box;
 }
 
-.atelier-card .flip-front .stage-recto-title-row .instructor-flip-container.flipped .instructor-flip-back-header {
+.atelier-card .flip-front .stage-recto-body .stage-recto-portrait.instructor-flip-container.flipped .instructor-flip-back-header {
   flex-wrap: wrap;
   min-width: 0;
 }
 
-.atelier-card .flip-front .stage-recto-title-row .instructor-flip-container.flipped .instructor-flip-back .instructor-bio {
+.atelier-card .flip-front .stage-recto-body .stage-recto-portrait.instructor-flip-container.flipped .instructor-flip-back .instructor-bio {
   min-width: 0;
   word-wrap: break-word;
   overflow-wrap: break-word;
-}
-
-.atelier-card .flip-front .stage-recto-title-row .instructor-flip-front {
-  position: relative;
-  min-height: 0;
-  width: auto;
-}
-
-.atelier-card .flip-front .stage-recto-title-row .instructor-flip-front .instructor-avatar-small {
-  width: 48px;
-  height: 48px;
 }
 
 .atelier-card .flip-front .instructor-flip-back .instructor-bio {
@@ -5498,41 +5558,35 @@ nav.primary a:hover {
   background: var(--orange-bg);
 }
 
-/* 2 salles côte à côte : layout grille (heure alignée, titre sur 1fr), avatar réduit */
+/* 2 salles côte à côte : même hauteur de ligne que format long / match ; portrait pleine hauteur à droite */
 #programme .slot-atelier:has(.salles-container .salle-box:nth-child(2)) {
-  min-height: 100px;
-  height: auto;
+  min-height: 170px;
+  height: 170px;
 }
-#programme .slot-atelier .salles-container:has(.salle-box:nth-child(2)) {
-  align-items: start;
+#programme .slot-atelier:has(.salles-container .salle-box:nth-child(2)) .salles-container {
+  height: 100%;
+  min-height: 0;
+  align-items: stretch;
 }
-/* 2 salles : grille | 10:00 | IMAGE |
- *                    | SALLE X |           |
- *                    | TITRE (span 2 cols) | */
+/* Colonne texte (heure, salle, titre) | colonne portrait (hauteur = cellule) */
 #programme .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box {
   display: grid;
-  grid-template-columns: 3.5rem 1fr;
-  grid-template-rows: auto auto auto;
-  gap: 2px 8px;
+  grid-template-columns: minmax(0, 1fr) 100px;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  gap: 4px 12px;
   align-items: start;
-  padding: 0 0 10px 16px;
+  box-sizing: border-box;
+  padding: 12px 0 12px 16px;
+  margin: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
 }
 #programme .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box > .time {
   grid-column: 1;
   grid-row: 1;
   margin-left: 0;
   font-weight: 700;
-}
-#programme .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box > .atelier-name {
-  grid-column: 1 / -1;
-  grid-row: 3;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  line-clamp: 2;
 }
 #programme .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box > .salle-label {
   grid-column: 1;
@@ -5545,22 +5599,46 @@ nav.primary a:hover {
   margin: 0;
   line-height: 1.1;
 }
+#programme .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box > .atelier-name {
+  grid-column: 1;
+  grid-row: 3;
+  align-self: start;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  line-clamp: 3;
+}
 #programme .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box > .slot-avatar-block {
   grid-column: 2;
-  grid-row: 1;
-  justify-self: end;
-}
-#programme .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box .slot-avatar-block {
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
+  grid-row: 1 / -1;
+  align-self: stretch;
+  justify-self: stretch;
+  width: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  display: block;
+  position: relative;
+  overflow: hidden;
 }
 #programme .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box .instructor-avatar.slot-image,
 #programme .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box .slot-avatar-block picture img {
-  width: 72px;
-  height: 72px;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
   object-fit: cover;
-  border-radius: 0 8px 0 0;
+  object-position: center;
+  border-radius: 0 8px 8px 0;
+  display: block;
+}
+
+@media (min-width: 800px) {
+  #programme .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box {
+    grid-template-columns: minmax(0, 1fr) 120px;
+  }
 }
 
 /* Programme : images uniquement dans la colonne highlightée (active) */
@@ -6109,8 +6187,9 @@ button.slot-spectacle:active {
   margin-left: -6px;
 }
 
-.program-fullscreen .slot-atelier .salle-box .slot-avatar-block .instructor-avatar.slot-image,
-.program-fullscreen .slot-atelier .salle-box .slot-avatar-block picture img {
+/* Monosalle : image carrée ; 2 salles = bandeau pleine hauteur (règles + bas) */
+.program-fullscreen .slot-atelier .salles-container:not(:has(.salle-box:nth-child(2))) .salle-box .slot-avatar-block .instructor-avatar.slot-image,
+.program-fullscreen .slot-atelier .salles-container:not(:has(.salle-box:nth-child(2))) .salle-box .slot-avatar-block picture img {
   width: 140px;
   height: 140px;
   object-fit: cover;
@@ -6342,19 +6421,32 @@ button.slot-spectacle:active {
   min-width: 0;
 }
 
-/* Fullscreen 2 salles : même layout (time | IMAGE, SALLE X, titre span) */
-.program-fullscreen.program-fullscreen--single-day .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box {
-  display: grid;
-  grid-template-columns: 4.5rem 1fr;
-  grid-template-rows: auto auto auto;
-  gap: 2px 8px;
-  padding: 0 0 4px 10px;
+/* Plein écran, 2 salles : portrait pleine hauteur (même logique qu’en page) */
+.program-fullscreen .slot-atelier:has(.salles-container .salle-box:nth-child(2)) {
+  min-height: 140px;
+  height: 140px;
 }
-.program-fullscreen.program-fullscreen--single-day .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box > .time {
+.program-fullscreen .slot-atelier:has(.salles-container .salle-box:nth-child(2)) .salles-container {
+  height: 100%;
+  align-items: stretch;
+}
+.program-fullscreen .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 88px;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  gap: 2px 10px;
+  padding: 8px 0 8px 10px;
+  margin: 0;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.program-fullscreen .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box > .time {
   grid-column: 1;
   grid-row: 1;
 }
-.program-fullscreen.program-fullscreen--single-day .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box > .salle-label {
+.program-fullscreen .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box > .salle-label {
   grid-column: 1;
   grid-row: 2;
   font-size: clamp(0.65rem, 0.8vw, 0.7rem);
@@ -6363,24 +6455,31 @@ button.slot-spectacle:active {
   text-transform: uppercase;
   white-space: nowrap;
 }
-.program-fullscreen.program-fullscreen--single-day .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box > .atelier-name {
-  grid-column: 1 / -1;
+.program-fullscreen .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box > .atelier-name {
+  grid-column: 1;
   grid-row: 3;
   font-size: clamp(0.75rem, 0.9vw, 0.85rem);
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
-  line-clamp: 2;
+  line-clamp: 3;
 }
-.program-fullscreen.program-fullscreen--single-day .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box > .slot-avatar-block {
+.program-fullscreen .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box > .slot-avatar-block {
   grid-column: 2;
-  grid-row: 1;
-  justify-self: end;
+  grid-row: 1 / -1;
+  align-self: stretch;
+  justify-self: stretch;
+  width: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  display: block;
+  overflow: hidden;
 }
 
-.program-fullscreen.program-fullscreen--single-day .slot-atelier .salle-box .slot-avatar-block .salle-label {
+.program-fullscreen .slot-atelier .salle-box .slot-avatar-block .salle-label {
   font-weight: 800;
   color: var(--blue-accent);
   font-size: clamp(0.7rem, 0.85vw, 0.75rem);
@@ -6388,14 +6487,15 @@ button.slot-spectacle:active {
   white-space: nowrap;
 }
 
-.program-fullscreen.program-fullscreen--single-day .slot-atelier .salle-box .instructor-avatar.slot-image,
-.program-fullscreen.program-fullscreen--single-day .slot-atelier .salle-box .slot-avatar-block picture img {
-  width: 56px;
-  height: 56px;
+.program-fullscreen .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box .instructor-avatar.slot-image,
+.program-fullscreen .slot-atelier .salles-container:has(.salle-box:nth-child(2)) .salle-box .slot-avatar-block picture img {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
   object-fit: cover;
   object-position: center;
   background: var(--orange-bg);
-  border-radius: 0 6px 0 0;
+  border-radius: 0 6px 6px 0;
 }
 
 .program-fullscreen.program-fullscreen--single-day .slot-format-long,
@@ -6554,7 +6654,7 @@ button.slot-spectacle:active {
 
   .program-fullscreen .slot-format-long .slot-image,
   .program-fullscreen .slot-spectacle .slot-image,
-  .program-fullscreen .slot-atelier .salle-box .instructor-avatar.slot-image {
+  .program-fullscreen .slot-atelier .salles-container:not(:has(.salle-box:nth-child(2))) .salle-box .instructor-avatar.slot-image {
     width: 110px;
     height: 110px;
     object-fit: cover;
