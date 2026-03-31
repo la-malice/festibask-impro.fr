@@ -6996,6 +6996,16 @@ button.slot-spectacle:active {
   margin-bottom: 0.2em;
 }
 
+.price .value .value-subtext,
+.price-flip-front .value .value-subtext {
+  display: block;
+  margin-top: 0.2em;
+  font-size: 0.28em;
+  font-weight: 600;
+  line-height: 1.1;
+  color: inherit;
+}
+
 /* Cartes de tarifs (Pass 1 jour, Pass 3 jours) */
 .value-with-presale .value-normal {
   display: inline;
@@ -7315,6 +7325,51 @@ button.slot-spectacle:active {
   align-items: flex-start;
   flex-direction: column;
   gap: 6px;
+}
+
+@media (max-width: 719px) {
+  .pricing-reservations .price {
+    min-height: auto;
+    padding: 14px;
+  }
+
+  .pricing-reservations .price-flip-front {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "title value"
+      "body value"
+      "cta cta";
+    column-gap: 12px;
+    row-gap: 8px;
+    align-items: start;
+  }
+
+  .pricing-reservations .price-flip-front h3 {
+    grid-area: title;
+    font-size: clamp(2rem, 8vw, 2.4rem);
+    line-height: 1.05;
+    margin: 0;
+  }
+
+  .pricing-reservations .price-flip-front .value {
+    grid-area: value;
+    font-size: clamp(2.8rem, 11vw, 4rem);
+    line-height: 1;
+    text-align: right;
+    margin: 0;
+    align-self: start;
+  }
+
+  .pricing-reservations .price-front-footer {
+    grid-area: body;
+    margin-top: 2px;
+  }
+
+  .pricing-reservations .price-back-cta {
+    grid-area: cta;
+    margin-top: 8px;
+  }
 }
 
 .pricing-reservations .price .price-front-footer::after,
