@@ -6999,11 +6999,18 @@ button.slot-spectacle:active {
 .price .value .value-subtext,
 .price-flip-front .value .value-subtext {
   display: block;
-  margin-top: 0.2em;
-  font-size: 0.28em;
+  margin-top: 0.22em;
+  font-size: 0.24em;
   font-weight: 600;
   line-height: 1.1;
   color: inherit;
+}
+
+.pricing-reservations .price-flip-front .value .value-subtext {
+  display: block !important;
+  font-size: 0.24em !important;
+  line-height: 1.1 !important;
+  white-space: nowrap;
 }
 
 /* Cartes de tarifs (Pass 1 jour, Pass 3 jours) */
