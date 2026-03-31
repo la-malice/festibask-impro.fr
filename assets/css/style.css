@@ -6877,6 +6877,68 @@ button.slot-spectacle:active {
   }
 }
 
+.pricing-reservations {
+  grid-template-columns: 1fr;
+}
+
+.reservation-row-label {
+  display: none;
+}
+
+@media (min-width: 720px) {
+  .pricing-reservations {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .pricing-reservations {
+    grid-template-columns: 64px repeat(4, minmax(0, 1fr));
+    grid-template-areas:
+      "labelSpectacles passVendredi passSamedi passDimanche pass3jours"
+      "labelStages stageInitiations stageMasterclass stageFamille reservations";
+  }
+
+  .reservation-row-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 12px;
+    backdrop-filter: blur(4px);
+  }
+
+  .reservation-row-label span {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    color: var(--white);
+    font-family: "Hubot Sans", system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  }
+
+  .reservation-row-label-spectacles {
+    grid-area: labelSpectacles;
+  }
+
+  .reservation-row-label-stages {
+    grid-area: labelStages;
+  }
+
+  .pricing-reservations #pass-vendredi { grid-area: passVendredi; }
+  .pricing-reservations #pass-samedi { grid-area: passSamedi; }
+  .pricing-reservations #pass-dimanche { grid-area: passDimanche; }
+  .pricing-reservations #pass-3-jours { grid-area: pass3jours; }
+  .pricing-reservations #stage-initiation { grid-area: stageInitiations; }
+  .pricing-reservations #stage-masterclass { grid-area: stageMasterclass; }
+  .pricing-reservations #stage-famille { grid-area: stageFamille; }
+  .pricing-reservations #billetterie { grid-area: reservations; }
+}
+
 .price {
   background: var(--white-overlay-light);
   border: 1px solid var(--blue-border-medium);
@@ -6889,17 +6951,24 @@ button.slot-spectacle:active {
 }
 
 /* Identité visuelle par type de pass (charte : cyan Pass 1j, rose Pass 3j, orange Stage) — fond teinté + bordure */
-.price#pass-1j {
+.price#pass-1j,
+.price#pass-vendredi,
+.price#pass-samedi,
+.price#pass-dimanche {
   background: rgba(232, 247, 252, 0.95);
   border: 2px solid rgba(1, 179, 228, 0.45);
 }
 
-.price#pass-3j {
+.price#pass-3j,
+.price#pass-3-jours {
   background: rgba(255, 243, 250, 0.95);
   border: 2px solid rgba(223, 18, 121, 0.4);
 }
 
-.price#stage {
+.price#stage,
+.price#stage-initiation,
+.price#stage-masterclass,
+.price#stage-famille {
   background: rgba(255, 250, 243, 0.95);
   border: 2px solid rgba(240, 133, 58, 0.45);
 }
@@ -6950,22 +7019,32 @@ button.slot-spectacle:active {
 
 /* Couleurs prix / accent par carte (cyan Pass 1j, rose Pass 3j, orange Stage) */
 .price#pass-1j .value,
+.price#pass-vendredi .value,
+.price#pass-samedi .value,
+.price#pass-dimanche .value,
 .price#pass-1j .value-with-presale .value-presale,
 .price#pass-1j .value-with-presale .value-presale-label {
   color: var(--blue);
 }
 
 .price#pass-3j .value,
+.price#pass-3-jours .value,
 .price#pass-3j .value-with-presale .value-presale,
 .price#pass-3j .value-with-presale .value-presale-label {
   color: var(--pink);
 }
 
-.price#stage .value {
+.price#stage .value,
+.price#stage-initiation .value,
+.price#stage-masterclass .value,
+.price#stage-famille .value {
   color: var(--orange);
 }
 
-.price#stage .price-front-footer .small {
+.price#stage .price-front-footer .small,
+.price#stage-initiation .price-front-footer .small,
+.price#stage-masterclass .price-front-footer .small,
+.price#stage-famille .price-front-footer .small {
   color: var(--orange);
 }
 
@@ -7157,7 +7236,23 @@ button.slot-spectacle:active {
   border-color: var(--blue);
 }
 
+.price#pass-vendredi .price-front-footer::after,
+.price#pass-samedi .price-front-footer::after,
+.price#pass-dimanche .price-front-footer::after {
+  color: var(--blue);
+  border-color: var(--blue);
+}
+
 .price#pass-1j:hover .price-front-footer::after {
+  background: rgba(1, 179, 228, 0.15);
+  border-color: var(--blue-dark);
+  color: var(--blue-dark);
+  transform: translateY(-2px);
+}
+
+.price#pass-vendredi:hover .price-front-footer::after,
+.price#pass-samedi:hover .price-front-footer::after,
+.price#pass-dimanche:hover .price-front-footer::after {
   background: rgba(1, 179, 228, 0.15);
   border-color: var(--blue-dark);
   color: var(--blue-dark);
@@ -7169,7 +7264,19 @@ button.slot-spectacle:active {
   border-color: var(--pink);
 }
 
+.price#pass-3-jours .price-front-footer::after {
+  color: var(--pink);
+  border-color: var(--pink);
+}
+
 .price#pass-3j:hover .price-front-footer::after {
+  background: rgba(223, 18, 121, 0.12);
+  border-color: #b80e64;
+  color: #b80e64;
+  transform: translateY(-2px);
+}
+
+.price#pass-3-jours:hover .price-front-footer::after {
   background: rgba(223, 18, 121, 0.12);
   border-color: #b80e64;
   color: #b80e64;
@@ -7181,11 +7288,99 @@ button.slot-spectacle:active {
   border-color: var(--orange);
 }
 
+.price#stage-initiation .price-front-footer::after,
+.price#stage-masterclass .price-front-footer::after,
+.price#stage-famille .price-front-footer::after {
+  color: var(--orange);
+  border-color: var(--orange);
+}
+
 .price#stage:hover .price-front-footer::after {
   background: rgba(240, 133, 58, 0.15);
   border-color: var(--orange-dark);
   color: var(--orange-dark);
   transform: translateY(-2px);
+}
+
+.price#stage-initiation:hover .price-front-footer::after,
+.price#stage-masterclass:hover .price-front-footer::after,
+.price#stage-famille:hover .price-front-footer::after {
+  background: rgba(240, 133, 58, 0.15);
+  border-color: var(--orange-dark);
+  color: var(--orange-dark);
+  transform: translateY(-2px);
+}
+
+.pricing-reservations .price-front-footer {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pricing-reservations .price .price-front-footer::after,
+.pricing-reservations .price-front-footer::after {
+  display: none !important;
+  content: none !important;
+  border: 0 !important;
+  padding: 0 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+.pricing-reservations .price-flip-container {
+  min-height: auto;
+  transform: none !important;
+  transition: none;
+  cursor: default;
+}
+
+.pricing-reservations .price-flip-front {
+  justify-content: flex-start;
+  position: relative;
+  height: 100%;
+}
+
+.pricing-reservations .price-flip-back {
+  display: none !important;
+}
+
+.pricing-reservations .price-front-footer a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+}
+
+.pricing-reservations .price-front-footer a:hover {
+  opacity: 0.85;
+}
+
+.pricing-reservations .price-back-cta {
+  margin-top: 12px;
+  width: 100%;
+}
+
+.pricing-reservations .price-back-cta .btn,
+.pricing-reservations .price-back-cta .btn:hover,
+.pricing-reservations .price-back-cta .btn:focus {
+  color: var(--white) !important;
+  text-decoration: none !important;
+}
+
+.pricing-reservations a.link-billetterie.btn,
+.pricing-reservations a.link-billetterie.btn:hover,
+.pricing-reservations a.link-billetterie.btn:focus,
+.pricing-reservations .price-flip-front a.btn.btn-primary,
+.pricing-reservations .price-flip-front a.btn.btn-primary:hover,
+.pricing-reservations .price-flip-front a.btn.btn-primary:focus {
+  color: var(--white) !important;
+  -webkit-text-fill-color: var(--white) !important;
+  opacity: 1 !important;
+}
+
+.pricing-reservations a.link-billetterie.btn:visited,
+.pricing-reservations .price-flip-front a.btn.btn-primary:visited {
+  color: var(--white) !important;
+  -webkit-text-fill-color: var(--white) !important;
 }
 
 .price-flip-container.flipped .price-front-footer::after {
@@ -7273,6 +7468,12 @@ button.slot-spectacle:active {
 .btn-billetterie:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(1, 179, 228, 0.45);
+}
+
+.pricing-reservations .btn-billetterie,
+.pricing-reservations .btn-billetterie:hover,
+.pricing-reservations .btn-billetterie:focus {
+  color: var(--white) !important;
 }
 
 .early-bird-notice {

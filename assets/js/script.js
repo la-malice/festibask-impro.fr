@@ -1103,12 +1103,151 @@
     });
   }
 
+  // Ancres "programme-*" depuis la section tarifs : sélectionner le bon jour du programme
+  function getProgramDayIndexFromHash(hash) {
+    if (hash === '#programme-vendredi') return 0;
+    if (hash === '#programme-samedi') return 1;
+    if (hash === '#programme-dimanche') return 2;
+    return null;
+  }
+
+  function activateProgramDayFromHash(hash) {
+    const dayIndex = getProgramDayIndexFromHash(hash);
+    if (dayIndex === null) return false;
+    setCurrentDay(dayIndex);
+    const programmeSection = document.getElementById('programme');
+    if (programmeSection) {
+      programmeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    return true;
+  }
+
+  ['#programme-vendredi', '#programme-samedi', '#programme-dimanche'].forEach((anchorHash) => {
+    document.querySelectorAll(`a[href="${anchorHash}"]`).forEach((a) => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (window.location.hash !== anchorHash) {
+          window.history.pushState(null, '', anchorHash);
+        }
+        activateProgramDayFromHash(anchorHash);
+      });
+    });
+  });
+
+  window.addEventListener('hashchange', () => {
+    activateProgramDayFromHash(window.location.hash);
+  });
+
+  // Gère aussi un éventuel chargement direct avec hash
+  activateProgramDayFromHash(window.location.hash);
+
+  // Fallback robuste : délégation globale pour les ancres programme-*
+  document.addEventListener('click', (e) => {
+    const anchor = e.target.closest('a[href^="#programme-"]');
+    if (!anchor) return;
+    const href = anchor.getAttribute('href');
+    const dayIndex = getProgramDayIndexFromHash(href || '');
+    if (dayIndex === null) return;
+    e.preventDefault();
+    setCurrentDay(dayIndex);
+    updateProgramDayHighlight(dayIndex);
+    if (window.location.hash !== href) {
+      window.history.pushState(null, '', href);
+    }
+    const programmeSection = document.getElementById('programme');
+    if (programmeSection) {
+      programmeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, true);
+
+  // Ancres "stages-*" depuis les cartes tarifs : sélectionner le bon jour stages
+  function getStagesDayIndexFromHash(hash) {
+    if (hash === '#stages-vendredi') return 0;
+    if (hash === '#stages-samedi') return 1;
+    if (hash === '#stages-dimanche') return 2;
+    return null;
+  }
+
+  function activateStagesDayFromHash(hash) {
+    const dayIndex = getStagesDayIndexFromHash(hash);
+    if (dayIndex === null) return false;
+    setCurrentDay(dayIndex);
+    const stagesSection = document.getElementById('stages');
+    if (stagesSection) {
+      stagesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    return true;
+  }
+
+  ['#stages-vendredi', '#stages-samedi', '#stages-dimanche'].forEach((anchorHash) => {
+    document.querySelectorAll(`a[href="${anchorHash}"]`).forEach((a) => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (window.location.hash !== anchorHash) {
+          window.history.pushState(null, '', anchorHash);
+        }
+        activateStagesDayFromHash(anchorHash);
+      });
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    const anchor = e.target.closest('a[href^="#stages-"]');
+    if (!anchor) return;
+    const href = anchor.getAttribute('href');
+    const dayIndex = getStagesDayIndexFromHash(href || '');
+    if (dayIndex === null) return;
+    e.preventDefault();
+    setCurrentDay(dayIndex);
+    updateProgramDayHighlight(dayIndex);
+    if (window.location.hash !== href) {
+      window.history.pushState(null, '', href);
+    }
+    const stagesSection = document.getElementById('stages');
+    if (stagesSection) {
+      stagesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, true);
+
+  // Fiabilisation : liens stages des cartes tarifs avec data explicite du jour
+  document.addEventListener('click', (e) => {
+    const anchor = e.target.closest('a[data-stages-day]');
+    if (!anchor) return;
+    const dayIndex = parseInt(anchor.getAttribute('data-stages-day') || '', 10);
+    if (Number.isNaN(dayIndex)) return;
+    const href = anchor.getAttribute('href') || '#stages';
+    e.preventDefault();
+    setCurrentDay(dayIndex);
+    updateProgramDayHighlight(dayIndex);
+    if (window.location.hash !== href) {
+      window.history.pushState(null, '', href);
+    } else {
+      // Même hash: forcer un refresh d'état logique même sans hashchange
+      window.history.replaceState(null, '', href);
+    }
+    const stagesSection = document.getElementById('stages');
+    if (stagesSection) {
+      stagesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, true);
+
+  window.addEventListener('hashchange', () => {
+    activateStagesDayFromHash(window.location.hash);
+  });
+
+  activateStagesDayFromHash(window.location.hash);
+
   // Gestion du switcher des stages (synchronise À l'affiche, Programme, Stages)
   const stagesDayTabs = document.querySelectorAll('#stagesDayTabs .day-tab');
+  const STAGES_DAY_HASHES = ['#stages-vendredi', '#stages-samedi', '#stages-dimanche'];
   if (stagesDayTabs) {
     stagesDayTabs.forEach((tab, index) => {
       tab.addEventListener('click', () => {
         setCurrentDay(index);
+        const targetHash = STAGES_DAY_HASHES[index];
+        if (targetHash) {
+          window.history.replaceState(null, '', targetHash);
+        }
         if (window.posthog) {
           window.posthog.capture('day_switch', { section: 'stages', section_name: 'Stages', day_index: index, day_name: DAY_SWITCH_DAY_NAMES[index] || '' });
         }

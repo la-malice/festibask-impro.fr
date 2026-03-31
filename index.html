@@ -194,8 +194,8 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
 .hero-doodles-top.is-visible img,.hero-doodles.is-visible img{opacity:1;}
 @media (prefers-reduced-motion:reduce){.hero-doodles-top img,.hero-doodles img{opacity:1;}}
 </style>
-<link rel="preload" href="assets/css/style.css?v=39" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="assets/css/style.css?v=39"></noscript>
+<link rel="preload" href="assets/css/style.css?v=41" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="assets/css/style.css?v=41"></noscript>
 <!-- Google Fonts: preconnect + async load -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -740,7 +740,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
 
     <div class="grid grid-3 ateliers-grid mt-18">
       <!-- Vendredi -->
-      <div class="day card stages-day active" data-day="0">
+      <div id="stages-vendredi" class="day card stages-day active" data-day="0">
         <!-- CTA stages : "S'inscrire" → billetterie (lien HelloAsso), "Ça m'intéresse!" → waitlist (liste d'attente). -->
         <article id="atelier-vendredi-11h-initiation" class="atelier-card" data-day="0">
         <div class="header">
@@ -916,7 +916,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
       </div>
 
       <!-- Samedi -->
-      <div class="day card stages-day" data-day="1">
+      <div id="stages-samedi" class="day card stages-day" data-day="1">
         <article id="atelier-samedi-10h-salle1" class="atelier-card" data-day="1">
         <div class="header">
           <div class="day-header">Samedi 16 mai · 10:00</div>
@@ -1250,7 +1250,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
       </div>
 
       <!-- Dimanche -->
-      <div class="day card stages-day" data-day="2">
+      <div id="stages-dimanche" class="day card stages-day" data-day="2">
         <article id="atelier-dimanche-famille" class="atelier-card" data-day="2">
         <div class="header">
           <div class="day-header">Dimanche 17 mai · 10:30</div>
@@ -1446,7 +1446,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
 
     <div class="grid grid-3 mt-18">
       <!-- Vendredi -->
-      <div class="day card" data-day="0">
+      <div id="programme-vendredi" class="day card" data-day="0">
         <h3>Vendredi 15 mai</h3>
         <div class="slot slot-program-note">
           <div class="time">10:30</div>
@@ -1476,7 +1476,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
           <div class="time">17:30</div>
           <div class="meta">🤗 Accueil du public</div>
         </div>
-        <button data-spectacle="spectacle-vendredi-format-long" class="slot slot-format-long">
+        <button id="spectacle-braquage" data-spectacle="spectacle-vendredi-format-long" class="slot slot-format-long">
           <div class="slot-content">
             <div class="time">19:00</div>
             <h3>Braquage</h3>
@@ -1491,7 +1491,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
           <div class="time">20:00</div>
           <div class="meta">🍺🥤 Pause</div>
         </div>
-        <button data-spectacle="spectacle-vendredi-match" class="slot highlight slot-spectacle">
+        <button id="spectacle-malice-vs-belgique" data-spectacle="spectacle-vendredi-match" class="slot highlight slot-spectacle">
           <div class="slot-content">
             <div class="time">21:00</div>
             <h3>La Malice vs Belgique</h3>
@@ -1506,7 +1506,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
       </div>
 
       <!-- Samedi -->
-      <div class="day card" data-day="1">
+      <div id="programme-samedi" class="day card" data-day="1">
         <h3>Samedi 16 mai</h3>
         <div class="slot slot-program-note"><div class="time">09:30</div><div class="meta">🥐☕ Accueil des stages d'impro</div></div>
         <div class="slot slot-atelier">
@@ -1550,7 +1550,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
           </div>
         </div>
         <div class="slot slot-program-note"><div class="time">17:30</div><div class="meta">🤗 Accueil du public</div></div>
-        <button data-spectacle="spectacle-samedi-format-long" class="slot slot-format-long">
+        <button id="spectacle-commis-office" data-spectacle="spectacle-samedi-format-long" class="slot slot-format-long">
           <div class="slot-content">
             <div class="time">19:00</div>
             <h3>Commis d'Office</h3>
@@ -1562,7 +1562,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
           </picture>
         </button>
         <div class="slot slot-program-note"><div class="time">20:00</div><div class="meta">🍺🥤 Pause</div></div>
-        <button data-spectacle="spectacle-samedi-match" class="slot highlight slot-spectacle">
+        <button id="spectacle-malice-vs-france" data-spectacle="spectacle-samedi-match" class="slot highlight slot-spectacle">
           <div class="slot-content">
             <div class="time">21:00</div>
             <h3>La Malice vs France</h3>
@@ -1570,12 +1570,12 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
           </div>
           <img src="assets/img/match-malice-vs-france.png" alt="Match d'improvisation : La Malice vs France" class="slot-image" width="512" height="512">
         </button>
-        <div class="slot slot-festif"><div class="time">23:00+</div><div class="meta"><strong>🎧 Soirée musicale festive</strong></div></div>
+        <div id="spectacle-soiree-festive" class="slot slot-festif"><div class="time">23:00+</div><div class="meta"><strong>🎧 Soirée musicale festive</strong></div></div>
         <div class="slot slot-program-note"><div class="time">Fin de soirée</div><div class="meta">bonne nuit 😴</div></div>
       </div>
 
       <!-- Dimanche -->
-      <div class="day card" data-day="2">
+      <div id="programme-dimanche" class="day card" data-day="2">
         <h3>Dimanche 17 mai</h3>
         <div class="slot slot-program-note"><div class="time">10:30</div><div class="meta">🥐☕ Accueil des stages d'impro</div></div>
         <div class="slot slot-atelier">
@@ -1599,7 +1599,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
           </div>
         </div>
         <div class="slot slot-program-note"><div class="time">16:30</div><div class="meta">🤗 Accueil du public</div></div>
-        <button data-spectacle="spectacle-dimanche-format-long" class="slot slot-format-long">
+        <button id="spectacle-promo-2006" data-spectacle="spectacle-dimanche-format-long" class="slot slot-format-long">
           <div class="slot-content">
             <div class="time">18:00</div>
             <h3>Promo 2006</h3>
@@ -1611,7 +1611,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
           </picture>
         </button>
         <div class="slot slot-program-note"><div class="time">19:00</div><div class="meta">🍺🥤 Pause</div></div>
-        <button data-spectacle="spectacle-dimanche-match" class="slot highlight slot-spectacle">
+        <button id="spectacle-malice-vs-suisse" data-spectacle="spectacle-dimanche-match" class="slot highlight slot-spectacle">
           <div class="slot-content">
             <div class="time">20:00</div>
             <h3>La Malice vs Suisse</h3>
@@ -1673,118 +1673,204 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
 <!-- Tarifs et Billetterie -->
 <section id="tarifs" class="section section-bg-4">
   <div class="container">
-    <h2>Réservations</h2>
+    <h2>Tarifs et réservations</h2>
     <p class="small mb-16">Le festival est accessible via des pass à la journée ou pour les trois jours. Pour ceux qui veulent pratiquer l'impro, des pass stages sont également disponibles. Tous les pass proposent des tarifs réduits et des tarifs enfants.</p>
-    <div class="pricing mt-18">
-      <div class="price" id="pass-1j">
+    <div class="pricing pricing-reservations mt-18">
+      <div class="reservation-row-label reservation-row-label-spectacles" aria-hidden="true">
+        <span>Spectacles</span>
+      </div>
+
+      <div class="price" id="pass-vendredi">
         <div class="price-flip-container">
           <div class="price-flip-front">
-            <h3>Pass 1 jour</h3>
-            <div class="value">
-              <span class="value-prefix">à partir de</span>
-              28 €
-            </div>
+            <h3>Vendredi</h3>
+            <div class="value">28 €</div>
             <div class="price-front-footer">
-              <p class="small">2 spectacles par soir</p>
+              <p class="small"><a href="#programme-vendredi">2 spectacles</a></p>
             </div>
-          </div>
-          <div class="price-flip-back">
-            <h3>Pass 1 jour</h3>
-            <p class="price-back-label">Inclut :</p>
-<ul class="price-back-list">
-                <li>Accès aux 2 spectacles du soir</li>
-                <li>Ouverture des portes : 17h30 (16h30 le dimanche)</li>
-              <li>Placement libre</li>
-              <li>Valable uniquement pour la date choisie</li>
-            </ul>
             <p class="price-back-cta"><a class="link-billetterie btn btn-primary" href="#">J'achète</a></p>
           </div>
-        </div>
-      </div>
-      <div class="price" id="pass-3j">
-        <div class="price-flip-container">
-          <div class="price-flip-front">
-            <h3>Pass 3 jours</h3>
-            <div class="value">
-              <span class="value-prefix">à partir de</span>
-              80 €
-            </div>
-            <div class="price-front-footer">
-              <p class="small">Accès aux 3 soirées</p>
-            </div>
-          </div>
           <div class="price-flip-back">
-            <h3>Pass 3 jours</h3>
+            <h3>Vendredi</h3>
             <p class="price-back-label">Inclut :</p>
             <ul class="price-back-list">
-              <li>Accès aux 3 soirées du festival</li>
-              <li>Ouverture des portes : 17h30 (16h30 le dimanche)</li>
-              <li>Placement libre</li>
-              <li>Valable pour les 3 dates (du 15 au 17 mai)</li>
+              <li><a href="#programme-vendredi">2 spectacles</a></li>
+              <li>Ouverture des portes : 17h30</li>
+              <li>Valable uniquement le vendredi 15 mai</li>
             </ul>
             <p class="price-back-cta"><a class="link-billetterie btn btn-primary" href="#">J'achète</a></p>
           </div>
         </div>
       </div>
-      <div class="price" id="stage">
+
+      <div class="price" id="pass-samedi">
         <div class="price-flip-container">
           <div class="price-flip-front">
-            <h3>Stage</h3>
-            <div class="value"><span class="value-prefix">à partir de</span> 20 €</div>
+            <h3>Samedi</h3>
+            <div class="value">35 €</div>
             <div class="price-front-footer">
-              <p class="small">1 <a href="#stages">stage d'impro à choisir</a></p>
+              <p class="small"><a href="#programme-samedi">2 spectacles<br>+ soirée festive</a></p>
             </div>
+            <p class="price-back-cta"><a class="link-billetterie btn btn-primary" href="#">J'achète</a></p>
           </div>
           <div class="price-flip-back">
-            <h3>Stages</h3>
+            <h3>Samedi</h3>
+            <p class="price-back-label">Inclut :</p>
+            <ul class="price-back-list">
+              <li><a href="#programme-samedi">2 spectacles + soirée festive</a></li>
+              <li>Ouverture des portes : 17h30</li>
+              <li>Valable uniquement le samedi 16 mai</li>
+            </ul>
+            <p class="price-back-cta"><a class="link-billetterie btn btn-primary" href="#">J'achète</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="price" id="pass-dimanche">
+        <div class="price-flip-container">
+          <div class="price-flip-front">
+            <h3>Dimanche</h3>
+            <div class="value">28 €</div>
+            <div class="price-front-footer">
+              <p class="small"><a href="#programme-dimanche">2 spectacles</a></p>
+            </div>
+            <p class="price-back-cta"><a class="link-billetterie btn btn-primary" href="#">J'achète</a></p>
+          </div>
+          <div class="price-flip-back">
+            <h3>Dimanche</h3>
+            <p class="price-back-label">Inclut :</p>
+            <ul class="price-back-list">
+              <li><a href="#programme-dimanche">2 spectacles</a></li>
+              <li>Ouverture des portes : 16h30</li>
+              <li>Valable uniquement le dimanche 17 mai</li>
+            </ul>
+            <p class="price-back-cta"><a class="link-billetterie btn btn-primary" href="#">J'achète</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="price" id="pass-3-jours">
+        <div class="price-flip-container">
+          <div class="price-flip-front">
+            <h3>Les 3 Jours</h3>
+            <div class="value">80 €</div>
+            <div class="price-front-footer">
+              <p class="small"><a href="#programme">6 spectacles<br>+ soirée festive du Samedi</a></p>
+            </div>
+            <p class="price-back-cta"><a class="link-billetterie btn btn-primary" href="#">J'achète</a></p>
+          </div>
+          <div class="price-flip-back">
+            <h3>Les 3 Jours</h3>
+            <p class="price-back-label">Inclut :</p>
+            <ul class="price-back-list">
+              <li><a href="#programme">6 spectacles + soirée festive du Samedi</a></li>
+              <li>Ouverture des portes : 17h30 (ven/sam)</li>
+              <li>Ouverture des portes : 16h30 (dim)</li>
+              <li>Valable du vendredi 15 mai au dimanche 17 mai</li>
+            </ul>
+            <p class="price-back-cta"><a class="link-billetterie btn btn-primary" href="#">J'achète</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="reservation-row-label reservation-row-label-stages" aria-hidden="true">
+        <span>Stages</span>
+      </div>
+
+      <div class="price" id="stage-initiation">
+        <div class="price-flip-container">
+          <div class="price-flip-front">
+            <h3>Initiations</h3>
+            <div class="value">20 €</div>
+            <div class="price-front-footer">
+              <p class="small"><a href="#stages-vendredi" data-stages-day="0">Stage d'impro</a></p>
+              <p class="small">Niveau : Débutants</p>
+            </div>
+            <p class="price-back-cta"><a class="link-billetterie btn btn-primary" href="#">J'achète</a></p>
+          </div>
+          <div class="price-flip-back">
+            <h3>Initiations</h3>
             <p class="price-back-label">Infos :</p>
             <ul class="price-back-list">
-              <li>Durée selon le stage (1h30 à 3h)</li>
-              <li>Maximum 14 participants</li>
-              <li>Pass à tarif réduit</li>
-              <li>Horaires et tarifs détaillés dans section <a href="#stages">Stages</a></li>
+              <li>Initiation à l'impro</li>
+              <li>Valable uniquement le vendredi 15 mai</li>
             </ul>
             <p class="price-back-cta"><a class="link-billetterie btn btn-primary" href="#">J'achète</a></p>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="tarifs-encarts mt-12">
-      <div class="card billetterie-cta">
-        <div class="billetterie-header">
-          <h3>Billetterie</h3>
-          <div class="early-bird-notice">
-            <p><span>Tarifs en vigueur</span> : les prix actuellement affichés sont appliqués.</p>
+      <div class="price" id="stage-masterclass">
+        <div class="price-flip-container">
+          <div class="price-flip-front">
+            <h3>Masterclass</h3>
+            <div class="value">30 €</div>
+            <div class="price-front-footer">
+              <p class="small"><a href="#stages-samedi" data-stages-day="1">4 stages au choix</a></p>
+              <p class="small">Niveau : Confirmés</p>
+            </div>
+            <p class="price-back-cta"><a class="link-billetterie btn btn-primary" href="#">J'achète</a></p>
           </div>
-        </div>
-        <div class="billetterie-content">
-          <p class="billetterie-text">Billetterie ouverte sur HelloAsso 👉</p>
-          <div class="billetterie-button-wrapper">
-            <a class="link-billetterie btn btn-primary btn-billetterie" href="#">Prendre mon ticket</a>
+          <div class="price-flip-back">
+            <h3>Masterclass</h3>
+            <p class="price-back-label">Infos :</p>
+            <ul class="price-back-list">
+              <li>4 stages au choix</li>
+              <li>Pour improvisateurs confirmés</li>
+              <li>Valable uniquement le samedi 16 mai</li>
+            </ul>
+            <p class="price-back-cta"><a class="link-billetterie btn btn-primary" href="#">J'achète</a></p>
           </div>
         </div>
       </div>
 
-      <div class="card pass-gagnant">
-        <div class="grid grid-2">
-          <div>
-            <h3 class="pink mb-0"><span class="stage-star-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg></span> Des pass à gagner !</h3>
-            <p class="mb-0">À chaque spectacle de La Malice, des pass sont à gagner ! Suivez-nous, venez nous voir et votre fidélité sera peut-être récompensée. 🎭✨</p>
-          </div>
-          <div class="align-self-center text-center">
-            <p class="small mb-12 font-semibold">Suivez-nous :</p>
-            <div class="social-links">
-              <a href="https://www.instagram.com/lamaliceimprovise/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-social">
-                <img src="assets/img/long/Instagram_Glyph_Gradient-49w.avif" alt="" width="20" height="20">
-                Instagram
-              </a>
-              <a href="https://facebook.com/lamaliceimprovise" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-social">
-                <img src="assets/img/long/Facebook_Logo_Primary-49w.avif" alt="" width="20" height="20">
-                Facebook
-              </a>
+      <div class="price" id="stage-famille">
+        <div class="price-flip-container">
+          <div class="price-flip-front">
+            <h3>Famille</h3>
+            <div class="value">20 €</div>
+            <div class="price-front-footer">
+              <p class="small"><a href="#stages-dimanche" data-stages-day="2">Stages d'impro</a></p>
+              <p class="small">En duo ou entre ados</p>
             </div>
-            <p class="small mt-12 mb-0">@lamaliceimprovise</p>
+            <p class="price-back-cta"><a class="link-billetterie btn btn-primary" href="#">J'achète</a></p>
+          </div>
+          <div class="price-flip-back">
+            <h3>Famille</h3>
+            <p class="price-back-label">Infos :</p>
+            <ul class="price-back-list">
+              <li>Impro en famille ou entre ados</li>
+              <li>Format intergénérationnel</li>
+              <li>Valable uniquement le dimanche 17 mai</li>
+            </ul>
+            <p class="price-back-cta"><a class="link-billetterie btn btn-primary" href="#">J'achète</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="price billetterie-cta" id="billetterie">
+        <div class="price-flip-container">
+          <div class="price-flip-front">
+            <h3>Réserver</h3>
+            <div class="price-front-footer">
+              <p class="small">Tarifs réduits et enfants disponibles</p>
+              <p class="small">Tarifs groupes/CSE : <a href="mailto:festibaskimpro@gmail.com">nous contacter</a></p>
+            </div>
+            <p class="price-back-cta">
+              <a class="link-billetterie btn btn-primary btn-billetterie" href="#">Accès Billetterie</a>
+            </p>
+          </div>
+          <div class="price-flip-back">
+            <h3>Réserver</h3>
+            <p class="price-back-label">Infos :</p>
+            <ul class="price-back-list">
+              <li>Tarifs réduits et enfants disponibles</li>
+              <li>Tarifs groupes/CSE : <a href="mailto:festibaskimpro@gmail.com">nous contacter</a></li>
+              <li>Billetterie ouverte sur HelloAsso</li>
+            </ul>
+            <p class="price-back-cta">
+              <a class="link-billetterie btn btn-primary btn-billetterie" href="#">Accès Billetterie</a>
+            </p>
           </div>
         </div>
       </div>
