@@ -6927,7 +6927,7 @@ button.slot-spectacle:active {
   margin-bottom: 0.2em;
 }
 
-/* Cartes avec tarif prévente (Pass 1 jour, Pass 3 jours) */
+/* Cartes de tarifs (Pass 1 jour, Pass 3 jours) */
 .value-with-presale .value-normal {
   display: inline;
   text-decoration: line-through;
