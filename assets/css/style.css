@@ -5284,8 +5284,12 @@ nav.primary a:hover {
 }
 
 .atelier-card .btn-inscription {
-  width: 100%;
-  display: flex;
+  width: auto;
+  max-width: 100%;
+  min-width: 0;
+  display: inline-flex;
+  align-self: center;
+  flex: 0 0 auto;
   justify-content: center;
   text-align: center;
   background: var(--orange);
@@ -5294,6 +5298,12 @@ nav.primary a:hover {
   font-size: 0.9rem;
   padding: 0.6rem 1rem;
   font-weight: 600;
+}
+
+.atelier-card .flip-back .footer-mobile .btn-inscription,
+.atelier-card .flip-back .footer-desktop .btn-inscription {
+  min-width: 0;
+  width: fit-content;
 }
 
 .atelier-card .btn-inscription:hover {
