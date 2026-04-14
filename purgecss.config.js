@@ -57,7 +57,11 @@ module.exports = {
       'tooltip-top',
       'tooltip-bottom',
       'malix-doodle-popin',
-      'tooltip-popup-charte'
+      'tooltip-popup-charte',
+      'price-pass-sold-out',
+      'price-pass-availability',
+      'price-pass-cta-row',
+      'price-pass-complet-block'
     ],
     greedy: [
       /^tooltip-/,

@@ -2,12 +2,14 @@
 
 ## Current phase
 
-Site in production; content and minor improvements as needed. No formal slices in progress.
+Places disponibles **pass spectacles** (CSV Google → JSON, affichage tarifs) livré ; slice **places stages** reportée ([places-stages-ateliers.md](slices/places-stages-ateliers.md)).
 
 ## Slices
 
 | Slice | Goal | Status |
 |-------|------|--------|
+| Places spectacles (Sheet → JSON) | CSV publié → `places-spectacles.json` au build ; affichage places / complet sur pass Vendredi, Samedi, Dimanche (et optionnel 3 jours). | Done |
+| Places stages / ateliers | Même logique d’affichage pour cartes ateliers / programme ; source Sheet ou JSON étendu ; validation séparée. | Planned (reporté) |
 | — | Marketing site live (hero, programme, stages, tarifs, témoignages, modals, deploy) | Done |
 | Témoignages (carousel JSON) | Carousel of testimonies loaded from JSON; section hidden when JSON is empty; easy to add testimonies by editing JSON (procedure in docs). | Done |
 | Fullscreen programme — animations and auto-schedule | Add per-block animation/carousel when an event is selected in fullscreen, and time-based auto-schedule on show days; keep existing layout and day/event selection unchanged. No animation during shows. | Planned |
@@ -21,6 +23,7 @@ See [Slices (detail)](#slices-detail) below for full behaviour.
 - **Témoignages (carousel JSON):** [docs/slices/temoignages-carousel.md](slices/temoignages-carousel.md)
 - **Fullscreen programme — animations and auto-schedule:** [docs/slices/fullscreen-programme-animations.md](slices/fullscreen-programme-animations.md)
 - **Stages masterclass → stages confirmés:** [docs/slices/stages-confirmes-wording.md](slices/stages-confirmes-wording.md)
+- **Places stages / ateliers (reporté):** [docs/slices/places-stages-ateliers.md](slices/places-stages-ateliers.md)
 
 ## Tasks
 

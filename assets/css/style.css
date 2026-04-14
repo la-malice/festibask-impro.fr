@@ -7355,11 +7355,19 @@ button.slot-spectacle:active {
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
       "title value"
-      "body value"
-      "cta cta";
+      "body body"
+      "cta cta"
+      "places places";
     column-gap: 12px;
     row-gap: 8px;
     align-items: start;
+  }
+
+  .pricing-reservations .price-flip-front .price-pass-availability {
+    grid-area: places;
+    justify-self: center;
+    text-align: center;
+    margin-top: 4px;
   }
 
   .pricing-reservations .price-flip-front h3 {
@@ -7383,7 +7391,13 @@ button.slot-spectacle:active {
     margin-top: 2px;
   }
 
-  .pricing-reservations .price-back-cta {
+  .pricing-reservations .price-flip-front .price-pass-cta-row {
+    grid-area: cta;
+    margin-top: 8px;
+  }
+
+  /* Cartes stages / billetterie : CTA sans .price-pass-cta-row */
+  .pricing-reservations .price-flip-front > .price-back-cta:not(.price-pass-cta-row) {
     grid-area: cta;
     margin-top: 8px;
   }
@@ -7424,6 +7438,79 @@ button.slot-spectacle:active {
 
 .pricing-reservations .price-front-footer a:hover {
   opacity: 0.85;
+}
+
+/* Pass spectacles : disponibilité (assets/data/places-spectacles.json) */
+.pricing-reservations .price-pass-cta-row {
+  margin: 0;
+  margin-top: 12px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+}
+
+/* [hidden] seul est surchargé par .btn { display: inline-block } — forcer la dissimulation */
+.pricing-reservations .price-pass-cta-row .link-billetterie[hidden],
+.pricing-reservations .price-pass-cta-row .price-pass-complet-block[hidden] {
+  display: none !important;
+}
+
+.pricing-reservations .price-pass-cta-row .link-billetterie {
+  align-self: stretch;
+  text-align: center;
+}
+
+.pricing-reservations .price-pass-complet-block {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 14px 16px;
+  text-align: center;
+  font-size: clamp(1.15rem, 3.5vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--coral);
+  border-radius: 8px;
+  line-height: 1.2;
+}
+
+@keyframes price-pass-urgency-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.42;
+  }
+}
+
+.pricing-reservations .price-pass-availability {
+  margin: 0;
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
+  color: var(--navy);
+  font-weight: 500;
+  /* Emoji d’alerte : Hubot Sans ne fournit pas les glyphes ; forcer le repli vers les polices système emoji */
+  font-family: var(--font-body), "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
+  animation: price-pass-urgency-pulse 1.15s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pricing-reservations .price-pass-availability {
+    animation: none;
+  }
+}
+
+.pricing-reservations .price.price-pass-sold-out .value {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  opacity: 0.9;
 }
 
 .pricing-reservations .price-back-cta {

@@ -54,8 +54,12 @@ const server = http.createServer((req, res) => {
         res.end(`Erreur serveur: ${error.code}`, 'utf-8');
       }
     } else {
+      const typeWithCharset =
+        extname === '.html' || extname === '.css' || extname === '.js' || extname === '.json'
+          ? `${contentType}; charset=utf-8`
+          : contentType;
       res.writeHead(200, {
-        'Content-Type': contentType,
+        'Content-Type': typeWithCharset,
         'Referrer-Policy': 'strict-origin-when-cross-origin'
       });
       res.end(content, 'utf-8');

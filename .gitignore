@@ -2,6 +2,10 @@
 .DS_Store
 **/.DS_Store
 
+# Secrets locaux (HelloAsso, URL Sheet, etc.)
+.env
+.env.local
+
 # Dependencies
 node_modules/
 

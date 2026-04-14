@@ -21,7 +21,8 @@ npm install
 | `npm run dev` | Vite dev server at http://localhost:8000 (open in browser). Hot reload for HTML, CSS, JS, and data (e.g. temoignages.json). |
 | `./scripts/start-dev.sh` | Same as above but with `--host`: server listens on all interfaces so the site is reachable from the LAN (e.g. mobile at http://&lt;machine-ip&gt;:8000). |
 | `npm run build:images` | Régénère les AVIF / JPEG dérivés (ImageMagick) selon `scripts/image-assets.json` → `assets/`. |
-| `npm run build` | `build:images`, puis copie vers `dist/`, PurgeCSS + PostCSS (cssnano) sur le CSS, Terser sur le JS. Sortie dans `dist/`. |
+| `npm run build:places` | Si la variable d’environnement **`SHEET_CSV_URL`** pointe vers le CSV publié Google Sheets, régénère `assets/data/places-spectacles.json`. Sinon, conserve le fichier existant (ex. valeurs par défaut sans chiffres). |
+| `npm run build` | `build:images`, `build:places`, puis copie vers `dist/`, PurgeCSS + PostCSS (cssnano) sur le CSS, Terser sur le JS. Sortie dans `dist/`. |
 | `npm run start` / `npm run serve` | Node HTTP server (server.js) for local testing if needed; avoid `file://` (CORS blocks JSON). |
 
 No `preview` script in package.json; after `npm run build`, serve `dist/` with any static server to preview production build.
@@ -46,6 +47,7 @@ Le script de build injecte automatiquement `malix/assets/access-config.local.js`
 - Sources (index.html, assets/css, assets/js) stay in repo; only `dist/` is build output. Do not commit minified sources; build runs in CI on push to `main`.
 - **Témoignages:** Edit `assets/data/temoignages.json`; schema and examples in `docs/temoignages-carousel.md`. Empty array hides the carousel.
 - **Vidéo hero programmée:** Edit `assets/data/hero-video-schedule.json`; schema and test params in `docs/slices/hero-video-schedule.md`.
+- **Places pass spectacles:** En CI, le secret GitHub **`SHEET_CSV_URL`** alimente `build:places`. En local, exportez `SHEET_CSV_URL` ou utilisez le JSON par défaut dans le dépôt (pas d’affichage de chiffres tant que `remaining` est `null`). Voir `docs/ARCH.md` (cache-bust `PLACES_SPECTACLES_JSON_QUERY_BUST`).
 - **Images optimisées (AVIF / responsive) :** La spec est dans **`scripts/image-assets.json`** ; l’exécuteur est **`scripts/build-optimized-images.mjs`**, invoqué au début de **`npm run build`** (`npm run build:images`). Y ajouter une entrée (source, préfixe, job `temoignages`, `player-portraits`, `instructors`, `equipe-suisse`, `sponsor-logos`, etc.) après ajout d’une image source. Portraits joueurs (ratio 3:4) : job `player-portraits` ; témoignages (carrés 128/256) : job `temoignages` — ne pas confondre avec les portraits. Logos partenaires : job `sponsor-logos` (Atlantic Change reste fourni en .avif hors spec). Bannière Suisse : source `assets/img/equipe-suisse.png`, job `equipe-suisse` (AVIF dans `assets/img/long/`, JPEG de repli dans `assets/img/`). Pour les témoignages : après mise à jour du JSON, voir `docs/temoignages-carousel.md` (`image`, `imageAvif128`, `imageAvif256`).
 
 ## Tester les vidéos hero programmées

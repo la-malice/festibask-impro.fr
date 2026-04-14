@@ -8,7 +8,8 @@
     "serve": "node server.js",
     "dev": "vite",
     "build:images": "node scripts/build-optimized-images.mjs",
-    "build": "npm run build:images && node scripts/copy-to-dist.js && purgecss --config purgecss.config.js && postcss dist/assets/css/style.css -o dist/assets/css/style.css && terser assets/js/script.js -o dist/assets/js/script.js",
+    "build:places": "node scripts/build-places-from-sheet.mjs",
+    "build": "npm run build:images && npm run build:places && node scripts/copy-to-dist.js && purgecss --config purgecss.config.js && postcss dist/assets/css/style.css -o dist/assets/css/style.css && terser assets/js/script.js -o dist/assets/js/script.js -f ascii_only=true",
     "test:malix": "node --test tests/malix/*.test.js"
   },
   "keywords": ["server", "http", "local"],

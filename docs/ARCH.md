@@ -6,10 +6,10 @@ High-level structure and technology choices of the Festibask'Impro static site. 
 
 ## High-Level Overview
 
-Static site: `index.html` (accueil) et `video/index.html` (watch page pour la vidéo teaser), CSS et JS dans `assets/`. Build copie les fichiers (dont video/, sitemap-video.xml), puis PurgeCSS (CSS), PostCSS (cssnano) et Terser (JS) sur les sorties dans `dist/`. Pas de bundler HTML ; Vite uniquement pour le dev server. Déploiement : GitHub Actions build et upload de `dist/` vers GitHub Pages.
+Static site: `index.html` (accueil) et `video/index.html` (watch page pour la vidéo teaser), CSS et JS dans `assets/`. Build copie les fichiers (dont video/, sitemap-video.xml), puis PurgeCSS (CSS), PostCSS (cssnano) et Terser (JS, option `ascii_only` pour émettre des échappements `\u…` plutôt que des octets UTF-8 bruts dans `dist/`, afin d’éviter un décodage incorrect si la réponse HTTP ne précise pas `charset=utf-8`) sur les sorties dans `dist/`. Pas de bundler HTML ; Vite uniquement pour le dev server. Déploiement : GitHub Actions build et upload de `dist/` vers GitHub Pages.
 
 ```
-Sources (index.html, assets/) → copy-to-dist → dist/
+Sources (index.html, assets/) → build:places (CSV → places-spectacles.json si SHEET_CSV_URL) → copy-to-dist → dist/
                                          → PurgeCSS → dist/assets/css/style.css
                                          → PostCSS (cssnano) → same
                                          → Terser(assets/js/script.js) → dist/assets/js/script.js
@@ -24,7 +24,8 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 | **Watch page** | Page de lecture dédiée pour la vidéo teaser (VideoObject, og:video) ; SEO vidéo Google | video/index.html |
 | **Styles** | Layout, theme, components; PurgeCSS scans index.html + script.js | assets/css/style.css |
 | **Scripts** | Header, countdown, hero video (YouTube iframe or self-hosted &lt;video&gt; per HTML config), nav, modals, sliders, carousel, tooltips, fullscreen | assets/js/script.js |
-| **Data** | Testimonials (carousel), hero video schedule (optional) | assets/data/temoignages.json, assets/data/hero-video-schedule.json |
+| **Data** | Testimonials (carousel), hero video schedule (optional), places pass spectacles (JSON) | assets/data/temoignages.json, assets/data/hero-video-schedule.json, assets/data/places-spectacles.json |
+| **Places spectacles (build)** | Si `SHEET_CSV_URL` est défini, télécharge le CSV publié Google Sheets et écrit `assets/data/places-spectacles.json` avant la copie vers `dist/` | scripts/build-places-from-sheet.mjs (`npm run build:places`) |
 | **Copy build** | Copy index.html, video/, sitemap.xml, sitemap-video.xml, CNAME, favicons, robots, sw.js, assets, festival-2026, PDFs to dist/ ; optionnellement remplacer `dist/malix/assets/access-config.js` par `malix/assets/access-config.local.js` si présent | scripts/copy-to-dist.js |
 | **PurgeCSS** | Remove unused CSS for dist; safelist dynamic classes | purgecss.config.js |
 | **PostCSS** | Minify CSS (cssnano) | postcss.config.js |
@@ -47,7 +48,7 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 ## Execution Model
 
 - **Development:** `npm run dev` → Vite serves at http://localhost:8000; no build. Use `./scripts/start-dev.sh` (or `npm run dev -- --host`) to listen on all interfaces for access from the LAN (e.g. mobile at http://&lt;machine-ip&gt;:8000). JSON and assets served from repo.
-- **Production:** User requests site URL; server (GitHub Pages) serves files from `dist/`. Single document; no routing. JS fetches `temoignages.json` (URL avec paramètre de version, voir ci‑dessous); modals load Sibforms/Brevo when opened.
+- **Production:** User requests site URL; server (GitHub Pages) serves files from `dist/`. Single document; no routing. JS fetches `temoignages.json` et `places-spectacles.json` (URL avec paramètre de version, voir ci‑dessous); modals load Sibforms/Brevo when opened.
 - **Service worker:** sw.js is copied to dist root; loads Brevo SDK with key from query string. [UNCERTAIN] Whether it is registered in production; no cache strategy in the observed snippet.
 
 ### Cache busting et versioning des assets (prod)
@@ -58,11 +59,12 @@ Les navigateurs (notamment sur mobile) et le CDN peuvent conserver longtemps des
 
 1. **`index.html`** : les références à la feuille de styles et au script principal incluent un paramètre de requête **`?v=N`** sur `assets/css/style.css` et `assets/js/script.js` (preload, noscript et balise `script`). **Incrémenter `N` de concert** pour une même livraison lorsqu’un changement CSS ou JS doit être pris en compte immédiatement en prod sans dépendre d’une purge côté utilisateur.
 2. **`assets/js/script.js`** : constante **`TEMOIGNAGES_JSON_QUERY_BUST`** — l’URL du `fetch` vers `assets/data/temoignages.json` inclut `?v=…` (même valeur que la constante). **Incrémenter** après modification du contenu du fichier JSON (données témoignages) pour éviter un JSON obsolète servi depuis le cache HTTP.
-3. **Cloudflare (hors dépôt)** : ne pas placer `assets/data/` dans une règle qui impose un **Browser TTL** long (ex. semaines) ; une règle **Bypass cache** ou un TTL court pour ce chemin est cohérent avec le point 2. Les points 1–2 restent la garantie principale côté site quelle que soit la config CDN.
+3. **`assets/js/script.js`** : constante **`PLACES_SPECTACLES_JSON_QUERY_BUST`** — l’URL du `fetch` vers `assets/data/places-spectacles.json` inclut `?v=…`. **Incrémenter** après changement de structure ou de logique d’affichage des places pass spectacles, ou lorsque le déploiement doit forcer le rechargement du JSON côté navigateur.
+4. **Cloudflare (hors dépôt)** : ne pas placer `assets/data/` dans une règle qui impose un **Browser TTL** long (ex. semaines) ; une règle **Bypass cache** ou un TTL court pour ce chemin est cohérent avec les points 2–3. Les points 1–3 restent la garantie principale côté site quelle que soit la config CDN.
 
 ## Dependencies
 
-- **Internal:** index.html references assets/css, assets/js, assets/img, assets/data, assets/video; script.js fetches temoignages.json and manipulates DOM; no internal modules.
+- **Internal:** index.html references assets/css, assets/js, assets/img, assets/data, assets/video; script.js fetches `temoignages.json` et `places-spectacles.json` and manipulates DOM; no internal modules.
 - **External:** Brevo (cdn.brevo.com/js/sdk-loader.js), Sibforms (forms, styles, main.js), PostHog (snippet in index.html; ingestion via reverse proxy Cloudflare Worker, code in worker-posthog/, deploy via Wrangler; api_host points to proxy, ui_host to eu.posthog.com; see docs/analytics-posthog.md for custom events), Google Fonts. No npm runtime deps; devDependencies: vite, postcss, postcss-cli, cssnano, purgecss, terser.
 
 ## Key Files and Directories
@@ -76,7 +78,9 @@ Les navigateurs (notamment sur mobile) et le CDN peuvent conserver longtemps des
 | assets/js/script.js | All client logic; source for Terser |
 | assets/data/temoignages.json | Testimonials array for carousel |
 | assets/data/hero-video-schedule.json | Hero video schedule (slots with publishAt, youtubeId); optional |
+| assets/data/places-spectacles.json | Places restantes par pass spectacles (`passes.*.remaining`) ; défaut sans chiffres ; surchargé au build si `SHEET_CSV_URL` |
 | assets/img/, assets/video/, assets/fonts/, assets/favicon/ | Static assets |
+| scripts/build-places-from-sheet.mjs | CSV publié Google → `places-spectacles.json` (`npm run build:places`) |
 | scripts/copy-to-dist.js | Copies site files into dist/ |
 | scripts/start-dev.sh | Runs Vite with --host for dev access from LAN (e.g. mobile) |
 | purgecss.config.js | Content: index.html, script.js; output: dist/assets/css/style.css; safelist for dynamic classes |

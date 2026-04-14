@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-04-14T21:18:46.887Z",
+  "source": "sheet",
+  "passes": {
+    "pass-vendredi": {
+      "label": "vendredi",
+      "remaining": 294
+    },
+    "pass-samedi": {
+      "label": "samedi",
+      "remaining": 278
+    },
+    "pass-dimanche": {
+      "label": "dimanche",
+      "remaining": 301
+    }
+  }
+}

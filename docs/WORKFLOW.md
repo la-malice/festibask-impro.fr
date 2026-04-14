@@ -8,7 +8,7 @@ When to update which document. Keeps normative docs and tracking docs consistent
 |----------|-------------|
 | **docs/SPEC.md** | Behavior, scope, or capabilities change (e.g. new section, new integration, change in what the site does or does not do). |
 | **docs/DOMAIN.md** | New domain terms, entities, or rules (e.g. new content type, new field in temoignages.json, new domain rule). |
-| **docs/ARCH.md** | Structure or technology changes (e.g. new build step, new dependency, new deploy target). Aussi lorsque la convention de **cache busting** (`?v=` sur CSS/JS dans `index.html`, `TEMOIGNAGES_JSON_QUERY_BUST` pour le JSON) ou les règles **CDN / navigateur** décrites dans ARCH évoluent. |
+| **docs/ARCH.md** | Structure or technology changes (e.g. new build step, new dependency, new deploy target). Aussi lorsque la convention de **cache busting** (`?v=` sur CSS/JS dans `index.html`, `TEMOIGNAGES_JSON_QUERY_BUST` / `PLACES_SPECTACLES_JSON_QUERY_BUST` pour les JSON) ou les règles **CDN / navigateur** décrites dans ARCH évoluent. |
 | **docs/slices/charte-graphique.md** | Palette, typographie ou règles d’usage de la charte changent (nouvelle couleur, nouveau type de bouton, convention programme, etc.). Toute évolution de design doit s’y refléter. |
 | **AGENTS.md** (root) | Governance or agent workflow changes (e.g. new source of truth, new convention). |
 | **docs/ADR/** | A significant architecture decision is made or revisited; one ADR per decision. |

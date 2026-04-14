@@ -816,6 +816,87 @@
     });
   });
 
+  // Places disponibles — pass spectacles (JSON généré au build depuis CSV Google publié)
+  (function initPlacesSpectacles() {
+    const PLACES_SPECTACLES_JSON_QUERY_BUST = '2';
+    /** Ligne sous le bouton : emoji avertissement + « plus que X places! » si 0 &lt; remaining &lt; seuil. */
+    const PLACES_SPECTACLES_SHOW_THRESHOLD = 100;
+    const placesUrl = new URL('assets/data/places-spectacles.json', document.documentElement.baseURI || window.location.href);
+    placesUrl.searchParams.set('v', PLACES_SPECTACLES_JSON_QUERY_BUST);
+    var PLACES_WARN_PREFIX = '\u26A0\uFE0F ';
+    function formatPlacesLine(n) {
+      if (n === 1) return PLACES_WARN_PREFIX + 'plus que 1 place!';
+      return PLACES_WARN_PREFIX + 'plus que ' + n + ' places!';
+    }
+    function formatPlacesAriaLabel(n) {
+      if (n === 1) return 'Plus que 1 place pour ce pass';
+      return 'Plus que ' + n + ' places pour ce pass';
+    }
+    var PLACES_SPECTACLE_DAY_IDS = ['pass-vendredi', 'pass-samedi', 'pass-dimanche'];
+    function anySpectacleDayComplete(passes) {
+      for (var i = 0; i < PLACES_SPECTACLE_DAY_IDS.length; i++) {
+        var e = passes[PLACES_SPECTACLE_DAY_IDS[i]];
+        if (e && typeof e.remaining === 'number' && e.remaining <= 0) return true;
+      }
+      return false;
+    }
+    fetch(placesUrl.href, { cache: 'no-cache' })
+      .then(function (res) { return res.ok ? res.json() : null; })
+      .then(function (data) {
+        if (!data || !data.passes) return;
+        var dayComplete = anySpectacleDayComplete(data.passes);
+        document.querySelectorAll('.price-pass-availability[data-pass-id]').forEach(function (el) {
+          var id = el.getAttribute('data-pass-id');
+          var entry = data.passes[id];
+          var force3jComplete = id === 'pass-3-jours' && dayComplete;
+          var remaining;
+          if (force3jComplete) {
+            remaining = 0;
+          } else {
+            if (!entry || typeof entry.remaining !== 'number') return;
+            remaining = entry.remaining;
+          }
+          var price = el.closest('.price');
+          var ctaRow = price ? price.querySelector('.price-flip-front .price-pass-cta-row') : null;
+          var ctaLink = ctaRow ? ctaRow.querySelector('.link-billetterie') : null;
+          var completEl = ctaRow ? ctaRow.querySelector('.price-pass-complet-block') : null;
+          if (remaining <= 0) {
+            if (price) price.classList.add('price-pass-sold-out');
+            el.hidden = true;
+            el.textContent = '';
+            el.removeAttribute('aria-label');
+            if (ctaLink) ctaLink.hidden = true;
+            if (completEl) {
+              completEl.hidden = false;
+              completEl.setAttribute(
+                'aria-label',
+                id === 'pass-3-jours' && dayComplete
+                  ? 'Complet — au moins une journée à la carte (Vendredi, Samedi ou Dimanche) est complète'
+                  : 'Complet — plus de places pour ce pass'
+              );
+            }
+          } else {
+            if (price) price.classList.remove('price-pass-sold-out');
+            if (ctaLink) ctaLink.hidden = false;
+            if (completEl) {
+              completEl.hidden = true;
+              completEl.removeAttribute('aria-label');
+            }
+            if (remaining < PLACES_SPECTACLES_SHOW_THRESHOLD) {
+              el.hidden = false;
+              el.textContent = formatPlacesLine(remaining);
+              el.setAttribute('aria-label', formatPlacesAriaLabel(remaining));
+            } else {
+              el.hidden = true;
+              el.textContent = '';
+              el.removeAttribute('aria-label');
+            }
+          }
+        });
+      })
+      .catch(function () {});
+  })();
+
   // Brevo gère automatiquement le masquage du formulaire avec AUTOHIDE = Boolean(1)
   // Le bouton "Fermer" dans le message de succès permet de fermer la popup explicitement
 

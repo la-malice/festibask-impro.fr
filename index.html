@@ -194,8 +194,8 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
 .hero-doodles-top.is-visible img,.hero-doodles.is-visible img{opacity:1;}
 @media (prefers-reduced-motion:reduce){.hero-doodles-top img,.hero-doodles img{opacity:1;}}
 </style>
-<link rel="preload" href="assets/css/style.css?v=41" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="assets/css/style.css?v=41"></noscript>
+<link rel="preload" href="assets/css/style.css?v=47" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="assets/css/style.css?v=47"></noscript>
 <!-- Google Fonts: preconnect + async load -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1688,7 +1688,11 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
             <div class="price-front-footer">
               <p class="small"><a href="#programme-vendredi">2 spectacles</a></p>
             </div>
-            <p class="price-back-cta"><a class="link-billetterie btn btn-primary" href="#">J'achète</a></p>
+            <p class="price-back-cta price-pass-cta-row">
+              <a class="link-billetterie btn btn-primary" href="#">J'achète</a>
+              <span class="price-pass-complet-block" hidden aria-live="polite">Complet</span>
+            </p>
+            <p class="small price-pass-availability" data-pass-id="pass-vendredi" hidden aria-live="polite"></p>
           </div>
           <div class="price-flip-back">
             <h3>Vendredi</h3>
@@ -1711,7 +1715,11 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
             <div class="price-front-footer">
               <p class="small"><a href="#programme-samedi">2 spectacles<br>+ soirée festive</a></p>
             </div>
-            <p class="price-back-cta"><a class="link-billetterie btn btn-primary" href="#">J'achète</a></p>
+            <p class="price-back-cta price-pass-cta-row">
+              <a class="link-billetterie btn btn-primary" href="#">J'achète</a>
+              <span class="price-pass-complet-block" hidden aria-live="polite">Complet</span>
+            </p>
+            <p class="small price-pass-availability" data-pass-id="pass-samedi" hidden aria-live="polite"></p>
           </div>
           <div class="price-flip-back">
             <h3>Samedi</h3>
@@ -1734,7 +1742,11 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
             <div class="price-front-footer">
               <p class="small"><a href="#programme-dimanche">2 spectacles</a></p>
             </div>
-            <p class="price-back-cta"><a class="link-billetterie btn btn-primary" href="#">J'achète</a></p>
+            <p class="price-back-cta price-pass-cta-row">
+              <a class="link-billetterie btn btn-primary" href="#">J'achète</a>
+              <span class="price-pass-complet-block" hidden aria-live="polite">Complet</span>
+            </p>
+            <p class="small price-pass-availability" data-pass-id="pass-dimanche" hidden aria-live="polite"></p>
           </div>
           <div class="price-flip-back">
             <h3>Dimanche</h3>
@@ -1757,7 +1769,11 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
             <div class="price-front-footer">
               <p class="small"><a href="#programme">6 spectacles<br>+ soirée festive</a></p>
             </div>
-            <p class="price-back-cta"><a class="link-billetterie btn btn-primary" href="#">J'achète</a></p>
+            <p class="price-back-cta price-pass-cta-row">
+              <a class="link-billetterie btn btn-primary" href="#">J'achète</a>
+              <span class="price-pass-complet-block" hidden aria-live="polite">Complet</span>
+            </p>
+            <p class="small price-pass-availability" data-pass-id="pass-3-jours" hidden aria-live="polite"></p>
           </div>
           <div class="price-flip-back">
             <h3>Les 3 Jours</h3>
@@ -2157,7 +2173,7 @@ nav.primary a{color:var(--white);text-decoration:none;font-weight:600;}
   </div>
 </dialog>
 
-<script src="assets/js/script.js?v=22" defer></script>
+<script src="assets/js/script.js?v=30" defer></script>
 <!-- Brevo Form Scripts -->
 <script>
   window.REQUIRED_CODE_ERROR_MESSAGE = 'Veuillez choisir un code pays';
