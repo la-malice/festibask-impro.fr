@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
   schedule:
-    # Republier le site pour rafraîchir places-spectacles.json depuis le CSV (secret SHEET_CSV_URL)
+    # Republier le site pour rafraîchir remaining-seats.json depuis le CSV (secret SHEET_CSV_URL)
     - cron: "25 */6 * * *"
 
 permissions:

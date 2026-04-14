@@ -61,7 +61,9 @@ module.exports = {
       'price-pass-sold-out',
       'price-pass-availability',
       'price-pass-cta-row',
-      'price-pass-complet-block'
+      'price-pass-complet-block',
+      'stage-cta-complet-block',
+      'stage-cta-complet-block--open-verso'
     ],
     greedy: [
       /^tooltip-/,

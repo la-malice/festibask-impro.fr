@@ -9,13 +9,13 @@ The festival will offer **confirmed internships** (stages confirmés) instead of
 
 ## Implementation note (fév. 2026)
 
-Implémentation dépassant le scope initial : au lieu de 2 slots génériques, **4 stages confirmés distincts** ont été ajoutés (Samedi 10h Salle 1 & 2, Samedi 14h Salle 1 & 2) avec titres, descriptions et intervenants réels. IDs : `atelier-samedi-10h-salle1`, `atelier-samedi-10h-salle2`, `atelier-samedi-14h-salle1`, `atelier-samedi-14h-salle2`.
+Implémentation dépassant le scope initial : au lieu de 2 slots génériques, **4 stages confirmés distincts** ont été ajoutés (Samedi 10h Salle 1 & 2, Samedi 14h Salle 1 & 2) avec titres, descriptions et intervenants réels. IDs (slugs explicites, plus de `salle1` / `salle2`) : `atelier-samedi-10h-emotions-ecriture`, `atelier-samedi-10h-eeet-action`, `atelier-samedi-14h-emotions-musique`, `atelier-samedi-14h-free-form`.
 
 ## What we keep (no change)
 
 - **Stages section:** Same layout, flip cards, registration and waitlist buttons, Sibforms modals.
 - **Saturday slots:** 10h and 14h atelier slots; now 2 salles per slot (4 stages total).
-- **IDs / anchors:** Updated to `atelier-samedi-10h-salle1`, etc.; programme grid links updated.
+- **IDs / anchors:** Voir les quatre clés ci-dessus ; liens programme `#atelier-samedi-…` mis à jour en conséquence.
 
 We do not change behaviour, forms, or data schema.
 

@@ -4744,6 +4744,79 @@ nav.primary a:hover {
   border-radius: 14px;
 }
 
+/* Stages : alerte places restantes — recto, à droite du bouton « S'inscrire au stage » */
+#stages .atelier-card .flip-front .footer.stage-footer-recto {
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+#stages .stage-places-alert {
+  margin: 0;
+  width: auto;
+  max-width: min(100%, 15rem);
+  flex: 1 1 8rem;
+  min-width: 0;
+  text-align: left;
+  line-height: 1.25;
+  color: var(--navy);
+  font-weight: 500;
+  font-family: var(--font-body), "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
+  animation: price-pass-urgency-pulse 1.15s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #stages .stage-places-alert {
+    animation: none;
+  }
+}
+
+/* Recto stage complet : pas de « Ça m'intéresse! » ; le libellé « Complet » ouvre le verso (liste d’attente) */
+#stages .atelier-card.complet .flip-front .footer.stage-footer-recto .btn-waitlist {
+  display: none;
+}
+
+#stages .footer.stage-footer-recto .stage-cta-complet-block[hidden] {
+  display: none !important;
+}
+
+#stages .footer.stage-footer-recto .stage-cta-complet-block {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 6px 12px;
+  text-align: center;
+  font-size: clamp(0.78rem, 2.1vw, 0.92rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--coral);
+  border: none;
+  border-radius: 8px;
+  line-height: 1.25;
+  flex: 0 1 auto;
+  width: auto;
+  max-width: 11rem;
+  align-self: center;
+  cursor: pointer;
+  transition: filter 0.15s ease, box-shadow 0.15s ease;
+}
+
+#stages .footer.stage-footer-recto .stage-cta-complet-block:not([hidden]) {
+  display: inline-block;
+}
+
+#stages .footer.stage-footer-recto .stage-cta-complet-block:not([hidden]):hover {
+  filter: brightness(0.92);
+  box-shadow: 0 2px 8px rgba(233, 88, 66, 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #stages .footer.stage-footer-recto .stage-cta-complet-block {
+    transition: none;
+  }
+}
+
 #stages .atelier-card .meta-info .stage-details-btn {
   padding: 4px 10px;
   font-size: 0.78rem;
@@ -5055,40 +5128,6 @@ nav.primary a:hover {
   margin-bottom: 0;
 }
 
-/* Tag COMPLET */
-/* Masqué par défaut, affiché seulement si classe complet */
-.atelier-card .complet-tag {
-  display: none;
-  background: var(--accent);
-  color: var(--white);
-  font-weight: 900;
-  font-size: 0.75rem;
-  padding: 4px 12px;
-  border-radius: 12px;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  box-shadow: 0 2px 6px rgba(233, 88, 66, 0.3);
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  margin-top: 8px;
-  margin-bottom: 0;
-  width: auto;
-  max-width: fit-content;
-  min-height: 1.5rem; /* Même hauteur que "En savoir plus" pour alignement */
-  line-height: 1.5rem;
-  box-sizing: border-box;
-}
-
-/* Afficher le badge COMPLET si la carte a la classe complet */
-.atelier-card.complet .complet-tag {
-  display: inline-block;
-}
-
-.atelier-card .complet-tag:hover {
-  transform: scale(1.05);
-  box-shadow: 0 3px 8px rgba(233, 88, 66, 0.4);
-}
-
 /* Message explicatif liste d'attente sur le recto */
 .atelier-card .waitlist-explanation-front {
   display: none; /* Masqué par défaut */
@@ -5244,11 +5283,6 @@ nav.primary a:hover {
   display: none;
 }
 
-/* Afficher btn-waitlist dans footer-mobile si complet */
-.atelier-card.complet .flip-back .footer-mobile .btn-waitlist {
-  display: flex;
-}
-
 @media (min-width: 768px) {
   .atelier-card .flip-back .footer-mobile {
     display: none;
@@ -5276,11 +5310,6 @@ nav.primary a:hover {
 /* Masquer btn-inscription dans footer-desktop si complet */
 .atelier-card.complet .flip-back .footer-desktop .btn-inscription {
   display: none;
-}
-
-/* Afficher btn-waitlist dans footer-desktop si complet */
-.atelier-card.complet .flip-back .footer-desktop .btn-waitlist {
-  display: flex;
 }
 
 .atelier-card .btn-inscription {
@@ -5323,8 +5352,6 @@ nav.primary a:hover {
   cursor: not-allowed;
   pointer-events: none;
 }
-
-/* Bandeau COMPLET - maintenant géré par .complet-tag dans le HTML */
 
 /* Overlay pour les stages complets sur le verso */
 /* Masqué par défaut */
@@ -7440,7 +7467,7 @@ button.slot-spectacle:active {
   opacity: 0.85;
 }
 
-/* Pass spectacles : disponibilité (assets/data/places-spectacles.json) */
+/* Pass spectacles : disponibilité (assets/data/remaining-seats.json) */
 .pricing-reservations .price-pass-cta-row {
   margin: 0;
   margin-top: 12px;

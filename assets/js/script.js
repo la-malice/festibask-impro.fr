@@ -816,13 +816,15 @@
     });
   });
 
-  // Places disponibles — pass spectacles (JSON généré au build depuis CSV Google publié)
-  (function initPlacesSpectacles() {
-    const PLACES_SPECTACLES_JSON_QUERY_BUST = '2';
-    /** Ligne sous le bouton : emoji avertissement + « plus que X places! » si 0 &lt; remaining &lt; seuil. */
-    const PLACES_SPECTACLES_SHOW_THRESHOLD = 100;
-    const placesUrl = new URL('assets/data/places-spectacles.json', document.documentElement.baseURI || window.location.href);
-    placesUrl.searchParams.set('v', PLACES_SPECTACLES_JSON_QUERY_BUST);
+  // Places restantes — pass spectacles + stages (`assets/data/remaining-seats.json`, build depuis CSV publié)
+  (function initRemainingSeats() {
+    const REMAINING_SEATS_JSON_QUERY_BUST = '5';
+    /** Ligne sous le bouton pass : emoji avertissement + « plus que X places! » si 0 &lt; remaining &lt; seuil. */
+    const REMAINING_SEATS_SHOW_THRESHOLD = 100;
+    /** Ligne d’alerte sous les métadonnées sur les cartes atelier : uniquement si 0 &lt; remaining &lt; ce seuil (pass : seuil 100 ci-dessus). */
+    const REMAINING_SEATS_STAGE_ALERT_THRESHOLD = 5;
+    const remainingSeatsUrl = new URL('assets/data/remaining-seats.json', document.documentElement.baseURI || window.location.href);
+    remainingSeatsUrl.searchParams.set('v', REMAINING_SEATS_JSON_QUERY_BUST);
     var PLACES_WARN_PREFIX = '\u26A0\uFE0F ';
     function formatPlacesLine(n) {
       if (n === 1) return PLACES_WARN_PREFIX + 'plus que 1 place!';
@@ -840,59 +842,130 @@
       }
       return false;
     }
-    fetch(placesUrl.href, { cache: 'no-cache' })
+    function formatStageChip(n, unit) {
+      if (unit === 'duos') {
+        if (n === 1) return '1 duo';
+        return n + ' duos';
+      }
+      if (n === 1) return '1 place';
+      return n + ' places';
+    }
+    function formatStageWarnLine(n, unit) {
+      if (unit === 'duos') {
+        if (n === 1) return PLACES_WARN_PREFIX + 'plus que 1 duo!';
+        return PLACES_WARN_PREFIX + 'plus que ' + n + ' duos!';
+      }
+      if (n === 1) return PLACES_WARN_PREFIX + 'plus que 1 place!';
+      return PLACES_WARN_PREFIX + 'plus que ' + n + ' places!';
+    }
+    function formatStageWarnAria(n, unit) {
+      if (unit === 'duos') {
+        return n === 1 ? 'Plus que 1 duo pour ce stage' : 'Plus que ' + n + ' duos pour ce stage';
+      }
+      return n === 1 ? 'Plus que 1 place pour ce stage' : 'Plus que ' + n + ' places pour ce stage';
+    }
+    function applyStagesAvailability(stages) {
+      if (!stages || typeof stages !== 'object') return;
+      Object.keys(stages).forEach(function (stageId) {
+        var entry = stages[stageId];
+        if (!entry || typeof entry.remaining !== 'number') return;
+        var remaining = entry.remaining;
+        var card = document.getElementById(stageId);
+        if (!card || !card.classList.contains('atelier-card')) return;
+        var chip = card.querySelector('.meta-chip-places-restantes');
+        var alertEl = card.querySelector('.stage-places-alert');
+        var completRecto = card.querySelector('.flip-front .footer.stage-footer-recto .stage-cta-complet-block');
+        var unit = (chip && chip.getAttribute('data-capacity-unit')) || 'places';
+        if (chip) chip.textContent = formatStageChip(remaining, unit);
+        if (remaining <= 0) {
+          card.classList.add('complet');
+          if (alertEl) {
+            alertEl.hidden = true;
+            alertEl.textContent = '';
+            alertEl.removeAttribute('aria-label');
+          }
+          if (completRecto) {
+            completRecto.hidden = false;
+            completRecto.setAttribute('aria-label', "Complet — cliquer ou Entrée pour afficher le verso et la liste d’attente");
+            completRecto.setAttribute('tabindex', '0');
+          }
+        } else {
+          card.classList.remove('complet');
+          if (completRecto) {
+            completRecto.hidden = true;
+            completRecto.removeAttribute('aria-label');
+            completRecto.setAttribute('tabindex', '-1');
+          }
+          if (alertEl) {
+            if (remaining < REMAINING_SEATS_STAGE_ALERT_THRESHOLD) {
+              alertEl.hidden = false;
+              alertEl.textContent = formatStageWarnLine(remaining, unit);
+              alertEl.setAttribute('aria-label', formatStageWarnAria(remaining, unit));
+            } else {
+              alertEl.hidden = true;
+              alertEl.textContent = '';
+              alertEl.removeAttribute('aria-label');
+            }
+          }
+        }
+      });
+    }
+    fetch(remainingSeatsUrl.href, { cache: 'no-cache' })
       .then(function (res) { return res.ok ? res.json() : null; })
       .then(function (data) {
-        if (!data || !data.passes) return;
-        var dayComplete = anySpectacleDayComplete(data.passes);
-        document.querySelectorAll('.price-pass-availability[data-pass-id]').forEach(function (el) {
-          var id = el.getAttribute('data-pass-id');
-          var entry = data.passes[id];
-          var force3jComplete = id === 'pass-3-jours' && dayComplete;
-          var remaining;
-          if (force3jComplete) {
-            remaining = 0;
-          } else {
-            if (!entry || typeof entry.remaining !== 'number') return;
-            remaining = entry.remaining;
-          }
-          var price = el.closest('.price');
-          var ctaRow = price ? price.querySelector('.price-flip-front .price-pass-cta-row') : null;
-          var ctaLink = ctaRow ? ctaRow.querySelector('.link-billetterie') : null;
-          var completEl = ctaRow ? ctaRow.querySelector('.price-pass-complet-block') : null;
-          if (remaining <= 0) {
-            if (price) price.classList.add('price-pass-sold-out');
-            el.hidden = true;
-            el.textContent = '';
-            el.removeAttribute('aria-label');
-            if (ctaLink) ctaLink.hidden = true;
-            if (completEl) {
-              completEl.hidden = false;
-              completEl.setAttribute(
-                'aria-label',
-                id === 'pass-3-jours' && dayComplete
-                  ? 'Complet — au moins une journée à la carte (Vendredi, Samedi ou Dimanche) est complète'
-                  : 'Complet — plus de places pour ce pass'
-              );
-            }
-          } else {
-            if (price) price.classList.remove('price-pass-sold-out');
-            if (ctaLink) ctaLink.hidden = false;
-            if (completEl) {
-              completEl.hidden = true;
-              completEl.removeAttribute('aria-label');
-            }
-            if (remaining < PLACES_SPECTACLES_SHOW_THRESHOLD) {
-              el.hidden = false;
-              el.textContent = formatPlacesLine(remaining);
-              el.setAttribute('aria-label', formatPlacesAriaLabel(remaining));
+        if (!data) return;
+        if (data.passes) {
+          var dayComplete = anySpectacleDayComplete(data.passes);
+          document.querySelectorAll('.price-pass-availability[data-pass-id]').forEach(function (el) {
+            var id = el.getAttribute('data-pass-id');
+            var entry = data.passes[id];
+            var force3jComplete = id === 'pass-3-jours' && dayComplete;
+            var remaining;
+            if (force3jComplete) {
+              remaining = 0;
             } else {
+              if (!entry || typeof entry.remaining !== 'number') return;
+              remaining = entry.remaining;
+            }
+            var price = el.closest('.price');
+            var ctaRow = price ? price.querySelector('.price-flip-front .price-pass-cta-row') : null;
+            var ctaLink = ctaRow ? ctaRow.querySelector('.link-billetterie') : null;
+            var completEl = ctaRow ? ctaRow.querySelector('.price-pass-complet-block') : null;
+            if (remaining <= 0) {
+              if (price) price.classList.add('price-pass-sold-out');
               el.hidden = true;
               el.textContent = '';
               el.removeAttribute('aria-label');
+              if (ctaLink) ctaLink.hidden = true;
+              if (completEl) {
+                completEl.hidden = false;
+                completEl.setAttribute(
+                  'aria-label',
+                  id === 'pass-3-jours' && dayComplete
+                    ? 'Complet — au moins une journée à la carte (Vendredi, Samedi ou Dimanche) est complète'
+                    : 'Complet — plus de places pour ce pass'
+                );
+              }
+            } else {
+              if (price) price.classList.remove('price-pass-sold-out');
+              if (ctaLink) ctaLink.hidden = false;
+              if (completEl) {
+                completEl.hidden = true;
+                completEl.removeAttribute('aria-label');
+              }
+              if (remaining < REMAINING_SEATS_SHOW_THRESHOLD) {
+                el.hidden = false;
+                el.textContent = formatPlacesLine(remaining);
+                el.setAttribute('aria-label', formatPlacesAriaLabel(remaining));
+              } else {
+                el.hidden = true;
+                el.textContent = '';
+                el.removeAttribute('aria-label');
+              }
             }
-          }
-        });
+          });
+        }
+        applyStagesAvailability(data.stages);
       })
       .catch(function () {});
   })();
@@ -1437,6 +1510,33 @@
     }, 420);
   }
 
+  // Recto « Complet » (stage complet) → ouvre le verso pour accéder à « Ça m'intéresse! » (liste d’attente)
+  document.querySelectorAll('#stages .footer.stage-footer-recto .stage-cta-complet-block--open-verso').forEach(function (el) {
+    function openFromCompletBlock(e) {
+      if (el.hidden) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const flipContainer = el.closest('.flip-container');
+      if (flipContainer) openStageVerso(flipContainer);
+      const stageCard = el.closest('.atelier-card');
+      if (stageCard && stageCard.id && window.posthog) {
+        const stageTitleEl = stageCard.querySelector('h3');
+        const intervenantEl = stageCard.querySelector('.instructor-name, .instructor-name-small');
+        window.posthog.capture('stage_details_open', {
+          stage_id: stageCard.id,
+          intervenant: intervenantEl ? intervenantEl.textContent.trim() : '',
+          stage_titre: stageTitleEl ? stageTitleEl.textContent.trim() : ''
+        });
+      }
+    }
+    el.addEventListener('click', openFromCompletBlock);
+    el.addEventListener('keydown', function (e) {
+      if (el.hidden) return;
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      openFromCompletBlock(e);
+    });
+  });
+
   // 1) Clic sur "Détails" (recto stage) → déroule le verso dedans et allonge la carte
   document.querySelectorAll('.stage-details-btn').forEach(link => {
     link.addEventListener('click', e => {
@@ -1486,26 +1586,6 @@
       const flipContainer = flipBack.closest('.flip-container');
       if (flipContainer && flipContainer.classList.contains('flipped')) {
         closeStageVerso(flipContainer);
-      }
-    });
-  });
-
-  // Clic sur le tag COMPLET → déroule le verso
-  document.querySelectorAll('.complet-tag').forEach(tag => {
-    tag.addEventListener('click', e => {
-      e.preventDefault();
-      e.stopPropagation();
-      const flipContainer = tag.closest('.flip-container');
-      if (flipContainer) openStageVerso(flipContainer);
-      var stageCard = tag.closest('.atelier-card');
-      if (stageCard && stageCard.id && window.posthog) {
-        var stageTitleEl = stageCard.querySelector('h3');
-        var intervenantEl = stageCard.querySelector('.instructor-name, .instructor-name-small');
-        window.posthog.capture('stage_details_open', {
-          stage_id: stageCard.id,
-          intervenant: intervenantEl ? intervenantEl.textContent.trim() : '',
-          stage_titre: stageTitleEl ? stageTitleEl.textContent.trim() : ''
-        });
       }
     });
   });

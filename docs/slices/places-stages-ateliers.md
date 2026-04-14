@@ -1,29 +1,26 @@
-# Places restantes — stages / ateliers (slice reportée)
+# Places restantes — stages / ateliers
 
-Slice : **Affichage des places pour les cartes ateliers et le programme**  
-Status : **Reporté** — à valider et implémenter dans un chantier distinct après la livraison « places spectacles / pass journées ».
+Slice : **Affichage des places sur les cartes atelier** à partir du même fichier que les pass spectacles.  
+Status : **Implémenté** — données dans `assets/data/remaining-seats.json` (`stages`), alimentées manuellement via le **Google Sheet** (CSV publié) au build ; pas d’API HelloAsso.
 
-## Contexte
+## Source de données
 
-- La slice **places spectacles** ([`assets/data/places-spectacles.json`](../ARCH.md)) couvre les **pass journée** (CSV Google publié → JSON au build, affichage section Tarifs).
-- Les **stages** (cartes `#stages`, grille `#programme`) pourront réutiliser la même logique d’affichage (libellé, complet rayé, accessibilité) avec une **source de données** dédiée : second onglet du Sheet, colonnes supplémentaires, ou fichier JSON étendu.
+- Fichier : [`assets/data/remaining-seats.json`](../ARCH.md) — objet **`stages`** en plus de **`passes`**.
+- Build : [`scripts/build-places-from-sheet.mjs`](../../scripts/build-places-from-sheet.mjs). Si le CSV contient une colonne **`billet`**, **`id`**, **`cle`** ou **`identifiant`**, chaque ligne alimente `passes` ou `stages` avec un objet **`{ "remaining": nombre }`** par clé (pas de champ `label`). Sinon, seul l’ancien format « jour + places » est parsé pour les pass, et l’objet **`stages` déjà présent** est **conservé** et nettoyé (d’où des `remaining: null` tant que le Sheet n’a pas la bonne colonne).
+- Clés `stages` : identiques aux attributs **`id`** des `<article class="atelier-card">` dans `index.html` (ex. `atelier-vendredi-11h-initiation`, `atelier-samedi-10h-emotions-ecriture`, `atelier-dimanche-10h30-famille`, …).
 
-## Objectif (quand la slice sera activée)
+## Comportement (SPEC)
 
-- Afficher le **nombre de places restantes** (ou « Complet » avec style rayé / indisponible) sur les **cartes atelier** et éventuellement les **liens programme** (`.salle-box`), sans masquer les créneaux complets.
-- Rester aligné avec la [charte graphique](charte-graphique.md) et [`docs/SPEC.md`](../SPEC.md).
+- Si `stages[id].remaining` est un **nombre entier** ≥ 0 : mise à jour du chip `.meta-chip-places-restantes`, ligne d’alerte `.stage-places-alert` (dans le footer recto, à droite de « S'inscrire au stage ») si `0 < remaining < 5` (seuil distinct des pass spectacles, &lt; 100), état **complet** (`.atelier-card.complet`) si `remaining ≤ 0` : au **recto**, `.stage-cta-complet-block--open-verso` « Complet » (clavier + clic → ouverture du verso) ; au **verso**, bouton **« Ça m'intéresse! »** pour la liste d’attente, sans bloc « Complet » dans le footer.
+- Unité **duos** : chip avec `data-capacity-unit="duos"` (stage famille) ; libellés « N duos », alertes « plus que N duos ».
+- Si `remaining` est **`null`** ou absent : **aucune** mise à jour dynamique pour cette carte (affichage HTML statique).
 
-## Hors scope (cette slice)
+## Hors scope
 
-- Pas de changement des formulaires Sibforms / HelloAsso dans cette slice seule.
-- Pas d’obligation d’unifier la source Sheet avec les pass spectacles (peut être un onglet ou fichier séparé).
+- Pas d’intégration API HelloAsso pour cette slice ; la billetterie est consultée manuellement et les valeurs sont saisies dans le Sheet.
 
-## Dépendances
+## Critères de validation
 
-- Recommandé : avoir finalisé le pipeline **CSV → JSON** et l’affichage **pass spectacles** pour réutiliser patterns (cache-bust, conventions de nommage, documentation ARCH).
-
-## Critères de validation (brouillon)
-
-- [ ] Schéma JSON ou lignes Sheet documentés (IDs = `atelier-*` existants).
-- [ ] Affichage cohérent mobile / desktop ; `aria-live` ou équivalent si mise à jour dynamique.
-- [ ] Comportement « complet » : carte visible, état visuel distinct (ex. line-through), liste d’attente toujours accessible si applicable.
+- [x] Schéma JSON et convention CSV documentés (ARCH, DEVELOPMENT, ce fichier).
+- [x] Affichage cohérent ; `aria-live` sur `.stage-places-alert`.
+- [x] Comportement « complet » : classe `.complet`, liste d’attente / overlay conformément au CSS existant.
