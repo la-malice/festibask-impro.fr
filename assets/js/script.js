@@ -842,13 +842,19 @@
       }
       return false;
     }
-    function formatStageChip(n, unit) {
+    function formatStageAvailableLine(n, unit) {
       if (unit === 'duos') {
-        if (n === 1) return '1 duo';
-        return n + ' duos';
+        if (n === 1) return '1 duo disponible';
+        return n + ' duos disponibles';
       }
-      if (n === 1) return '1 place';
-      return n + ' places';
+      if (n === 1) return '1 place disponible';
+      return n + ' places disponibles';
+    }
+    function formatStageAvailableAria(n, unit) {
+      if (unit === 'duos') {
+        return n === 1 ? '1 duo disponible pour ce stage' : n + ' duos disponibles pour ce stage';
+      }
+      return n === 1 ? '1 place disponible pour ce stage' : n + ' places disponibles pour ce stage';
     }
     function formatStageWarnLine(n, unit) {
       if (unit === 'duos') {
@@ -872,14 +878,13 @@
         var remaining = entry.remaining;
         var card = document.getElementById(stageId);
         if (!card || !card.classList.contains('atelier-card')) return;
-        var chip = card.querySelector('.meta-chip-places-restantes');
         var alertEl = card.querySelector('.stage-places-alert');
         var completRecto = card.querySelector('.flip-front .footer.stage-footer-recto .stage-cta-complet-block');
-        var unit = (chip && chip.getAttribute('data-capacity-unit')) || 'places';
-        if (chip) chip.textContent = formatStageChip(remaining, unit);
+        var unit = card.getAttribute('data-capacity-unit') || 'places';
         if (remaining <= 0) {
           card.classList.add('complet');
           if (alertEl) {
+            alertEl.classList.remove('stage-places-alert--urgent');
             alertEl.hidden = true;
             alertEl.textContent = '';
             alertEl.removeAttribute('aria-label');
@@ -897,14 +902,15 @@
             completRecto.setAttribute('tabindex', '-1');
           }
           if (alertEl) {
+            alertEl.hidden = false;
             if (remaining < REMAINING_SEATS_STAGE_ALERT_THRESHOLD) {
-              alertEl.hidden = false;
+              alertEl.classList.add('stage-places-alert--urgent');
               alertEl.textContent = formatStageWarnLine(remaining, unit);
               alertEl.setAttribute('aria-label', formatStageWarnAria(remaining, unit));
             } else {
-              alertEl.hidden = true;
-              alertEl.textContent = '';
-              alertEl.removeAttribute('aria-label');
+              alertEl.classList.remove('stage-places-alert--urgent');
+              alertEl.textContent = formatStageAvailableLine(remaining, unit);
+              alertEl.setAttribute('aria-label', formatStageAvailableAria(remaining, unit));
             }
           }
         }
@@ -1560,7 +1566,7 @@
   // 2) Clic n'importe où sur le recto (hors boutons) → déroule le verso
   document.querySelectorAll('.atelier-card .flip-container .flip-front').forEach(front => {
     front.addEventListener('click', e => {
-      if (e.target.closest('.btn-inscription, .btn-waitlist, a')) return;
+      if (e.target.closest('.btn-inscription, .btn-waitlist, a, .stage-places-alert')) return;
       if (e.target.closest('.instructor-flip-container')) return;
       const flipContainer = front.closest('.flip-container');
       if (flipContainer) openStageVerso(flipContainer);

@@ -4762,11 +4762,14 @@ nav.primary a:hover {
   color: var(--navy);
   font-weight: 500;
   font-family: var(--font-body), "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
+}
+
+#stages .stage-places-alert--urgent {
   animation: price-pass-urgency-pulse 1.15s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #stages .stage-places-alert {
+  #stages .stage-places-alert--urgent {
     animation: none;
   }
 }

@@ -11,8 +11,8 @@ Status : **Implémenté** — données dans `assets/data/remaining-seats.json` (
 
 ## Comportement (SPEC)
 
-- Si `stages[id].remaining` est un **nombre entier** ≥ 0 : mise à jour du chip `.meta-chip-places-restantes`, ligne d’alerte `.stage-places-alert` (dans le footer recto, à droite de « S'inscrire au stage ») si `0 < remaining < 5` (seuil distinct des pass spectacles, &lt; 100), état **complet** (`.atelier-card.complet`) si `remaining ≤ 0` : au **recto**, `.stage-cta-complet-block--open-verso` « Complet » (clavier + clic → ouverture du verso) ; au **verso**, bouton **« Ça m'intéresse! »** pour la liste d’attente, sans bloc « Complet » dans le footer.
-- Unité **duos** : chip avec `data-capacity-unit="duos"` (stage famille) ; libellés « N duos », alertes « plus que N duos ».
+- Si `stages[id].remaining` est un **nombre entier** ≥ 0 : la ligne **`.stage-places-alert`** (dans le footer recto, à côté de « S'inscrire au stage ») affiche **« N places disponibles »** ou **« N duos disponibles »** dès `remaining ≥ 5` ; en dessous du **seuil 5** (strictement : `0 < remaining < 5`) : **« plus que N places / duos! »** avec le préfixe avertissement et l’animation d’urgence (classe `.stage-places-alert--urgent` ; désactivée si `prefers-reduced-motion: reduce`) ; **complet** (`.atelier-card.complet`) si `remaining ≤ 0` : au **recto**, `.stage-cta-complet-block--open-verso` « Complet » (clavier + clic → ouverture du verso) ; au **verso**, bouton **« Ça m'intéresse! »** pour la liste d’attente, sans bloc « Complet » dans le footer.
+- Unité **duos** : l’article du stage famille porte `data-capacity-unit="duos"` ; libellés **« N duos disponibles »** / **« plus que N duos! »** en cohérence.
 - Si `remaining` est **`null`** ou absent : **aucune** mise à jour dynamique pour cette carte (affichage HTML statique).
 
 ## Hors scope
