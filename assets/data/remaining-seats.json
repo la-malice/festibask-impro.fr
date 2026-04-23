@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-22T17:41:03.581Z",
+  "generatedAt": "2026-04-23T21:41:45.962Z",
   "source": "sheet",
   "passes": {
     "pass-vendredi": {
-      "remaining": 291
+      "remaining": 289
     },
     "pass-samedi": {
       "remaining": 272
@@ -14,10 +14,10 @@
   },
   "stages": {
     "atelier-vendredi-11h-initiation": {
-      "remaining": 0
+      "remaining": 9
     },
     "atelier-vendredi-14h-initiation": {
-      "remaining": 14
+      "remaining": 12
     },
     "atelier-samedi-10h-emotions-ecriture": {
       "remaining": 2
@@ -29,7 +29,7 @@
       "remaining": 12
     },
     "atelier-samedi-14h-free-form": {
-      "remaining": 9
+      "remaining": 10
     },
     "atelier-dimanche-10h30-famille": {
       "remaining": 7
