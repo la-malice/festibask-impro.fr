@@ -139,7 +139,7 @@
         { "source": "assets/img/logos/rtl2-logo.png", "out": "assets/img/logos/rtl2-logo.avif" },
         { "source": "assets/img/logos/logo-aperock.jpeg", "out": "assets/img/logos/logo-aperock.avif" },
         {
-          "source": "assets/img/logos/Logo_de_la_ville_d'Anglet_2010.jpg",
+          "source": "assets/img/logos/logo-anglet-source.png",
           "out": "assets/img/logos/logo-anglet.avif"
         }
       ]
