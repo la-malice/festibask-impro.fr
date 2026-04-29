@@ -1,20 +1,20 @@
 {
-  "generatedAt": "2026-04-26T20:47:35.033Z",
+  "generatedAt": "2026-04-29T05:42:46.757Z",
   "source": "sheet",
   "passes": {
     "pass-vendredi": {
-      "remaining": 278
+      "remaining": 274
     },
     "pass-samedi": {
-      "remaining": 268
+      "remaining": 263
     },
     "pass-dimanche": {
-      "remaining": 301
+      "remaining": 300
     }
   },
   "stages": {
     "atelier-vendredi-11h-initiation": {
-      "remaining": 4
+      "remaining": 5
     },
     "atelier-vendredi-14h-initiation": {
       "remaining": 12
