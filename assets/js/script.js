@@ -114,7 +114,8 @@
   const suissePlayers = [
     { name: 'Loïc Vazquez', role: 'Joueur', image: 'assets/img/long/suisse-loic-640w.avif', bio: '' },
     { name: 'Romain Genolet', role: 'Joueur', image: 'assets/img/long/suisse-romain-640w.avif', bio: '' },
-    { name: 'Virginie Van De Moortele', role: 'Joueuse', image: 'assets/img/long/suisse-virginie-640w.avif', bio: '' }
+    { name: 'Virginie Van De Moortele', role: 'Joueuse', image: 'assets/img/long/suisse-virginie-640w.avif', bio: '' },
+    { name: 'Sandrine Challet', role: 'Joueuse', image: 'assets/img/long/suisse-sandrine-640w.avif', bio: '' }
   ];
 
   // Révéler le header quand le hero sort du viewport

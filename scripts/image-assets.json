@@ -78,7 +78,8 @@
         { "source": "assets/img/sophie.png", "prefix": "belg-sophie-normand" },
         { "source": "assets/img/suisse-loic.png", "prefix": "suisse-loic" },
         { "source": "assets/img/suisse-romain.png", "prefix": "suisse-romain" },
-        { "source": "assets/img/suisse-virginie.png", "prefix": "suisse-virginie" }
+        { "source": "assets/img/suisse-virginie.png", "prefix": "suisse-virginie" },
+        { "source": "assets/img/suisse-sandrine.png", "prefix": "suisse-sandrine" }
       ]
     },
     {
