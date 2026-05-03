@@ -28,7 +28,7 @@ Code and changes must align with these. Do not document or implement behavior th
 ## Project-specific
 
 - **Témoignages:** Schema and usage are in `docs/temoignages-carousel.md`. Data: `assets/data/temoignages.json`. Do not invent fields; add only what the schema and script support.
-- **Portraits joueurs (sliders matchs / format long):** Dimensions, long/, responsive et spec `scripts/image-assets.json` dans `docs/portraits-carrousels.md`. Données en dur dans script.js ; images dans `assets/img/long/` (préfixes edf-*, malice-*, belg-*, suisse-*).
+- **Portraits joueurs (sliders matchs / format long):** Dimensions, long/, responsive et spec `scripts/image-assets.json` dans `docs/portraits-carrousels.md`. Données en dur dans script.js ; images dans `assets/img/long/` (préfixes edf-*, malice-*, belg-*, allstars-*).
 - **Build:** Sources live in repo; only `dist/` is built and deployed. Do not commit minified sources; build runs in CI (GitHub Actions) and locally via `npm run build`.
 - **Cache prod (CSS/JS/JSON, mobile/CDN) :** convention normative dans **docs/ARCH.md** (section *Cache busting et versioning des assets*). Incrémenter `?v=` sur `style.css` / `script.js` dans `index.html`, `TEMOIGNAGES_JSON_QUERY_BUST` pour `temoignages.json`, et `REMAINING_SEATS_JSON_QUERY_BUST` pour `remaining-seats.json` (pass spectacles + stages, même fichier) lors des déploiements concernés ; ne pas compter sur la seule purge Cloudflare pour les navigateurs.
 - **Malix:** Mini-jeu enfant sous /malix ; spec dans docs/SPEC-Malix.md. Strictement isolé du site principal (aucun code Malix dans index.html, script.js, style.css ; chargement uniquement sous /malix).

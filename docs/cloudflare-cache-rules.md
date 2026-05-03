@@ -21,7 +21,7 @@ Référence des règles à configurer dans Cloudflare pour optimiser le cache (S
 | 7 | URI Path | contains | `festival-2026/headliners` |
 | 8 | URI Path | contains | `assets/video`         |
 | 9 | URI Path | contains | `equipe-belgique`      |
-| 10 | URI Path | contains | `equipe-suisse`       |
+| 10 | URI Path | contains | `equipe-all-stars`    |
 
 **Then :**
 
@@ -81,13 +81,13 @@ Lors des déploiements, invalidation manuelle du cache Cloudflare ou versioning 
 
 ## Images responsives (variantes 320w, 442w, poster hero, fond)
 
-Les variantes d’images utilisées pour PageSpeed (équipes Belgique/Suisse, EDF Colisée, poster hero, fond 1920px) sont couvertes par la règle « Cache 30j » dès que le chemin correspond :
+Les variantes d’images utilisées pour PageSpeed (équipes Belgique / All Stars, EDF Colisée, poster hero, fond 1920px) sont couvertes par la règle « Cache 30j » dès que le chemin correspond :
 
 - **hero-video-poster** (contains) → `hero-video-poster-336w.avif`, `hero-video-poster-672w.avif`
 - **image-fond-01** (contains) → `image-fond-01_1920px.avif`, `image-fond-01_4000px.avif`
-- **assets/img/long/** (contains) → spectacles (edf-colisee-442w.avif, braquage, commis-d-office, promo-2006), image de fond (`image-fond-01_1920px.avif`), doodles hero (`doodles-top.avif`, `doodles-bottom.avif`), photos instructeurs (quentin-ostanel, laetitia-landelle, emilie-coeurdevache, anneke-bossis), portraits joueurs (edf-*, malice-*, belg-*, suisse-*-320w/442w/640w.avif), variantes equipe-belgique (320w, 442w, 640w), poster hero (festibask-impro__logo_ss-baseline_fd-fonce-720w.avif, 800w.avif), logos sociaux 49w (Instagram_Glyph_Gradient-49w.avif, Facebook_Logo_Primary-49w.avif), etc.
+- **assets/img/long/** (contains) → spectacles (edf-colisee-442w.avif, braquage, commis-d-office, promo-2006), image de fond (`image-fond-01_1920px.avif`), doodles hero (`doodles-top.avif`, `doodles-bottom.avif`), photos instructeurs (quentin-ostanel, laetitia-landelle, emilie-coeurdevache, anneke-bossis), portraits joueurs (edf-*, malice-*, belg-*, allstars-*-320w/442w/640w.avif), variantes equipe-belgique (320w, 442w, 640w), poster hero (festibask-impro__logo_ss-baseline_fd-fonce-720w.avif, 800w.avif), logos sociaux 49w (Instagram_Glyph_Gradient-49w.avif, Facebook_Logo_Primary-49w.avif), etc.
 - **equipe-belgique** (contains) → les variantes sont désormais sous `assets/img/long/` (320w, 442w, 640w) et donc couvertes par la règle `assets/img/long/` ci-dessus. La condition « equipe-belgique » reste utile si d’autres URLs (hors long/) contiennent encore ce segment.
-- **equipe-suisse** (contains) → `equipe-suisse-320w.avif`, `equipe-suisse-640w.avif`, `equipe-suisse-320w.jpg`, `equipe-suisse-640w.jpg`, etc.
+- **equipe-all-stars** (contains) → `equipe-all-stars-320w.avif`, `equipe-all-stars-640w.avif`, `equipe-all-stars-320w.jpg`, `equipe-all-stars-640w.jpg`, etc.
 
 ---
 

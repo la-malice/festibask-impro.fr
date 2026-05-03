@@ -1,0 +1,11 @@
+<svg width="160" height="90" viewBox="0 0 160 90" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fond #FF0000, 5 etoiles blanches en quinconce (paths dupliques : <use> casse en <img> sur WebKit) -->
+  <rect width="160" height="90" fill="#FF0000"/>
+  <g fill="#FFFFFF">
+    <path transform="translate(38 34)" d="M0,-11 L2.64,-3.42 L10.65,-3.42 L4.01,1.31 L6.18,10.58 L0,5.45 L-6.18,10.58 L-4.01,1.31 L-10.65,-3.42 L-2.64,-3.42 Z"/>
+    <path transform="translate(80 34)" d="M0,-11 L2.64,-3.42 L10.65,-3.42 L4.01,1.31 L6.18,10.58 L0,5.45 L-6.18,10.58 L-4.01,1.31 L-10.65,-3.42 L-2.64,-3.42 Z"/>
+    <path transform="translate(122 34)" d="M0,-11 L2.64,-3.42 L10.65,-3.42 L4.01,1.31 L6.18,10.58 L0,5.45 L-6.18,10.58 L-4.01,1.31 L-10.65,-3.42 L-2.64,-3.42 Z"/>
+    <path transform="translate(59 58)" d="M0,-11 L2.64,-3.42 L10.65,-3.42 L4.01,1.31 L6.18,10.58 L0,5.45 L-6.18,10.58 L-4.01,1.31 L-10.65,-3.42 L-2.64,-3.42 Z"/>
+    <path transform="translate(101 58)" d="M0,-11 L2.64,-3.42 L10.65,-3.42 L4.01,1.31 L6.18,10.58 L0,5.45 L-6.18,10.58 L-4.01,1.31 L-10.65,-3.42 L-2.64,-3.42 Z"/>
+  </g>
+</svg>

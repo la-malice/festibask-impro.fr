@@ -2828,7 +2828,7 @@ nav.primary a:hover {
   padding: 0;
 }
 
-/* Match image-left : titre centré dans la zone bleue (Belgique, France, Suisse) */
+/* Match image-left : titre centré dans la zone bleue (Belgique, France, All Stars) */
 @media (min-width: 769px) {
   #spectacle-vendredi-match.match-block.image-left .match-zone-text .match-label,
   #spectacle-samedi-match.match-block.image-left .match-zone-text .match-label,
@@ -2973,6 +2973,28 @@ nav.primary a:hover {
   border: 1px solid rgba(255, 255, 255, 0.9);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(4px);
+}
+
+/* À l'affiche (#valeur) — matchs : fond noir, logos sans liseré blanc, +30 % (100→130, 90→117 en mobile) */
+#valeur .match-block {
+  background: #000;
+  background-color: #000;
+  backdrop-filter: none;
+}
+
+#valeur .match-block:hover {
+  background: #000;
+}
+
+#valeur .match-team-logo img {
+  width: 130px;
+  height: 130px;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  box-shadow: none;
+  background: transparent;
+  backdrop-filter: none;
 }
 
 .match-block.flipped .match-teams-overlay {
@@ -3978,9 +4000,13 @@ nav.primary a:hover {
   }
 
   #valeur .match-team-logo img {
-    width: 90px;
-    height: 90px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+    width: 117px;
+    height: 117px;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    backdrop-filter: none;
   }
 
   #valeur .match-vs {

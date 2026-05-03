@@ -1,10 +1,10 @@
 # Portraits joueurs — sliders matchs et format long
 
-Documentation des images portrait utilisées dans les carrousels/sliders des équipes (EDF, La Malice, Belgique, Suisse) et du cast Commis d'Office.
+Documentation des images portrait utilisées dans les carrousels/sliders des équipes (EDF, La Malice, Belgique, All Stars) et du cast Commis d'Office.
 
 ## Périmètre
 
-- **Sliders joueurs** : Équipe de France (`edfPlayers`), La Malice samedi (`maliceSamediPlayers`), Belgique (`belgPlayers`), Suisse (`suissePlayers`), cast Commis d'Office (`commisDOfficeCast`).
+- **Sliders joueurs** : Équipe de France (`edfPlayers`), La Malice samedi (`maliceSamediPlayers`), Belgique (`belgPlayers`), All Stars dimanche (`allStarsPlayers`), cast Commis d'Office (`commisDOfficeCast`).
 - **Emplacement** : données en dur dans `assets/js/script.js` ; images dans `assets/img/long/` (cache long Cloudflare).
 
 ## Dimensions et format
@@ -34,6 +34,6 @@ Pour ajouter une équipe ou un joueur : ajouter un objet `{ "source", "prefix" }
 | EDF                 | edf-aurelie-desert, edf-cecile-giroud, … | edf-aurelie-desert.png, …      |
 | La Malice / Commis  | malice-stephanie-balligand, malice-olivier-lebailly, … | malice-*.png                   |
 | Belgique            | belg-adrien, belg-francois, belg-sophie-normand, … | adrien.png → belg-adrien, …    |
-| Suisse              | suisse-loic, suisse-romain, suisse-virginie | suisse-*.png                   |
+| All Stars (dimanche) | allstars-quentin-ostanel, allstars-laetitia-landelle, allstars-loraine, allstars-jeremy, allstars-carole-bertrand | quentin.png / laetitia.png / loraine.png / jeremy.png / carole-bertrand.png |
 
 Voir le job `player-portraits` dans `scripts/image-assets.json` pour la liste à jour.

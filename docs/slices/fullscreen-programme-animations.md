@@ -16,7 +16,7 @@ We do not rework or replace this; we only add capabilities on top of it.
 ## Current state (for context)
 
 - **Fullscreen:** `index.html` `#programFullscreenContainer`, `assets/js/script.js` ~L1226–1418. Three-day grid, day cards, slot buttons; click day → active day; click slot → selection/overshadow. No per-block animation/carousel and no time-based behaviour yet.
-- **Programme blocks:** Slots per day include ateliers, format long (Braquage, Commis d'Office, Promo 2006), matchs (Belgique, EDF, Suisse), pauses, accueil, “à demain”, “soirée musicale” (Samedi), etc.
+- **Programme blocks:** Slots per day include ateliers, format long (Braquage, Commis d'Office, Promo 2006), matchs (Belgique, EDF, All Stars), pauses, accueil, “à demain”, “soirée musicale” (Samedi), etc.
 
 ## Slice goal
 

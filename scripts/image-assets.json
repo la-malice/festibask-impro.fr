@@ -76,54 +76,55 @@
         { "source": "assets/img/julie.png", "prefix": "belg-julie" },
         { "source": "assets/img/marielle.png", "prefix": "belg-marielle" },
         { "source": "assets/img/sophie.png", "prefix": "belg-sophie-normand" },
-        { "source": "assets/img/suisse-loic.png", "prefix": "suisse-loic" },
-        { "source": "assets/img/suisse-romain.png", "prefix": "suisse-romain" },
-        { "source": "assets/img/suisse-virginie.png", "prefix": "suisse-virginie" },
-        { "source": "assets/img/suisse-sandrine.png", "prefix": "suisse-sandrine" }
+        { "source": "assets/img/quentin.png", "prefix": "allstars-quentin-ostanel" },
+        { "source": "assets/img/laetitia.png", "prefix": "allstars-laetitia-landelle" },
+        { "source": "assets/img/loraine.png", "prefix": "allstars-loraine" },
+        { "source": "assets/img/jeremy.png", "prefix": "allstars-jeremy" },
+        { "source": "assets/img/carole-bertrand.png", "prefix": "allstars-carole-bertrand" }
       ]
     },
     {
-      "id": "equipe-suisse",
+      "id": "equipe-all-stars",
       "mode": "coverBatch",
-      "source": "assets/img/equipe-suisse.png",
+      "source": "assets/img/equipe-all-stars.png",
       "outputs": [
         {
-          "path": "assets/img/long/equipe-suisse-320w.avif",
+          "path": "assets/img/long/equipe-all-stars-320w.avif",
           "width": 320,
           "height": 180,
           "quality": 80,
           "format": "avif"
         },
         {
-          "path": "assets/img/long/equipe-suisse-442w.avif",
+          "path": "assets/img/long/equipe-all-stars-442w.avif",
           "width": 442,
           "height": 249,
           "quality": 80,
           "format": "avif"
         },
         {
-          "path": "assets/img/long/equipe-suisse-640w.avif",
+          "path": "assets/img/long/equipe-all-stars-640w.avif",
           "width": 640,
           "height": 360,
           "quality": 80,
           "format": "avif"
         },
         {
-          "path": "assets/img/equipe-suisse-320w.jpg",
+          "path": "assets/img/equipe-all-stars-320w.jpg",
           "width": 320,
           "height": 180,
           "quality": 85,
           "format": "jpeg"
         },
         {
-          "path": "assets/img/equipe-suisse-640w.jpg",
+          "path": "assets/img/equipe-all-stars-640w.jpg",
           "width": 640,
           "height": 360,
           "quality": 85,
           "format": "jpeg"
         },
         {
-          "path": "assets/img/equipe-suisse.jpg",
+          "path": "assets/img/equipe-all-stars.jpg",
           "width": 640,
           "height": 360,
           "quality": 88,

@@ -88,8 +88,8 @@
     { name: 'Viviane Herouard', role: 'Joueuse', image: 'assets/img/long/malice-viviane-herouard-640w.avif', bio: '' }
   ];
 
-  // La Malice — match vs Suisse (équipe locale, après la Suisse dans le slider)
-  const maliceVsSuissePlayers = [
+  // La Malice — match vs All Stars (équipe locale, après les All Stars dans le slider)
+  const maliceVsAllStarsPlayers = [
     { name: 'Émilie Coeurdevache', role: 'MC', image: 'assets/img/long/malice-emilie-coeurdevache-640w.avif', bio: '' },
     { name: 'Bruno Cellan', role: 'Arbitre', image: 'assets/img/long/malice-bruno-cellan-640w.avif', bio: '' },
     { name: 'Aurélien Silvestre', role: 'Arbitre\nassistant', image: 'assets/img/long/malice-aurelien-silvestre-640w.avif', bio: '' },
@@ -110,12 +110,13 @@
     { name: 'Sophie Normand', image: 'assets/img/long/belg-sophie-normand-640w.avif', bio: 'Depuis plus de dix ans, Sophie navigue dans l\'impro comme une tour de contrôle : calme, précise, elle transforme le moindre détail en récit cohérent. Elle écoute, relie et équilibre pour faire décoller les histoires. Sous sa rigueur, une Sophie délicieusement déjantée : voix improbables, personnages barrés. Carrée et folle, toujours au service du jeu.' }
   ];
 
-  // Données des joueurs de l'Équipe de Suisse — portraits AVIF responsive (long/)
-  const suissePlayers = [
-    { name: 'Loïc Vazquez', role: 'Joueur', image: 'assets/img/long/suisse-loic-640w.avif', bio: '' },
-    { name: 'Romain Genolet', role: 'Joueur', image: 'assets/img/long/suisse-romain-640w.avif', bio: '' },
-    { name: 'Virginie Van De Moortele', role: 'Joueuse', image: 'assets/img/long/suisse-virginie-640w.avif', bio: '' },
-    { name: 'Sandrine Challet', role: 'Joueuse', image: 'assets/img/long/suisse-sandrine-640w.avif', bio: '' }
+  // All Stars (dimanche) — coaches des ateliers — portraits AVIF responsive (long/)
+  const allStarsPlayers = [
+    { name: 'Quentin Ostanel', image: 'assets/img/long/allstars-quentin-ostanel-640w.avif', bio: '' },
+    { name: 'Laëtitia Landelle', image: 'assets/img/long/allstars-laetitia-landelle-640w.avif', bio: '' },
+    { name: 'Loraine Bégard', image: 'assets/img/long/allstars-loraine-640w.avif', bio: '' },
+    { name: 'Jeremy Belhadj', image: 'assets/img/long/allstars-jeremy-640w.avif', bio: '' },
+    { name: 'Carole Bertrand', image: 'assets/img/long/allstars-carole-bertrand-640w.avif', bio: '' }
   ];
 
   // Révéler le header quand le hero sort du viewport
@@ -1695,9 +1696,9 @@
       type: 'match',
       time: '20:00',
       label: 'Match',
-      title: 'La Malice vs Suisse',
-      image: 'assets/img/long/equipe-suisse-640w.avif',
-      pitch: '' // à remplir quand reçu
+      title: 'La Malice vs All Stars',
+      image: 'assets/img/match-malice-vs-all-stars.png',
+      pitch: 'Ce soir, La Malice affronte les All Stars : la fine fleur des coaches de la Côte basque qui animent les ateliers du festival — Quentin Ostanel, Laëtitia Landelle, Loraine Bégard, Jeremy Belhadj et Carole Bertrand. Des années de cours, le même goût du jeu : l\'heure du face-à-face est arrivée. Match d\'impro sous les codes du hockey sur glace : deux équipes, un arbitre, des rounds courts, le public aux premières loges.'
     }
   };
   
@@ -1771,11 +1772,11 @@
     return match ? match[0].trim() : stripped;
   }
 
-  /** Masque le libellé générique Joueur / Joueuse ; les autres rôles (MC, Arbitre, etc.) restent affichés. */
+  /** Masque Joueur / Joueuse / Coach ; les autres rôles (MC, Arbitre, etc.) restent affichés. */
   function shouldShowSpectacleRoleLine(role) {
     if (!role || typeof role !== 'string') return false;
     const norm = role.replace(/\s+/g, ' ').trim();
-    return !/^Joueur$/i.test(norm) && !/^Joueuse$/i.test(norm);
+    return !/^Joueur$/i.test(norm) && !/^Joueuse$/i.test(norm) && !/^Coach$/i.test(norm);
   }
 
   /** Règle générale : prénom (1re ligne) puis nom (2e ligne), au premier espace — tous les joueurs du slider + titre calque bio */
@@ -2307,7 +2308,7 @@
       const blockId = block.id;
       const isFranceMatch = blockId === 'spectacle-samedi-match';
       const isBelgiumMatch = blockId === 'spectacle-vendredi-match';
-      const isSuisseMatch = blockId === 'spectacle-dimanche-match';
+      const isAllStarsMatch = blockId === 'spectacle-dimanche-match';
 
       if (blockId && window.posthog) {
         var spectacleName = spectaclesData && spectaclesData[blockId] ? spectaclesData[blockId].title : '';
@@ -2326,11 +2327,11 @@
           { omitIntro: true, players: belgPlayers },
           { omitIntro: true, players: maliceVsBelgiquePlayers }
         ], originalImageSrc);
-      } else if (isSuisseMatch && suissePlayers && suissePlayers.length > 0 && maliceVsSuissePlayers && maliceVsSuissePlayers.length > 0) {
+      } else if (isAllStarsMatch && allStarsPlayers && allStarsPlayers.length > 0 && maliceVsAllStarsPlayers && maliceVsAllStarsPlayers.length > 0) {
         const originalImageSrc = getBlockImageSrc(block);
         initMatchSlider(block, [
-          { omitIntro: true, players: suissePlayers },
-          { omitIntro: true, players: maliceVsSuissePlayers }
+          { omitIntro: true, players: allStarsPlayers },
+          { omitIntro: true, players: maliceVsAllStarsPlayers }
         ], originalImageSrc);
       } else if (blockId && spectaclesData && spectaclesData[blockId]) {
         initSpectacleSingleSlide(block, spectaclesData[blockId]);
