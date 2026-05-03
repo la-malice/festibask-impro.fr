@@ -5967,6 +5967,14 @@ nav.primary a:hover {
   }
 }
 
+/* Programme : matchs Malice vs … — fond noir colonne image ; contain pour ne pas rogner les marges du carré 512 */
+#spectacle-malice-vs-belgique.slot-spectacle .slot-image,
+#spectacle-malice-vs-france.slot-spectacle .slot-image,
+#spectacle-malice-vs-all-stars.slot-spectacle .slot-image {
+  background-color: #000;
+  object-fit: contain;
+}
+
 /* Liseret festif (soirée musicale, etc.) = même famille que "autres" */
 .slot-festif {
   background: rgba(33, 66, 143, 0.15);
