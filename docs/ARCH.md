@@ -65,7 +65,7 @@ Les navigateurs (notamment sur mobile) et le CDN peuvent conserver longtemps des
 ## Dependencies
 
 - **Internal:** index.html references assets/css, assets/js, assets/img, assets/data, assets/video; script.js fetches `temoignages.json` et `remaining-seats.json` and manipulates DOM; no internal modules.
-- **External:** Brevo (cdn.brevo.com/js/sdk-loader.js), Sibforms (forms, styles, main.js), PostHog (snippet in index.html; ingestion via reverse proxy Cloudflare Worker, code in worker-posthog/, deploy via Wrangler; api_host points to proxy, ui_host to eu.posthog.com; see docs/analytics-posthog.md for custom events), Google Fonts. No npm runtime deps; devDependencies: vite, postcss, postcss-cli, cssnano, purgecss, terser.
+- **External:** Brevo (cdn.brevo.com/js/sdk-loader.js), Sibforms (forms, styles, main.js), PostHog (snippet in index.html; ingestion via Managed Reverse Proxy PostHog on `https://festibask-impro.fr`; `ui_host` sur `https://eu.posthog.com`; voir `docs/analytics-posthog.md` pour les événements custom). Le dossier `worker-posthog/` est conservé en legacy pour rollback (non standard en exploitation). Google Fonts. No npm runtime deps; devDependencies: vite, postcss, postcss-cli, cssnano, purgecss, terser.
 
 ## Key Files and Directories
 
