@@ -4770,6 +4770,12 @@ nav.primary a:hover {
   border-radius: 14px;
 }
 
+#stages .atelier-card .meta-chip.meta-chip--wrap {
+  white-space: normal;
+  line-height: 1.25;
+  max-width: 100%;
+}
+
 /* Stages : alerte places restantes — recto, à droite du bouton « S'inscrire au stage » */
 #stages .atelier-card .flip-front .footer.stage-footer-recto {
   justify-content: flex-start;
