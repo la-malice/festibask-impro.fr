@@ -1,9 +1,8 @@
-# Reverse proxy PostHog (Cloudflare Worker) — legacy
+# Reverse proxy PostHog (Cloudflare Worker) — standard
 
-Ce document est conservé à titre de **référence legacy / rollback**.
-Le chemin principal en production utilise désormais le **Managed Reverse Proxy PostHog** avec `api_host: 'https://festibask-impro.fr'` dans `index.html`.
-
-Le reverse proxy via Cloudflare Worker (ex. `e.festibask-impro.fr`) n’est plus la configuration standard.
+Ce document décrit la configuration standard du proxy PostHog en production.
+Le chemin principal utilise le reverse proxy via Cloudflare Worker sur le sous-domaine dédié `e.festibask-impro.fr` avec `api_host: 'https://e.festibask-impro.fr'` dans `index.html`.
+Le domaine principal `festibask-impro.fr` reste réservé au site (GitHub Pages) et ne doit pas être utilisé comme `api_host` PostHog.
 
 Le code source du Worker est dans [worker-posthog/src/index.js](../worker-posthog/src/index.js). Déploiement via Wrangler depuis le dossier `worker-posthog/`.
 
@@ -13,9 +12,9 @@ Référence : [PostHog – Cloudflare reverse proxy](https://posthog.com/docs/ad
 
 ## Statut
 
-- **Statut actuel:** déprécié (legacy).
-- **Usage autorisé:** uniquement en cas de rollback ou de diagnostic ciblé.
-- **Ne plus déployer par défaut** depuis `worker-posthog/` tant que le Managed Reverse Proxy fonctionne.
+- **Statut actuel:** standard en production.
+- **Usage autorisé:** exploitation courante + diagnostic.
+- **Déploiement:** via `worker-posthog/` (Wrangler) pour maintenir le proxy `e.festibask-impro.fr`.
 
 ---
 
@@ -26,7 +25,7 @@ Référence : [PostHog – Cloudflare reverse proxy](https://posthog.com/docs/ad
 
 ---
 
-## 1. Procédure de rollback (si nécessaire)
+## 1. Déploiement / redéploiement
 
 1. Cloner le repo (ou se placer dans le dossier du projet).
 2. Aller dans le dossier du Worker : `cd worker-posthog`
@@ -64,11 +63,11 @@ Si des erreurs CORS apparaissent en production (ex. `No 'Access-Control-Allow-Or
 
 ---
 
-## 6. Vérification (mode rollback)
+## 6. Vérification
 
 1. Ouvrir le site en production (ou une preview) avec les DevTools → onglet **Network**.
 2. Déclencher une pageview ou un événement (navigation, clic, etc.).
 3. Vérifier qu’il existe des requêtes vers `e.festibask-impro.fr` avec réponse **200 OK**.
 4. Dans l’app PostHog (eu.posthog.com), confirmer que les événements arrivent bien.
 
-En mode rollback, vérifier que `index.html` contient `api_host: 'https://e.festibask-impro.fr'` et `ui_host: 'https://eu.posthog.com'` dans l’appel à `posthog.init()`.
+Vérifier que `index.html` contient `api_host: 'https://e.festibask-impro.fr'` et `ui_host: 'https://eu.posthog.com'` dans l’appel à `posthog.init()`.

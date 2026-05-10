@@ -2,8 +2,8 @@
 
 ## Objectif
 
-Suivi des visites et des actions clés (conversions, engagement) sur le site Festibask'Impro via PostHog. Le snippet PostHog est chargé dans `index.html` ; l’ingestion passe par le **Managed Reverse Proxy PostHog** sur le domaine principal (`api_host: https://festibask-impro.fr`), l’API PostHog cible restant la région EU (`ui_host: https://eu.posthog.com`).  
-Le proxy Cloudflare Worker (`worker-posthog/`) est conservé en **legacy** uniquement pour rollback ; voir [posthog-cloudflare-proxy.md](posthog-cloudflare-proxy.md).
+Suivi des visites et des actions clés (conversions, engagement) sur le site Festibask'Impro via PostHog. Le snippet PostHog est chargé dans `index.html` ; l’ingestion passe par le reverse proxy sur le sous-domaine dédié `https://e.festibask-impro.fr` (`api_host`), l’API PostHog cible restant la région EU (`ui_host: https://eu.posthog.com`).  
+Le proxy est servi par le Worker Cloudflare (`worker-posthog/`) ; voir [posthog-cloudflare-proxy.md](posthog-cloudflare-proxy.md).
 Ce document décrit le catalogue des événements envoyés au backend.
 
 ## Événements automatiques
