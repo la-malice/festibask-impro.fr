@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-04-30T16:29:53.292Z",
+  "generatedAt": "2026-05-10T13:39:07.834Z",
   "source": "sheet",
   "passes": {
     "pass-vendredi": {
-      "remaining": 274
+      "remaining": 162
     },
     "pass-samedi": {
-      "remaining": 258
+      "remaining": 163
     },
     "pass-dimanche": {
-      "remaining": 300
+      "remaining": 266
     }
   },
   "stages": {
@@ -17,25 +17,25 @@
       "remaining": 0
     },
     "atelier-vendredi-14h-initiation": {
-      "remaining": 8
+      "remaining": 3
     },
     "atelier-samedi-10h-emotions-ecriture": {
-      "remaining": 2
+      "remaining": 1
     },
     "atelier-samedi-10h-eeet-action": {
-      "remaining": 11
+      "remaining": 10
     },
     "atelier-samedi-14h-emotions-musique": {
-      "remaining": 12
+      "remaining": 8
     },
     "atelier-samedi-14h-free-form": {
       "remaining": 9
     },
     "atelier-dimanche-10h30-famille": {
-      "remaining": 6
+      "remaining": 5
     },
     "atelier-dimanche-13h30-ados": {
-      "remaining": 11
+      "remaining": 9
     }
   }
 }
