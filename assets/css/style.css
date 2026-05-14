@@ -9130,6 +9130,30 @@ input:focus {
   display: none;
 }
 
+#malix-doodle-popin .malix-doodle-popin-lead {
+  margin: 1.1rem 0 0;
+}
+
+#malix-doodle-popin .malix-doodle-popin-cta-wrap {
+  margin: 1.25rem 0 0;
+  text-align: center;
+}
+
+/* CTA bouton : ne pas hériter du style « lien » de .tooltip-popup-charte a */
+#malix-doodle-popin a.malix-doodle-popin-cta.btn.btn-primary {
+  border-bottom: none;
+  text-decoration: none;
+  color: var(--white);
+  font-weight: 700;
+}
+
+#malix-doodle-popin a.malix-doodle-popin-cta.btn.btn-primary:hover,
+#malix-doodle-popin a.malix-doodle-popin-cta.btn.btn-primary:focus {
+  border-bottom: none;
+  text-decoration: none;
+  color: var(--white);
+}
+
 .tooltip-popup-charte a {
   color: var(--cyan);
   font-weight: 600;
