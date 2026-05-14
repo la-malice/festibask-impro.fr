@@ -80,6 +80,6 @@ Le script ne lit **pas** la case à cocher de l’UI : il applique les **mots-cl
 ## Chaîne vers le site
 
 1. Apps Script met à jour le Sheet → CSV publié inchangé en URL.
-2. CI GitHub (`SHEET_CSV_URL`) → `npm run build:places` → `remaining-seats.json` → déploiement (voir `.github/workflows/pages.yml` : **toutes les 15 min** hors **01h–08h Europe/Paris** en équivalent UTC ; `push` / `workflow_dispatch` possibles à tout moment).
+2. CI GitHub (`SHEET_CSV_URL`) → `npm run build:places` → `remaining-seats.json` → déploiement (voir `.github/workflows/pages.yml` : **toutes les 15 min** hors **01h–08h Europe/Paris** ; `push` / `workflow_dispatch` possibles à tout moment).
 
 Voir aussi [places-stages-ateliers.md](places-stages-ateliers.md) et [ARCH.md](../ARCH.md).
