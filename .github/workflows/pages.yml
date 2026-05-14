@@ -5,8 +5,13 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
   schedule:
-    # Republier le site pour rafraîchir remaining-seats.json depuis le CSV (secret SHEET_CSV_URL)
-    - cron: "25 * * * *"
+    # Republier le site pour rafraîchir remaining-seats.json depuis le CSV (secret SHEET_CSV_URL).
+    # Toutes les 15 min. « Nuit » = pas de runs quand il est entre **01h et 08h (Europe/Paris)**.
+    # GitHub cron = **UTC** uniquement. En **heure d’été (CEST, UTC+2)** : 01h–08h Paris ↔ **23h–05h UTC**
+    # → runs aux heures UTC **6–22** inclus (`*/15 6-22`). Premier run « jour » ≈ **08h00 Paris**, dernier ≈ **00h45** Paris.
+    # En **heure d’hiver (CET, UTC+1)** la même plage UTC décale d’1 h côté Paris (premier run ≈ 09h) ; pour coller au 08h Paris en hiver, remplacer par `*/15 7-23 * * *`.
+    # Hors créneau : aucun run planifié ; un push sur main ou workflow_dispatch déclenche toujours un build.
+    - cron: "*/15 6-22 * * *"
 
 permissions:
   contents: read

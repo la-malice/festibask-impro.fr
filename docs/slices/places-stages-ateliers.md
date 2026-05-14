@@ -1,7 +1,7 @@
 # Places restantes — stages / ateliers
 
 Slice : **Affichage des places sur les cartes atelier** à partir du même fichier que les pass spectacles.  
-Status : **Implémenté** — données dans `assets/data/remaining-seats.json` (`stages`), alimentées manuellement via le **Google Sheet** (CSV publié) au build ; pas d’API HelloAsso.
+Status : **Implémenté** — données dans `assets/data/remaining-seats.json` (`stages`), alimentées via le **Google Sheet** (CSV publié) au build. Les **totaux billetterie HelloAsso** dans le Sheet peuvent être mis à jour automatiquement (Google Apps Script + API OAuth, hors site) : voir [helloasso-jauge-sync.md](helloasso-jauge-sync.md).
 
 ## Source de données
 
@@ -17,7 +17,7 @@ Status : **Implémenté** — données dans `assets/data/remaining-seats.json` (
 
 ## Hors scope
 
-- Pas d’intégration API HelloAsso pour cette slice ; la billetterie est consultée manuellement et les valeurs sont saisies dans le Sheet.
+- Le **site** et le **build** n’appellent pas l’API HelloAsso. Toute automatisation HelloAsso vit dans le **Sheet** (Apps Script) ; périmètre et règles : [helloasso-jauge-sync.md](helloasso-jauge-sync.md).
 
 ## Critères de validation
 

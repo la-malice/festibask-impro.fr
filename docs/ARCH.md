@@ -10,6 +10,7 @@ Static site: `index.html` (accueil) et `video/index.html` (watch page pour la vi
 
 ```
 Sources (index.html, assets/) → build:places (CSV → remaining-seats.json si SHEET_CSV_URL) → copy-to-dist → dist/
+  (optionnel : Google Apps Script + API HelloAsso met à jour le Sheet en amont du CSV — voir docs/slices/helloasso-jauge-sync.md)
                                          → PurgeCSS → dist/assets/css/style.css
                                          → PostCSS (cssnano) → same
                                          → Terser(assets/js/script.js) → dist/assets/js/script.js
@@ -26,12 +27,13 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 | **Scripts** | Header, countdown, hero video (YouTube iframe or self-hosted &lt;video&gt; per HTML config), nav, modals, sliders, carousel, tooltips, fullscreen | assets/js/script.js |
 | **Data** | Testimonials (carousel), hero video schedule (optional), places pass spectacles + stages (JSON) | assets/data/temoignages.json, assets/data/hero-video-schedule.json, assets/data/remaining-seats.json |
 | **Places spectacles + stages (build)** | Si `SHEET_CSV_URL` est défini, télécharge le CSV publié Google Sheets et écrit `assets/data/remaining-seats.json` (`passes` et, si le CSV contient une colonne `id`/`cle`, `stages`) avant la copie vers `dist/` | scripts/build-places-from-sheet.mjs (`npm run build:places`) |
+| **Sync HelloAsso → Sheet (hors build)** | Optionnel : Google Apps Script (dans le Sheet) appelle l’API HelloAsso OAuth et met à jour les cellules de jauge ; source versionnée dans le dépôt pour reprise / revue | `scripts/google-apps-script/helloasso-jauge-sync.gs` ; spec `docs/slices/helloasso-jauge-sync.md` |
 | **Copy build** | Copy index.html, video/, sitemap.xml, sitemap-video.xml, CNAME, favicons, robots, sw.js, assets, festival-2026, PDFs to dist/ ; optionnellement remplacer `dist/malix/assets/access-config.js` par `malix/assets/access-config.local.js` si présent | scripts/copy-to-dist.js |
 | **PurgeCSS** | Remove unused CSS for dist; safelist dynamic classes | purgecss.config.js |
 | **PostCSS** | Minify CSS (cssnano) | postcss.config.js |
 | **Terser** | Minify JS (invoked in npm run build on source script.js → dist) | npm script |
 | **PWA / Brevo** | Service worker loads Brevo by query key | sw.js (root) |
-| **CI/CD** | Build and deploy to GitHub Pages | .github/workflows/pages.yml |
+| **CI/CD** | Build et déploiement GitHub Pages ; rafraîchissement planifié du CSV places (voir `pages.yml`, cron UTC) | .github/workflows/pages.yml |
 | **Mini-jeu Malix** | App autonome sous /malix ; HTML/CSS/JS propres ; 27 SVG doodles ; stockage local | malix/ (dans dist après build) ; spec docs/SPEC-Malix.md |
 | **Malix trade-session** | Session d’échange P2P: signalisation WebRTC par QR (offer/answer), DataChannel pour synchronisation directe, fallback QR court sans backend | malix/assets/trade-session.js |
 
@@ -41,7 +43,7 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 - **Dev:** Vite (root, port 8000, open browser); serves index.html and assets as-is. Script `scripts/start-dev.sh` runs Vite with `--host` for access from the LAN (e.g. mobile on same Wi‑Fi).
 - **Front-end:** Vanilla HTML/CSS/JS; no framework. Google Fonts (Hubot Sans) loaded async. Styles follow the graphic charter (Hubot Sans hierarchy, 6-color palette); see docs/slices/charte-graphique.md.
 - **Data:** Static JSON (temoignages); EDF players and spectacle data in script.js.
-- **Deploy:** GitHub Actions (ubuntu-latest, Node 20); artifact `dist/` → deploy-pages. Environment: github-pages.
+- **Deploy:** GitHub Actions (ubuntu-latest, Node 20); artifact `dist/` → deploy-pages. Environment: github-pages. Planification `schedule` dans `.github/workflows/pages.yml` : **UTC** — en principe **toutes les 15 min** hors fenêtre **01h–08h Europe/Paris** (détail et décalage hiver / été dans le fichier) ; **push** `main` ou **workflow_dispatch** à tout moment.
 - **Malix:** Application statique dans `dist/malix/` (index.html, assets dédiés, copies des 27 doodles). Aucun impact sur index.html ni sur le bundle principal (script.js, style.css). Le build inclut `malix/` dans `dist/`. La config d’accès du garde (`malix/assets/access-config.js`) est versionnée avec les valeurs par défaut prod ; un override local non versionné (`malix/assets/access-config.local.js`) peut être injecté au build pour les tests dev.
 - **Malix échange:** WebRTC DataChannel prioritaire (signalisation par QR), fallback QR court ; aucun backend ni stockage serveur.
 
@@ -81,12 +83,13 @@ Les navigateurs (notamment sur mobile) et le CDN peuvent conserver longtemps des
 | assets/data/remaining-seats.json | Places restantes : `passes.*.remaining` (pass spectacles) et `stages.<id>.remaining` (cartes atelier, `id` = attribut HTML) ; `remaining` peut être `null` tant que non alimenté par le Sheet ; surchargé au build si `SHEET_CSV_URL` |
 | assets/img/, assets/video/, assets/fonts/, assets/favicon/ | Static assets |
 | scripts/build-places-from-sheet.mjs | CSV publié Google → `remaining-seats.json` (`npm run build:places`) ; format avec colonne `id`/`cle` pour fusionner lignes pass et stages |
+| scripts/google-apps-script/helloasso-jauge-sync.gs | Copie de référence du script **Google Apps Script** (OAuth HelloAsso, pagination commandes, écriture lignes jauge / colonne F) ; à coller dans le Sheet, pas exécuté par `npm run build` |
 | scripts/copy-to-dist.js | Copies site files into dist/ |
 | scripts/start-dev.sh | Runs Vite with --host for dev access from LAN (e.g. mobile) |
 | purgecss.config.js | Content: index.html, script.js; output: dist/assets/css/style.css; safelist for dynamic classes |
 | postcss.config.js | cssnano for dist CSS |
 | vite.config.js | Dev server only (root, port 8000) |
-| .github/workflows/pages.yml | Build on push to main; deploy Pages from dist |
+| .github/workflows/pages.yml | Build sur push `main`, `workflow_dispatch`, et `schedule` (rafraîchissement CSV → `dist/`, détail des heures UTC dans le fichier) |
 | sw.js | Service worker; Brevo init from query |
 | malix/assets/access-config.js | Config d’accès Malix versionnée (coordonnées/date/rayon par défaut prod) |
 | malix/assets/access-config.local.js | Override local dev non versionné, injecté dans dist au build si présent |
@@ -94,6 +97,7 @@ Les navigateurs (notamment sur mobile) et le CDN peuvent conserver longtemps des
 | docs/portraits-carrousels.md | Portraits joueurs (EDF, Malice, Belgique, All Stars) : dimensions, long/, script AVIF |
 | scripts/image-assets.json | Spec déclarative des dérivés images (portraits, intervenants, témoignages, bannière match All Stars, logos partenaires) |
 | scripts/build-optimized-images.mjs | Lit la spec et appelle ImageMagick (`magick`) ; exécuté via `npm run build:images` au début de `npm run build` |
+| docs/slices/helloasso-jauge-sync.md | Règles métier, OAuth, endpoints API et lien vers le script Apps Script pour alimenter le Sheet HelloAsso |
 | malix/ | Mini-jeu Malix (sources) ; copié ou généré dans dist/malix/ ; entrée malix/index.html ; isolation totale du site principal |
 | docs/SPEC-Malix.md | Spécification fonctionnelle normative du mini-jeu Malix |
 
