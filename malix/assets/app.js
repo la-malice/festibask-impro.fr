@@ -7,6 +7,10 @@
     return;
   }
 
+  function phCapture(name, props) {
+    if (window.posthog) window.posthog.capture(name, props || {});
+  }
+
   const variantColors = ['var(--v1)', 'var(--v2)', 'var(--v3)', 'var(--v4)'];
   const variantStrokeHexColors = ['#2b82ff', '#f13a97', '#f09a35', '#46bd66'];
   const variantFillHexColors = ['#bee8ff', '#ffd4e9', '#ffe2bd', '#d2f5d9'];
@@ -3338,6 +3342,7 @@
     generateObstacles();
     persistCollection();
     updateProgress();
+    phCapture('malix_capture', { is_new: isNewCapture, collection_total: collection.size });
     renderMalidex();
 
     if (captured.timeoutRef) {
@@ -3742,6 +3747,7 @@
         showFinish();
         return;
       }
+      phCapture('malix_game_start');
       showGame();
     });
   }

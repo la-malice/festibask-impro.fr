@@ -26,6 +26,12 @@
 - Le jeu **réutilise** ces 27 types. Les fichiers SVG du site principal **ne sont pas modifiés**.
 - **Où vivent les assets du jeu** : pour une **isolation totale**, le build doit copier ou exposer les 27 SVG dans le dossier du jeu (ex. `malix/assets/doodles/` ou `malix/doodles/`). Les chemins dans le jeu pointent alors vers ces copies. Alternative : références relatives depuis `malix/index.html` vers `../assets/img/doodles/` si le build place `malix/` au même niveau que `assets/` dans `dist/`. La SPEC impose : **aucune requête du jeu ne doit charger des ressources hors du sous-arbre /malix en production** si cela peut impacter le site principal (ex. erreur 404 sur une URL du site). Donc **copier les 27 SVG dans l’arbre malix/** est recommandé.
 
+### 1.4 Analytics (PostHog)
+
+- **Même projet PostHog** que le site (clé et proxy `e.festibask-impro.fr`), chargé **uniquement** depuis `malix/index.html` et événements émis depuis `malix/assets/app.js` — **aucun** code analytics Malix dans `assets/js/script.js` ni `index.html` du site principal.
+- **Init** : `disable_session_recording: true` et `autocapture: false` (pas de replay de session sur le jeu ; pas d’autocapture de clics).
+- **Événements custom** (agrégats, pas de données personnelles) : **malix_game_start** (entrée en jeu après « Démarrer ») ; **malix_capture** avec `is_new` et `collection_total` uniquement. Catalogue et périmètre : [docs/analytics-posthog.md](analytics-posthog.md).
+
 ---
 
 ## 2. Contexte et objectif

@@ -2,14 +2,14 @@
 
 ## Objectif
 
-Suivi des visites et des actions clés (conversions, engagement) sur le site Festibask'Impro via PostHog. Le snippet PostHog est chargé dans `index.html` ; l’ingestion passe par le reverse proxy sur le sous-domaine dédié `https://e.festibask-impro.fr` (`api_host`), l’API PostHog cible restant la région EU (`ui_host: https://eu.posthog.com`).  
+Suivi des visites et des actions clés (conversions, engagement) sur le site Festibask'Impro via PostHog. Le snippet PostHog est chargé dans `index.html`, `video/index.html` et `malix/index.html` ; l’ingestion passe par le reverse proxy sur le sous-domaine dédié `https://e.festibask-impro.fr` (`api_host`), l’API PostHog cible restant la région EU (`ui_host: https://eu.posthog.com`).  
 Le proxy est servi par le Worker Cloudflare (`worker-posthog/`) ; voir [posthog-cloudflare-proxy.md](posthog-cloudflare-proxy.md).
 Ce document décrit le catalogue des événements envoyés au backend.
 
 ## Événements automatiques
 
-- **$pageview** : chargement de la page (capture automatique par PostHog selon la config).
-- Autres événements d’autocapture (clics, etc.) selon la configuration du projet PostHog.
+- **$pageview** : chargement de la page (capture automatique par PostHog selon la config), sur l’accueil, `/video/` et `/malix/`.
+- **Autocapture** : sur le site principal et la page vidéo, selon la configuration du projet PostHog. Sur **/malix**, l’init PostHog fixe **`autocapture: false`** pour limiter le bruit et la surface de collecte sur le jeu jeune public ; seuls les événements custom listés ci-dessous pour Malix sont envoyés depuis le jeu.
 
 ## Événements custom
 
@@ -32,11 +32,22 @@ Ce document décrit le catalogue des événements envoyés au backend.
 | **floating_doodle_click** | Clic sur un doodle flottant (smash) | — |
 | **programme_fullscreen_click** | Clic sur le bouton plein écran du programme | `resolution` (ex. `1920x1080`), `screen_width`, `screen_height` |
 | **malix_link_click** | Clic sur le lien « Chasse aux Malix » | `source`: `'footer'` (lien footer) ou `'doodle_popin'` (lien dans le popin après clic sur un doodle) |
+| **watch_video_play** | Première lecture effective de la vidéo sur la page `/video/` (événement `play` du `<video>`) | `source`: `'watch_page'` |
+| **malix_game_start** | Clic sur « Démarrer » après accès autorisé, entrée dans l’écran de jeu | — |
+| **malix_capture** | Capture réussie d’un Malix (tap sur le spawn) | `is_new`: booléen (nouvelle entrée dans la collection), `collection_total`: nombre d’entrées après capture (agrégat, pas d’identifiant type/variante) |
 
 ## RGPD
 
 Seules des données d’usage (pas d’identifiants personnels) sont envoyées dans ces événements. La politique de confidentialité du site et le mécanisme de consentement (bandeau, etc.) restent de la responsabilité du site ; mentionner PostHog et l’usage des données dans la politique de confidentialité.
 
+Sous **/malix**, l’init PostHog inclut **`disable_session_recording: true`** (pas d’enregistrement de session replay sur le mini-jeu).
+
 ## Périmètre
 
-Site principal uniquement (index.html, assets/js/script.js). Aucun tracking PostHog dans le mini-jeu Malix (/malix) dans ce catalogue ; si un jour du tracking est ajouté sous /malix, ce document pourra être étendu.
+| Zone | Fichiers | PostHog |
+|------|----------|---------|
+| Site principal | `index.html`, `assets/js/script.js` | Snippet + événements custom du tableau ci-dessus (hors lignes watch / malix jeu). |
+| Page vidéo | `video/index.html` | Même clé et proxy ; événement **watch_video_play** ; pas de `script.js` partagé. |
+| Mini-jeu Malix | `malix/index.html`, `malix/assets/app.js` | Même clé et proxy ; init avec **`disable_session_recording: true`** et **`autocapture: false`** ; événements **malix_game_start** et **malix_capture** uniquement (pas de code PostHog dans le bundle principal). |
+
+Le détail des événements Malix côté produit est aussi résumé dans [docs/SPEC-Malix.md](SPEC-Malix.md) § 1.4.
