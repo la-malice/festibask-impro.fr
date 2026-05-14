@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
   schedule:
     # Republier le site pour rafraîchir remaining-seats.json depuis le CSV (secret SHEET_CSV_URL)
-    - cron: "25 */6 * * *"
+    - cron: "25 * * * *"
 
 permissions:
   contents: read
