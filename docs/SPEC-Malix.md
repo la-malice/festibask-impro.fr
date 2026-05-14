@@ -312,7 +312,7 @@ La page /malix dispose de son propre jeu de balises pour le référencement et l
 - **Meta** : meta description (~155 caractères), meta robots (index, follow), canonical `https://festibask-impro.fr/malix/`.
 - **OpenGraph** : og:title, og:description, og:url, og:type (website), og:image (réutilisation de l’image sociale du festival ou image dédiée Malix).
 - **Twitter Card** : summary_large_image avec title, description, image (même image que OG).
-- **Sitemap** : l’URL `https://festibask-impro.fr/malix/` n’est pas listée dans sitemap.xml (découverte par lien direct ou partage ; pas d’entrée dédiée dans le sitemap principal du site).
+- **Sitemap** : l’URL `https://festibask-impro.fr/malix/` (« Chasse aux Malix ») est listée dans **sitemap.xml** aux côtés de l’accueil et de /video/, pour la découverte par les moteurs de recherche.
 
 Optionnel : Schema.org **WebApplication** (applicationCategory "Game") en JSON-LD pour enrichir les résultats de recherche ; image OG dédiée « Chasse aux Malix » (ex. logo + titre ou doodles, 1200×630 px) pour un partage social plus ciblé sur le jeu.
 
