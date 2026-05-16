@@ -31,7 +31,7 @@
 - **Même projet PostHog** que le site (clé et proxy `e.festibask-impro.fr`), chargé **uniquement** depuis `malix/index.html` et événements émis depuis `malix/assets/app.js` — **aucun** code analytics Malix dans `assets/js/script.js` ni `index.html` du site principal.
 - **Init** : `disable_session_recording: true` et `autocapture: false` (pas de replay de session sur le jeu ; pas d’autocapture de clics).
 - **Identifiant joueur pseudonyme** : UUID v4 persistant en `localStorage` (`malix-player-id`), exposé au joueur via un code court (8 caractères) au clic sur le titre « Chasse aux Malix! » de l’écran de jeu ; `posthog.identify` avec cet UUID ; propriété `malix_player_id` sur tous les événements Malix. Pas de nom, email ni compte.
-- **Événements custom** : **malix_game_start** ; **malix_capture** (`is_new`, `collection_total`, `malix_type`, `malix_variant`) ; **malix_photo_saved** ; **malix_photo_share** (`share_method`) ; **malix_trade_completed** ; **malix_player_snapshot** (totaux agrégés : `malidex_unique`, `malix_captures_total`, `malix_photos_total`, `malix_trades_total`, `malix_collection_complete`). Propriétés personne PostHog synchronisées avec les mêmes totaux. Catalogue : [docs/analytics-posthog.md](analytics-posthog.md), Hall of Fame : [docs/posthog-malix-hall-of-fame.md](posthog-malix-hall-of-fame.md).
+- **Événements custom** : **malix_game_start** ; **malix_capture** (`is_new`, `collection_total`, `malix_type`, `malix_variant`) ; **malix_photo_saved** ; **malix_photo_share** (`share_method`) ; **malix_trade_completed** ; **malix_player_snapshot** (totaux agrégés : `malidex_unique`, `malix_captures_total`, `malix_photos_total`, `malix_trades_total`, `malix_collection_complete`) ; **malix_leaderboard_open** (première ouverture réussie de l’onglet Classement, sans propriétés sur les autres joueurs). Propriétés personne PostHog synchronisées avec les mêmes totaux. Catalogue : [docs/analytics-posthog.md](analytics-posthog.md), Hall of Fame : [docs/posthog-malix-hall-of-fame.md](posthog-malix-hall-of-fame.md).
 
 ---
 
@@ -76,7 +76,7 @@
 - Effets visuels et vibration (si supportée).
 - **Identité visuelle propre au jeu** (voir section Design) ; **point commun avec le site : uniquement les 27 doodles**.
 - PWA optionnelle (installation, icône, hors-ligne basique) si simple à intégrer sans impacter l’isolement.
-- **Hall of Fame in-game** (lecture) : onglet Malidex « Classement », classement agrégé via API serveur (Worker + PostHog), mise en avant du rang du joueur local — voir § 5.7 et [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md). **Statut : contrat validé (slice 1) ; Worker / UI / prod non livrés** (slices 2–6).
+- **Hall of Fame in-game** (lecture) : onglet Malidex « Classement », classement agrégé via API serveur (Worker + PostHog), mise en avant du rang du joueur local — voir § 5.7 et [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md). **Statut : livré (slices 1–5) ; finition doc/QA slice 6.**
 
 ### 3.2 Out of scope
 
@@ -178,7 +178,7 @@
 
 ### 5.7 Hall of Fame — classement (lecture)
 
-> **Statut : contrat validé (slice 1, 2026-05-16) ; implémentation Worker / client / UI en cours (slices 2–6).** Détail : [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md).
+> **Statut : contrat validé (slice 1) ; Worker + client (slices 2–4) livrés ; UI onglet Classement (slice 5) livrée ; finition slice 6 planifiée.** Détail : [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md).
 
 - **But** : permettre à l’enfant de voir un **top 10** festival et **sa place** dans le classement, sans créer de compte ni afficher de données personnelles (noms, emails).
 - **Source des données** : agrégats PostHog (projet partagé avec le site), via un **Worker Cloudflare** (`worker-malix-api`) qui expose `GET /malix/api/leaderboard?player_id=<uuid>`. Aucune clé PostHog dans le navigateur.

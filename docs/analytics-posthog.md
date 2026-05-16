@@ -39,6 +39,7 @@ Ce document décrit le catalogue des événements envoyés au backend.
 | **malix_photo_share** | Partage réussi d’une photo depuis l’album (feuille système ou téléchargement) | `malix_type` : 1–27 ; `malix_variant` : 1–4 ; `share_method` : `'native'` (feuille de partage) ou `'download'` (repli enregistrement) ; `malix_player_id` |
 | **malix_trade_completed** | Échange 1↔1 validé entre deux joueurs | `incoming_type`, `incoming_variant` (Malix reçu) ; `outgoing_type`, `outgoing_variant` si l’offre locale est valide (Malix donné) ; `malix_player_id` |
 | **malix_player_snapshot** | Synchronisation des totaux joueur (identify / capture / photo / échange / reset) | `malidex_unique`, `malix_captures_total`, `malix_photos_total`, `malix_trades_total`, `malix_collection_complete` ; `malix_player_id` |
+| **malix_leaderboard_open** | Première ouverture réussie de l’onglet Malidex « Classement » (Hall of Fame in-game) | `malix_player_id` uniquement (aucune donnée sur les autres joueurs) |
 
 **Propriétés personne PostHog** (mêmes noms que le snapshot, mises à jour via `setPersonProperties`) : `malidex_unique`, `malix_captures_total`, `malix_photos_total`, `malix_trades_total`, `malix_collection_complete`. Dashboard Hall of Fame : [docs/posthog-malix-hall-of-fame.md](posthog-malix-hall-of-fame.md).
 

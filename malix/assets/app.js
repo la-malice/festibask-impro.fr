@@ -9,7 +9,10 @@
   }
 
   const TRADES_TOTAL_KEY = 'malix-trades-total';
+  const MALIDEX_TOTAL = 108;
+  const LEADERBOARD_ERROR_MESSAGE = 'Classement indisponible. Reessaie dans un instant.';
   const playerId = playerIdApi.getOrCreatePlayerId(window.localStorage);
+  const leaderboardApi = window.MalixLeaderboard;
 
   function phCapture(name, props) {
     if (!window.posthog) return;
@@ -191,8 +194,13 @@
   const openPhotoModeBtn = document.getElementById('openPhotoModeBtn');
   const malidexTabMalixBtn = document.getElementById('malidexTabMalixBtn');
   const malidexTabAlbumBtn = document.getElementById('malidexTabAlbumBtn');
+  const malidexTabLeaderboardBtn = document.getElementById('malidexTabLeaderboardBtn');
   const malidexPanelMalix = document.getElementById('malidexPanelMalix');
   const malidexPanelAlbum = document.getElementById('malidexPanelAlbum');
+  const malidexPanelLeaderboard = document.getElementById('malidexPanelLeaderboard');
+  const leaderboardStatus = document.getElementById('leaderboardStatus');
+  const leaderboardYou = document.getElementById('leaderboardYou');
+  const leaderboardList = document.getElementById('leaderboardList');
   const screenPhoto = document.getElementById('screen-photo');
   const photoVideo = document.getElementById('photoVideo');
   const photoMalix = document.getElementById('photoMalix');
@@ -245,6 +253,8 @@
   let pendingDeletePhotoId = null;
   let albumViewerPhotoId = null;
   let malidexActiveTab = 'malix';
+  let leaderboardLoading = false;
+  let leaderboardOpenCaptured = false;
   let audienceSeatAssignment = [];
   let audienceSeatNodes = [];
   let accessGatePending = false;
@@ -1580,24 +1590,166 @@
     }, Math.max(700, durationMs || 2200));
   }
 
+  function formatLeaderboardRank(rank) {
+    const value = Number.parseInt(String(rank), 10);
+    if (!Number.isFinite(value) || value < 1) return '';
+    if (value === 1) return '1er';
+    return String(value) + 'e';
+  }
+
+  function showLeaderboardError(message) {
+    if (leaderboardStatus) {
+      leaderboardStatus.textContent = message || LEADERBOARD_ERROR_MESSAGE;
+    }
+    if (leaderboardYou) {
+      leaderboardYou.classList.add('hidden');
+      leaderboardYou.textContent = '';
+    }
+    if (leaderboardList) {
+      leaderboardList.innerHTML = '';
+    }
+  }
+
+  function renderLeaderboard(data) {
+    if (!data || !leaderboardList || !leaderboardYou) return;
+    const player = data.player || {};
+    const rankLabel = formatLeaderboardRank(player.rank);
+    const totalPlayers = Number.parseInt(String(data.total_players), 10) || 0;
+
+    leaderboardYou.innerHTML =
+      '<p class="leaderboard-you-title">Tu es ' +
+      rankLabel +
+      ' sur ' +
+      totalPlayers +
+      ' chasseurs</p>' +
+      '<p class="leaderboard-you-stats">Malidex ' +
+      (player.malidex_unique || 0) +
+      '/' +
+      MALIDEX_TOTAL +
+      ' · Captures ' +
+      (player.captures || 0) +
+      ' · Photos ' +
+      (player.photos || 0) +
+      ' · Echanges ' +
+      (player.trades || 0) +
+      '</p>';
+    leaderboardYou.classList.remove('hidden');
+
+    leaderboardList.innerHTML = '';
+    const header = document.createElement('li');
+    header.className = 'leaderboard-list-header';
+    header.setAttribute('aria-hidden', 'true');
+    header.innerHTML =
+      '<span>Rang</span><span>Code</span><span>Malidex</span><span>Capt.</span>';
+    leaderboardList.appendChild(header);
+
+    const top = Array.isArray(data.top) ? data.top : [];
+    const highlightYou = player.rank <= 10;
+    for (let index = 0; index < top.length; index += 1) {
+      const row = top[index];
+      const item = document.createElement('li');
+      item.className = 'leaderboard-row';
+      if (highlightYou && row.display_code === player.display_code) {
+        item.classList.add('is-you');
+      }
+      item.innerHTML =
+        '<span class="leaderboard-row-rank">' +
+        row.rank +
+        '</span>' +
+        '<span class="leaderboard-row-code">' +
+        row.display_code +
+        '</span>' +
+        '<span>' +
+        row.malidex_unique +
+        '/' +
+        MALIDEX_TOTAL +
+        '</span>' +
+        '<span>' +
+        row.captures +
+        '</span>';
+      leaderboardList.appendChild(item);
+    }
+
+    if (leaderboardStatus) {
+      leaderboardStatus.textContent = '';
+    }
+
+    if (!leaderboardOpenCaptured) {
+      leaderboardOpenCaptured = true;
+      phCapture('malix_leaderboard_open');
+    }
+  }
+
+  function loadLeaderboard() {
+    if (!leaderboardApi || typeof leaderboardApi.fetchLeaderboard !== 'function') {
+      showLeaderboardError(LEADERBOARD_ERROR_MESSAGE);
+      return;
+    }
+    if (leaderboardLoading) return;
+    leaderboardLoading = true;
+    if (leaderboardStatus) {
+      leaderboardStatus.textContent = 'Chargement du classement…';
+    }
+    if (leaderboardYou) {
+      leaderboardYou.classList.add('hidden');
+      leaderboardYou.textContent = '';
+    }
+    if (leaderboardList) {
+      leaderboardList.innerHTML = '';
+    }
+
+    leaderboardApi
+      .fetchLeaderboard(playerId)
+      .then(function (data) {
+        renderLeaderboard(data);
+      })
+      .catch(function () {
+        showLeaderboardError(LEADERBOARD_ERROR_MESSAGE);
+      })
+      .finally(function () {
+        leaderboardLoading = false;
+      });
+  }
+
   function setMalidexTab(tabName) {
-    malidexActiveTab = tabName === 'album' ? 'album' : 'malix';
-    const showAlbum = malidexActiveTab === 'album';
+    const tab =
+      tabName === 'album' ? 'album' : tabName === 'leaderboard' ? 'leaderboard' : 'malix';
+    malidexActiveTab = tab;
+    const showMalix = tab === 'malix';
+    const showAlbum = tab === 'album';
+    const showLeaderboard = tab === 'leaderboard';
+
     if (malidexTabMalixBtn) {
-      malidexTabMalixBtn.classList.toggle('is-active', !showAlbum);
-      malidexTabMalixBtn.setAttribute('aria-selected', String(!showAlbum));
+      malidexTabMalixBtn.classList.toggle('is-active', showMalix);
+      malidexTabMalixBtn.setAttribute('aria-selected', String(showMalix));
     }
     if (malidexTabAlbumBtn) {
       malidexTabAlbumBtn.classList.toggle('is-active', showAlbum);
       malidexTabAlbumBtn.setAttribute('aria-selected', String(showAlbum));
     }
+    if (malidexTabLeaderboardBtn) {
+      malidexTabLeaderboardBtn.classList.toggle('is-active', showLeaderboard);
+      malidexTabLeaderboardBtn.setAttribute('aria-selected', String(showLeaderboard));
+    }
     if (malidexPanelMalix) {
-      malidexPanelMalix.classList.toggle('hidden', showAlbum);
+      malidexPanelMalix.classList.toggle('hidden', !showMalix);
     }
     if (malidexPanelAlbum) {
       malidexPanelAlbum.classList.toggle('hidden', !showAlbum);
     }
+    if (malidexPanelLeaderboard) {
+      malidexPanelLeaderboard.classList.toggle('hidden', !showLeaderboard);
+    }
+
+    if (showLeaderboard) {
+      closeDetail();
+      closeAlbumViewer();
+      loadLeaderboard();
+      return;
+    }
+
     if (showAlbum) {
+      closeDetail();
       renderAlbum();
     } else {
       closeAlbumViewer();
@@ -3499,6 +3651,11 @@
   if (malidexTabAlbumBtn) {
     malidexTabAlbumBtn.addEventListener('click', function () {
       setMalidexTab('album');
+    });
+  }
+  if (malidexTabLeaderboardBtn) {
+    malidexTabLeaderboardBtn.addEventListener('click', function () {
+      setMalidexTab('leaderboard');
     });
   }
   if (albumViewerImg) {
