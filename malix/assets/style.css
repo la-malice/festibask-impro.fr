@@ -189,6 +189,19 @@ body {
   justify-content: center;
   position: relative;
   z-index: 2;
+  padding: max(4px, env(safe-area-inset-top)) 8px 4px;
+  min-height: 0;
+}
+
+.topbar-festibask-logo {
+  display: block;
+  height: clamp(2.25rem, 7vw, 2.75rem);
+  width: auto;
+  max-width: min(92vw, 400px);
+  margin: 0 auto;
+  object-fit: contain;
+  object-position: center;
+  filter: drop-shadow(0 3px 8px rgba(71, 46, 107, 0.2));
 }
 
 .cheat-badge {
@@ -377,7 +390,6 @@ body {
   animation-delay: 0.6s;
 }
 
-.logo,
 .screen-title {
   margin: 0;
   font-size: clamp(2rem, 8vw, 2.6rem);
@@ -386,85 +398,6 @@ body {
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
-}
-
-.screen-game .logo {
-  justify-content: center;
-  text-align: center;
-  width: fit-content;
-  margin: 0 auto;
-  padding: 7px 16px 9px;
-  border-radius: 999px;
-  border: 2px solid rgba(255, 255, 255, 0.78);
-  background:
-    radial-gradient(circle at 24% 20%, rgba(255, 255, 255, 0.3), transparent 50%),
-    linear-gradient(135deg, rgba(127, 90, 211, 0.9), rgba(102, 188, 243, 0.88));
-  box-shadow: 0 10px 18px rgba(91, 60, 131, 0.26);
-}
-
-.logo {
-  color: #fffef7;
-  -webkit-text-stroke: 1px rgba(96, 56, 154, 0.92);
-  text-shadow:
-    0 2px 0 rgba(96, 56, 154, 0.85),
-    0 6px 12px rgba(71, 46, 107, 0.35);
-}
-
-/* Bouton titre : pas de -webkit-text-stroke (artefacts horizontaux sur Safari). */
-.screen-game .logo.logo-btn {
-  color: #fffef7;
-  -webkit-text-fill-color: #fffef7;
-  -webkit-text-stroke: 0;
-  paint-order: normal;
-  text-shadow:
-    0 1px 0 rgba(72, 40, 118, 0.95),
-    0 3px 8px rgba(71, 46, 107, 0.45);
-}
-
-.logo-btn {
-  cursor: pointer;
-  margin: 0;
-  appearance: none;
-  -webkit-appearance: none;
-  font-family: 'Baloo 2', 'Nunito', 'Comic Sans MS', 'Trebuchet MS', 'Segoe UI', sans-serif;
-  font-size: clamp(2rem, 8vw, 2.6rem);
-  font-weight: 800;
-  line-height: 1.12;
-  letter-spacing: 0.03em;
-  -webkit-font-smoothing: antialiased;
-}
-
-.logo-btn:focus-visible {
-  outline: 3px solid rgba(255, 255, 255, 0.95);
-  outline-offset: 3px;
-}
-
-.player-code-card {
-  text-align: center;
-  max-width: min(92vw, 22rem);
-}
-
-.player-code-hint {
-  margin: 0 0 12px;
-  font-size: 0.95rem;
-  color: rgba(48, 32, 72, 0.85);
-}
-
-.player-code-display {
-  margin: 0 0 8px;
-  font-size: clamp(2rem, 10vw, 2.8rem);
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  color: #5b2f9b;
-}
-
-.player-code-full {
-  margin: 0 0 16px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 0.72rem;
-  line-height: 1.35;
-  word-break: break-all;
-  color: rgba(48, 32, 72, 0.65);
 }
 
 .chip,
@@ -966,7 +899,7 @@ body {
 .leaderboard-list-header,
 .leaderboard-row {
   display: grid;
-  grid-template-columns: 2.2rem 1fr 3.6rem 2.6rem;
+  grid-template-columns: 2.2rem minmax(0, 1fr) 3.6rem 2.6rem;
   gap: 8px;
   align-items: center;
   padding: 8px 10px;
@@ -1003,8 +936,18 @@ body {
 }
 
 .leaderboard-row-code {
-  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-  letter-spacing: 0.06em;
+  font-size: 0.78rem;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.leaderboard-you-name {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #fff;
 }
 
 .malidex-grid {

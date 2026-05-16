@@ -74,6 +74,6 @@ LIMIT 50
 
 ## Fichiers code liés
 
-- [`malix/assets/player-id.js`](../malix/assets/player-id.js) — génération / affichage du code court
+- [`malix/assets/player-id.js`](../malix/assets/player-id.js), [`shared/malix/format-display-code.js`](../shared/malix/format-display-code.js) — pseudonyme joueur (`display_code`)
 - [`malix/assets/app.js`](../malix/assets/app.js) — `identify`, `setPersonProperties`, `malix_player_snapshot`
 - [`docs/analytics-posthog.md`](analytics-posthog.md) — catalogue événements

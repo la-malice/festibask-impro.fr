@@ -16,7 +16,7 @@
 
 - **Validé** : JSON 200 (`updated_at`, `total_players`, `player`, `top` max 10) ; erreurs `400` (`missing_player_id`, `invalid_player_id`), `429` (`rate_limited`, livraison slice 3), `502` (`leaderboard_unavailable`).
 - **Hors contrat** (implémentation slice 2+) : `404` / `405` — comportement technique Worker, non documenté pour le client Malix.
-- **Règles figées** : fenêtre **90 jours** ; tri `malidex_unique` DESC puis `captures` DESC ; HogQL `LIMIT 500` ; UI **top 10** ; `display_code` aligné [`malix/assets/player-id.js`](../../malix/assets/player-id.js).
+- **Règles figées** : fenêtre **90 jours** ; tri `malidex_unique` DESC puis `captures` DESC ; HogQL `LIMIT 500` ; UI **top 10** ; `display_code` aligné [`shared/malix/format-display-code.js`](../../shared/malix/format-display-code.js) (client : [`malix/assets/format-display-code.js`](../../malix/assets/format-display-code.js)).
 
 ### Validation HogQL
 
@@ -88,7 +88,7 @@ flowchart LR
 | `updated_at` | string ISO 8601 | Horodatage de génération |
 | `total_players` | number | Joueurs distincts dans la fenêtre |
 | `player.player_id` | string | UUID demandé (réponse ; pas affiché pour les autres en UI) |
-| `player.display_code` | string | 8 caractères hex majuscules |
+| `player.display_code` | string | Pseudonyme lisible (`{nom} {adjectif} {NN}`, ex. `faucon pluvieux 56`) |
 | `player.rank` | number | 1 = meilleur ; si absent des données : `total_players + 1` et stats à 0 |
 | `player.malidex_unique` | number | |
 | `player.captures` | number | |
@@ -96,7 +96,7 @@ flowchart LR
 | `player.trades` | number | |
 | `top` | array | Max **10** lignes pour l’UI |
 | `top[].rank` | number | |
-| `top[].display_code` | string | Jamais d’UUID tiers en UI |
+| `top[].display_code` | string | Jamais d’UUID tiers en UI ; forme complète `{nom} {adjectif} {NN}` dans le JSON |
 | `top[].malidex_unique` | number | |
 | `top[].captures` | number | |
 | `top[].photos` | number | |
@@ -110,7 +110,7 @@ Exemple :
   "total_players": 142,
   "player": {
     "player_id": "a3f91b2c-4d5e-4789-abcd-ef0123456789",
-    "display_code": "A3F91B2C",
+    "display_code": "faucon pluvieux 56",
     "rank": 12,
     "malidex_unique": 34,
     "captures": 41,
@@ -120,7 +120,7 @@ Exemple :
   "top": [
     {
       "rank": 1,
-      "display_code": "F4E2B891",
+      "display_code": "colibri courageux 72",
       "malidex_unique": 108,
       "captures": 120,
       "photos": 5,
@@ -135,7 +135,8 @@ Exemple :
 1. Tri : `malidex_unique` DESC, puis `captures` DESC.
 2. Fenêtre : **90 jours** glissants (`timestamp >= now() - INTERVAL 90 DAY`).
 3. Requête HogQL interne : agrégation par `properties.malix_player_id`, `LIMIT 500` pour calcul du rang ; UI n’affiche que le top 10.
-4. `display_code` : `uuid.replace(/-/g,'').slice(0,8).toUpperCase()` — aligné [`malix/assets/player-id.js`](../../malix/assets/player-id.js) `formatDisplayCode`.
+4. `display_code` : pseudonyme déterministe depuis l’UUID (octets 0–3 → nom, adjectif, numéro `00`–`99`) — [`shared/malix/format-display-code.js`](../../shared/malix/format-display-code.js) `formatDisplayCode`, délégué par [`malix/assets/player-id.js`](../../malix/assets/player-id.js).
+5. **Affichage UI (onglet Classement)** : le suffixe numérique n’est montré que si au moins deux joueurs visibles (top 10 + encart joueur) partagent le même couple nom+adjectif ; sinon affichage `{nom} {adjectif}` seul (`buildLeaderboardDisplayLabels` dans [`malix/assets/format-display-code.js`](../../malix/assets/format-display-code.js)). Dialogue « Ton nom de joueur » : toujours sans suffixe.
 
 ### HogQL de référence
 
@@ -222,7 +223,9 @@ LIMIT 500
 | `worker-malix-api/src/index.js` | Route `GET /malix/api/leaderboard` ; OPTIONS pour CORS futur |
 | `worker-malix-api/src/posthog-query.js` | `POST https://eu.posthog.com/api/projects/124663/query/` |
 | `worker-malix-api/src/leaderboard.js` | Parse `results` HogQL → `buildLeaderboardFromRows(rows, playerId)` |
-| `worker-malix-api/src/player-id.js` | `isValidPlayerId`, `formatDisplayCode` (aligné Malix) |
+| `shared/malix/format-display-code.js` | `formatDisplayCode`, listes nom/adjectif |
+| `worker-malix-api/src/player-id.js` | Réexport `isValidPlayerId`, `formatDisplayCode` |
+| `malix/assets/format-display-code.js` | Même logique (navigateur, garder en sync avec shared) |
 | `worker-malix-api/README.md` | Secrets, `wrangler dev`, curl de test |
 | `tests/malix/leaderboard-build.test.js` | Tests sur `buildLeaderboardFromRows` (fixtures, sans API live) |
 

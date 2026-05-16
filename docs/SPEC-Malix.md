@@ -30,7 +30,7 @@
 
 - **Même projet PostHog** que le site (clé et proxy `e.festibask-impro.fr`), chargé **uniquement** depuis `malix/index.html` et événements émis depuis `malix/assets/app.js` — **aucun** code analytics Malix dans `assets/js/script.js` ni `index.html` du site principal.
 - **Init** : `disable_session_recording: true` et `autocapture: false` (pas de replay de session sur le jeu ; pas d’autocapture de clics).
-- **Identifiant joueur pseudonyme** : UUID v4 persistant en `localStorage` (`malix-player-id`), exposé au joueur via un code court (8 caractères) au clic sur le titre « Chasse aux Malix! » de l’écran de jeu ; `posthog.identify` avec cet UUID ; propriété `malix_player_id` sur tous les événements Malix. Pas de nom, email ni compte.
+- **Identifiant joueur pseudonyme** : UUID v4 persistant en `localStorage` (`malix-player-id`), exposé au joueur via un **pseudonyme lisible** (nom + adjectif + numéro, ex. `faucon pluvieux 56`, déterministe depuis l’UUID) au clic sur le titre « Chasse aux Malix! » de l’écran de jeu ; `posthog.identify` avec cet UUID ; propriété `malix_player_id` sur tous les événements Malix. Pas de nom, email ni compte.
 - **Événements custom** : **malix_game_start** ; **malix_capture** (`is_new`, `collection_total`, `malix_type`, `malix_variant`) ; **malix_photo_saved** ; **malix_photo_share** (`share_method`) ; **malix_trade_completed** ; **malix_player_snapshot** (totaux agrégés : `malidex_unique`, `malix_captures_total`, `malix_photos_total`, `malix_trades_total`, `malix_collection_complete`) ; **malix_leaderboard_open** (première ouverture réussie de l’onglet Classement, sans propriétés sur les autres joueurs). Propriétés personne PostHog synchronisées avec les mêmes totaux. Catalogue : [docs/analytics-posthog.md](analytics-posthog.md), Hall of Fame : [docs/posthog-malix-hall-of-fame.md](posthog-malix-hall-of-fame.md).
 
 ---
@@ -105,7 +105,7 @@
 | **Entrée de collection** | Paire (type, variante). Une entrée est soit collectée soit manquante. 27 × 4 = 108 entrées au total. |
 | **Échange** | Transaction 1↔1 entre deux joueurs: chaque joueur propose une entrée du Malidex, les deux valident, puis transfert croisé. |
 | **Hall of Fame (classement)** | Classement agrégé des joueurs (Malidex, captures, photos, échanges) affiché en lecture dans le Malidex ; données issues de PostHog via une API serveur ; pas de compte. |
-| **Code joueur** | Identifiant pseudonyme (`malix-player-id`, UUID) ; code court 8 caractères affiché au joueur et dans le classement (pas le nom réel). |
+| **Code joueur** | Identifiant pseudonyme (`malix-player-id`, UUID) ; pseudonyme affiché au joueur et dans le classement (`display_code`, ex. `faucon pluvieux 56` — pas le nom réel). |
 
 ---
 
@@ -182,7 +182,7 @@
 
 - **But** : permettre à l’enfant de voir un **top 10** festival et **sa place** dans le classement, sans créer de compte ni afficher de données personnelles (noms, emails).
 - **Source des données** : agrégats PostHog (projet partagé avec le site), via un **Worker Cloudflare** (`worker-malix-api`) qui expose `GET /malix/api/leaderboard?player_id=<uuid>`. Aucune clé PostHog dans le navigateur.
-- **Classement** : tri par taille de Malidex (`malidex_unique`) puis nombre de captures ; fenêtre **90 jours** ; codes courts 8 caractères pour les autres joueurs.
+- **Classement** : tri par taille de Malidex (`malidex_unique`) puis nombre de captures ; fenêtre **90 jours** ; pseudonymes (`display_code`) pour les autres joueurs (jamais leur UUID).
 - **UI** : 3e onglet « Classement » ; encart « Ta place » ; ligne du joueur surlignée si dans le top 10 ; fraîcheur (`updated_at`) ; cache stale si l’API échoue après un chargement réussi ; message d’indisponibilité sinon.
 - **Ce n’est pas** : une compétition en temps réel, un score affiché pendant le spawn, ni une persistance serveur de la collection Malidex.
 

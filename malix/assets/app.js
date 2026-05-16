@@ -3,6 +3,7 @@
   const accessGateApi = window.MalixAccessGate;
   const tradeApi = window.MalixTradeSession;
   const playerIdApi = window.MalixPlayerId;
+  const displayCodeApi = window.MalixFormatDisplayCode;
 
   if (!collectionApi || !accessGateApi || !tradeApi || !playerIdApi) {
     return;
@@ -214,13 +215,6 @@
   const albumViewer = document.getElementById('albumViewer');
   const albumViewerImg = document.getElementById('albumViewerImg');
   const shareAlbumPhotoBtn = document.getElementById('shareAlbumPhotoBtn');
-  const playerCodeBtn = document.getElementById('playerCodeBtn');
-  const playerCodeOverlay = document.getElementById('playerCodeOverlay');
-  const playerCodeDisplay = document.getElementById('playerCodeDisplay');
-  const playerCodeFull = document.getElementById('playerCodeFull');
-  const copyPlayerCodeBtn = document.getElementById('copyPlayerCodeBtn');
-  const closePlayerCodeBtn = document.getElementById('closePlayerCodeBtn');
-
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   let collection = collectionApi.loadCollection(window.localStorage);
@@ -708,9 +702,9 @@
     if (decorRect.height <= 0) return fallback;
 
     const topbar = screenGame.querySelector('.topbar');
-    const logo = screenGame.querySelector('.logo');
+    const topbarLogo = screenGame.querySelector('.topbar-festibask-logo');
     const topbarBottom = topbar ? topbar.getBoundingClientRect().bottom : decorRect.top;
-    const logoBottom = logo ? logo.getBoundingClientRect().bottom : decorRect.top;
+    const logoBottom = topbarLogo ? topbarLogo.getBoundingClientRect().bottom : decorRect.top;
     const guardBottomPx = Math.max(topbarBottom, logoBottom) - decorRect.top + 10;
 
     const spotlight = kawaiiDecor.querySelector('.sticker-spotlight');
@@ -1590,6 +1584,14 @@
     }, Math.max(700, durationMs || 2200));
   }
 
+  function getPlayerDisplayCodeBase() {
+    const full = playerIdApi.formatDisplayCode(playerId);
+    if (displayCodeApi && typeof displayCodeApi.getDisplayCodeBase === 'function') {
+      return displayCodeApi.getDisplayCodeBase(full);
+    }
+    return full.replace(/ \d{2}$/, '');
+  }
+
   function formatLeaderboardRank(rank) {
     const value = Number.parseInt(String(rank), 10);
     if (!Number.isFinite(value) || value < 1) return '';
@@ -1642,7 +1644,30 @@
     const rankLabel = formatLeaderboardRank(player.rank);
     const totalPlayers = Number.parseInt(String(data.total_players), 10) || 0;
 
+    const top = Array.isArray(data.top) ? data.top : [];
+    const playerFullCode = playerIdApi.formatDisplayCode(playerId) || player.display_code || '';
+    const codesForLabels = [];
+    if (playerFullCode) {
+      codesForLabels.push(playerFullCode);
+    }
+    for (let index = 0; index < top.length; index += 1) {
+      const code = top[index].display_code;
+      if (typeof code === 'string' && code) {
+        codesForLabels.push(code);
+      }
+    }
+    const resolveLabel =
+      displayCodeApi && typeof displayCodeApi.buildLeaderboardDisplayLabels === 'function'
+        ? displayCodeApi.buildLeaderboardDisplayLabels(codesForLabels)
+        : function (fullCode) {
+            return fullCode;
+          };
+
+    const youDisplayCode = playerFullCode ? resolveLabel(playerFullCode) : '';
     leaderboardYou.innerHTML =
+      (youDisplayCode
+        ? '<p class="leaderboard-you-name">' + youDisplayCode + '</p>'
+        : '') +
       '<p class="leaderboard-you-title">Tu es ' +
       rankLabel +
       ' sur ' +
@@ -1666,16 +1691,21 @@
     header.className = 'leaderboard-list-header';
     header.setAttribute('aria-hidden', 'true');
     header.innerHTML =
-      '<span>Rang</span><span>Code</span><span>Malidex</span><span>Capt.</span>';
+      '<span>Rang</span><span>Joueur</span><span>Malidex</span><span>Capt.</span>';
     leaderboardList.appendChild(header);
 
-    const top = Array.isArray(data.top) ? data.top : [];
     const highlightYou = player.rank <= 10;
     for (let index = 0; index < top.length; index += 1) {
       const row = top[index];
+      const rowFullCode =
+        highlightYou && row.rank === player.rank && playerFullCode
+          ? playerFullCode
+          : row.display_code;
+      const rowLabel =
+        typeof rowFullCode === 'string' && rowFullCode ? resolveLabel(rowFullCode) : '';
       const item = document.createElement('li');
       item.className = 'leaderboard-row';
-      if (highlightYou && row.display_code === player.display_code) {
+      if (highlightYou && row.rank === player.rank) {
         item.classList.add('is-you');
       }
       item.innerHTML =
@@ -1683,7 +1713,7 @@
         row.rank +
         '</span>' +
         '<span class="leaderboard-row-code">' +
-        row.display_code +
+        rowLabel +
         '</span>' +
         '<span>' +
         row.malidex_unique +
@@ -3586,24 +3616,6 @@
     }
   }
 
-  function openPlayerCodeDialog() {
-    if (!playerCodeOverlay || !playerCodeDisplay || !playerCodeFull) return;
-    playerCodeDisplay.textContent = playerIdApi.formatDisplayCode(playerId);
-    playerCodeFull.textContent = playerId;
-    playerCodeOverlay.classList.remove('hidden');
-    if (closePlayerCodeBtn) {
-      closePlayerCodeBtn.focus();
-    }
-  }
-
-  function closePlayerCodeDialog() {
-    if (!playerCodeOverlay) return;
-    playerCodeOverlay.classList.add('hidden');
-    if (playerCodeBtn) {
-      playerCodeBtn.focus();
-    }
-  }
-
   function resetCollection() {
     collection = collectionApi.emptyState();
     captureCounts = collectionApi.emptyCounts();
@@ -3812,36 +3824,6 @@
       showGame();
     });
   }
-
-  if (playerCodeBtn) {
-    playerCodeBtn.addEventListener('click', openPlayerCodeDialog);
-  }
-  if (closePlayerCodeBtn) {
-    closePlayerCodeBtn.addEventListener('click', closePlayerCodeDialog);
-  }
-  if (copyPlayerCodeBtn) {
-    copyPlayerCodeBtn.addEventListener('click', function () {
-      const text = playerId;
-      if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
-        navigator.clipboard.writeText(text).catch(function () {
-          return;
-        });
-      }
-    });
-  }
-  if (playerCodeOverlay) {
-    playerCodeOverlay.addEventListener('click', function (event) {
-      if (event.target === playerCodeOverlay) {
-        closePlayerCodeDialog();
-      }
-    });
-  }
-  document.addEventListener('keydown', function (event) {
-    if (event.key !== 'Escape' || !playerCodeOverlay || playerCodeOverlay.classList.contains('hidden')) {
-      return;
-    }
-    closePlayerCodeDialog();
-  });
 
   window.addEventListener('resize', syncOrientationGuard);
   window.addEventListener('orientationchange', syncOrientationGuard);

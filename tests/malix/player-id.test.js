@@ -1,5 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
+require('../../malix/assets/format-display-code.js');
 const playerId = require('../../malix/assets/player-id.js');
 
 function makeMemoryStorage() {
@@ -26,9 +27,9 @@ test('getOrCreatePlayerId creates a valid UUID and persists it', function () {
   assert.equal(first, second);
 });
 
-test('formatDisplayCode returns 8 uppercase hex chars from UUID', function () {
+test('formatDisplayCode returns deterministic pseudonym from UUID', function () {
   const id = 'a3f91b2c-4d5e-4789-abcd-ef0123456789';
-  assert.equal(playerId.formatDisplayCode(id), 'A3F91B2C');
+  assert.equal(playerId.formatDisplayCode(id), 'faucon pluvieux 56');
 });
 
 test('isValidPlayerId rejects malformed values', function () {

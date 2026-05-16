@@ -116,7 +116,9 @@ Composant **BFF** séparé du proxy d’ingestion PostHog. **Contrat slice 1** ;
 | scripts/build-optimized-images.mjs | Lit la spec et appelle ImageMagick (`magick`) ; exécuté via `npm run build:images` au début de `npm run build` |
 | docs/slices/helloasso-jauge-sync.md | Règles métier, OAuth, endpoints API et lien vers le script Apps Script pour alimenter le Sheet HelloAsso |
 | malix/ | Mini-jeu Malix (sources) ; copié ou généré dans dist/malix/ ; entrée malix/index.html ; isolation totale du site principal |
-| malix/assets/player-id.js | UUID joueur (`malix-player-id`), code court 8 caractères |
+| malix/assets/player-id.js | UUID joueur (`malix-player-id`), pseudonyme `display_code` |
+| malix/assets/format-display-code.js | Listes nom/adjectif + `formatDisplayCode` (navigateur) |
+| shared/malix/format-display-code.js | Source normative `formatDisplayCode` (Worker + tests) |
 | malix/assets/leaderboard-client.js | *(slice 4)* Client HTTP vers l’API classement — [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md) |
 | worker-posthog/ | Proxy Cloudflare **ingestion** PostHog uniquement ; hostname `e.festibask-impro.fr` — **ne pas** y ajouter l’API classement |
 | worker-malix-api/ | BFF Cloudflare (slices 2–3) : `GET /malix/api/leaderboard` → PostHog Query API (projet 124663) ; CORS, cache 3 min, rate limit ; secret `POSTHOG_PERSONAL_API_KEY` |

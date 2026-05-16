@@ -108,6 +108,9 @@ test('buildLeaderboardFromRows breaks ties on captures', function () {
   assert.equal(result.top[1].display_code, formatDisplayCode(PLAYER_C));
 });
 
-test('formatDisplayCode matches malix player-id convention', function () {
-  assert.equal(formatDisplayCode(PLAYER_A), 'A3F91B2C');
+test('formatDisplayCode matches malix player-id convention', async function () {
+  require('../../malix/assets/format-display-code.js');
+  const malixPlayerId = require('../../malix/assets/player-id.js');
+  assert.equal(formatDisplayCode(PLAYER_A), 'faucon pluvieux 56');
+  assert.equal(malixPlayerId.formatDisplayCode(PLAYER_A), formatDisplayCode(PLAYER_A));
 });

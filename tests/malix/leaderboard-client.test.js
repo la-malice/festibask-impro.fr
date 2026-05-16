@@ -9,7 +9,7 @@ const FIXTURE_PAYLOAD = {
   total_players: 3,
   player: {
     player_id: PLAYER_A,
-    display_code: 'A3F91B2C',
+    display_code: 'faucon pluvieux 56',
     rank: 2,
     malidex_unique: 10,
     captures: 12,
@@ -19,7 +19,7 @@ const FIXTURE_PAYLOAD = {
   top: [
     {
       rank: 1,
-      display_code: 'F4E2B891',
+      display_code: 'colibri courageux 72',
       malidex_unique: 20,
       captures: 25,
       photos: 0,
@@ -192,5 +192,5 @@ test('fetchLeaderboard returns stale cache on leaderboard_unavailable when cache
 
   const result = await leaderboard.fetchLeaderboard(PLAYER_A);
   assert.equal(result._fromStaleCache, true);
-  assert.equal(result.player.display_code, 'A3F91B2C');
+  assert.equal(result.player.display_code, 'faucon pluvieux 56');
 });

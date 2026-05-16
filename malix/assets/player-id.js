@@ -39,7 +39,13 @@
 
   function formatDisplayCode(id) {
     if (!isValidPlayerId(id)) return '';
-    return id.replace(/-/g, '').slice(0, 8).toUpperCase();
+    if (
+      globalScope.MalixFormatDisplayCode &&
+      typeof globalScope.MalixFormatDisplayCode.formatDisplayCode === 'function'
+    ) {
+      return globalScope.MalixFormatDisplayCode.formatDisplayCode(id);
+    }
+    return '';
   }
 
   function getOrCreatePlayerId(storage) {
