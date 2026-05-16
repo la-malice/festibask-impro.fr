@@ -16,6 +16,13 @@ Places disponibles **pass spectacles** et **stages** (CSV Google → `remaining-
 | Fullscreen programme — animations and auto-schedule | Add per-block animation/carousel when an event is selected in fullscreen, and time-based auto-schedule on show days; keep existing layout and day/event selection unchanged. No animation during shows. | Planned |
 | Stages masterclass → stages confirmés | Rename "masterclass" to "stage confirmé" everywhere; 4 stages confirmés Samedi (2 salles × 2 créneaux); update instructor bio and copy. | Done |
 | Malix — échange 1↔1 | Échange de Malix depuis le Malidex par scans mutuels de QR courts, commit local, popup de bienvenue post-échange. | Done |
+| Malix — identifiant joueur + HoF PostHog (staff) | UUID `malix-player-id`, `posthog.identify`, snapshots, dashboard Hall of Fame PostHog. | Done |
+| Malix HoF in-game — slice 1 | Contrat API, SPEC/ARCH, HogQL validée | Planned |
+| Malix HoF in-game — slice 2 | `worker-malix-api` local + tests parsing | Planned |
+| Malix HoF in-game — slice 3 | Deploy prod, CORS, cache, rate limit | Planned |
+| Malix HoF in-game — slice 4 | `leaderboard-client.js` | Planned |
+| Malix HoF in-game — slice 5 | Onglet Malidex « Classement » + UI | Planned |
+| Malix HoF in-game — slice 6 | Finition, checklist festival | Planned |
 
 See [Slices (detail)](#slices-detail) below for full behaviour.
 
@@ -26,6 +33,7 @@ See [Slices (detail)](#slices-detail) below for full behaviour.
 - **Stages masterclass → stages confirmés:** [docs/slices/stages-confirmes-wording.md](slices/stages-confirmes-wording.md)
 - **Places stages / ateliers:** [docs/slices/places-stages-ateliers.md](slices/places-stages-ateliers.md)
 - **HelloAsso → Sheet (jauge) :** [docs/slices/helloasso-jauge-sync.md](slices/helloasso-jauge-sync.md)
+- **Malix — Hall of Fame in-game (6 slices) :** [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md) — ordre obligatoire 1 → 6 ; **ne pas implémenter hors session dédiée par slice**.
 
 ## Tasks
 

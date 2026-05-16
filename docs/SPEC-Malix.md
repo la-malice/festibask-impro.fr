@@ -76,13 +76,14 @@
 - Effets visuels et vibration (si supportée).
 - **Identité visuelle propre au jeu** (voir section Design) ; **point commun avec le site : uniquement les 27 doodles**.
 - PWA optionnelle (installation, icône, hors-ligne basique) si simple à intégrer sans impacter l’isolement.
+- **Hall of Fame in-game** (lecture) : onglet Malidex « Classement », classement agrégé via API serveur (Worker + PostHog), mise en avant du rang du joueur local — voir § 5.7 et [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md). **Statut : planifié** (non implémenté).
 
 ### 3.2 Out of scope
 
-- Compte utilisateur, backend, données serveur.
+- Compte utilisateur, backend de **progression** (la collection Malidex reste locale uniquement).
 - Impact sur le site principal (index, script.js, style.css).
 - Orientation paysage comme mode principal (le jeu est portrait uniquement).
-- Score, classement, compétition.
+- Score affiché en permanence pendant le jeu, **compétition** entre joueurs (duels, ligues), pression de classement en session de jeu.
 - Texte complexe ou explications longues.
 
 ### 3.3 Contrainte critique
@@ -103,6 +104,8 @@
 | **Variante (couleur)** | Une des 4 couleurs appliquées au SVG (par remplissage CSS ou équivalent). Identifiants 1 à 4 ou noms de couleur définis dans la SPEC. |
 | **Entrée de collection** | Paire (type, variante). Une entrée est soit collectée soit manquante. 27 × 4 = 108 entrées au total. |
 | **Échange** | Transaction 1↔1 entre deux joueurs: chaque joueur propose une entrée du Malidex, les deux valident, puis transfert croisé. |
+| **Hall of Fame (classement)** | Classement agrégé des joueurs (Malidex, captures, photos, échanges) affiché en lecture dans le Malidex ; données issues de PostHog via une API serveur ; pas de compte. |
+| **Code joueur** | Identifiant pseudonyme (`malix-player-id`, UUID) ; code court 8 caractères affiché au joueur et dans le classement (pas le nom réel). |
 
 ---
 
@@ -132,6 +135,7 @@
 - **Pour chaque type** : afficher les **4 variantes de couleur** ; pour chaque variante, indiquer **collectée** ou **non collectée** (icône, couleur, ou case cochée / vide).
 - **Progression** : affichage clair du nombre d’entrées collectées, ex. « 42 / 108 » ou « 12 / 27 types » avec détail des couleurs. L’objectif est que l’enfant comprenne qu’il doit remplir toutes les cases.
 - **Accès** : depuis l’écran de jeu, un bouton ou un onglet (ex. « Collection » / « Malidex ») ouvre cette vue ; retour simple vers l’écran de jeu.
+- **Onglets Malidex (cible)** : « Malix » (collection), « Album » (photos), **« Classement »** (Hall of Fame — planifié, § 5.7).
 
 ### 5.4 Fin de jeu
 
@@ -172,6 +176,16 @@
 - **Doublon reçu** : si l’entrée reçue existe déjà, la collection reste inchangée mais le compteur de captures (`xN`) augmente de +1.
 - **Feedback** : après échange réussi, afficher une popup de bienvenue/réception (style congratulation), y compris si doublon.
 
+### 5.7 Hall of Fame — classement (lecture, planifié)
+
+> **Statut : planifié** — détail de livraison et contrat API : [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md).
+
+- **But** : permettre à l’enfant de voir un **top 10** festival et **sa place** dans le classement, sans créer de compte ni afficher de données personnelles (noms, emails).
+- **Source des données** : agrégats PostHog (projet partagé avec le site), via un **Worker Cloudflare** (`worker-malix-api`) qui expose `GET /malix/api/leaderboard?player_id=<uuid>`. Aucune clé PostHog dans le navigateur.
+- **Classement** : tri par taille de Malidex (`malidex_unique`) puis nombre de captures ; fenêtre **90 jours** ; codes courts 8 caractères pour les autres joueurs.
+- **UI** : 3e onglet « Classement » ; encart « Ta place » ; ligne du joueur surlignée si dans le top 10 ; message d’indisponibilité si l’API échoue.
+- **Ce n’est pas** : une compétition en temps réel, un score affiché pendant le spawn, ni une persistance serveur de la collection Malidex.
+
 ---
 
 ## 6. Données et stockage
@@ -181,7 +195,16 @@
 - **Progression locale** : un joueur principal par appareil (collection locale).
 - **Échange P2P ponctuel** : interaction temporaire entre deux appareils par scans de QR courts ; aucune base serveur centrale.
 - **Aucun compte** : pas d’authentification.
-- **Aucune donnée serveur** : tout reste dans le navigateur.
+- **Progression Malidex** : tout reste dans le navigateur (collection, compteurs locaux).
+- **Classement (Hall of Fame)** : lecture seule via API ; aucune écriture serveur de la collection ; identifiant pseudonyme déjà synchronisé vers PostHog (§ 1.4).
+
+### 6.4 API classement (planifié)
+
+Contrat normatif : [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md). Résumé :
+
+- **Endpoint** : `GET /malix/api/leaderboard?player_id=<uuid>`
+- **Réponse** : `top` (10 lignes max), `player` (rang + stats), `total_players`, `updated_at`
+- **Erreurs** : `400` (UUID invalide), `502` (`leaderboard_unavailable`)
 
 ### 6.2 Stockage local
 

@@ -2,6 +2,13 @@
 
 Dashboard de classement pour la **Chasse aux Malix** (projet PostHog [124663](https://eu.posthog.com/project/124663/)).
 
+## Hall of Fame in-game (planifié)
+
+Affichage du classement **dans le jeu** (onglet Malidex « Classement ») : spécification normative et **6 slices** de livraison dans [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md). Suivi d’avancement : [docs/PLAN.md](PLAN.md).
+
+- **API cible (après slice 3)** : `GET https://festibask-impro.fr/malix/api/leaderboard?player_id=<uuid>` (Worker `worker-malix-api`, pas le hostname `e.festibask-impro.fr`).
+- **Statut** : non implémenté — les requêtes HogQL ci-dessous alimentent le dashboard staff ; le Worker réutilisera la même logique de classement.
+
 ## Prérequis
 
 - Déploiement du jeu avec `malix-player-id` et événements enrichis (`malix_player_id` sur chaque événement Malix).
