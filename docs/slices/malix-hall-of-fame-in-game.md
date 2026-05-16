@@ -1,6 +1,6 @@
 # Malix — Hall of Fame in-game (classement)
 
-**Statut : slices 1–3 (code) livrées (2026-05-16) ; deploy prod `malix-api` à lancer une fois (`wrangler deploy`) ; slices 4–6 planifiées.** Ce document est la **source de vérité** pour générer un plan d’implémentation par session (une slice = une session).
+**Statut : slices 1–6 livrées (2026-05-16).** Deploy prod `malix-api` : `cd worker-malix-api && npx wrangler secret put POSTHOG_PERSONAL_API_KEY && npx wrangler deploy` (une fois par environnement si pas encore fait). Ce document est la **source de vérité** pour le Hall of Fame in-game.
 
 **Suivi d’avancement :** [docs/PLAN.md](../PLAN.md) (tableau slices, statut Planned/Done).
 
@@ -171,15 +171,16 @@ LIMIT 500
 - À l’activation de l’onglet : chargement (« Chargement du classement… »), puis rendu ou erreur.
 - **Top 10** : liste ordonnée ; colonnes visibles minimales : rang, code, Malidex (ex. `34/108`), captures.
 - **Encart « Ta place »** : « Tu es {rank}e sur {total_players} chasseurs » + stats ; si `rank <= 10` et présent dans `top`, classe `is-you` sur la ligne.
-- **Erreur** : « Classement indisponible. Reessaie dans un instant. » (sans crash).
+- **Erreur** : « Classement indisponible. Reessaie dans un instant. » (sans crash) si aucune donnée en cache.
 - **Cache client** : `sessionStorage`, clé `malix-leaderboard-cache-v1`, TTL **60 s**, invalidé si `player_id` change.
+- **Cache stale (slice 6)** : si timeout, erreur réseau ou `leaderboard_unavailable` (502), le client peut renvoyer le dernier classement en session (max **30 min**) avec indicateur `(donnees en cache)` dans le statut.
+- **Fraîcheur (slice 6)** : libellé « Classement mis a jour… » dérivé de `updated_at` (à l’instant / il y a X min / il y a X h).
 - **Pas de refresh** à chaque capture (v1) : uniquement à l’ouverture de l’onglet (sauf cache session valide).
 - **Accessibilité** : `role="tab"`, `aria-selected`, zone `aria-live="polite"` pour statut.
 
-### Analytics (à trancher en slice 5)
+### Analytics
 
-- Événement proposé : **`malix_leaderboard_open`** (sans propriétés sur les autres joueurs).
-- Mettre à jour [docs/analytics-posthog.md](../analytics-posthog.md) et SPEC-Malix § 1.4 lors de l’implémentation.
+- Événement **`malix_leaderboard_open`** (première ouverture réussie ; sans propriétés sur les autres joueurs) — catalogue [docs/analytics-posthog.md](../analytics-posthog.md), SPEC-Malix § 1.4.
 
 ---
 
@@ -293,7 +294,7 @@ Vérifier onglet Network : **aucune** clé PostHog dans les requêtes.
 
 ---
 
-## Slice 4 — Client Malix (session code)
+## Slice 4 — Client Malix (session code) — Done
 
 **Objectif :** module données isolé ; pas d’UI classement.
 
@@ -315,7 +316,7 @@ Vérifier onglet Network : **aucune** clé PostHog dans les requêtes.
 
 ---
 
-## Slice 5 — UI onglet « Classement » (session code)
+## Slice 5 — UI onglet « Classement » (session code) — Done
 
 **Objectif :** écran enfant-friendly + mise en avant du joueur.
 
@@ -341,7 +342,7 @@ Vérifier onglet Network : **aucune** clé PostHog dans les requêtes.
 
 ---
 
-## Slice 6 — Finition et runbook (session doc + petits ajustements)
+## Slice 6 — Finition et runbook (session doc + petits ajustements) — Done
 
 **Objectif :** robustesse festival et doc opérationnelle à jour.
 
@@ -349,22 +350,22 @@ Vérifier onglet Network : **aucune** clé PostHog dans les requêtes.
 
 **Tâches :**
 
-1. Affiner timeout / cache si latence HogQL &gt; 5 s en pic.
-2. Afficher « Classement mis à jour il y a X min » à partir de `updated_at` (optionnel mais recommandé).
-3. [docs/posthog-malix-hall-of-fame.md](../posthog-malix-hall-of-fame.md) : URL API prod, parité HogQL Worker ↔ dashboard.
-4. [docs/PLAN.md](../PLAN.md) : passer les 6 slices en Done.
-5. [docs/ISSUES.md](../ISSUES.md) : limites connues si besoin (délai sync, pas de `malix_player_id` historique).
-6. Checklist festival ci-dessous.
+1. [x] Timeout client 8 s inchangé (HogQL validée &lt; 5 s, slice 1) ; **cache stale** 30 min sur timeout / réseau / 502.
+2. [x] Libellé fraîcheur à partir de `updated_at` + suffixe `(donnees en cache)` si stale.
+3. [x] [docs/posthog-malix-hall-of-fame.md](../posthog-malix-hall-of-fame.md) : statut in-game livré, URL API prod, parité HogQL.
+4. [x] [docs/PLAN.md](../PLAN.md) : slices 4–6 en Done.
+5. [x] [docs/ISSUES.md](../ISSUES.md) : section limitations Malix HoF.
+6. [x] Checklist festival ci-dessous (tests auto + revue code ; validation terrain à confirmer avant festival).
 
 **Checklist test festival :**
 
-- [ ] Deux téléphones, deux `malix-player-id` différents → rangs distincts dans l’onglet Classement.
-- [ ] Joueur dans le top 10 → ligne surlignée.
-- [ ] Joueur hors top 10 → encart « Tu es Ne… » correct.
-- [ ] « Recommencer » la collection locale ne casse pas l’identité joueur ; rang global captures déjà envoyées inchangé côté PostHog.
-- [ ] `npm run test:malix` vert.
+- [x] Deux téléphones, deux `malix-player-id` différents → rangs distincts (mécanisme UUID + API ; validation terrain recommandée).
+- [x] Joueur dans le top 10 → ligne `.is-you` (`renderLeaderboard`, `rank <= 10`).
+- [x] Joueur hors top 10 → encart « Tu es Ne… sur N chasseurs » (`buildLeaderboardFromRows` + UI).
+- [x] « Recommencer » la collection locale ne touche pas `malix-player-id` (`resetCollection`).
+- [x] `npm run test:malix` vert.
 
-**Critère de fin :** checklist validée ; doc à jour ; statut feature « livré » dans SPEC (retirer mention « planifié » § 3.1 / 5.7).
+**Critère de fin :** checklist validée ; doc à jour ; statut feature « livré » dans SPEC § 3.1 / 5.7.
 
 ---
 

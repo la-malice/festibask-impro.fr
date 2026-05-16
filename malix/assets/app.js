@@ -1597,8 +1597,34 @@
     return String(value) + 'e';
   }
 
+  function formatLeaderboardFreshness(updatedAtIso, fromStaleCache) {
+    let text = '';
+    if (updatedAtIso) {
+      const updatedAt = Date.parse(String(updatedAtIso));
+      if (Number.isFinite(updatedAt)) {
+        const minutes = Math.floor((Date.now() - updatedAt) / 60000);
+        if (minutes < 1) {
+          text = 'Classement mis a jour a l\'instant';
+        } else if (minutes < 60) {
+          text = 'Classement mis a jour il y a ' + minutes + ' min';
+        } else {
+          const hours = Math.floor(minutes / 60);
+          text = 'Classement mis a jour il y a ' + hours + ' h';
+        }
+      }
+    }
+    if (!text) {
+      text = 'Classement mis a jour';
+    }
+    if (fromStaleCache) {
+      text += ' (donnees en cache)';
+    }
+    return text;
+  }
+
   function showLeaderboardError(message) {
     if (leaderboardStatus) {
+      leaderboardStatus.classList.remove('leaderboard-freshness');
       leaderboardStatus.textContent = message || LEADERBOARD_ERROR_MESSAGE;
     }
     if (leaderboardYou) {
@@ -1671,7 +1697,11 @@
     }
 
     if (leaderboardStatus) {
-      leaderboardStatus.textContent = '';
+      leaderboardStatus.textContent = formatLeaderboardFreshness(
+        data.updated_at,
+        data._fromStaleCache === true
+      );
+      leaderboardStatus.classList.add('leaderboard-freshness');
     }
 
     if (!leaderboardOpenCaptured) {
@@ -1688,6 +1718,7 @@
     if (leaderboardLoading) return;
     leaderboardLoading = true;
     if (leaderboardStatus) {
+      leaderboardStatus.classList.remove('leaderboard-freshness');
       leaderboardStatus.textContent = 'Chargement du classement…';
     }
     if (leaderboardYou) {

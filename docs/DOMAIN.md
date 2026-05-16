@@ -29,7 +29,7 @@ Vocabulary and concepts for the Festibask'Impro festival site: event, spectacles
 | **Validation bilatérale (Malix)** | Condition où les deux joueurs ont explicitement accepté l’échange ; seul cas autorisant le commit. |
 | **Mode cheat (Malix)** | URL avec `?cheat=1` : outil de test (badge + bouton dans le Malidex pour compléter la collection et tester la fin de jeu). Voir docs/SPEC-Malix.md § 5.5. |
 | **Code joueur (Malix)** | Identifiant pseudonyme UUID (`malix-player-id`) ; code court 8 caractères affiché au joueur (dialogue « Ton code joueur »). |
-| **Hall of Fame (Malix)** | Classement agrégé (Malidex, captures, photos, échanges) ; dashboard PostHog staff + affichage in-game planifié (onglet Malidex « Classement »). Voir docs/SPEC-Malix.md § 5.7, docs/slices/malix-hall-of-fame-in-game.md. |
+| **Hall of Fame (Malix)** | Classement agrégé (Malidex, captures, photos, échanges) ; dashboard PostHog staff + affichage in-game (onglet Malidex « Classement »). Voir docs/SPEC-Malix.md § 5.7, docs/slices/malix-hall-of-fame-in-game.md. |
 
 ## Entities and Relationships
 

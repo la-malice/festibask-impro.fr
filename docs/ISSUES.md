@@ -6,6 +6,7 @@
 
 ## Limitations
 
+- **Malix Hall of Fame (in-game) :** un appareil ≈ un joueur PostHog ; effacement des données navigateur → nouvel UUID ; délai de sync (`malix_player_snapshot` + cache BFF Worker **180 s** + cache session client **60 s**) ; événements avant déploiement `malix_player_id` absents du classement ; l’onglet Classement nécessite le Worker `malix-api` déployé sur `festibask-impro.fr/malix/api/*` (voir [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md)).
 - **Testimonials:** Carousel is hidden when `assets/data/temoignages.json` is empty or invalid. Backup copy of the active entry (Julie Ferrier) is in `docs/temoignages-sauvegarde.json`.
 - **No server-side rendering:** SEO relies on static HTML, meta tags, and Schema.org; no prerender.
 - **Témoignages editing:** No CMS or admin UI; content is edited in JSON by hand. Schema and examples in `docs/temoignages-carousel.md`.

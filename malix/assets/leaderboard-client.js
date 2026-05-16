@@ -2,7 +2,9 @@
   const LEADERBOARD_PATH = '/malix/api/leaderboard';
   const CACHE_KEY = 'malix-leaderboard-cache-v1';
   const CACHE_TTL_MS = 60_000;
+  const STALE_CACHE_MAX_AGE_MS = 30 * 60_000;
   const FETCH_TIMEOUT_MS = 8_000;
+  const STALE_FALLBACK_CODES = new Set(['timeout', 'network_error', 'leaderboard_unavailable']);
 
   const UUID_RE =
     /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -32,7 +34,7 @@
     }
   }
 
-  function readCache(playerId) {
+  function readCacheEntry(playerId) {
     const storage = getSessionStorage();
     if (!storage) return null;
     try {
@@ -41,11 +43,47 @@
       const entry = JSON.parse(raw);
       if (!entry || entry.player_id !== playerId) return null;
       if (typeof entry.fetched_at !== 'number' || !entry.data) return null;
-      if (Date.now() - entry.fetched_at >= CACHE_TTL_MS) return null;
-      return entry.data;
+      return entry;
     } catch (error) {
       return null;
     }
+  }
+
+  function readCache(playerId) {
+    const entry = readCacheEntry(playerId);
+    if (!entry) return null;
+    if (Date.now() - entry.fetched_at >= CACHE_TTL_MS) return null;
+    return entry.data;
+  }
+
+  function readStaleCache(playerId) {
+    const entry = readCacheEntry(playerId);
+    if (!entry) return null;
+    if (Date.now() - entry.fetched_at >= STALE_CACHE_MAX_AGE_MS) return null;
+    return entry.data;
+  }
+
+  function withStaleMarker(data) {
+    if (!data || typeof data !== 'object') return data;
+    const copy = Object.assign({}, data);
+    copy._fromStaleCache = true;
+    return copy;
+  }
+
+  function normalizeFetchError(error) {
+    if (error && error.code) return error;
+    if (error && error.name === 'AbortError') {
+      return leaderboardError('timeout', 'timeout');
+    }
+    return leaderboardError('network_error', 'network_error');
+  }
+
+  function resolveStaleOrThrow(playerId, error) {
+    if (error && STALE_FALLBACK_CODES.has(error.code)) {
+      const stale = readStaleCache(playerId);
+      if (stale) return withStaleMarker(stale);
+    }
+    throw error;
   }
 
   function writeCache(playerId, data) {
@@ -107,14 +145,14 @@
     try {
       response = await fetchWithTimeout(buildUrl(playerId));
     } catch (error) {
-      if (error && error.code) throw error;
-      if (error && error.name === 'AbortError') {
-        throw leaderboardError('timeout', 'timeout');
-      }
-      throw leaderboardError('network_error', 'network_error');
+      return resolveStaleOrThrow(playerId, normalizeFetchError(error));
     }
     if (!response.ok) {
-      throw await parseErrorResponse(response);
+      try {
+        throw await parseErrorResponse(response);
+      } catch (error) {
+        return resolveStaleOrThrow(playerId, error);
+      }
     }
     const data = await response.json();
     writeCache(playerId, data);
@@ -125,8 +163,10 @@
     LEADERBOARD_PATH: LEADERBOARD_PATH,
     CACHE_KEY: CACHE_KEY,
     CACHE_TTL_MS: CACHE_TTL_MS,
+    STALE_CACHE_MAX_AGE_MS: STALE_CACHE_MAX_AGE_MS,
     buildUrl: buildUrl,
     readCache: readCache,
+    readStaleCache: readStaleCache,
     writeCache: writeCache,
     fetchLeaderboard: fetchLeaderboard
   };

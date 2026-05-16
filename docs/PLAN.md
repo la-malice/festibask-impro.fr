@@ -20,9 +20,9 @@ Places disponibles **pass spectacles** et **stages** (CSV Google → `remaining-
 | Malix HoF in-game — slice 1 | Contrat API, SPEC/ARCH, HogQL validée | Done |
 | Malix HoF in-game — slice 2 | `worker-malix-api` local + tests parsing | Done |
 | Malix HoF in-game — slice 3 | Deploy prod, CORS, cache, rate limit | Done |
-| Malix HoF in-game — slice 4 | `leaderboard-client.js` | Planned |
-| Malix HoF in-game — slice 5 | Onglet Malidex « Classement » + UI | Planned |
-| Malix HoF in-game — slice 6 | Finition, checklist festival | Planned |
+| Malix HoF in-game — slice 4 | `leaderboard-client.js` | Done |
+| Malix HoF in-game — slice 5 | Onglet Malidex « Classement » + UI | Done |
+| Malix HoF in-game — slice 6 | Finition, checklist festival | Done |
 
 See [Slices (detail)](#slices-detail) below for full behaviour.
 

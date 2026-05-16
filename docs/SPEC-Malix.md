@@ -76,7 +76,7 @@
 - Effets visuels et vibration (si supportée).
 - **Identité visuelle propre au jeu** (voir section Design) ; **point commun avec le site : uniquement les 27 doodles**.
 - PWA optionnelle (installation, icône, hors-ligne basique) si simple à intégrer sans impacter l’isolement.
-- **Hall of Fame in-game** (lecture) : onglet Malidex « Classement », classement agrégé via API serveur (Worker + PostHog), mise en avant du rang du joueur local — voir § 5.7 et [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md). **Statut : livré (slices 1–5) ; finition doc/QA slice 6.**
+- **Hall of Fame in-game** (lecture) : onglet Malidex « Classement », classement agrégé via API serveur (Worker + PostHog), mise en avant du rang du joueur local — voir § 5.7 et [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md). **Statut : livré.**
 
 ### 3.2 Out of scope
 
@@ -178,12 +178,12 @@
 
 ### 5.7 Hall of Fame — classement (lecture)
 
-> **Statut : contrat validé (slice 1) ; Worker + client (slices 2–4) livrés ; UI onglet Classement (slice 5) livrée ; finition slice 6 planifiée.** Détail : [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md).
+> **Statut : livré (slices 1–6).** Détail : [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md).
 
 - **But** : permettre à l’enfant de voir un **top 10** festival et **sa place** dans le classement, sans créer de compte ni afficher de données personnelles (noms, emails).
 - **Source des données** : agrégats PostHog (projet partagé avec le site), via un **Worker Cloudflare** (`worker-malix-api`) qui expose `GET /malix/api/leaderboard?player_id=<uuid>`. Aucune clé PostHog dans le navigateur.
 - **Classement** : tri par taille de Malidex (`malidex_unique`) puis nombre de captures ; fenêtre **90 jours** ; codes courts 8 caractères pour les autres joueurs.
-- **UI** : 3e onglet « Classement » ; encart « Ta place » ; ligne du joueur surlignée si dans le top 10 ; message d’indisponibilité si l’API échoue.
+- **UI** : 3e onglet « Classement » ; encart « Ta place » ; ligne du joueur surlignée si dans le top 10 ; fraîcheur (`updated_at`) ; cache stale si l’API échoue après un chargement réussi ; message d’indisponibilité sinon.
 - **Ce n’est pas** : une compétition en temps réel, un score affiché pendant le spawn, ni une persistance serveur de la collection Malidex.
 
 ---

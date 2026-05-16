@@ -150,3 +150,47 @@ test('fetchLeaderboard surfaces API error code from JSON body', async function (
     }
   );
 });
+
+test('fetchLeaderboard returns stale cache when fetch fails after TTL', async function () {
+  await leaderboard.fetchLeaderboard(PLAYER_A);
+  assert.equal(fetchCallCount, 1);
+
+  const entry = JSON.parse(globalThis.sessionStorage.getItem(leaderboard.CACHE_KEY));
+  entry.fetched_at = Date.now() - leaderboard.CACHE_TTL_MS - 1;
+  globalThis.sessionStorage.setItem(leaderboard.CACHE_KEY, JSON.stringify(entry));
+
+  globalThis.fetch = function () {
+    fetchCallCount += 1;
+    const abortError = new Error('Aborted');
+    abortError.name = 'AbortError';
+    return Promise.reject(abortError);
+  };
+
+  const result = await leaderboard.fetchLeaderboard(PLAYER_A);
+  assert.equal(fetchCallCount, 2);
+  assert.equal(result._fromStaleCache, true);
+  assert.equal(result.total_players, 3);
+});
+
+test('fetchLeaderboard returns stale cache on leaderboard_unavailable when cached', async function () {
+  await leaderboard.fetchLeaderboard(PLAYER_A);
+
+  const entry = JSON.parse(globalThis.sessionStorage.getItem(leaderboard.CACHE_KEY));
+  entry.fetched_at = Date.now() - leaderboard.CACHE_TTL_MS - 1;
+  globalThis.sessionStorage.setItem(leaderboard.CACHE_KEY, JSON.stringify(entry));
+
+  globalThis.fetch = function () {
+    fetchCallCount += 1;
+    return Promise.resolve({
+      ok: false,
+      status: 502,
+      json: function () {
+        return Promise.resolve({ error: 'leaderboard_unavailable' });
+      }
+    });
+  };
+
+  const result = await leaderboard.fetchLeaderboard(PLAYER_A);
+  assert.equal(result._fromStaleCache, true);
+  assert.equal(result.player.display_code, 'A3F91B2C');
+});

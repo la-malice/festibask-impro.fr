@@ -8,8 +8,9 @@ Affichage du classement **dans le jeu** (onglet Malidex « Classement ») : spé
 
 - **Slice 1 (2026-05-16)** : contrat API et HogQL de référence validés (voir section *Validation slice 1* dans le slice doc).
 - **API prod** : `GET https://festibask-impro.fr/malix/api/leaderboard?player_id=<uuid>` (Worker `malix-api` / dossier `worker-malix-api/`, pas le hostname `e.festibask-impro.fr`).
-- **Slice 3 (2026-05-16)** : CORS, cache 180 s, rate limit dans le Worker ; route `festibask-impro.fr/malix/api/*` dans `wrangler.jsonc`. **Deploy** : `cd worker-malix-api && npx wrangler secret put POSTHOG_PERSONAL_API_KEY && npx wrangler deploy` (à exécuter sur le compte Cloudflare du site).
-- **Statut** : API Worker prête ; client / UI non livrés (slices 4–6). Même HogQL que le dashboard staff ; API in-game `LIMIT 500`, insight dashboard `LIMIT 50`.
+- **Slice 3 (2026-05-16)** : CORS, cache 180 s, rate limit dans le Worker ; route `festibask-impro.fr/malix/api/*` dans `wrangler.jsonc`. **Deploy** : `cd worker-malix-api && npx wrangler secret put POSTHOG_PERSONAL_API_KEY && npx wrangler deploy` (à exécuter sur le compte Cloudflare du site si pas encore fait).
+- **Slices 4–6 (2026-05-16)** : client `leaderboard-client.js`, onglet Malidex « Classement », cache stale au échec réseau, libellé fraîcheur `updated_at`.
+- **Statut** : **in-game livré** (slices 1–6). Même HogQL que le dashboard staff ; API in-game `LIMIT 500`, insight dashboard `LIMIT 50`.
 
 ## Prérequis
 
