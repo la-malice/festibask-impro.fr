@@ -30,6 +30,7 @@ Vocabulary and concepts for the Festibask'Impro festival site: event, spectacles
 | **Mode cheat (Malix)** | URL avec `?cheat=1` : outil de test (badge + bouton dans le Malidex pour compléter la collection et tester la fin de jeu). Voir docs/SPEC-Malix.md § 5.5. |
 | **Code joueur (Malix)** | Identifiant pseudonyme UUID (`malix-player-id`) ; pseudonyme lisible affiché au joueur (dialogue « Ton nom de joueur », ex. `faucon pluvieux 56`, dérivé de l’UUID). |
 | **Hall of Fame (Malix)** | Classement agrégé (Malidex, captures, photos, échanges) ; dashboard PostHog staff + affichage in-game (onglet Malidex « Classement »). Voir docs/SPEC-Malix.md § 5.7, docs/slices/malix-hall-of-fame-in-game.md. |
+| **Score classement (Malix)** | Points Hall of Fame sur 90 j : capture ×3, photo album ×1, échange ×2 ; tri points puis Malidex puis captures. Source : [`shared/malix/leaderboard-scoring.js`](../shared/malix/leaderboard-scoring.js). |
 
 ## Entities and Relationships
 

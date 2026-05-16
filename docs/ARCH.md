@@ -118,7 +118,9 @@ Composant **BFF** séparé du proxy d’ingestion PostHog. **Contrat slice 1** ;
 | malix/ | Mini-jeu Malix (sources) ; copié ou généré dans dist/malix/ ; entrée malix/index.html ; isolation totale du site principal |
 | malix/assets/player-id.js | UUID joueur (`malix-player-id`), pseudonyme `display_code` |
 | malix/assets/format-display-code.js | Listes nom/adjectif + `formatDisplayCode` (navigateur) |
+| malix/assets/leaderboard-scoring.js | Points Hall of Fame côté navigateur (fallback si API sans `points`) |
 | shared/malix/format-display-code.js | Source normative `formatDisplayCode` (Worker + tests) |
+| shared/malix/leaderboard-scoring.js | Poids et formule points Hall of Fame (`computeLeaderboardPoints`, `compareLeaderboardPlayers`) |
 | malix/assets/leaderboard-client.js | *(slice 4)* Client HTTP vers l’API classement — [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md) |
 | worker-posthog/ | Proxy Cloudflare **ingestion** PostHog uniquement ; hostname `e.festibask-impro.fr` — **ne pas** y ajouter l’API classement |
 | worker-malix-api/ | BFF Cloudflare (slices 2–3) : `GET /malix/api/leaderboard` → PostHog Query API (projet 124663) ; CORS, cache 3 min, rate limit ; secret `POSTHOG_PERSONAL_API_KEY` |

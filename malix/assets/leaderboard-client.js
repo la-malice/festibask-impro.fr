@@ -1,6 +1,6 @@
 (function (globalScope) {
   const LEADERBOARD_PATH = '/malix/api/leaderboard';
-  const CACHE_KEY = 'malix-leaderboard-cache-v2';
+  const CACHE_KEY = 'malix-leaderboard-cache-v4';
   const CACHE_TTL_MS = 60_000;
   const STALE_CACHE_MAX_AGE_MS = 30 * 60_000;
   const FETCH_TIMEOUT_MS = 8_000;

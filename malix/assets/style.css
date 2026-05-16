@@ -879,6 +879,12 @@ body {
   font-weight: 800;
 }
 
+.leaderboard-you-score {
+  margin: 0 0 6px;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
 .leaderboard-you-stats {
   margin: 0;
   font-size: 0.82rem;
@@ -899,7 +905,7 @@ body {
 .leaderboard-list-header,
 .leaderboard-row {
   display: grid;
-  grid-template-columns: 2.2rem minmax(0, 1fr) 3.6rem 2.6rem;
+  grid-template-columns: 2.2rem minmax(0, 1fr) 2.8rem 3.6rem;
   gap: 8px;
   align-items: center;
   padding: 8px 10px;

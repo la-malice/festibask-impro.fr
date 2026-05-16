@@ -45,6 +45,7 @@ test('buildLeaderboardFromRows limits top to 10 players', function () {
   assert.equal(result.top[0].rank, 1);
   assert.equal(result.top[9].rank, 10);
   assert.equal('player_id' in result.top[0], false);
+  assert.equal(typeof result.top[0].points, 'number');
 });
 
 test('buildLeaderboardFromRows ranks player in top with correct display_code', function () {
@@ -58,6 +59,8 @@ test('buildLeaderboardFromRows ranks player in top with correct display_code', f
   assert.equal(result.player.display_code, formatDisplayCode(PLAYER_B));
   assert.equal(result.top[0].display_code, formatDisplayCode(PLAYER_B));
   assert.equal(result.player.malidex_unique, 9);
+  assert.equal(result.player.points, 5 * 3 + 1);
+  assert.equal(result.top[0].points, result.player.points);
 });
 
 test('buildLeaderboardFromRows ranks player outside top 10', function () {
@@ -96,14 +99,27 @@ test('buildLeaderboardFromRows assigns last rank when player is unknown', functi
   assert.equal(result.player.rank, 3);
   assert.equal(result.player.malidex_unique, 0);
   assert.equal(result.player.captures, 0);
+  assert.equal(result.player.points, 0);
 });
 
-test('buildLeaderboardFromRows breaks ties on captures', function () {
+test('buildLeaderboardFromRows ranks by points before malidex', function () {
   const rows = makeRows([
-    { player_id: PLAYER_C, malidex: 10, captures: 1, photos: 0, trades: 0 },
+    { player_id: PLAYER_C, malidex: 50, captures: 1, photos: 0, trades: 0 },
+    { player_id: PLAYER_B, malidex: 5, captures: 2, photos: 10, trades: 1 }
+  ]);
+  const result = buildLeaderboardFromRows(rows, PLAYER_B);
+  assert.equal(result.top[0].display_code, formatDisplayCode(PLAYER_B));
+  assert.equal(result.top[0].points, 2 * 3 + 10 + 2);
+  assert.equal(result.top[1].display_code, formatDisplayCode(PLAYER_C));
+});
+
+test('buildLeaderboardFromRows breaks ties on malidex then captures when points equal', function () {
+  const rows = makeRows([
+    { player_id: PLAYER_C, malidex: 10, captures: 3, photos: 6, trades: 0 },
     { player_id: PLAYER_B, malidex: 10, captures: 5, photos: 0, trades: 0 }
   ]);
   const result = buildLeaderboardFromRows(rows, PLAYER_B);
+  assert.equal(result.top[0].points, result.top[1].points);
   assert.equal(result.top[0].display_code, formatDisplayCode(PLAYER_B));
   assert.equal(result.top[1].display_code, formatDisplayCode(PLAYER_C));
 });

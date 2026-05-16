@@ -16,7 +16,7 @@
 
 - **Validé** : JSON 200 (`updated_at`, `total_players`, `player`, `top` max 10) ; erreurs `400` (`missing_player_id`, `invalid_player_id`), `429` (`rate_limited`, livraison slice 3), `502` (`leaderboard_unavailable`).
 - **Hors contrat** (implémentation slice 2+) : `404` / `405` — comportement technique Worker, non documenté pour le client Malix.
-- **Règles figées** : fenêtre **90 jours** ; tri `malidex_unique` DESC puis `captures` DESC ; HogQL `LIMIT 500` ; UI **top 10** ; `display_code` aligné [`shared/malix/format-display-code.js`](../../shared/malix/format-display-code.js) (client : [`malix/assets/format-display-code.js`](../../malix/assets/format-display-code.js)).
+- **Règles figées** : fenêtre **90 jours** ; score **points** = captures×3 + photos×1 + échanges×2 ([`shared/malix/leaderboard-scoring.js`](../../shared/malix/leaderboard-scoring.js)) ; tri `points` DESC puis `malidex_unique` DESC puis `captures` DESC ; HogQL `LIMIT 500` ; UI **top 10** ; `display_code` aligné [`shared/malix/format-display-code.js`](../../shared/malix/format-display-code.js) (client : [`malix/assets/format-display-code.js`](../../malix/assets/format-display-code.js)).
 
 ### Validation HogQL
 
@@ -24,7 +24,7 @@
 - **Runs** : 3 exécutions (t0, +30 s, +60 s) — résultats stables.
 - **Latence** : ~1–2 s par run (round-trip MCP ; volume actuel faible) — **sous l’objectif 5 s** hors cache.
 - **Lignes retournées** : 3 joueurs (≤ 500).
-- **Colonnes** : `player_id`, `malidex`, `captures`, `photos`, `trades`.
+- **Colonnes** : `player_id`, `malidex`, `captures`, `photos`, `trades`, `points` (agrégat HogQL + recalcul Worker via scoring partagé).
 - **Parité dashboard** : **OK** — top 3 identique à l’insight [Classement Malidex (top 50)](https://eu.posthog.com/project/124663/insights/omUc9UwC) (même HogQL ; dashboard `LIMIT 50`, API Worker `LIMIT 500` pour le calcul du rang).
 
 ---
@@ -90,6 +90,7 @@ flowchart LR
 | `player.player_id` | string | UUID demandé (réponse ; pas affiché pour les autres en UI) |
 | `player.display_code` | string | Pseudonyme lisible (`{nom} {adjectif} {NN}`, ex. `faucon pluvieux 56`) |
 | `player.rank` | number | 1 = meilleur ; si absent des données : `total_players + 1` et stats à 0 |
+| `player.points` | number | Score classement (formule § Règles de classement) |
 | `player.malidex_unique` | number | |
 | `player.captures` | number | |
 | `player.photos` | number | |
@@ -97,6 +98,7 @@ flowchart LR
 | `top` | array | Max **10** lignes pour l’UI |
 | `top[].rank` | number | |
 | `top[].display_code` | string | Jamais d’UUID tiers en UI ; forme complète `{nom} {adjectif} {NN}` dans le JSON |
+| `top[].points` | number | |
 | `top[].malidex_unique` | number | |
 | `top[].captures` | number | |
 | `top[].photos` | number | |
@@ -112,6 +114,7 @@ Exemple :
     "player_id": "a3f91b2c-4d5e-4789-abcd-ef0123456789",
     "display_code": "faucon pluvieux 56",
     "rank": 12,
+    "points": 134,
     "malidex_unique": 34,
     "captures": 41,
     "photos": 2,
@@ -121,6 +124,7 @@ Exemple :
     {
       "rank": 1,
       "display_code": "colibri courageux 72",
+      "points": 373,
       "malidex_unique": 108,
       "captures": 120,
       "photos": 5,
@@ -130,13 +134,14 @@ Exemple :
 }
 ```
 
-### Règles de classement (figées slice 1)
+### Règles de classement (figées)
 
-1. Tri : `malidex_unique` DESC, puis `captures` DESC.
-2. Fenêtre : **90 jours** glissants (`timestamp >= now() - INTERVAL 90 DAY`).
-3. Requête HogQL interne : agrégation par `properties.malix_player_id`, `LIMIT 500` pour calcul du rang ; UI n’affiche que le top 10.
-4. `display_code` : pseudonyme déterministe depuis l’UUID (octets 0–3 → nom, adjectif, numéro `00`–`99`) — [`shared/malix/format-display-code.js`](../../shared/malix/format-display-code.js) `formatDisplayCode`, délégué par [`malix/assets/player-id.js`](../../malix/assets/player-id.js).
-5. **Affichage UI (onglet Classement)** : le suffixe numérique n’est montré que si au moins deux joueurs visibles (top 10 + encart joueur) partagent le même couple nom+adjectif ; sinon affichage `{nom} {adjectif}` seul (`buildLeaderboardDisplayLabels` dans [`malix/assets/format-display-code.js`](../../malix/assets/format-display-code.js)). Dialogue « Ton nom de joueur » : toujours sans suffixe.
+1. **Points** : `captures×3 + photos×1 + trades×2` — constantes et `compareLeaderboardPlayers` dans [`shared/malix/leaderboard-scoring.js`](../../shared/malix/leaderboard-scoring.js) ; recalcul côté Worker dans `buildLeaderboardFromRows` (source de vérité pour le tri JSON).
+2. Tri : `points` DESC, puis `malidex_unique` DESC, puis `captures` DESC.
+3. Fenêtre : **90 jours** glissants (`timestamp >= now() - INTERVAL 90 DAY`).
+4. Requête HogQL interne : agrégation par `properties.malix_player_id`, `LIMIT 500` pour calcul du rang ; UI n’affiche que le top 10.
+5. `display_code` : pseudonyme déterministe depuis l’UUID (octets 0–3 → nom, adjectif, numéro `00`–`99`) — [`shared/malix/format-display-code.js`](../../shared/malix/format-display-code.js) `formatDisplayCode`, délégué par [`malix/assets/player-id.js`](../../malix/assets/player-id.js).
+6. **Affichage UI (onglet Classement)** : le suffixe numérique n’est montré que si au moins deux joueurs visibles (top 10 + encart joueur) partagent le même couple nom+adjectif ; sinon affichage `{nom} {adjectif}` seul (`buildLeaderboardDisplayLabels` dans [`malix/assets/format-display-code.js`](../../malix/assets/format-display-code.js)). Dialogue « Ton nom de joueur » : toujours sans suffixe.
 
 ### HogQL de référence
 
@@ -144,9 +149,18 @@ Exemple :
 SELECT
   properties.malix_player_id AS player_id,
   max(person.properties.malidex_unique) AS malidex,
-  countIf(event = 'malix_capture') AS captures,
-  countIf(event = 'malix_photo_saved') AS photos,
-  countIf(event = 'malix_trade_completed') AS trades
+  greatest(
+    countIf(event = 'malix_capture'),
+    max(toInt(person.properties.malix_captures_total))
+  ) AS captures,
+  greatest(
+    countIf(event = 'malix_photo_saved'),
+    max(toInt(person.properties.malix_photos_total))
+  ) AS photos,
+  greatest(
+    countIf(event = 'malix_trade_completed'),
+    max(toInt(person.properties.malix_trades_total))
+  ) AS trades
 FROM events
 WHERE properties.malix_player_id IS NOT NULL
   AND event IN (
@@ -158,7 +172,14 @@ WHERE properties.malix_player_id IS NOT NULL
   )
   AND timestamp >= now() - INTERVAL 90 DAY
 GROUP BY player_id
-ORDER BY malidex DESC, captures DESC
+ORDER BY
+  (
+    greatest(countIf(event = 'malix_capture'), max(toInt(person.properties.malix_captures_total))) * 3
+    + greatest(countIf(event = 'malix_photo_saved'), max(toInt(person.properties.malix_photos_total)))
+    + greatest(countIf(event = 'malix_trade_completed'), max(toInt(person.properties.malix_trades_total))) * 2
+  ) DESC,
+  malidex DESC,
+  captures DESC
 LIMIT 500
 ```
 
@@ -170,10 +191,11 @@ LIMIT 500
 
 - Onglet **« Classement »** dans `.malidex-tabs` ; panneau `#malidexPanelLeaderboard`.
 - À l’activation de l’onglet : chargement (« Chargement du classement… »), puis rendu ou erreur.
-- **Top 10** : liste ordonnée ; colonnes visibles minimales : rang, code, Malidex (ex. `34/108`), captures.
-- **Encart « Ta place »** : « Tu es {rank}e sur {total_players} chasseurs » + stats ; si `rank <= 10` et présent dans `top`, classe `is-you` sur la ligne.
+- **Top 10** : liste ordonnée ; colonnes visibles minimales : rang, code, **points**, Malidex (ex. `34/108`).
+- **Encart « Ta place »** : « Tu es {rank}e sur {total_players} chasseurs » ; **Score {points} pts** ; détail Malidex / captures / photos / échanges ; si `rank <= 10` et présent dans `top`, classe `is-you` sur la ligne.
 - **Erreur** : « Classement indisponible. Reessaie dans un instant. » (sans crash) si aucune donnée en cache.
-- **Cache client** : `sessionStorage`, clé `malix-leaderboard-cache-v1`, TTL **60 s**, invalidé si `player_id` change.
+- **Cache client** : `sessionStorage`, clé `malix-leaderboard-cache-v4`, TTL **60 s**, invalidé si `player_id` change.
+- **Sync à l’ouverture** : `malix_player_snapshot` envoyé avant le fetch ; encart « Ta place » affiche le max(API, progression locale) pour captures/photos/échanges/Malidex ; colonne **Pts** calculée côté client si l’API n’expose pas encore `points` (déploiement Worker).
 - **Cache stale (slice 6)** : si timeout, erreur réseau ou `leaderboard_unavailable` (502), le client peut renvoyer le dernier classement en session (max **30 min**) avec indicateur `(donnees en cache)` dans le statut.
 - **Fraîcheur (slice 6)** : libellé « Classement mis a jour… » dérivé de `updated_at` (à l’instant / il y a X min / il y a X h).
 - **Pas de refresh** à chaque capture (v1) : uniquement à l’ouverture de l’onglet (sauf cache session valide).
@@ -223,11 +245,13 @@ LIMIT 500
 | `worker-malix-api/src/index.js` | Route `GET /malix/api/leaderboard` ; OPTIONS pour CORS futur |
 | `worker-malix-api/src/posthog-query.js` | `POST https://eu.posthog.com/api/projects/124663/query/` |
 | `worker-malix-api/src/leaderboard.js` | Parse `results` HogQL → `buildLeaderboardFromRows(rows, playerId)` |
+| `shared/malix/leaderboard-scoring.js` | Poids points, `computeLeaderboardPoints`, `compareLeaderboardPlayers` |
 | `shared/malix/format-display-code.js` | `formatDisplayCode`, listes nom/adjectif |
 | `worker-malix-api/src/player-id.js` | Réexport `isValidPlayerId`, `formatDisplayCode` |
 | `malix/assets/format-display-code.js` | Même logique (navigateur, garder en sync avec shared) |
 | `worker-malix-api/README.md` | Secrets, `wrangler dev`, curl de test |
 | `tests/malix/leaderboard-build.test.js` | Tests sur `buildLeaderboardFromRows` (fixtures, sans API live) |
+| `tests/malix/leaderboard-scoring.test.js` | Tests formule et tri points |
 
 **Comportement minimal :**
 

@@ -4,6 +4,7 @@
   const tradeApi = window.MalixTradeSession;
   const playerIdApi = window.MalixPlayerId;
   const displayCodeApi = window.MalixFormatDisplayCode;
+  const leaderboardScoringApi = window.MalixLeaderboardScoring;
 
   if (!collectionApi || !accessGateApi || !tradeApi || !playerIdApi) {
     return;
@@ -71,6 +72,37 @@
     const snapshot = getMalixStatsSnapshot();
     window.posthog.setPersonProperties(snapshot);
     phCapture('malix_player_snapshot', snapshot);
+  }
+
+  function resolveLeaderboardPoints(row) {
+    if (row && typeof row.points === 'number' && Number.isFinite(row.points)) {
+      return row.points;
+    }
+    if (leaderboardScoringApi && typeof leaderboardScoringApi.computeLeaderboardPoints === 'function') {
+      return leaderboardScoringApi.computeLeaderboardPoints(row);
+    }
+    return (row.captures || 0) * 3 + (row.photos || 0) + (row.trades || 0) * 2;
+  }
+
+  function getLocalLeaderboardStats() {
+    return {
+      malidex_unique: collection.size,
+      captures: sumCaptureCounts(captureCounts),
+      photos: photoAlbum.length,
+      trades: tradesTotal
+    };
+  }
+
+  function mergePlayerLeaderboardStats(apiPlayer) {
+    const local = getLocalLeaderboardStats();
+    const merged = {
+      malidex_unique: Math.max(apiPlayer.malidex_unique || 0, local.malidex_unique),
+      captures: Math.max(apiPlayer.captures || 0, local.captures),
+      photos: Math.max(apiPlayer.photos || 0, local.photos),
+      trades: Math.max(apiPlayer.trades || 0, local.trades)
+    };
+    merged.points = resolveLeaderboardPoints(merged);
+    return merged;
   }
 
   function initMalixPosthog() {
@@ -1640,6 +1672,7 @@
   function renderLeaderboard(data) {
     if (!data || !leaderboardList || !leaderboardYou) return;
     const player = data.player || {};
+    const youStats = mergePlayerLeaderboardStats(player);
     const rankLabel = formatLeaderboardRank(player.rank);
     const totalPlayers = Number.parseInt(String(data.total_players), 10) || 0;
 
@@ -1672,16 +1705,19 @@
       ' sur ' +
       totalPlayers +
       ' chasseurs</p>' +
+      '<p class="leaderboard-you-score">Score ' +
+      youStats.points +
+      ' pts</p>' +
       '<p class="leaderboard-you-stats">Malidex ' +
-      (player.malidex_unique || 0) +
+      youStats.malidex_unique +
       '/' +
       MALIDEX_TOTAL +
       ' · Captures ' +
-      (player.captures || 0) +
+      youStats.captures +
       ' · Photos ' +
-      (player.photos || 0) +
+      youStats.photos +
       ' · Echanges ' +
-      (player.trades || 0) +
+      youStats.trades +
       '</p>';
     leaderboardYou.classList.remove('hidden');
 
@@ -1690,7 +1726,7 @@
     header.className = 'leaderboard-list-header';
     header.setAttribute('aria-hidden', 'true');
     header.innerHTML =
-      '<span>Rang</span><span>Joueur</span><span>Malidex</span><span>Capt.</span>';
+      '<span>Rang</span><span>Joueur</span><span>Pts</span><span>Malidex</span>';
     leaderboardList.appendChild(header);
 
     const highlightYou = player.rank <= 10;
@@ -1715,12 +1751,12 @@
         rowLabel +
         '</span>' +
         '<span>' +
+        resolveLeaderboardPoints(row) +
+        '</span>' +
+        '<span>' +
         row.malidex_unique +
         '/' +
         MALIDEX_TOTAL +
-        '</span>' +
-        '<span>' +
-        row.captures +
         '</span>';
       leaderboardList.appendChild(item);
     }
@@ -1758,8 +1794,10 @@
       leaderboardList.innerHTML = '';
     }
 
+    syncMalixPersonProperties();
+
     leaderboardApi
-      .fetchLeaderboard(playerId)
+      .fetchLeaderboard(playerId, { forceRefresh: true })
       .then(function (data) {
         renderLeaderboard(data);
       })

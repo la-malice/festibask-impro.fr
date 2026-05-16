@@ -182,8 +182,9 @@
 
 - **But** : permettre à l’enfant de voir un **top 10** festival et **sa place** dans le classement, sans créer de compte ni afficher de données personnelles (noms, emails).
 - **Source des données** : agrégats PostHog (projet partagé avec le site), via un **Worker Cloudflare** (`worker-malix-api`) qui expose `GET /malix/api/leaderboard?player_id=<uuid>`. Aucune clé PostHog dans le navigateur.
-- **Classement** : tri par taille de Malidex (`malidex_unique`) puis nombre de captures ; fenêtre **90 jours** ; pseudonymes (`display_code`) pour les autres joueurs (jamais leur UUID).
-- **UI** : 3e onglet « Classement » ; encart « Ta place » ; ligne du joueur surlignée si dans le top 10 ; fraîcheur (`updated_at`) ; cache stale si l’API échoue après un chargement réussi ; message d’indisponibilité sinon.
+- **Score (points)** : `captures×3 + photos×1 + échanges×2` sur **90 jours** — chaque `malix_capture`, `malix_photo_saved` (album) et `malix_trade_completed` compte une fois ; formule et poids dans [`shared/malix/leaderboard-scoring.js`](../shared/malix/leaderboard-scoring.js).
+- **Classement** : tri par **points** DESC, puis `malidex_unique` DESC, puis `captures` DESC ; pseudonymes (`display_code`) pour les autres joueurs (jamais leur UUID).
+- **UI** : 3e onglet « Classement » ; score affiché **uniquement** dans cet onglet (pas pendant le spawn) ; à l’ouverture, envoi d’un `malix_player_snapshot` puis fetch API ; encart « Ta place » : max(API, stats locales) pour les totaux ; top 10 colonnes rang, joueur, pts, Malidex ; ligne du joueur surlignée si dans le top 10 ; fraîcheur (`updated_at`) ; cache stale si l’API échoue après un chargement réussi ; message d’indisponibilité sinon.
 - **Ce n’est pas** : une compétition en temps réel, un score affiché pendant le spawn, ni une persistance serveur de la collection Malidex.
 
 ---

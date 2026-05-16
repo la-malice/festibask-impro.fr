@@ -1,12 +1,25 @@
 import { formatDisplayCode } from './player-id.js';
+import {
+  compareLeaderboardPlayers,
+  computeLeaderboardPoints
+} from '../../shared/malix/leaderboard-scoring.js';
 
 const LEADERBOARD_HOGQL = `
 SELECT
   properties.malix_player_id AS player_id,
   max(person.properties.malidex_unique) AS malidex,
-  countIf(event = 'malix_capture') AS captures,
-  countIf(event = 'malix_photo_saved') AS photos,
-  countIf(event = 'malix_trade_completed') AS trades
+  greatest(
+    countIf(event = 'malix_capture'),
+    max(toInt(person.properties.malix_captures_total))
+  ) AS captures,
+  greatest(
+    countIf(event = 'malix_photo_saved'),
+    max(toInt(person.properties.malix_photos_total))
+  ) AS photos,
+  greatest(
+    countIf(event = 'malix_trade_completed'),
+    max(toInt(person.properties.malix_trades_total))
+  ) AS trades
 FROM events
 WHERE properties.malix_player_id IS NOT NULL
   AND event IN (
@@ -18,7 +31,14 @@ WHERE properties.malix_player_id IS NOT NULL
   )
   AND timestamp >= now() - INTERVAL 90 DAY
 GROUP BY player_id
-ORDER BY malidex DESC, captures DESC
+ORDER BY
+  (
+    greatest(countIf(event = 'malix_capture'), max(toInt(person.properties.malix_captures_total))) * 3
+    + greatest(countIf(event = 'malix_photo_saved'), max(toInt(person.properties.malix_photos_total)))
+    + greatest(countIf(event = 'malix_trade_completed'), max(toInt(person.properties.malix_trades_total))) * 2
+  ) DESC,
+  malidex DESC,
+  captures DESC
 LIMIT 500
 `.trim();
 
@@ -30,21 +50,16 @@ function toCount(value) {
   return parsed;
 }
 
-function comparePlayers(a, b) {
-  if (b.malidex_unique !== a.malidex_unique) {
-    return b.malidex_unique - a.malidex_unique;
-  }
-  return b.captures - a.captures;
-}
-
 function mapRowToPlayer(row) {
-  return {
+  const player = {
     player_id: String(row[0] || ''),
     malidex_unique: toCount(row[1]),
     captures: toCount(row[2]),
     photos: toCount(row[3]),
     trades: toCount(row[4])
   };
+  player.points = computeLeaderboardPoints(player);
+  return player;
 }
 
 export function buildLeaderboardFromRows(rows, playerId) {
@@ -53,7 +68,7 @@ export function buildLeaderboardFromRows(rows, playerId) {
     .filter(function (entry) {
       return entry.player_id;
     })
-    .sort(comparePlayers);
+    .sort(compareLeaderboardPlayers);
 
   const totalPlayers = players.length;
   let rank = totalPlayers + 1;
@@ -61,7 +76,8 @@ export function buildLeaderboardFromRows(rows, playerId) {
     malidex_unique: 0,
     captures: 0,
     photos: 0,
-    trades: 0
+    trades: 0,
+    points: 0
   };
 
   for (let index = 0; index < players.length; index += 1) {
@@ -76,6 +92,7 @@ export function buildLeaderboardFromRows(rows, playerId) {
     return {
       rank: index + 1,
       display_code: formatDisplayCode(entry.player_id),
+      points: entry.points,
       malidex_unique: entry.malidex_unique,
       captures: entry.captures,
       photos: entry.photos,
@@ -90,6 +107,7 @@ export function buildLeaderboardFromRows(rows, playerId) {
       player_id: playerId,
       display_code: formatDisplayCode(playerId),
       rank: rank,
+      points: playerStats.points,
       malidex_unique: playerStats.malidex_unique,
       captures: playerStats.captures,
       photos: playerStats.photos,

@@ -26,7 +26,8 @@ Affichage du classement **dans le jeu** (onglet Malidex « Classement ») : spé
 
 | Insight | Description |
 |---------|-------------|
-| Classement Malidex (top 50) | Table HogQL : joueurs triés par taille de Malidex, captures, photos, échanges |
+| Classement Malidex (top 50) | Table HogQL : joueurs triés par **points** (capture×3 + photo + échange×2), puis Malidex, captures — parité in-game |
+| Top par points (recommandé) | Même HogQL que ci-dessous avec `ORDER BY points DESC` ; aligné sur l’onglet Classement Malix |
 | Top attrapeurs | Table HogQL : `count()` sur `malix_capture` par joueur |
 | Top photographes | Table HogQL : `count()` sur `malix_photo_saved` par joueur |
 | Top échangeurs | Table HogQL : `count()` sur `malix_trade_completed` par joueur |
@@ -48,9 +49,18 @@ Liens directs des insights :
 SELECT
   properties.malix_player_id AS player_id,
   max(person.properties.malidex_unique) AS malidex,
-  countIf(event = 'malix_capture') AS captures,
-  countIf(event = 'malix_photo_saved') AS photos,
-  countIf(event = 'malix_trade_completed') AS trades
+  greatest(
+    countIf(event = 'malix_capture'),
+    max(toInt(person.properties.malix_captures_total))
+  ) AS captures,
+  greatest(
+    countIf(event = 'malix_photo_saved'),
+    max(toInt(person.properties.malix_photos_total))
+  ) AS photos,
+  greatest(
+    countIf(event = 'malix_trade_completed'),
+    max(toInt(person.properties.malix_trades_total))
+  ) AS trades
 FROM events
 WHERE properties.malix_player_id IS NOT NULL
   AND event IN (
@@ -62,9 +72,18 @@ WHERE properties.malix_player_id IS NOT NULL
   )
   AND timestamp >= now() - INTERVAL 90 DAY
 GROUP BY player_id
-ORDER BY malidex DESC, captures DESC
+ORDER BY
+  (
+    greatest(countIf(event = 'malix_capture'), max(toInt(person.properties.malix_captures_total))) * 3
+    + greatest(countIf(event = 'malix_photo_saved'), max(toInt(person.properties.malix_photos_total)))
+    + greatest(countIf(event = 'malix_trade_completed'), max(toInt(person.properties.malix_trades_total))) * 2
+  ) DESC,
+  malidex DESC,
+  captures DESC
 LIMIT 50
 ```
+
+Poids normatifs : [`shared/malix/leaderboard-scoring.js`](../shared/malix/leaderboard-scoring.js).
 
 ## Limites
 
@@ -75,5 +94,6 @@ LIMIT 50
 ## Fichiers code liés
 
 - [`malix/assets/player-id.js`](../malix/assets/player-id.js), [`shared/malix/format-display-code.js`](../shared/malix/format-display-code.js) — pseudonyme joueur (`display_code`)
+- [`shared/malix/leaderboard-scoring.js`](../shared/malix/leaderboard-scoring.js), [`worker-malix-api/src/leaderboard.js`](../worker-malix-api/src/leaderboard.js) — points et tri API
 - [`malix/assets/app.js`](../malix/assets/app.js) — `identify`, `setPersonProperties`, `malix_player_snapshot`
 - [`docs/analytics-posthog.md`](analytics-posthog.md) — catalogue événements
