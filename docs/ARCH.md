@@ -63,6 +63,7 @@ Les navigateurs (notamment sur mobile) et le CDN peuvent conserver longtemps des
 2. **`assets/js/script.js`** : constante **`TEMOIGNAGES_JSON_QUERY_BUST`** — l’URL du `fetch` vers `assets/data/temoignages.json` inclut `?v=…` (même valeur que la constante). **Incrémenter** après modification du contenu du fichier JSON (données témoignages) pour éviter un JSON obsolète servi depuis le cache HTTP.
 3. **`assets/js/script.js`** : constante **`REMAINING_SEATS_JSON_QUERY_BUST`** — l’URL du `fetch` vers `assets/data/remaining-seats.json` inclut `?v=…`. **Incrémenter** après changement de structure ou de logique d’affichage des places (pass spectacles et/ou stages), ou lorsque le déploiement doit forcer le rechargement du JSON côté navigateur.
 4. **Cloudflare (hors dépôt)** : ne pas placer `assets/data/` dans une règle qui impose un **Browser TTL** long (ex. semaines) ; une règle **Bypass cache** ou un TTL court pour ce chemin est cohérent avec les points 2–3. Les points 1–3 restent la garantie principale côté site quelle que soit la config CDN.
+5. **`malix/index.html`** : la balise script `./assets/app.js` inclut un paramètre **`?v=N`** ; **incrémenter `N`** lors des déploiements où le JS du mini-jeu doit être pris en compte immédiatement côté navigateur (même principe que le point 1 pour le bundle principal).
 
 ## Dependencies
 

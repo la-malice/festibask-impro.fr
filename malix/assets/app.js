@@ -1974,6 +1974,7 @@
     photoAlbum = photoAlbum.slice(-120);
     persistPhotoAlbumIndex();
     await putPhotoBlob(photoId, blob);
+    phCapture('malix_photo_saved', { malix_type: type, malix_variant: variant });
   }
 
   async function takePhotoShot() {
@@ -3108,6 +3109,16 @@
     }
 
     tradeCommitApplied = true;
+    const outgoing = collectionApi.parseId(localOfferId);
+    const tradePhProps = {
+      incoming_type: incoming.type,
+      incoming_variant: incoming.variant
+    };
+    if (outgoing) {
+      tradePhProps.outgoing_type = outgoing.type;
+      tradePhProps.outgoing_variant = outgoing.variant;
+    }
+    phCapture('malix_trade_completed', tradePhProps);
     if (tradeProtocol) {
       tradeProtocol.markCommitted();
     }
@@ -3156,7 +3167,12 @@
     generateObstacles();
     persistCollection();
     updateProgress();
-    phCapture('malix_capture', { is_new: isNewCapture, collection_total: collection.size });
+    phCapture('malix_capture', {
+      is_new: isNewCapture,
+      collection_total: collection.size,
+      malix_type: captured.type,
+      malix_variant: captured.variant
+    });
     renderMalidex();
 
     if (captured.timeoutRef) {

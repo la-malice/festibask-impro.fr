@@ -30,7 +30,7 @@
 
 - **Même projet PostHog** que le site (clé et proxy `e.festibask-impro.fr`), chargé **uniquement** depuis `malix/index.html` et événements émis depuis `malix/assets/app.js` — **aucun** code analytics Malix dans `assets/js/script.js` ni `index.html` du site principal.
 - **Init** : `disable_session_recording: true` et `autocapture: false` (pas de replay de session sur le jeu ; pas d’autocapture de clics).
-- **Événements custom** (agrégats, pas de données personnelles) : **malix_game_start** (entrée en jeu après « Démarrer ») ; **malix_capture** avec `is_new` et `collection_total` uniquement. Catalogue et périmètre : [docs/analytics-posthog.md](analytics-posthog.md).
+- **Événements custom** (agrégats, pas de données personnelles) : **malix_game_start** (entrée en jeu après « Démarrer ») ; **malix_capture** avec `is_new`, `collection_total`, `malix_type` (1–27) et `malix_variant` (1–4) ; **malix_photo_saved** après enregistrement réussi d’une photo en mode album (`malix_type`, `malix_variant`) ; **malix_trade_completed** après un échange 1↔1 validé (`incoming_type` / `incoming_variant` ; `outgoing_type` / `outgoing_variant` si l’offre locale est parsable). Catalogue et périmètre : [docs/analytics-posthog.md](analytics-posthog.md).
 
 ---
 
