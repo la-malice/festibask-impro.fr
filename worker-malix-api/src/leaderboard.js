@@ -9,16 +9,16 @@ SELECT
   properties.malix_player_id AS player_id,
   max(person.properties.malidex_unique) AS malidex,
   greatest(
-    countIf(event = 'malix_capture'),
-    max(toInt(person.properties.malix_captures_total))
+    toInt(countIf(event = 'malix_capture')),
+    toInt(max(person.properties.malix_captures_total))
   ) AS captures,
   greatest(
-    countIf(event = 'malix_photo_saved'),
-    max(toInt(person.properties.malix_photos_total))
+    toInt(countIf(event = 'malix_photo_saved')),
+    toInt(max(person.properties.malix_photos_total))
   ) AS photos,
   greatest(
-    countIf(event = 'malix_trade_completed'),
-    max(toInt(person.properties.malix_trades_total))
+    toInt(countIf(event = 'malix_trade_completed')),
+    toInt(max(person.properties.malix_trades_total))
   ) AS trades
 FROM events
 WHERE properties.malix_player_id IS NOT NULL
@@ -33,9 +33,9 @@ WHERE properties.malix_player_id IS NOT NULL
 GROUP BY player_id
 ORDER BY
   (
-    greatest(countIf(event = 'malix_capture'), max(toInt(person.properties.malix_captures_total))) * 3
-    + greatest(countIf(event = 'malix_photo_saved'), max(toInt(person.properties.malix_photos_total)))
-    + greatest(countIf(event = 'malix_trade_completed'), max(toInt(person.properties.malix_trades_total))) * 2
+    greatest(toInt(countIf(event = 'malix_capture')), toInt(max(person.properties.malix_captures_total))) * 3
+    + greatest(toInt(countIf(event = 'malix_photo_saved')), toInt(max(person.properties.malix_photos_total)))
+    + greatest(toInt(countIf(event = 'malix_trade_completed')), toInt(max(person.properties.malix_trades_total))) * 2
   ) DESC,
   malidex DESC,
   captures DESC
