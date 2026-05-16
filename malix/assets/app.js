@@ -172,6 +172,7 @@
   let albumObjectUrls = [];
   let albumRenderToken = 0;
   let pendingDeletePhotoId = null;
+  let albumViewerPhotoId = null;
   let malidexActiveTab = 'malix';
   let audienceSeatAssignment = [];
   let audienceSeatNodes = [];
@@ -2181,8 +2182,134 @@
     closeDeletePhotoDialog();
   }
 
-  function openAlbumViewer(primarySrc, altText, fallbackSrc) {
+  function getAlbumItemById(photoId) {
+    if (!photoId) return null;
+    for (let index = 0; index < photoAlbum.length; index += 1) {
+      if (photoAlbum[index].id === photoId) {
+        return photoAlbum[index];
+      }
+    }
+    return null;
+  }
+
+  function isIosSafari() {
+    const ua = navigator.userAgent || '';
+    const isIos =
+      /iPad|iPhone|iPod/.test(ua) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    return isIos && /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua);
+  }
+
+  async function getAlbumPhotoBlob(item) {
+    if (!item) return null;
+    const storedBlob = await getPhotoBlob(item.id);
+    if (storedBlob) return storedBlob;
+    if (!item.dataUrl) return null;
+    try {
+      const response = await fetch(item.dataUrl);
+      if (!response.ok) return null;
+      return await response.blob();
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function downloadAlbumPhoto(blob, type) {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'festibask-malix-' + String(type).padStart(2, '0') + '.jpg';
+    link.rel = 'noopener';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.setTimeout(function () {
+      URL.revokeObjectURL(url);
+    }, 2000);
+  }
+
+  async function tryNativeFileShare(file) {
+    if (typeof navigator.share !== 'function') {
+      return false;
+    }
+    const filesOnly = { files: [file] };
+    if (typeof navigator.canShare === 'function' && !navigator.canShare(filesOnly)) {
+      return false;
+    }
+    if (!isIosSafari()) {
+      const withTitle = { files: [file], title: 'Photo Malix Festibask' };
+      if (typeof navigator.canShare === 'function' && navigator.canShare(withTitle)) {
+        await navigator.share(withTitle);
+        return true;
+      }
+    }
+    await navigator.share(filesOnly);
+    return true;
+  }
+
+  async function shareAlbumPhoto() {
+    if (!albumViewerPhotoId || !shareAlbumPhotoBtn) {
+      return;
+    }
+    const item = getAlbumItemById(albumViewerPhotoId);
+    if (!item) {
+      showGameNotice('Photo introuvable.');
+      return;
+    }
+
+    shareAlbumPhotoBtn.disabled = true;
+    try {
+      const blob = await getAlbumPhotoBlob(item);
+      if (!blob) {
+        showGameNotice('Impossible de charger cette photo.');
+        return;
+      }
+
+      const mimeType =
+        blob.type && blob.type.indexOf('image/') === 0 ? blob.type : 'image/jpeg';
+      const file = new File(
+        [blob],
+        'festibask-malix-' + String(item.type).padStart(2, '0') + '.jpg',
+        { type: mimeType }
+      );
+
+      if (typeof navigator.share === 'function') {
+        try {
+          const shared = await tryNativeFileShare(file);
+          if (shared) {
+            phCapture('malix_photo_share', {
+              malix_type: item.type,
+              malix_variant: item.variant,
+              share_method: 'native'
+            });
+            return;
+          }
+        } catch (error) {
+          if (error && error.name === 'AbortError') {
+            return;
+          }
+        }
+      }
+
+      downloadAlbumPhoto(blob, item.type);
+      phCapture('malix_photo_share', {
+        malix_type: item.type,
+        malix_variant: item.variant,
+        share_method: 'download'
+      });
+      showGameNotice(
+        'Photo enregistree. Tu peux l envoyer depuis tes photos ou WhatsApp.'
+      );
+    } finally {
+      if (albumViewerPhotoId && shareAlbumPhotoBtn) {
+        shareAlbumPhotoBtn.disabled = false;
+      }
+    }
+  }
+
+  function openAlbumViewer(photoId, primarySrc, altText, fallbackSrc) {
     if (!albumViewer || !albumViewerImg) return;
+    albumViewerPhotoId = photoId || null;
     albumViewerImg.onerror = null;
     albumViewerImg.src = primarySrc || fallbackSrc || '';
     if (fallbackSrc && primarySrc && primarySrc !== fallbackSrc) {
@@ -2192,14 +2319,21 @@
       };
     }
     albumViewerImg.alt = altText || 'Photo Malix';
+    if (shareAlbumPhotoBtn) {
+      shareAlbumPhotoBtn.disabled = !albumViewerPhotoId;
+    }
     albumViewer.classList.remove('hidden');
   }
 
   function closeAlbumViewer() {
     if (!albumViewer) return;
+    albumViewerPhotoId = null;
     albumViewer.classList.add('hidden');
     if (albumViewerImg) {
       albumViewerImg.src = '';
+    }
+    if (shareAlbumPhotoBtn) {
+      shareAlbumPhotoBtn.disabled = true;
     }
   }
 
@@ -2248,7 +2382,7 @@
       img.alt = resolvedSrc ? typeName(item.type) : 'Photo indisponible';
       previewBtn.appendChild(img);
       previewBtn.addEventListener('click', function () {
-        openAlbumViewer(objectSrc || resolvedSrc, typeName(item.type), resolvedSrc);
+        openAlbumViewer(item.id, objectSrc || resolvedSrc, typeName(item.type), resolvedSrc);
       });
       const deleteBtn = document.createElement('button');
       deleteBtn.type = 'button';
@@ -3445,14 +3579,20 @@
   if (albumViewerImg) {
     albumViewerImg.addEventListener('click', closeAlbumViewer);
   }
-  shareAlbumPhotoBtn.addEventListener('click', function () {
-    showGameNotice('Partage bientot disponible.');
-  });
-  albumViewer.addEventListener('click', function (event) {
-    if (event.target !== shareAlbumPhotoBtn) {
+  if (shareAlbumPhotoBtn) {
+    shareAlbumPhotoBtn.addEventListener('click', function (event) {
+      event.stopPropagation();
+      shareAlbumPhoto();
+    });
+  }
+  if (albumViewer) {
+    albumViewer.addEventListener('click', function (event) {
+      if (event.target.closest('#shareAlbumPhotoBtn')) {
+        return;
+      }
       closeAlbumViewer();
-    }
-  });
+    });
+  }
   closeMalidexBtn.addEventListener('click', function () {
     closeMalidexSheet(false);
   });

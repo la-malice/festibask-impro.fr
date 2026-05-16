@@ -36,6 +36,7 @@ Ce document décrit le catalogue des événements envoyés au backend.
 | **malix_game_start** | Clic sur « Démarrer » après accès autorisé, entrée dans l’écran de jeu | — |
 | **malix_capture** | Capture réussie d’un Malix (tap sur le spawn) | `is_new` : booléen (nouvelle entrée dans la collection) ; `collection_total` : nombre d’entrées distinctes après capture ; `malix_type` : 1–27 ; `malix_variant` : 1–4 (ids jeu, pas de nom lisible) |
 | **malix_photo_saved** | Photo enregistrée dans l’album après prise de vue réussie (persistance locale) | `malix_type` : 1–27 ; `malix_variant` : 1–4 |
+| **malix_photo_share** | Partage réussi d’une photo depuis l’album (feuille système ou téléchargement) | `malix_type` : 1–27 ; `malix_variant` : 1–4 ; `share_method` : `'native'` (feuille de partage) ou `'download'` (repli enregistrement) |
 | **malix_trade_completed** | Échange 1↔1 validé entre deux joueurs | `incoming_type`, `incoming_variant` (Malix reçu) ; `outgoing_type`, `outgoing_variant` si l’offre locale est valide (Malix donné) |
 
 ## RGPD
@@ -50,6 +51,6 @@ Sous **/malix**, l’init PostHog inclut **`disable_session_recording: true`** (
 |------|----------|---------|
 | Site principal | `index.html`, `assets/js/script.js` | Snippet + événements custom du tableau ci-dessus (hors lignes watch / malix jeu). |
 | Page vidéo | `video/index.html` | Même clé et proxy ; événement **watch_video_play** ; pas de `script.js` partagé. |
-| Mini-jeu Malix | `malix/index.html`, `malix/assets/app.js` | Même clé et proxy ; init avec **`disable_session_recording: true`** et **`autocapture: false`** ; événements **malix_game_start**, **malix_capture**, **malix_photo_saved**, **malix_trade_completed** (pas de code PostHog Malix dans le bundle principal). |
+| Mini-jeu Malix | `malix/index.html`, `malix/assets/app.js` | Même clé et proxy ; init avec **`disable_session_recording: true`** et **`autocapture: false`** ; événements **malix_game_start**, **malix_capture**, **malix_photo_saved**, **malix_photo_share**, **malix_trade_completed** (pas de code PostHog Malix dans le bundle principal). |
 
 Le détail des événements Malix côté produit est aussi résumé dans [docs/SPEC-Malix.md](SPEC-Malix.md) § 1.4.
