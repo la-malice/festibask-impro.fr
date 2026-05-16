@@ -44,7 +44,7 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 - **Front-end:** Vanilla HTML/CSS/JS; no framework. Google Fonts (Hubot Sans) loaded async. Styles follow the graphic charter (Hubot Sans hierarchy, 6-color palette); see docs/slices/charte-graphique.md.
 - **Data:** Static JSON (temoignages); EDF players and spectacle data in script.js.
 - **Deploy:** GitHub Actions (ubuntu-latest, Node 20); artifact `dist/` → deploy-pages. Environment: github-pages. Planification `schedule` dans `.github/workflows/pages.yml` : **UTC** — en principe **toutes les 15 min** hors **01h–08h Europe/Paris** (expression cron dans le fichier) ; **push** `main` ou **workflow_dispatch** à tout moment.
-- **Malix:** Application statique dans `dist/malix/` (index.html, assets dédiés, copies des 27 doodles). Aucun impact sur index.html ni sur le bundle principal (script.js, style.css). Le build inclut `malix/` dans `dist/`. La config d’accès du garde (`malix/assets/access-config.js`) est versionnée avec les valeurs par défaut prod ; un override local non versionné (`malix/assets/access-config.local.js`) peut être injecté au build pour les tests dev.
+- **Malix:** Application statique dans `dist/malix/` (index.html, assets dédiés, copies des 27 doodles). Aucun impact sur index.html ni sur le bundle principal (script.js, style.css). Le build inclut `malix/` dans `dist/`. Le fichier `malix/assets/access-config.js` (objet `MalixAccessConfig` vide par défaut, réservé aux extensions) est versionné ; un override `malix/assets/access-config.local.js` non versionné peut être injecté au build à la place de `access-config.js` dans `dist/malix/assets/` (voir scripts/copy-to-dist.js).
 - **Malix échange:** WebRTC DataChannel prioritaire (signalisation par QR), fallback QR court ; aucun backend ni stockage serveur.
 
 ## Execution Model
@@ -91,8 +91,8 @@ Les navigateurs (notamment sur mobile) et le CDN peuvent conserver longtemps des
 | vite.config.js | Dev server only (root, port 8000) |
 | .github/workflows/pages.yml | Build sur push `main`, `workflow_dispatch`, et `schedule` (rafraîchissement CSV → `dist/`, détail des heures UTC dans le fichier) |
 | sw.js | Service worker; Brevo init from query |
-| malix/assets/access-config.js | Config d’accès Malix versionnée (coordonnées/date/rayon par défaut prod) |
-| malix/assets/access-config.local.js | Override local dev non versionné, injecté dans dist au build si présent |
+| malix/assets/access-config.js | Objet `MalixAccessConfig` versionné (vide par défaut ; hook d’extension ; remplaçable au build par access-config.local.js) |
+| malix/assets/access-config.local.js | Override non versionné injecté dans dist au build si présent |
 | docs/temoignages-carousel.md | Documented schema for temoignages.json |
 | docs/portraits-carrousels.md | Portraits joueurs (EDF, Malice, Belgique, All Stars) : dimensions, long/, script AVIF |
 | scripts/image-assets.json | Spec déclarative des dérivés images (portraits, intervenants, témoignages, bannière match All Stars, logos partenaires) |

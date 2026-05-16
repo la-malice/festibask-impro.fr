@@ -27,9 +27,7 @@ Vocabulary and concepts for the Festibask'Impro festival site: event, spectacles
 | **Échange (Malix)** | Transaction 1↔1 entre deux appareils : chaque joueur propose un Malix, les deux valident, puis transfert croisé des entrées. |
 | **Offre d’échange (Malix)** | Entrée (type, variante) proposée par un joueur pendant une session d’échange. |
 | **Validation bilatérale (Malix)** | Condition où les deux joueurs ont explicitement accepté l’échange ; seul cas autorisant le commit. |
-| **Zone de jeu (Malix)** | Zone géographique autorisée pour jouer sur mobile : rayon cible autour de la Patinoire de la Barre (100 m + tolérance fixe de 20 m). |
-| **Fenêtre festival (Malix)** | Période temporelle pendant laquelle le jeu est autorisé (configuration dates/horaires de l’édition en cours). |
-| **Bypass cheat (Malix)** | Contournement volontaire du garde d’accès en mode `?cheat=1` via un bouton « Ignorer » visible uniquement dans ce mode : autorise le jeu hors zone et hors fenêtre tout en gardant l’affichage normal du garde. |
+| **Mode cheat (Malix)** | URL avec `?cheat=1` : outil de test (badge + bouton dans le Malidex pour compléter la collection et tester la fin de jeu). Voir docs/SPEC-Malix.md § 5.5. |
 
 ## Entities and Relationships
 

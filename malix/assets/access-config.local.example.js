@@ -1,12 +1,9 @@
 (function (globalScope) {
-  globalScope.MalixAccessConfig = {
-    festivalWindowStart: '2026-05-15T00:00:00+02:00',
-    festivalWindowEnd: '2026-05-17T23:59:59+02:00',
-    geoTarget: {
-      lat: 43.49068674075384,
-      lon: -1.507839027237918
-    },
-    geoRadiusMeters: 100,
-    geoToleranceMeters: 20
-  };
+  /**
+   * Copier ce fichier en malix/assets/access-config.local.js (non versionné).
+   * Le build l’injecte dans dist à la place de access-config.js si présent.
+   * L’accès au jeu ne dépend plus de dates ni de géoloc ; ce fichier sert
+   * uniquement à préserver le hook de build pour d’éventuelles clés futures.
+   */
+  globalScope.MalixAccessConfig = {};
 })(typeof window !== 'undefined' ? window : globalThis);

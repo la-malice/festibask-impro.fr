@@ -36,22 +36,19 @@ test('isWithinAllowedZone enforces 120m threshold (100m + 20m tolerance)', funct
   assert.equal(accessGate.isWithinAllowedZone(121, BASE_CONFIG), false);
 });
 
-test('evaluateAccess allows cheat bypass even outside time window and zone', function () {
-  const decision = accessGate.evaluateAccess({
-    cheat: true,
-    now: Date.parse('2026-05-20T12:00:00+02:00'),
+test('evaluateAccess always allows regardless of time, geo flags and coords', function () {
+  const farPast = accessGate.evaluateAccess({
+    now: Date.parse('2020-01-01T12:00:00Z'),
     config: BASE_CONFIG,
     geoAvailable: false
   });
+  assert.equal(farPast.allowed, true);
+  assert.equal(farPast.status, 'allowed');
+  assert.equal(farPast.distanceMeters, null);
+  assert.equal(farPast.thresholdMeters, 120);
 
-  assert.equal(decision.allowed, true);
-  assert.equal(decision.status, 'cheat_bypass');
-});
-
-test('evaluateAccess blocks outside area and returns measured distance', function () {
   const latOffset = 150 / 111320;
-  const decision = accessGate.evaluateAccess({
-    cheat: false,
+  const farAway = accessGate.evaluateAccess({
     now: Date.parse('2026-05-16T12:00:00+02:00'),
     config: BASE_CONFIG,
     geoAvailable: true,
@@ -60,8 +57,15 @@ test('evaluateAccess blocks outside area and returns measured distance', functio
       longitude: -1.513
     }
   });
+  assert.equal(farAway.allowed, true);
+  assert.equal(farAway.status, 'allowed');
 
-  assert.equal(decision.allowed, false);
-  assert.equal(decision.status, 'blocked_geo');
-  assert.ok(decision.distanceMeters > 120);
+  const cheat = accessGate.evaluateAccess({
+    cheat: true,
+    now: Date.parse('2026-05-20T12:00:00+02:00'),
+    config: BASE_CONFIG,
+    geoAvailable: false
+  });
+  assert.equal(cheat.allowed, true);
+  assert.equal(cheat.status, 'allowed');
 });

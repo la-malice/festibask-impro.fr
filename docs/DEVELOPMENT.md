@@ -27,18 +27,9 @@ npm install
 
 No `preview` script in package.json; after `npm run build`, serve `dist/` with any static server to preview production build.
 
-## Override local de géolocalisation Malix (dev)
+## Fichier optionnel `access-config.local.js` (Malix)
 
-Pour tester Malix avec un autre point GPS sans commiter de coordonnées de test :
-
-1. Copier `malix/assets/access-config.local.example.js` en `malix/assets/access-config.local.js`.
-2. Modifier `geoTarget.lat` / `geoTarget.lon` dans ce fichier local.
-3. Lancer `npm run build`.
-
-Le script de build injecte automatiquement `malix/assets/access-config.local.js` dans `dist/malix/assets/access-config.js` s’il existe.
-
-- `malix/assets/access-config.js` (versionné) = valeurs par défaut prod.
-- `malix/assets/access-config.local.js` (ignoré par git) = override local dev uniquement.
+Le build peut remplacer `dist/malix/assets/access-config.js` par `malix/assets/access-config.local.js` s’il existe ([docs/ARCH.md](ARCH.md)). L’accès au jeu **ne dépend plus** de dates ni de géoloc ; le fichier versionné `malix/assets/access-config.js` expose un objet vide réservé aux extensions futures. L’exemple `malix/assets/access-config.local.example.js` documente le hook de copie au build.
 
 ## Contribution
 

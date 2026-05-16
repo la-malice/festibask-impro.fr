@@ -143,26 +143,15 @@
   - **Message** invitant à aller chercher le cadeau au stand (ex. « Tu as tout collecté ! Va chercher ton cadeau au stand du festival. »).
 - Aucun compte ni envoi de données ; la preuve de complétion est locale (l’enfant peut montrer l’écran ou le Malidex complet au stand).
 
-### 5.5 Accès limité (temps + géolocalisation)
+### 5.5 Accès au jeu
 
-- Le jeu passe par un **garde d’accès** avant l’accueil et avant le démarrage (avant le premier spawn), sur mobile comme sur desktop.
-- Conditions normales d’accès :
-  - Date/heure courante dans la **fenêtre festival** configurée.
-  - Géolocalisation disponible et autorisée.
-  - Position dans la **zone de jeu** : rayon **100 m** autour du point cible, avec une tolérance fixe de **+20 m** (seuil total 120 m).
-- Si hors fenêtre : message bloquant indiquant que le jeu est disponible pendant le festival.
-- Si hors zone : message bloquant demandant d’entrer/se rapprocher de la patinoire.
-- Si géolocalisation refusée ou indisponible : message bloquant demandant d’activer la localisation.
-- Si l’accès est autorisé, le jeu affiche un écran d’accueil commun (mobile + desktop) avec QR code et bouton **« Demarrer »**.
-- Tant que l’accès n’est pas autorisé, l’accueil (QR + bouton) n’est pas affiché.
+- **Accès libre** : aucune restriction par date ni par position géographique ; **aucune** collecte de géolocalisation pour débloquer le jeu.
+- Au chargement, le joueur accède directement à l’**écran d’accueil** (QR code + lien + bouton **« Demarrer »**), sur mobile comme sur desktop, puis au jeu après « Demarrer ».
+- Une section **garde d’accès** peut rester dans le HTML à titre d’UI résiduelle (masquée) ; elle n’est plus utilisée pour bloquer l’entrée.
 
-#### Bypass cheat
+#### Mode cheat (`?cheat=1`)
 
-- En **mode cheat** (`?cheat=1`), le garde d’accès reste affiché avec les messages normaux (temps/géo/permission) pour reproduire l’expérience joueur.
-- Un bouton **« Ignorer »** apparaît uniquement en mode cheat sur l’écran du garde, et permet de forcer l’entrée :
-  - jeu jouable hors fenêtre temporelle ;
-  - jeu jouable hors zone géographique.
-- Ce bypass est volontairement actif y compris en production pour les usages staff/tests.
+- Réservé aux **tests / staff** : affiche un badge « Mode cheat » et un bouton **⚡** dans le Malidex pour **compléter artificiellement la collection** (déclencher la fin de jeu). Ne modifie pas le flux d’accès (pas de garde actif).
 
 ### 5.6 Échange de Malix (Malidex)
 

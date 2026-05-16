@@ -26,31 +26,6 @@
   const PHOTO_DB_NAME = 'malix-photo-db';
   const PHOTO_DB_VERSION = 1;
   const PHOTO_STORE_NAME = 'photos';
-  const DEFAULT_ACCESS_CONFIG = accessGateApi.normalizeConfig({
-    festivalWindowStart: '2026-05-15T00:00:00+02:00',
-    festivalWindowEnd: '2026-05-17T23:59:59+02:00',
-    geoTarget: {
-      lat: 43.501,
-      lon: -1.513
-    },
-    geoRadiusMeters: 100,
-    geoToleranceMeters: 20
-  });
-  const ACCESS_CONFIG = accessGateApi.normalizeConfig({
-    ...DEFAULT_ACCESS_CONFIG,
-    ...(window.MalixAccessConfig && typeof window.MalixAccessConfig === 'object'
-      ? window.MalixAccessConfig
-      : {}),
-    geoTarget: {
-      ...DEFAULT_ACCESS_CONFIG.geoTarget,
-      ...(window.MalixAccessConfig &&
-      typeof window.MalixAccessConfig === 'object' &&
-      window.MalixAccessConfig.geoTarget &&
-      typeof window.MalixAccessConfig.geoTarget === 'object'
-        ? window.MalixAccessConfig.geoTarget
-        : {})
-    }
-  });
   const variantHexColors = ['#3bb9ff', '#ff5fa8', '#ffb85a', '#71df8a'];
   const doodleSourceCache = new Map();
   const doodleVariantCache = new Map();
@@ -106,10 +81,6 @@
   const landscapeGuard = document.getElementById('landscapeGuard');
   const captureOverlay = document.getElementById('captureOverlay');
   const accessGate = document.getElementById('accessGate');
-  const accessGateMessage = document.getElementById('accessGateMessage');
-  const accessGateDetail = document.getElementById('accessGateDetail');
-  const accessGateRdvTime = document.getElementById('accessGateRdvTime');
-  const accessGateRdvGeo = document.getElementById('accessGateRdvGeo');
   const accessGateRetryBtn = document.getElementById('accessGateRetryBtn');
   const accessGateIgnoreBtn = document.getElementById('accessGateIgnoreBtn');
   const cheatBadge = document.getElementById('cheatBadge');
@@ -1039,10 +1010,6 @@
     }
   }
 
-  function formatMeters(value) {
-    return Math.max(0, Math.round(value));
-  }
-
   function setCheatBadgeVisible(visible) {
     if (!cheatBadge) return;
     cheatBadge.classList.toggle('hidden', !visible);
@@ -1053,168 +1020,15 @@
     accessGate.classList.add('hidden');
   }
 
-  function setAccessGateRdvEmphasis(options) {
-    const config = options && typeof options === 'object' ? options : {};
-    const emphasizeTime = Boolean(config.time);
-    const emphasizeGeo = Boolean(config.geo);
-    if (accessGateRdvTime) {
-      accessGateRdvTime.classList.toggle('access-gate-rdv-emphasis', emphasizeTime);
-    }
-    if (accessGateRdvGeo) {
-      accessGateRdvGeo.classList.toggle('access-gate-rdv-emphasis', emphasizeGeo);
-    }
-  }
-
-  function showAccessGate(message, detail, isChecking, showIgnore, emphasis) {
-    if (!accessGate || !accessGateMessage || !accessGateRetryBtn) return;
-    hideAllScreens();
-    accessGate.classList.remove('hidden');
-    accessGateMessage.textContent = message;
-    setAccessGateRdvEmphasis(emphasis);
-    if (accessGateDetail) {
-      const hasDetail = Boolean(detail);
-      accessGateDetail.classList.toggle('hidden', !hasDetail);
-      accessGateDetail.textContent = hasDetail ? detail : '';
-    }
-    accessGateRetryBtn.disabled = Boolean(isChecking);
-    accessGateRetryBtn.textContent = isChecking ? 'Verification...' : 'Reessayer';
-    if (accessGateIgnoreBtn) {
-      accessGateIgnoreBtn.classList.toggle('hidden', !showIgnore);
-      accessGateIgnoreBtn.disabled = Boolean(isChecking);
-    }
-  }
-
-  function requestCurrentPosition() {
-    return new Promise(function (resolve, reject) {
-      if (!window.navigator || !window.navigator.geolocation) {
-        reject(new Error('geolocation-unavailable'));
-        return;
-      }
-      window.navigator.geolocation.getCurrentPosition(
-        function (position) {
-          resolve(position);
-        },
-        function (error) {
-          reject(error);
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 60000
-        }
-      );
-    });
-  }
-
-  function blockedGateCopy(status) {
-    if (status === 'blocked_time') {
-      return {
-        message: "Le jeu n'est disponible que pendant le festival.",
-        detail: ''
-      };
-    }
-    if (status === 'blocked_geo') {
-      return {
-        message: 'Entre dans la patinoire pour jouer.',
-        detail: 'Rapproche-toi de la Patinoire de la Barre.'
-      };
-    }
-    if (status === 'blocked_permission') {
-      return {
-        message: 'Active la localisation pour jouer.',
-        detail: 'Autorise la geolocalisation dans ton navigateur.'
-      };
-    }
-    return {
-      message: 'Geolocalisation indisponible.',
-      detail: 'Active la localisation puis reessaie.'
-    };
-  }
-
-  async function verifyGameAccess() {
+  function verifyGameAccess() {
     if (accessGatePending) return;
     accessGatePending = true;
-    showAccessGate('Verification de ta position...', '', true, false, { time: false, geo: false });
-
-    const startDecision = accessGateApi.evaluateAccess({
-      cheat: false,
-      now: Date.now(),
-      config: ACCESS_CONFIG,
-      geoAvailable: Boolean(window.navigator && window.navigator.geolocation)
-    });
     cheatBypassActive = false;
     setCheatBadgeVisible(false);
-    if (startDecision.allowed) {
-      accessAuthorized = true;
-      hideAccessGate();
-      accessGatePending = false;
-      showWelcomeScreen();
-      return;
-    }
-
-    if (startDecision.status === 'blocked_time') {
-      const copy = blockedGateCopy(startDecision.status);
-      showAccessGate(copy.message, copy.detail, false, cheatModeEnabled, { time: true, geo: false });
-      accessGatePending = false;
-      return;
-    }
-    if (!window.navigator || !window.navigator.geolocation) {
-      const copy = blockedGateCopy('blocked_unavailable');
-      showAccessGate(copy.message, copy.detail, false, cheatModeEnabled, { time: false, geo: true });
-      accessGatePending = false;
-      return;
-    }
-
-    try {
-      const position = await requestCurrentPosition();
-      const decision = accessGateApi.evaluateAccess({
-        cheat: false,
-        now: Date.now(),
-        config: ACCESS_CONFIG,
-        geoAvailable: true,
-        coords: position && position.coords
-      });
-      cheatBypassActive = false;
-      setCheatBadgeVisible(false);
-      if (decision.allowed) {
-        accessAuthorized = true;
-        hideAccessGate();
-        accessGatePending = false;
-        showWelcomeScreen();
-        return;
-      }
-
-      const copy = blockedGateCopy(decision.status);
-      let detail = copy.detail;
-      if (
-        decision.status === 'blocked_geo' &&
-        Number.isFinite(decision.distanceMeters) &&
-        Number.isFinite(decision.thresholdMeters)
-      ) {
-        detail =
-          'Tu es a environ ' +
-          formatMeters(decision.distanceMeters) +
-          ' m. Zone autorisee: ' +
-          formatMeters(decision.thresholdMeters) +
-          ' m autour de la Patinoire.';
-      }
-      showAccessGate(copy.message, detail, false, cheatModeEnabled, {
-        time: decision.status === 'blocked_time',
-        geo:
-          decision.status === 'blocked_geo' ||
-          decision.status === 'blocked_permission' ||
-          decision.status === 'blocked_unavailable'
-      });
-    } catch (error) {
-      const denied =
-        error &&
-        typeof error === 'object' &&
-        Number(error.code) === 1;
-      const copy = blockedGateCopy(denied ? 'blocked_permission' : 'blocked_unavailable');
-      showAccessGate(copy.message, copy.detail, false, cheatModeEnabled, { time: false, geo: true });
-    } finally {
-      accessGatePending = false;
-    }
+    accessAuthorized = true;
+    hideAccessGate();
+    accessGatePending = false;
+    showWelcomeScreen();
   }
 
   function hideAllScreens() {

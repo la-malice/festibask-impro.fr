@@ -85,76 +85,12 @@
   function evaluateAccess(input) {
     const options = input && typeof input === 'object' ? input : {};
     const config = normalizeConfig(options.config);
-    const now = options.now instanceof Date ? options.now.getTime() : Number(options.now || Date.now());
-    const cheat = Boolean(options.cheat);
-
-    if (cheat) {
-      return {
-        status: 'cheat_bypass',
-        allowed: true,
-        distanceMeters: null,
-        thresholdMeters: Math.max(0, config.geoRadiusMeters + config.geoToleranceMeters)
-      };
-    }
-
-    if (!isWithinFestivalWindow(now, config)) {
-      return {
-        status: 'blocked_time',
-        allowed: false,
-        distanceMeters: null,
-        thresholdMeters: Math.max(0, config.geoRadiusMeters + config.geoToleranceMeters)
-      };
-    }
-
-    if (options.geoAvailable === false) {
-      return {
-        status: 'blocked_unavailable',
-        allowed: false,
-        distanceMeters: null,
-        thresholdMeters: Math.max(0, config.geoRadiusMeters + config.geoToleranceMeters)
-      };
-    }
-
-    if (options.geoPermissionState === 'denied') {
-      return {
-        status: 'blocked_permission',
-        allowed: false,
-        distanceMeters: null,
-        thresholdMeters: Math.max(0, config.geoRadiusMeters + config.geoToleranceMeters)
-      };
-    }
-
-    const coords = options.coords;
-    if (!coords || !Number.isFinite(Number(coords.latitude)) || !Number.isFinite(Number(coords.longitude))) {
-      return {
-        status: 'blocked_unavailable',
-        allowed: false,
-        distanceMeters: null,
-        thresholdMeters: Math.max(0, config.geoRadiusMeters + config.geoToleranceMeters)
-      };
-    }
-
-    const distance = distanceMeters(
-      Number(coords.latitude),
-      Number(coords.longitude),
-      config.geoTarget.lat,
-      config.geoTarget.lon
-    );
-
-    if (!isWithinAllowedZone(distance, config)) {
-      return {
-        status: 'blocked_geo',
-        allowed: false,
-        distanceMeters: distance,
-        thresholdMeters: Math.max(0, config.geoRadiusMeters + config.geoToleranceMeters)
-      };
-    }
-
+    const thresholdMeters = Math.max(0, config.geoRadiusMeters + config.geoToleranceMeters);
     return {
       status: 'allowed',
       allowed: true,
-      distanceMeters: distance,
-      thresholdMeters: Math.max(0, config.geoRadiusMeters + config.geoToleranceMeters)
+      distanceMeters: null,
+      thresholdMeters
     };
   }
 
