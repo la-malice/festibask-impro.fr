@@ -17,7 +17,7 @@ Places disponibles **pass spectacles** et **stages** (CSV Google → `remaining-
 | Stages masterclass → stages confirmés | Rename "masterclass" to "stage confirmé" everywhere; 4 stages confirmés Samedi (2 salles × 2 créneaux); update instructor bio and copy. | Done |
 | Malix — échange 1↔1 | Échange de Malix depuis le Malidex par scans mutuels de QR courts, commit local, popup de bienvenue post-échange. | Done |
 | Malix — identifiant joueur + HoF PostHog (staff) | UUID `malix-player-id`, `posthog.identify`, snapshots, dashboard Hall of Fame PostHog. | Done |
-| Malix HoF in-game — slice 1 | Contrat API, SPEC/ARCH, HogQL validée | Planned |
+| Malix HoF in-game — slice 1 | Contrat API, SPEC/ARCH, HogQL validée | Done |
 | Malix HoF in-game — slice 2 | `worker-malix-api` local + tests parsing | Planned |
 | Malix HoF in-game — slice 3 | Deploy prod, CORS, cache, rate limit | Planned |
 | Malix HoF in-game — slice 4 | `leaderboard-client.js` | Planned |

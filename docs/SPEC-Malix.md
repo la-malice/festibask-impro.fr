@@ -76,7 +76,7 @@
 - Effets visuels et vibration (si supportée).
 - **Identité visuelle propre au jeu** (voir section Design) ; **point commun avec le site : uniquement les 27 doodles**.
 - PWA optionnelle (installation, icône, hors-ligne basique) si simple à intégrer sans impacter l’isolement.
-- **Hall of Fame in-game** (lecture) : onglet Malidex « Classement », classement agrégé via API serveur (Worker + PostHog), mise en avant du rang du joueur local — voir § 5.7 et [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md). **Statut : planifié** (non implémenté).
+- **Hall of Fame in-game** (lecture) : onglet Malidex « Classement », classement agrégé via API serveur (Worker + PostHog), mise en avant du rang du joueur local — voir § 5.7 et [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md). **Statut : contrat validé (slice 1) ; Worker / UI / prod non livrés** (slices 2–6).
 
 ### 3.2 Out of scope
 
@@ -135,7 +135,7 @@
 - **Pour chaque type** : afficher les **4 variantes de couleur** ; pour chaque variante, indiquer **collectée** ou **non collectée** (icône, couleur, ou case cochée / vide).
 - **Progression** : affichage clair du nombre d’entrées collectées, ex. « 42 / 108 » ou « 12 / 27 types » avec détail des couleurs. L’objectif est que l’enfant comprenne qu’il doit remplir toutes les cases.
 - **Accès** : depuis l’écran de jeu, un bouton ou un onglet (ex. « Collection » / « Malidex ») ouvre cette vue ; retour simple vers l’écran de jeu.
-- **Onglets Malidex (cible)** : « Malix » (collection), « Album » (photos), **« Classement »** (Hall of Fame — planifié, § 5.7).
+- **Onglets Malidex (cible)** : « Malix » (collection), « Album » (photos), **« Classement »** (Hall of Fame — contrat slice 1, implémentation § 5.7).
 
 ### 5.4 Fin de jeu
 
@@ -176,9 +176,9 @@
 - **Doublon reçu** : si l’entrée reçue existe déjà, la collection reste inchangée mais le compteur de captures (`xN`) augmente de +1.
 - **Feedback** : après échange réussi, afficher une popup de bienvenue/réception (style congratulation), y compris si doublon.
 
-### 5.7 Hall of Fame — classement (lecture, planifié)
+### 5.7 Hall of Fame — classement (lecture)
 
-> **Statut : planifié** — détail de livraison et contrat API : [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md).
+> **Statut : contrat validé (slice 1, 2026-05-16) ; implémentation Worker / client / UI en cours (slices 2–6).** Détail : [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md).
 
 - **But** : permettre à l’enfant de voir un **top 10** festival et **sa place** dans le classement, sans créer de compte ni afficher de données personnelles (noms, emails).
 - **Source des données** : agrégats PostHog (projet partagé avec le site), via un **Worker Cloudflare** (`worker-malix-api`) qui expose `GET /malix/api/leaderboard?player_id=<uuid>`. Aucune clé PostHog dans le navigateur.
@@ -198,13 +198,13 @@
 - **Progression Malidex** : tout reste dans le navigateur (collection, compteurs locaux).
 - **Classement (Hall of Fame)** : lecture seule via API ; aucune écriture serveur de la collection ; identifiant pseudonyme déjà synchronisé vers PostHog (§ 1.4).
 
-### 6.4 API classement (planifié)
+### 6.4 API classement
 
-Contrat normatif : [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md). Résumé :
+Contrat normatif (validé slice 1) : [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md). Résumé :
 
 - **Endpoint** : `GET /malix/api/leaderboard?player_id=<uuid>`
-- **Réponse** : `top` (10 lignes max), `player` (rang + stats), `total_players`, `updated_at`
-- **Erreurs** : `400` (UUID invalide), `502` (`leaderboard_unavailable`)
+- **Réponse 200** : `top` (10 lignes max), `player` (rang + stats + `display_code`), `total_players`, `updated_at`
+- **Erreurs** : `400` (`missing_player_id`, `invalid_player_id`), `429` (`rate_limited`, slice 3), `502` (`leaderboard_unavailable`)
 
 ### 6.2 Stockage local
 

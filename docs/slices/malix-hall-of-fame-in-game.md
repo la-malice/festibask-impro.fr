@@ -1,12 +1,31 @@
 # Malix — Hall of Fame in-game (classement)
 
-**Statut : planifié** — aucune implémentation tant que les slices 1–6 ne sont pas livrées explicitement. Ce document est la **source de vérité** pour générer un plan d’implémentation par session (une slice = une session).
+**Statut : slice 1 validée (2026-05-16) ; slices 2–6 planifiées.** Ce document est la **source de vérité** pour générer un plan d’implémentation par session (une slice = une session).
 
 **Suivi d’avancement :** [docs/PLAN.md](../PLAN.md) (tableau slices, statut Planned/Done).
 
 **Références normatives :** [docs/SPEC-Malix.md](../SPEC-Malix.md) § 5.7 et § 6.4 ; [docs/ARCH.md](../ARCH.md) (composant `worker-malix-api`) ; dashboard staff [docs/posthog-malix-hall-of-fame.md](../posthog-malix-hall-of-fame.md) ; analytics [docs/analytics-posthog.md](../analytics-posthog.md).
 
 **Prérequis déjà livrés (hors slices HoF) :** `malix-player-id`, `posthog.identify`, `malix_player_snapshot`, propriétés personne PostHog, dashboard PostHog projet [124663](https://eu.posthog.com/project/124663/dashboard/684717).
+
+---
+
+## Validation slice 1 (2026-05-16)
+
+### Contrat API
+
+- **Validé** : JSON 200 (`updated_at`, `total_players`, `player`, `top` max 10) ; erreurs `400` (`missing_player_id`, `invalid_player_id`), `429` (`rate_limited`, livraison slice 3), `502` (`leaderboard_unavailable`).
+- **Hors contrat** (implémentation slice 2+) : `404` / `405` — comportement technique Worker, non documenté pour le client Malix.
+- **Règles figées** : fenêtre **90 jours** ; tri `malidex_unique` DESC puis `captures` DESC ; HogQL `LIMIT 500` ; UI **top 10** ; `display_code` aligné [`malix/assets/player-id.js`](../../malix/assets/player-id.js).
+
+### Validation HogQL
+
+- **Date** : 2026-05-16 (PostHog MCP `query-run`, projet EU **124663**).
+- **Runs** : 3 exécutions (t0, +30 s, +60 s) — résultats stables.
+- **Latence** : ~1–2 s par run (round-trip MCP ; volume actuel faible) — **sous l’objectif 5 s** hors cache.
+- **Lignes retournées** : 3 joueurs (≤ 500).
+- **Colonnes** : `player_id`, `malidex`, `captures`, `photos`, `trades`.
+- **Parité dashboard** : **OK** — top 3 identique à l’insight [Classement Malidex (top 50)](https://eu.posthog.com/project/124663/insights/omUc9UwC) (même HogQL ; dashboard `LIMIT 50`, API Worker `LIMIT 500` pour le calcul du rang).
 
 ---
 
@@ -164,7 +183,7 @@ LIMIT 500
 
 ---
 
-## Slice 1 — Cadrage et validation (session doc)
+## Slice 1 — Cadrage et validation (session doc) — Done
 
 **Objectif :** figer le contrat ; aucun code Worker ni UI.
 
@@ -172,15 +191,15 @@ LIMIT 500
 
 **Tâches :**
 
-1. Valider le JSON et les codes d’erreur ci-dessus (ajuster si besoin).
-2. Exécuter la HogQL dans PostHog ; documenter latence observée en en-tête de ce fichier ou dans PLAN.
-3. Confirmer fenêtre 90 j et top 10 (déjà figés ici).
-4. Vérifier cohérence SPEC § 5.7 / § 6.4 et ARCH « Malix — API classement (planifié) ».
+1. [x] Valider le JSON et les codes d’erreur ci-dessus (ajuster si besoin).
+2. [x] Exécuter la HogQL dans PostHog ; documenter latence observée (section [Validation slice 1](#validation-slice-1-2026-05-16)).
+3. [x] Confirmer fenêtre 90 j et top 10 (déjà figés ici).
+4. [x] Vérifier cohérence SPEC § 5.7 / § 6.4 et ARCH « Malix — API classement ».
 
 **Livrables :**
 
-- Ce fichier à jour (statut slice 1 cochée dans PLAN).
-- Aucun nouveau fichier code.
+- [x] Ce fichier à jour (statut slice 1 cochée dans PLAN).
+- [x] Aucun nouveau fichier code.
 
 **Critère de fin :** contrat API + HogQL validés ; SPEC/ARCH alignés ; prêt pour slice 2.
 
