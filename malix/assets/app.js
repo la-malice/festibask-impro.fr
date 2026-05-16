@@ -178,6 +178,7 @@
   const tradeSuccessText = document.getElementById('tradeSuccessText');
   const tradeDoneBtn = document.getElementById('tradeDoneBtn');
   const tradeMyQr = document.getElementById('tradeMyQr');
+  const tradeMyCode = document.getElementById('tradeMyCode');
   const tradeScannerOverlay = document.getElementById('tradeScannerOverlay');
   const tradeScannerVideo = document.getElementById('tradeScannerVideo');
   const tradeScannerCancelBtn = document.getElementById('tradeScannerCancelBtn');
@@ -1185,6 +1186,9 @@
       tradeMyQr.classList.add('hidden');
       tradeMyQr.removeAttribute('src');
     }
+    if (tradeMyCode) {
+      tradeMyCode.textContent = '---';
+    }
     if (tradeQrPanel) {
       tradeQrPanel.classList.remove('is-confirmed');
     }
@@ -1212,8 +1216,8 @@
       tradeSuccessText.textContent = 'Echange reussi !';
     }
     if (tradeCancelBtn) {
-      tradeCancelBtn.disabled = true;
-      tradeCancelBtn.setAttribute('aria-disabled', 'true');
+      tradeCancelBtn.disabled = false;
+      tradeCancelBtn.removeAttribute('aria-disabled');
     }
     tradeCompleted = false;
   }
@@ -1353,6 +1357,9 @@
     const payload = buildTradePayload();
     if (!payload) return;
     const encoded = encodeTradeShortCode(payload.offerId, payload.acceptedByOwner, tradeOwnerCode);
+    if (tradeMyCode) {
+      tradeMyCode.textContent = encoded;
+    }
     paintTradeQr(encoded, tradeMyQr);
   }
 
@@ -1505,14 +1512,6 @@
     if (!screenGame.classList.contains('hidden') && screenMalidex.classList.contains('hidden')) {
       planNextSpawn();
     }
-  }
-
-  function blockManualCloseDuringTrade() {
-    if (!tradeCompleted) {
-      showGameNotice('Echange en cours: fermeture indisponible.');
-      return true;
-    }
-    return false;
   }
 
   function maybeCommitTrade() {
@@ -3772,8 +3771,7 @@
   }
   if (tradeCancelBtn) {
     tradeCancelBtn.addEventListener('click', function () {
-      if (blockManualCloseDuringTrade()) return;
-      closeTradeOverlay(true);
+      closeTradeOverlay(false);
     });
   }
   if (tradeDoneBtn) {
@@ -3784,8 +3782,7 @@
   if (tradeOverlay) {
     tradeOverlay.addEventListener('click', function (event) {
       if (event.target === tradeOverlay) {
-        if (blockManualCloseDuringTrade()) return;
-        closeTradeOverlay(true);
+        closeTradeOverlay(false);
       }
     });
   }
