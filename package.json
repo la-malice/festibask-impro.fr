@@ -10,18 +10,23 @@
     "build:images": "node scripts/build-optimized-images.mjs",
     "build:places": "node scripts/build-places-from-sheet.mjs",
     "build": "npm run build:images && npm run build:places && node scripts/copy-to-dist.js && purgecss --config purgecss.config.js && postcss dist/assets/css/style.css -o dist/assets/css/style.css && terser assets/js/script.js -o dist/assets/js/script.js -f ascii_only=true",
-    "test:malix": "node --test tests/malix/*.test.js"
+    "test:malix": "node --test tests/malix/*.test.js",
+    "build:malix-qr": "esbuild node_modules/qrcode/lib/browser.js --bundle --format=iife --global-name=MalixQR --platform=browser --outfile=malix/assets/vendor/qrcode.min.js"
   },
-  "keywords": ["server", "http", "local"],
+  "keywords": [
+    "server",
+    "http",
+    "local"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "vite": "^6.0.0",
     "cssnano": "^7.0.0",
     "postcss": "^8.4.0",
     "postcss-cli": "^11.0.0",
     "purgecss": "^5.0.0",
-    "terser": "^5.36.0"
+    "qrcode": "^1.5.4",
+    "terser": "^5.36.0",
+    "vite": "^6.0.0"
   }
 }
-

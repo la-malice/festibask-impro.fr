@@ -183,26 +183,23 @@
           <button class="chip chip-ghost trade-close-btn" id="tradeCancelBtn" type="button" aria-label="Fermer">✕</button>
           <h3 id="tradeDialogTitle">Echange de Malix</h3>
           <div class="trade-step" id="tradeStepDecision">
-            <p class="trade-help" id="tradeHelpText">Tape sur ton Malix lorsque tu es pret a echanger.</p>
-            <p class="trade-countdown" id="tradeCountdown" aria-live="polite"></p>
-            <div class="trade-confirm-zone">
-              <button class="trade-malix-card" id="tradeMyConfirmBtn" type="button">
-                <span class="trade-malix-flip" id="tradeMyFlip">
-                  <span class="trade-malix-face trade-malix-front">
-                    <img id="tradeMyConfirmImg" alt="" />
-                    <span id="tradeMyConfirmLabel">Ton Malix</span>
-                  </span>
-                  <span class="trade-malix-face trade-malix-back">
-                    <img class="trade-qr" id="tradeMyQr" alt="Ton QR d'echange" />
-                    <span class="trade-code-inline" id="tradeMyCode">---</span>
-                  </span>
-                </span>
-              </button>
-              <button class="trade-malix-card trade-malix-peer" id="tradePeerConfirmBtn" type="button">
+            <p class="trade-help" id="tradeHelpText">
+              Les deux joueurs doivent scanner le QR code de l'autre pour echanger.
+            </p>
+            <div class="trade-offer-header">
+              <img id="tradeOfferMalixImg" alt="" />
+              <span id="tradeOfferMalixLabel">Ton Malix</span>
+            </div>
+            <div class="trade-actions-zone">
+              <div class="trade-qr-panel" id="tradeQrPanel">
+                <img class="trade-qr" id="tradeMyQr" alt="Ton QR d'echange" />
+              </div>
+              <button class="trade-scan-card trade-malix-peer" id="tradePeerConfirmBtn" type="button">
                 <img id="tradePeerConfirmImg" alt="" />
-                <span id="tradePeerConfirmLabel">Malix du joueur 2</span>
+                <span id="tradePeerConfirmLabel">Scanner l'autre joueur</span>
               </button>
             </div>
+            <p class="trade-countdown" id="tradeCountdown" aria-live="polite"></p>
             <div class="trade-success hidden" id="tradeSuccessPanel">
               <p id="tradeSuccessText">Echange reussi !</p>
               <button class="chip" id="tradeDoneBtn" type="button">Fermer</button>
@@ -275,6 +272,7 @@
     <script src="./assets/access-config.js"></script>
     <script src="./assets/access-gate.js"></script>
     <script src="./assets/trade-session.js"></script>
-    <script src="./assets/app.js?v=1"></script>
+    <script src="./assets/vendor/qrcode.min.js"></script>
+    <script src="./assets/app.js?v=6"></script>
   </body>
 </html>

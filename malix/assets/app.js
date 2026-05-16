@@ -17,6 +17,8 @@
   const variantRarityWeights = [55, 27, 13, 5];
   const OFFICIAL_GAME_URL = 'https://festibask-impro.fr/malix';
   const TRADE_SCAN_ICON_PATH = './assets/ui/icon-photo-camera.svg';
+  const TRADE_HELP_DEFAULT =
+    'Les deux joueurs doivent scanner le QR code de l\'autre pour echanger.';
   const AUDIENCE_LAYOUT_KEY = 'malix-audience-layout-v1';
   const AUDIENCE_ROWS = 8;
   const AUDIENCE_LEFT_COUNT = 6;
@@ -108,15 +110,14 @@
   const tradeSuccessText = document.getElementById('tradeSuccessText');
   const tradeDoneBtn = document.getElementById('tradeDoneBtn');
   const tradeMyQr = document.getElementById('tradeMyQr');
-  const tradeMyCode = document.getElementById('tradeMyCode');
   const tradeScannerOverlay = document.getElementById('tradeScannerOverlay');
   const tradeScannerVideo = document.getElementById('tradeScannerVideo');
   const tradeScannerCancelBtn = document.getElementById('tradeScannerCancelBtn');
-  const tradeMyConfirmBtn = document.getElementById('tradeMyConfirmBtn');
+  const tradeQrPanel = document.getElementById('tradeQrPanel');
   const tradePeerConfirmBtn = document.getElementById('tradePeerConfirmBtn');
-  const tradeMyConfirmImg = document.getElementById('tradeMyConfirmImg');
+  const tradeOfferMalixImg = document.getElementById('tradeOfferMalixImg');
+  const tradeOfferMalixLabel = document.getElementById('tradeOfferMalixLabel');
   const tradePeerConfirmImg = document.getElementById('tradePeerConfirmImg');
-  const tradeMyConfirmLabel = document.getElementById('tradeMyConfirmLabel');
   const tradePeerConfirmLabel = document.getElementById('tradePeerConfirmLabel');
   const tradeCancelBtn = document.getElementById('tradeCancelBtn');
 
@@ -193,11 +194,7 @@
   let tradeScannerStream = null;
   let tradeScannerFrame = null;
   let tradeBarcodeDetector = null;
-  let tradeMyCardFlipped = false;
   let tradeCompleted = false;
-  let tradeRtcSession = null;
-  let tradeRtcConnected = false;
-  let tradeRtcAwaitingAnswer = false;
 
   function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -1073,10 +1070,8 @@
     setCheatBadgeVisible(false);
     if (!screenWelcome) return;
     const url = gameUrl();
-    const qrSource = 'https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=' + encodeURIComponent(url);
-
     if (welcomeQr) {
-      welcomeQr.src = qrSource;
+      paintTradeQr(url, welcomeQr);
     }
     if (welcomeLink) {
       welcomeLink.href = url;
@@ -1110,35 +1105,31 @@
       tradeStepDecision.classList.remove('hidden');
     }
     if (tradeHelpText) {
-      tradeHelpText.textContent = 'Tape sur ton Malix lorsque tu es pret a echanger.';
-    }
-    if (tradeMyCode) {
-      tradeMyCode.textContent = '---';
+      tradeHelpText.textContent = TRADE_HELP_DEFAULT;
     }
     if (tradeMyQr) {
       tradeMyQr.classList.add('hidden');
       tradeMyQr.removeAttribute('src');
     }
-    if (tradeMyConfirmBtn) {
-      tradeMyConfirmBtn.disabled = false;
-      tradeMyConfirmBtn.classList.remove('is-confirmed');
-      tradeMyConfirmBtn.classList.remove('is-flipped');
+    if (tradeQrPanel) {
+      tradeQrPanel.classList.remove('is-confirmed');
     }
     if (tradePeerConfirmBtn) {
+      tradePeerConfirmBtn.disabled = false;
       tradePeerConfirmBtn.classList.remove('is-confirmed');
       tradePeerConfirmBtn.classList.add('is-placeholder');
     }
-    if (tradeMyConfirmImg) {
-      tradeMyConfirmImg.removeAttribute('src');
+    if (tradeOfferMalixImg) {
+      tradeOfferMalixImg.removeAttribute('src');
     }
     if (tradePeerConfirmImg) {
       tradePeerConfirmImg.src = TRADE_SCAN_ICON_PATH;
     }
-    if (tradeMyConfirmLabel) {
-      tradeMyConfirmLabel.textContent = 'Ton Malix';
+    if (tradeOfferMalixLabel) {
+      tradeOfferMalixLabel.textContent = 'Ton Malix';
     }
     if (tradePeerConfirmLabel) {
-      tradePeerConfirmLabel.textContent = 'Scanner le QR joueur 2';
+      tradePeerConfirmLabel.textContent = 'Scanner l\'autre joueur';
     }
     if (tradeSuccessPanel) {
       tradeSuccessPanel.classList.add('hidden');
@@ -1150,10 +1141,7 @@
       tradeCancelBtn.disabled = true;
       tradeCancelBtn.setAttribute('aria-disabled', 'true');
     }
-    tradeMyCardFlipped = false;
     tradeCompleted = false;
-    tradeRtcConnected = false;
-    tradeRtcAwaitingAnswer = false;
   }
 
   function updateTradeStatus(message) {
@@ -1202,8 +1190,8 @@
     if (!tradeProtocol) return;
     const snapshot = tradeProtocol.getSnapshot();
 
-    if (tradeMyConfirmBtn) {
-      tradeMyConfirmBtn.classList.toggle('is-confirmed', Boolean(snapshot.localAccepted));
+    if (tradeQrPanel) {
+      tradeQrPanel.classList.toggle('is-confirmed', Boolean(snapshot.localAccepted));
     }
     if (tradePeerConfirmBtn) {
       tradePeerConfirmBtn.classList.toggle('is-confirmed', Boolean(snapshot.peerAccepted));
@@ -1211,11 +1199,11 @@
 
     if (snapshot.localOfferId) {
       const mine = collectionApi.parseId(snapshot.localOfferId);
-      if (mine && tradeMyConfirmImg) {
-        setTypeVariantImage(tradeMyConfirmImg, mine.type, mine.variant);
+      if (mine && tradeOfferMalixImg) {
+        setTypeVariantImage(tradeOfferMalixImg, mine.type, mine.variant);
       }
-      if (tradeMyConfirmLabel) {
-        tradeMyConfirmLabel.textContent = formatEntryLabel(snapshot.localOfferId);
+      if (tradeOfferMalixLabel) {
+        tradeOfferMalixLabel.textContent = formatEntryLabel(snapshot.localOfferId);
       }
     }
     if (snapshot.peerOfferId) {
@@ -1229,53 +1217,52 @@
       if (tradePeerConfirmLabel) {
         tradePeerConfirmLabel.textContent = formatEntryLabel(snapshot.peerOfferId);
       }
+    } else if (tradePeerConfirmImg) {
+      tradePeerConfirmImg.src = TRADE_SCAN_ICON_PATH;
+      if (tradePeerConfirmLabel) {
+        tradePeerConfirmLabel.textContent = 'Scanner l\'autre joueur';
+      }
     }
 
     if (snapshot.localAccepted && snapshot.peerAccepted) {
-      updateTradeStatus('Les deux joueurs ont confirme. Echange en cours...');
       if (tradeHelpText) {
         tradeHelpText.textContent = 'Validation complete, echange en cours...';
       }
-    } else if (snapshot.localAccepted) {
-      updateTradeStatus('Ton acceptation est enregistree. Fais scanner ton QR au joueur en face.');
+    } else if (snapshot.peerOfferId && !snapshot.peerAccepted) {
       if (tradeHelpText) {
-        tradeHelpText.textContent = 'Ton QR est confirme. Attends que l\'autre joueur finalise de son cote.';
+        tradeHelpText.textContent = 'Scanne le QR de l\'autre joueur pour finaliser l\'echange.';
       }
-    } else if (snapshot.peerAccepted) {
-      updateTradeStatus('Le joueur en face a confirme. Scanne son QR confirme pour finaliser.');
-      if (tradeHelpText) {
-        tradeHelpText.textContent = 'Scanne de nouveau le QR du joueur en face pour finaliser.';
-      }
-    } else {
-      if (!tradeMyCardFlipped) {
-        updateTradeStatus('Tape sur ton Malix pour afficher ton QR.');
-        if (tradeHelpText) {
-          tradeHelpText.textContent = 'Tape sur ton Malix lorsque tu es pret a echanger.';
-        }
-      } else if (!snapshot.peerOfferId) {
-        updateTradeStatus('Fais scanner ton QR puis scanne celui de l\'autre joueur.');
-        if (tradeHelpText) {
-          tradeHelpText.textContent = 'Fais scanner ce QR code pour echanger.';
-        }
-      } else {
-        updateTradeStatus('Scanne le QR de l\'autre joueur pour accepter l\'echange.');
-        if (tradeHelpText) {
-          tradeHelpText.textContent = 'Tape sur le Malix adverse pour ouvrir le scan.';
-        }
-      }
+    } else if (tradeHelpText) {
+      tradeHelpText.textContent = TRADE_HELP_DEFAULT;
     }
   }
 
-  function createTradeQr(codeValue, imageElement) {
-    if (!imageElement) return;
+  function paintTradeQr(codeValue, imageElement) {
+    if (!imageElement) {
+      return Promise.resolve(false);
+    }
     if (!codeValue) {
       imageElement.classList.add('hidden');
       imageElement.removeAttribute('src');
-      return;
+      return Promise.resolve(false);
     }
-    imageElement.src =
-      'https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=' + encodeURIComponent(codeValue);
-    imageElement.classList.remove('hidden');
+    if (typeof MalixQR === 'undefined' || typeof MalixQR.toDataURL !== 'function') {
+      return Promise.resolve(false);
+    }
+    return MalixQR.toDataURL(codeValue, {
+      errorCorrectionLevel: 'H',
+      width: 280,
+      margin: 1,
+      color: { dark: '#000000ff', light: '#ffffffff' }
+    })
+      .then(function (dataUrl) {
+        imageElement.src = dataUrl;
+        imageElement.classList.remove('hidden');
+        return true;
+      })
+      .catch(function () {
+        return false;
+      });
   }
 
   function buildTradePayload() {
@@ -1292,159 +1279,14 @@
     const payload = buildTradePayload();
     if (!payload) return;
     const encoded = encodeTradeShortCode(payload.offerId, payload.acceptedByOwner, tradeOwnerCode);
-    if (tradeMyCode) {
-      tradeMyCode.textContent = encoded;
-    }
-    createTradeQr(encoded, tradeMyQr);
-  }
-
-  function closeTradeRtcSession() {
-    if (tradeRtcSession) {
-      tradeRtcSession.close();
-      tradeRtcSession = null;
-    }
-    tradeRtcConnected = false;
-    tradeRtcAwaitingAnswer = false;
-  }
-
-  function handleTradeRtcMessage(message) {
-    if (!tradeProtocol || !message || typeof message !== 'object') return;
-
-    if (message.type === 'offer' && message.entryId) {
-      tradeProtocol.receiveOffer(message.entryId);
-      tradePeerOfferId = message.entryId;
-      if (!tradeProtocol.getSnapshot().localAccepted) {
-        tradeProtocol.acceptOffer();
-        if (tradeRtcSession) {
-          tradeRtcSession.send({ type: 'accept' });
-        }
-      }
-      updateTradeDecisionUi();
-      maybeCommitTrade();
-      return;
-    }
-
-    if (message.type === 'accept') {
-      tradeProtocol.receiveAccept();
-      updateTradeDecisionUi();
-      maybeCommitTrade();
-      return;
-    }
-
-    if (message.type === 'commit') {
-      if (!tradeCommitApplied && message.localOfferId && message.peerOfferId) {
-        applyTradeCommit(message.localOfferId, message.peerOfferId);
-      }
-    }
-  }
-
-  function setupTradeRtcSession() {
-    if (tradeRtcSession) return true;
-    const session = tradeApi.createRtcSession({
-      onStateChange: function (state) {
-        if (state === 'connected') {
-          tradeRtcConnected = true;
-          tradeRtcAwaitingAnswer = false;
-          if (tradeProtocol) {
-            tradeProtocol.setConnected();
-          }
-          updateTradeStatus('Connexion en direct etablie. Echange en cours...');
-          if (tradeProtocol && tradeLocalOfferId) {
-            session.send({ type: 'offer', entryId: tradeLocalOfferId });
-          }
-        }
-      },
-      onMessage: function (payload) {
-        handleTradeRtcMessage(payload);
-      },
-      onError: function () {
-        updateTradeStatus('Connexion directe indisponible. Fallback QR actif.');
-      }
-    });
-    if (!session.isSupported) {
-      return false;
-    }
-    tradeRtcSession = session;
-    return true;
-  }
-
-  async function startTradeRtcHost() {
-    if (!setupTradeRtcSession()) {
-      tradeProtocol.setConnected();
-      refreshTradeLocalCode();
-      return;
-    }
-    try {
-      const offerCode = await tradeRtcSession.startHost();
-      if (!offerCode) {
-        tradeProtocol.setConnected();
-        refreshTradeLocalCode();
-        return;
-      }
-      tradeRtcAwaitingAnswer = true;
-      if (tradeMyCode) {
-        tradeMyCode.textContent = 'RTC';
-      }
-      createTradeQr(offerCode, tradeMyQr);
-      updateTradeStatus('Fais scanner ton QR pour etablir la connexion directe.');
-    } catch (error) {
-      tradeProtocol.setConnected();
-      refreshTradeLocalCode();
-    }
+    paintTradeQr(encoded, tradeMyQr);
   }
 
   function processScannedTradeCode(rawCode) {
     if (!tradeProtocol) return;
-    const encodedRaw = String(rawCode || '').trim();
-    const encoded = encodedRaw.toUpperCase();
+    const encoded = String(rawCode || '').trim().toUpperCase();
     if (!encoded) {
       updateTradeStatus('Code vide. Reessaie le scan.');
-      return;
-    }
-
-    const rtcPayload = tradeApi.decodePayload(encodedRaw);
-    if (rtcPayload && rtcPayload.type === 'offer' && rtcPayload.sdp) {
-      if (!setupTradeRtcSession()) {
-        updateTradeStatus('Connexion directe non supportee ici. Utilise le code court.');
-        return;
-      }
-      tradeRtcSession
-        .startGuest(encodedRaw)
-        .then(function (answerCode) {
-          if (!answerCode) {
-            updateTradeStatus('Offer invalide. Reessaie.');
-            return;
-          }
-          tradeRtcAwaitingAnswer = false;
-          if (tradeMyCode) {
-            tradeMyCode.textContent = 'RTC';
-          }
-          createTradeQr(answerCode, tradeMyQr);
-          updateTradeStatus('Fais scanner ton QR reponse pour finaliser la connexion.');
-        })
-        .catch(function () {
-          updateTradeStatus('Connexion directe echouee. Utilise le code court.');
-        });
-      return;
-    }
-
-    if (rtcPayload && rtcPayload.type === 'answer' && rtcPayload.sdp) {
-      if (!tradeRtcSession || !tradeRtcAwaitingAnswer) {
-        updateTradeStatus('Reponse RTC inattendue.');
-        return;
-      }
-      tradeRtcSession
-        .applyHostAnswer(encodedRaw)
-        .then(function (ok) {
-          if (!ok) {
-            updateTradeStatus('Reponse RTC invalide.');
-          } else {
-            updateTradeStatus('Reponse recue. Connexion en cours...');
-          }
-        })
-        .catch(function () {
-          updateTradeStatus('Reponse RTC invalide.');
-        });
       return;
     }
 
@@ -1554,7 +1396,6 @@
       tradeSessionTimeout = null;
     }
     stopTradeCountdown();
-    closeTradeRtcSession();
     tradeProtocol = null;
     tradeLocalOfferId = null;
     tradePeerOfferId = null;
@@ -1606,13 +1447,6 @@
     const snapshot = tradeProtocol.getSnapshot();
     if (!snapshot.localOfferId || !snapshot.peerOfferId) return;
     if (tradeCommitApplied) return;
-    if (tradeRtcConnected && tradeRtcSession) {
-      tradeRtcSession.send({
-        type: 'commit',
-        localOfferId: snapshot.localOfferId,
-        peerOfferId: snapshot.peerOfferId
-      });
-    }
     applyTradeCommit(snapshot.localOfferId, snapshot.peerOfferId);
   }
 
@@ -1628,14 +1462,15 @@
     tradeBusy = true;
     clearSpawn();
     tradeProtocol = tradeApi.createProtocol();
-    tradeProtocol.setPairing();
+    tradeProtocol.setConnected();
     tradeLocalOfferId = entryId;
     tradeProtocol.createOffer(entryId);
-    updateTradeStatus('Montre ton QR et scanne celui du joueur en face.');
+    if (tradeHelpText) {
+      tradeHelpText.textContent = TRADE_HELP_DEFAULT;
+    }
     revealTradeDecisionStep();
     updateTradeDecisionUi();
     refreshTradeLocalCode();
-    startTradeRtcHost();
     armTradeSessionTimeout();
   }
 
@@ -3157,11 +2992,11 @@
     const mine = collectionApi.parseId(localOfferId);
     const peer = collectionApi.parseId(peerOfferId);
     if (!mine || !peer) return;
-    if (!tradeOverlay || tradeOverlay.classList.contains('hidden') || !tradeStepDecision || !tradeMyConfirmBtn || !tradePeerConfirmBtn) {
+    if (!tradeOverlay || tradeOverlay.classList.contains('hidden') || !tradeStepDecision || !tradeQrPanel || !tradePeerConfirmBtn) {
       return;
     }
     const hostRect = tradeStepDecision.getBoundingClientRect();
-    const myRect = tradeMyConfirmBtn.getBoundingClientRect();
+    const myRect = tradeQrPanel.getBoundingClientRect();
     const peerRect = tradePeerConfirmBtn.getBoundingClientRect();
     const startLeftX = myRect.left + myRect.width / 2 - hostRect.left - 36;
     const startLeftY = myRect.top + myRect.height / 2 - hostRect.top - 36;
@@ -3207,14 +3042,14 @@
       });
     }
 
-    if (tradeMyConfirmImg) {
-      setTypeVariantImage(tradeMyConfirmImg, peer.type, peer.variant);
+    if (tradeOfferMalixImg) {
+      setTypeVariantImage(tradeOfferMalixImg, peer.type, peer.variant);
     }
     if (tradePeerConfirmImg) {
       setTypeVariantImage(tradePeerConfirmImg, mine.type, mine.variant);
     }
-    if (tradeMyConfirmLabel) {
-      tradeMyConfirmLabel.textContent = formatEntryLabel(peerOfferId);
+    if (tradeOfferMalixLabel) {
+      tradeOfferMalixLabel.textContent = formatEntryLabel(peerOfferId);
     }
     if (tradePeerConfirmLabel) {
       tradePeerConfirmLabel.textContent = formatEntryLabel(localOfferId);
@@ -3222,10 +3057,6 @@
     if (tradePeerConfirmBtn) {
       tradePeerConfirmBtn.classList.remove('is-placeholder');
     }
-    if (tradeMyConfirmBtn) {
-      tradeMyConfirmBtn.classList.remove('is-flipped');
-    }
-    tradeMyCardFlipped = false;
     layer.remove();
   }
 
@@ -3263,9 +3094,6 @@
     renderMalidex();
     await runTradeCrossSequence(localOfferId, peerOfferId);
     tradeCompleted = true;
-    if (tradeMyConfirmBtn) {
-      tradeMyConfirmBtn.disabled = true;
-    }
     if (tradePeerConfirmBtn) {
       tradePeerConfirmBtn.disabled = true;
     }
@@ -3626,33 +3454,10 @@
       }
     });
   }
-  if (tradeMyConfirmBtn) {
-    tradeMyConfirmBtn.addEventListener('click', function (event) {
-      event.preventDefault();
-      if (tradeCompleted) return;
-      tradeMyCardFlipped = !tradeMyCardFlipped;
-      tradeMyConfirmBtn.classList.toggle('is-flipped', tradeMyCardFlipped);
-      if (tradeMyCardFlipped) {
-        if (tradeHelpText) {
-          tradeHelpText.textContent = 'Fais scanner ce QR code pour echanger.';
-        }
-        updateTradeStatus('Ton QR est visible. Fais-le scanner puis scanne celui du joueur en face.');
-      } else if (tradeHelpText) {
-        tradeHelpText.textContent = 'Tape sur ton Malix lorsque tu es pret a echanger.';
-      }
-    });
-  }
   if (tradePeerConfirmBtn) {
     tradePeerConfirmBtn.addEventListener('click', function (event) {
       event.preventDefault();
       if (tradeCompleted) return;
-      if (!tradeMyCardFlipped) {
-        tradeMyCardFlipped = true;
-        tradeMyConfirmBtn.classList.add('is-flipped');
-        if (tradeHelpText) {
-          tradeHelpText.textContent = 'Fais scanner ce QR code pour echanger.';
-        }
-      }
       openTradeScanner();
     });
   }

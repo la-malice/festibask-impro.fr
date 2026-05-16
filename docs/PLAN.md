@@ -15,7 +15,7 @@ Places disponibles **pass spectacles** et **stages** (CSV Google → `remaining-
 | Témoignages (carousel JSON) | Carousel of testimonies loaded from JSON; section hidden when JSON is empty; easy to add testimonies by editing JSON (procedure in docs). | Done |
 | Fullscreen programme — animations and auto-schedule | Add per-block animation/carousel when an event is selected in fullscreen, and time-based auto-schedule on show days; keep existing layout and day/event selection unchanged. No animation during shows. | Planned |
 | Stages masterclass → stages confirmés | Rename "masterclass" to "stage confirmé" everywhere; 4 stages confirmés Samedi (2 salles × 2 créneaux); update instructor bio and copy. | Done |
-| Malix — échange 1↔1 | Ajouter l’échange de Malix depuis le Malidex (WebRTC prioritaire via QR de signalisation, fallback QR court, commit local, popup de bienvenue post-échange). | Done |
+| Malix — échange 1↔1 | Échange de Malix depuis le Malidex par scans mutuels de QR courts, commit local, popup de bienvenue post-échange. | Done |
 
 See [Slices (detail)](#slices-detail) below for full behaviour.
 

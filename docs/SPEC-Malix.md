@@ -156,18 +156,17 @@
 ### 5.6 Échange de Malix (Malidex)
 
 - **Point d’entrée** : depuis le Malidex, chaque entrée collectée peut ouvrir un mode « Échanger ».
-- **Rituel proximité** : l’UI demande de rapprocher les téléphones. En web, l’échange tente d’abord une connexion **WebRTC DataChannel** via QR de signalisation ; en cas d’échec, fallback sur **QR court**.
+- **Rituel proximité** : l’UI demande de rapprocher les téléphones pour se scanner mutuellement les QR.
 - **Appairage / validation** :
-  - Mode prioritaire : QR de signalisation WebRTC (offer/answer) pour ouvrir un DataChannel direct entre les deux téléphones.
-  - Une fois connecté, les offres/acceptations transitent en direct sur le canal.
-  - Fallback : code court lisible/saisissable (**3 lettres + 2 chiffres**, ex. `ABC12`) et scan/copie locale.
+  - Chaque joueur affiche un **QR court** (code **3 lettres + 2 chiffres**, ex. `ABC12`) encodant son offre (Malix proposé), un bit d’acceptation et un identifiant joueur local.
+  - Scan du QR adverse (caméra) ou saisie manuelle du code court en secours.
 - **Négociation** :
   - Les deux joueurs visualisent les deux offres dans la zone d’échange.
-  - Action de confirmation principale : scan QR (signalisation ou fallback court selon mode).
+  - Action de confirmation principale : **scan mutuel** des QR courts (chaque joueur scanne celui de l’autre).
 - **Règle métier** : échange **1 contre 1 avec transfert**.
   - Le Malix proposé par A est retiré de la collection de A et ajouté chez B.
   - Le Malix proposé par B est retiré de la collection de B et ajouté chez A.
-- **Validation bilatérale** : l’échange n’est appliqué qu’après acceptation des deux joueurs (sur DataChannel quand disponible, sinon fallback local).
+- **Validation bilatérale** : l’échange n’est appliqué qu’après acceptation des deux joueurs (protocole local sur chaque appareil, déclenché par les scans).
 - **Timeout de session** : un délai maximum d’échange est imposé (décompte visible dans l’UI). Si la double validation n’est pas obtenue avant la fin du décompte, l’échange est **annulé automatiquement** sur l’appareil.
 - **Doublon reçu** : si l’entrée reçue existe déjà, la collection reste inchangée mais le compteur de captures (`xN`) augmente de +1.
 - **Feedback** : après échange réussi, afficher une popup de bienvenue/réception (style congratulation), y compris si doublon.
@@ -179,7 +178,7 @@
 ### 6.1 Principes
 
 - **Progression locale** : un joueur principal par appareil (collection locale).
-- **Échange P2P ponctuel** : interaction temporaire entre deux appareils ; WebRTC DataChannel privilégié, QR court en fallback ; aucune base serveur centrale.
+- **Échange P2P ponctuel** : interaction temporaire entre deux appareils par scans de QR courts ; aucune base serveur centrale.
 - **Aucun compte** : pas d’authentification.
 - **Aucune donnée serveur** : tout reste dans le navigateur.
 

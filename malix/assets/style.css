@@ -1187,60 +1187,74 @@ body {
   opacity: 0.95;
 }
 
-.trade-countdown {
-  margin: 0;
-  font-size: 0.8rem;
+.trade-offer-header {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  margin: 4px 0 10px;
+}
+
+.trade-offer-header img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.28));
+}
+
+.trade-offer-header span {
+  font-size: 0.82rem;
   font-weight: 800;
-  opacity: 0.92;
+  text-align: center;
 }
 
-.trade-qr {
-  display: block;
-  width: min(44vw, 180px);
-  height: min(44vw, 180px);
-  margin: 2px auto;
-  border-radius: 10px;
-  border: 2px solid rgba(255, 255, 255, 0.72);
-  background: #fff;
-}
-
-.trade-confirm-zone {
+.trade-actions-zone {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
+  align-items: stretch;
 }
 
-.trade-malix-card {
+.trade-qr-panel,
+.trade-scan-card {
   position: relative;
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 12px;
   background: rgba(5, 10, 42, 0.34);
   color: #fff;
-  padding: 8px 6px;
+  padding: 10px 8px;
   display: grid;
-  gap: 6px;
+  gap: 8px;
   justify-items: center;
-  min-height: 118px;
+  align-content: center;
+  min-height: 168px;
 }
 
-.trade-malix-card img {
-  width: 58px;
-  height: 58px;
+.trade-scan-card {
+  cursor: pointer;
+  font: inherit;
+  width: 100%;
+}
+
+.trade-scan-card img {
+  width: 52px;
+  height: 52px;
   object-fit: contain;
 }
 
-.trade-malix-card span {
+.trade-scan-card span {
   font-size: 0.74rem;
   font-weight: 800;
   text-align: center;
 }
 
-.trade-malix-card.is-confirmed {
+.trade-qr-panel.is-confirmed,
+.trade-scan-card.is-confirmed {
   border-color: rgba(175, 255, 193, 0.9);
   box-shadow: 0 0 0 2px rgba(123, 255, 161, 0.34);
 }
 
-.trade-malix-card.is-confirmed::after {
+.trade-qr-panel.is-confirmed::after,
+.trade-scan-card.is-confirmed::after {
   content: 'OK';
   position: absolute;
   top: 6px;
@@ -1253,42 +1267,24 @@ body {
   background: #9df2b8;
 }
 
-.trade-malix-flip {
-  position: relative;
+.trade-qr {
   display: block;
-  width: 100%;
-  min-height: 102px;
-  transform-style: preserve-3d;
-  transition: transform 420ms ease;
+  width: min(100%, 148px);
+  height: auto;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.72);
+  background: #fff;
+  object-fit: contain;
 }
 
-.trade-malix-card.is-flipped .trade-malix-flip {
-  transform: rotateY(180deg);
-}
-
-.trade-malix-face {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  align-content: center;
-  gap: 6px;
-  backface-visibility: hidden;
-}
-
-.trade-malix-back {
-  transform: rotateY(180deg);
-}
-
-.trade-code-inline {
-  display: inline-block;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.62);
-  padding: 4px 10px;
-  font-size: 0.84rem;
-  font-weight: 900;
-  letter-spacing: 0.06em;
-  background: rgba(11, 16, 58, 0.5);
+.trade-countdown {
+  margin: 12px 0 0;
+  font-size: 0.8rem;
+  font-weight: 800;
+  opacity: 0.92;
+  text-align: center;
 }
 
 .trade-malix-peer.is-placeholder img {

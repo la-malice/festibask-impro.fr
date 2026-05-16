@@ -35,7 +35,7 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 | **PWA / Brevo** | Service worker loads Brevo by query key | sw.js (root) |
 | **CI/CD** | Build et déploiement GitHub Pages ; rafraîchissement planifié du CSV places (voir `pages.yml`, cron UTC) | .github/workflows/pages.yml |
 | **Mini-jeu Malix** | App autonome sous /malix ; HTML/CSS/JS propres ; 27 SVG doodles ; stockage local | malix/ (dans dist après build) ; spec docs/SPEC-Malix.md |
-| **Malix trade-session** | Session d’échange P2P: signalisation WebRTC par QR (offer/answer), DataChannel pour synchronisation directe, fallback QR court sans backend | malix/assets/trade-session.js |
+| **Malix trade-session** | Protocole d’état d’échange 1↔1 (offres, acceptations, commit) ; QR courts générés côté client ; aucun backend | malix/assets/trade-session.js, malix/assets/vendor/qrcode.min.js |
 
 ## Technology Stack
 
@@ -45,7 +45,7 @@ CI: checkout → npm ci → npm run build → upload dist → deploy Pages
 - **Data:** Static JSON (temoignages); EDF players and spectacle data in script.js.
 - **Deploy:** GitHub Actions (ubuntu-latest, Node 20); artifact `dist/` → deploy-pages. Environment: github-pages. Planification `schedule` dans `.github/workflows/pages.yml` : **UTC** — en principe **toutes les 15 min** hors **01h–08h Europe/Paris** (expression cron dans le fichier) ; **push** `main` ou **workflow_dispatch** à tout moment.
 - **Malix:** Application statique dans `dist/malix/` (index.html, assets dédiés, copies des 27 doodles). Aucun impact sur index.html ni sur le bundle principal (script.js, style.css). Le build inclut `malix/` dans `dist/`. Le fichier `malix/assets/access-config.js` (objet `MalixAccessConfig` vide par défaut, réservé aux extensions) est versionné ; un override `malix/assets/access-config.local.js` non versionné peut être injecté au build à la place de `access-config.js` dans `dist/malix/assets/` (voir scripts/copy-to-dist.js).
-- **Malix échange:** WebRTC DataChannel prioritaire (signalisation par QR), fallback QR court ; aucun backend ni stockage serveur.
+- **Malix échange:** QR courts + protocole local ; génération QR via bundle `qrcode` (MalixQR) ; aucun backend ni stockage serveur.
 
 ## Execution Model
 
