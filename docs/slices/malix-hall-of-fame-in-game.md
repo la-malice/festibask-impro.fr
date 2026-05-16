@@ -1,6 +1,6 @@
 # Malix — Hall of Fame in-game (classement)
 
-**Statut : slice 1 validée (2026-05-16) ; slices 2–6 planifiées.** Ce document est la **source de vérité** pour générer un plan d’implémentation par session (une slice = une session).
+**Statut : slices 1–3 (code) livrées (2026-05-16) ; deploy prod `malix-api` à lancer une fois (`wrangler deploy`) ; slices 4–6 planifiées.** Ce document est la **source de vérité** pour générer un plan d’implémentation par session (une slice = une session).
 
 **Suivi d’avancement :** [docs/PLAN.md](../PLAN.md) (tableau slices, statut Planned/Done).
 
@@ -207,13 +207,13 @@ LIMIT 500
 
 ---
 
-## Slice 2 — Worker BFF local (session code)
+## Slice 2 — Worker BFF local (session code) — Done
 
 **Objectif :** Worker qui interroge PostHog et renvoie le JSON du contrat.
 
 **Dépend de :** slice 1 terminée.
 
-**Fichiers à créer :**
+**Fichiers créés :**
 
 | Fichier | Rôle |
 |---------|------|
@@ -227,9 +227,11 @@ LIMIT 500
 
 **Comportement minimal :**
 
-- `player_id` obligatoire ; UUID invalide → 400.
-- Pas de `POSTHOG_PERSONAL_API_KEY` en dev → 502 `leaderboard_unavailable`.
-- Pas de cache Worker ni CORS prod (slice 3).
+- [x] `player_id` obligatoire ; UUID invalide → 400.
+- [x] Pas de `POSTHOG_PERSONAL_API_KEY` en dev → 502 `leaderboard_unavailable`.
+- [x] Pas de cache Worker ni CORS prod (slice 3).
+
+**Validation locale (2026-05-16) :** `npx wrangler dev` — `400` (`missing_player_id`, `invalid_player_id`), `502` sans secret, `404` hors route ; `npm run test:malix` vert (24 tests). Réponse `200` avec clé PostHog : après `wrangler secret put POSTHOG_PERSONAL_API_KEY`.
 
 **Secrets :**
 
@@ -249,7 +251,7 @@ curl "http://127.0.0.1:8787/malix/api/leaderboard?player_id=<uuid-de-test>"
 
 ---
 
-## Slice 3 — Production : deploy, CORS, cache, sécurité
+## Slice 3 — Production : deploy, CORS, cache, sécurité — Done (code)
 
 **Objectif :** endpoint joignable depuis `https://festibask-impro.fr/malix/` sans exposer la clé PostHog.
 
@@ -257,16 +259,28 @@ curl "http://127.0.0.1:8787/malix/api/leaderboard?player_id=<uuid-de-test>"
 
 **Tâches :**
 
-1. `npx wrangler deploy` (compte Cloudflare = même que `worker-posthog/`).
-2. Configurer **Worker Route** : `festibask-impro.fr/malix/api/*` → script `malix-api`.  
-   Si conflit avec GitHub Pages : documenter ici le choix (sous-domaine dédié, etc.).
-3. **CORS** : `Access-Control-Allow-Origin` pour `https://festibask-impro.fr` ; dev : `http://localhost:8000`, `http://127.0.0.1:8000` (liste blanche dans le Worker).
-4. **Cache** : `Cache-Control: public, max-age=180` + `caches.default` ; clé = URL complète incluant `player_id`.
-5. **Rate limit** : ~30 req / min / IP (compteur en Worker ou règle Cloudflare).
-6. Mettre à jour [docs/DEVELOPMENT.md](../DEVELOPMENT.md) : section deploy + proxy Vite optionnel (`/malix/api` → `127.0.0.1:8787`).
-7. Mettre à jour [docs/posthog-malix-hall-of-fame.md](../posthog-malix-hall-of-fame.md) : URL API prod effective.
+1. [x] Code prêt pour `npx wrangler deploy` (compte Cloudflare = même que `worker-posthog/`).
+2. [x] **Worker Route** dans `wrangler.jsonc` : `festibask-impro.fr/malix/api/*` → script `malix-api`.
+3. [x] **CORS** dans `worker-malix-api/src/index.js` : `https://festibask-impro.fr` ; dev `localhost` / `127.0.0.1` (http + https).
+4. [x] **Cache** : `Cache-Control: public, max-age=180` + `caches.default` ; clé = URL complète incluant `player_id`.
+5. [x] **Rate limit** : ~30 req / min / IP (`429 rate_limited`).
+6. [x] [docs/DEVELOPMENT.md](../DEVELOPMENT.md) : section Worker + proxy Vite `/malix/api` → `127.0.0.1:8787`.
+7. [x] [docs/posthog-malix-hall-of-fame.md](../posthog-malix-hall-of-fame.md) : URL API prod documentée.
 
-**Test prod :**
+**Deploy prod (action manuelle, une fois par environnement) :**
+
+```bash
+cd worker-malix-api
+npx wrangler login
+npx wrangler secret put POSTHOG_PERSONAL_API_KEY
+npx wrangler deploy
+```
+
+**État au 2026-05-16 :** le script `malix-api` n’était pas encore sur Cloudflare (seul `posthog-proxy` listé) ; `https://festibask-impro.fr/malix/api/leaderboard` renvoyait **404 GitHub Pages** tant que le deploy n’est pas fait. Après deploy, la route Worker doit prendre le pas sur ce préfixe uniquement. Si conflit persistant : sous-domaine `api.festibask-impro.fr` (alternative ci-dessus).
+
+**Validation locale (code) :** `wrangler dev` — `400`, `502` sans secret, `OPTIONS` 204 ; `npm run test:malix` vert.
+
+**Test prod (après deploy) :**
 
 ```javascript
 // Console sur https://festibask-impro.fr/malix/
@@ -275,7 +289,7 @@ fetch('/malix/api/leaderboard?player_id=' + localStorage.getItem('malix-player-i
 
 Vérifier onglet Network : **aucune** clé PostHog dans les requêtes.
 
-**Critère de fin :** `fetch` prod OK ; CORS OK depuis le jeu ; cache et rate limit actifs.
+**Critère de fin :** code CORS/cache/rate limit livré ; `fetch` prod OK après `wrangler deploy` + secret.
 
 ---
 

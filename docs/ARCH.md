@@ -68,15 +68,15 @@ Les navigateurs (notamment sur mobile) et le CDN peuvent conserver longtemps des
 ## Dependencies
 
 - **Internal:** index.html references assets/css, assets/js, assets/img, assets/data, assets/video; script.js fetches `temoignages.json` et `remaining-seats.json` and manipulates DOM; no internal modules.
-- **External:** Brevo (cdn.brevo.com/js/sdk-loader.js), Sibforms (forms, styles, main.js), PostHog (snippet dans `index.html`, `video/index.html` et `malix/index.html` ; ingestion via reverse proxy sur le sous-domaine dédié `https://e.festibask-impro.fr` ; `ui_host` sur `https://eu.posthog.com` ; voir `docs/analytics-posthog.md` pour les événements custom et le périmètre par page). Le Worker `worker-posthog/` est la configuration standard pour le proxy analytics. `festibask-impro.fr` (apex) reste réservé au site web (GitHub Pages) et ne doit pas être utilisé comme `api_host` PostHog. **Hall of Fame Malix** : contrat API validé (slice 1) ; lecture via Worker `worker-malix-api/` sur route `festibask-impro.fr/malix/api/*` (pas sur `e.festibask-impro.fr`) — implémentation Worker slice 2, deploy slice 3 — voir [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md). Google Fonts. No npm runtime deps; devDependencies: vite, postcss, postcss-cli, cssnano, purgecss, terser.
+- **External:** Brevo (cdn.brevo.com/js/sdk-loader.js), Sibforms (forms, styles, main.js), PostHog (snippet dans `index.html`, `video/index.html` et `malix/index.html` ; ingestion via reverse proxy sur le sous-domaine dédié `https://e.festibask-impro.fr` ; `ui_host` sur `https://eu.posthog.com` ; voir `docs/analytics-posthog.md` pour les événements custom et le périmètre par page). Le Worker `worker-posthog/` est la configuration standard pour le proxy analytics. `festibask-impro.fr` (apex) reste réservé au site web (GitHub Pages) et ne doit pas être utilisé comme `api_host` PostHog. **Hall of Fame Malix** : lecture via Worker `worker-malix-api/` sur route `festibask-impro.fr/malix/api/*` (pas sur `e.festibask-impro.fr`) — voir [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md). Google Fonts. No npm runtime deps; devDependencies: vite, postcss, postcss-cli, cssnano, purgecss, terser.
 
 ## Malix — API classement
 
-Composant **BFF** séparé du proxy d’ingestion PostHog. **Contrat validé slice 1 (2026-05-16)** ; Worker non déployé tant que slice 3.
+Composant **BFF** séparé du proxy d’ingestion PostHog. **Contrat slice 1** ; **Worker slice 2–3** (CORS, cache, rate limit, route dans `wrangler.jsonc`). Deploy prod : `npx wrangler deploy` dans `worker-malix-api/`.
 
 | Élément | Valeur |
 |---------|--------|
-| Dossier source | `worker-malix-api/` (implémentation slice 2) |
+| Dossier source | `worker-malix-api/` (implémenté, tests `leaderboard-build.test.js`, route `festibask-impro.fr/malix/api/*`) |
 | Nom Wrangler | `malix-api` (ou `festibask-malix-api`) |
 | Route prod cible | `GET https://festibask-impro.fr/malix/api/leaderboard?player_id=<uuid>` |
 | Secret | `POSTHOG_PERSONAL_API_KEY` — projet PostHog EU **124663**, jamais dans le dépôt ni le client Malix |
@@ -119,7 +119,7 @@ Composant **BFF** séparé du proxy d’ingestion PostHog. **Contrat validé sli
 | malix/assets/player-id.js | UUID joueur (`malix-player-id`), code court 8 caractères |
 | malix/assets/leaderboard-client.js | *(slice 4)* Client HTTP vers l’API classement — [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md) |
 | worker-posthog/ | Proxy Cloudflare **ingestion** PostHog uniquement ; hostname `e.festibask-impro.fr` — **ne pas** y ajouter l’API classement |
-| worker-malix-api/ | *(slice 2–3)* BFF Cloudflare : `GET /malix/api/leaderboard` → PostHog Query API (projet 124663) ; secret `POSTHOG_PERSONAL_API_KEY` |
+| worker-malix-api/ | BFF Cloudflare (slices 2–3) : `GET /malix/api/leaderboard` → PostHog Query API (projet 124663) ; CORS, cache 3 min, rate limit ; secret `POSTHOG_PERSONAL_API_KEY` |
 | docs/SPEC-Malix.md | Spécification fonctionnelle normative du mini-jeu Malix |
 | docs/slices/malix-hall-of-fame-in-game.md | Plan normatif + slices de livraison Hall of Fame in-game |
 

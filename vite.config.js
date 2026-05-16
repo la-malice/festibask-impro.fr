@@ -20,5 +20,11 @@ export default {
     open: true,
     host: true,
     ...(https && { https }),
+    proxy: {
+      '/malix/api': {
+        target: 'http://127.0.0.1:8787',
+        changeOrigin: true
+      }
+    }
   },
 };

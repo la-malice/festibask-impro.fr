@@ -1,0 +1,11 @@
+{
+  "name": "malix-api",
+  "main": "src/index.js",
+  "compatibility_date": "2024-01-01",
+  "routes": [
+    {
+      "pattern": "festibask-impro.fr/malix/api/*",
+      "zone_name": "festibask-impro.fr"
+    }
+  ]
+}

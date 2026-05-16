@@ -27,6 +27,18 @@ npm install
 
 No `preview` script in package.json; after `npm run build`, serve `dist/` with any static server to preview production build.
 
+## Malix — API classement (Worker `worker-malix-api`)
+
+Hall of Fame in-game : le navigateur appelle `GET /malix/api/leaderboard?player_id=<uuid>` ; le Worker interroge PostHog (clé secrète côté Cloudflare uniquement). Spec : [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md).
+
+**Développement (deux terminaux) :**
+
+1. `cd worker-malix-api && npx wrangler secret put POSTHOG_PERSONAL_API_KEY` (une fois par environnement Wrangler)
+2. `npx wrangler dev` (écoute sur `http://127.0.0.1:8787`)
+3. À la racine : `npm run dev` — Vite proxy `/malix/api` → `127.0.0.1:8787`, donc depuis `http://localhost:8000/malix/` : `fetch('/malix/api/leaderboard?player_id=…')`
+
+**Production :** `cd worker-malix-api && npx wrangler deploy` — route `festibask-impro.fr/malix/api/*`. URL : `https://festibask-impro.fr/malix/api/leaderboard?player_id=<uuid>`. Détail : [worker-malix-api/README.md](../worker-malix-api/README.md).
+
 ## Fichier optionnel `access-config.local.js` (Malix)
 
 Le build peut remplacer `dist/malix/assets/access-config.js` par `malix/assets/access-config.local.js` s’il existe ([docs/ARCH.md](ARCH.md)). L’accès au jeu **ne dépend plus** de dates ni de géoloc ; le fichier versionné `malix/assets/access-config.js` expose un objet vide réservé aux extensions futures. L’exemple `malix/assets/access-config.local.example.js` documente le hook de copie au build.
