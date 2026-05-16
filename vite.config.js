@@ -12,6 +12,12 @@ const https =
     ? { key: fs.readFileSync(keyPath), cert: fs.readFileSync(certPath) }
     : undefined;
 
+/** Malix leaderboard BFF: prod by default (no local wrangler secret). Set MALIX_API_LOCAL=1 for worker-malix-api dev. */
+const malixApiProxyTarget =
+  process.env.MALIX_API_LOCAL === '1'
+    ? 'http://127.0.0.1:8787'
+    : 'https://festibask-impro.fr';
+
 /** @type {import('vite').UserConfig} */
 export default {
   root: '.',
@@ -22,8 +28,9 @@ export default {
     ...(https && { https }),
     proxy: {
       '/malix/api': {
-        target: 'http://127.0.0.1:8787',
-        changeOrigin: true
+        target: malixApiProxyTarget,
+        changeOrigin: true,
+        secure: true
       }
     }
   },

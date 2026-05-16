@@ -15,15 +15,15 @@ Clé **Personal API Key** PostHog (lecture recommandée). À configurer en **loc
 
 ## Développement local
 
-Terminal A :
+**Client Malix seul** (pas de changement Worker) : à la racine, `npm run dev` — le proxy Vite envoie `/malix/api` vers la **prod** (voir [docs/DEVELOPMENT.md](../docs/DEVELOPMENT.md)).
 
-```bash
-npx wrangler dev
-```
+**Worker en local** (deux terminaux) :
 
-Terminal B (site + proxy API) : à la racine du dépôt, `npm run dev` — Vite proxy `/malix/api` → `http://127.0.0.1:8787` (voir [docs/DEVELOPMENT.md](../docs/DEVELOPMENT.md)).
+1. Copier `.dev.vars.example` → `.dev.vars` avec `POSTHOG_PERSONAL_API_KEY`, ou `npx wrangler secret put POSTHOG_PERSONAL_API_KEY`.
+2. `npx wrangler dev`
+3. Racine : `MALIX_API_LOCAL=1 npm run dev`
 
-Sans secret : `502` `{ "error": "leaderboard_unavailable" }`.
+Sans secret sur `wrangler dev` : `502` `{ "error": "leaderboard_unavailable" }`.
 
 Avec secret :
 

@@ -1,0 +1,3 @@
+# Copier en .dev.vars (non versionné) pour wrangler dev avec PostHog en local.
+# Personal API Key PostHog (projet EU 124663), lecture seule recommandée.
+POSTHOG_PERSONAL_API_KEY=phx_votre_cle_ici

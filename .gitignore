@@ -11,6 +11,7 @@
 
 # Cloudflare Wrangler (dev local)
 **/.wrangler/
+**/.dev.vars
 
 # Dependencies
 node_modules/

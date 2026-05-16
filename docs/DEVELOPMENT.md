@@ -31,11 +31,16 @@ No `preview` script in package.json; after `npm run build`, serve `dist/` with a
 
 Hall of Fame in-game : le navigateur appelle `GET /malix/api/leaderboard?player_id=<uuid>` ; le Worker interroge PostHog (clé secrète côté Cloudflare uniquement). Spec : [docs/slices/malix-hall-of-fame-in-game.md](slices/malix-hall-of-fame-in-game.md).
 
-**Développement (deux terminaux) :**
+**Développement Malix / classement (client, slice 5+) :**
 
-1. `cd worker-malix-api && npx wrangler secret put POSTHOG_PERSONAL_API_KEY` (une fois par environnement Wrangler)
-2. `npx wrangler dev` (écoute sur `http://127.0.0.1:8787`)
-3. À la racine : `npm run dev` — Vite proxy `/malix/api` → `127.0.0.1:8787`, donc depuis `http://localhost:8000/malix/` : `fetch('/malix/api/leaderboard?player_id=…')`
+- `npm run dev` seul suffit : Vite proxy `/malix/api` → **prod** `https://festibask-impro.fr` (pas de wrangler local ni clé PostHog sur la machine).
+- Depuis `http://localhost:8000/malix/` ou `https://localhost:8000/malix/` : `fetch('/malix/api/leaderboard?player_id=…')`.
+
+**Développement du Worker (`worker-malix-api/`) :**
+
+1. Copier `worker-malix-api/.dev.vars.example` → `worker-malix-api/.dev.vars` et y mettre `POSTHOG_PERSONAL_API_KEY` (ou `npx wrangler secret put POSTHOG_PERSONAL_API_KEY`).
+2. `cd worker-malix-api && npx wrangler dev` (`http://127.0.0.1:8787`).
+3. À la racine : `MALIX_API_LOCAL=1 npm run dev` — proxy `/malix/api` → `127.0.0.1:8787`.
 
 **Production :** `cd worker-malix-api && npx wrangler deploy` — route `festibask-impro.fr/malix/api/*`. URL : `https://festibask-impro.fr/malix/api/leaderboard?player_id=<uuid>`. Détail : [worker-malix-api/README.md](../worker-malix-api/README.md).
 
