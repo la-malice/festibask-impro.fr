@@ -33,15 +33,18 @@ Ce document décrit le catalogue des événements envoyés au backend.
 | **programme_fullscreen_click** | Clic sur le bouton plein écran du programme | `resolution` (ex. `1920x1080`), `screen_width`, `screen_height` |
 | **malix_link_click** | Clic sur le lien « Chasse aux Malix » | `source`: `'footer'` (lien footer) ou `'doodle_popin'` (lien dans le popin après clic sur un doodle) |
 | **watch_video_play** | Première lecture effective de la vidéo sur la page `/video/` (événement `play` du `<video>`) | `source`: `'watch_page'` |
-| **malix_game_start** | Clic sur « Démarrer » après accès autorisé, entrée dans l’écran de jeu | — |
-| **malix_capture** | Capture réussie d’un Malix (tap sur le spawn) | `is_new` : booléen (nouvelle entrée dans la collection) ; `collection_total` : nombre d’entrées distinctes après capture ; `malix_type` : 1–27 ; `malix_variant` : 1–4 (ids jeu, pas de nom lisible) |
-| **malix_photo_saved** | Photo enregistrée dans l’album après prise de vue réussie (persistance locale) | `malix_type` : 1–27 ; `malix_variant` : 1–4 |
-| **malix_photo_share** | Partage réussi d’une photo depuis l’album (feuille système ou téléchargement) | `malix_type` : 1–27 ; `malix_variant` : 1–4 ; `share_method` : `'native'` (feuille de partage) ou `'download'` (repli enregistrement) |
-| **malix_trade_completed** | Échange 1↔1 validé entre deux joueurs | `incoming_type`, `incoming_variant` (Malix reçu) ; `outgoing_type`, `outgoing_variant` si l’offre locale est valide (Malix donné) |
+| **malix_game_start** | Clic sur « Démarrer » après accès autorisé, entrée dans l’écran de jeu | `malix_player_id` (UUID pseudonyme, sur tous les événements Malix ci-dessous) |
+| **malix_capture** | Capture réussie d’un Malix (tap sur le spawn) | `is_new` : booléen (nouvelle entrée dans la collection) ; `collection_total` : nombre d’entrées distinctes après capture ; `malix_type` : 1–27 ; `malix_variant` : 1–4 (ids jeu, pas de nom lisible) ; `malix_player_id` |
+| **malix_photo_saved** | Photo enregistrée dans l’album après prise de vue réussie (persistance locale) | `malix_type` : 1–27 ; `malix_variant` : 1–4 ; `malix_player_id` |
+| **malix_photo_share** | Partage réussi d’une photo depuis l’album (feuille système ou téléchargement) | `malix_type` : 1–27 ; `malix_variant` : 1–4 ; `share_method` : `'native'` (feuille de partage) ou `'download'` (repli enregistrement) ; `malix_player_id` |
+| **malix_trade_completed** | Échange 1↔1 validé entre deux joueurs | `incoming_type`, `incoming_variant` (Malix reçu) ; `outgoing_type`, `outgoing_variant` si l’offre locale est valide (Malix donné) ; `malix_player_id` |
+| **malix_player_snapshot** | Synchronisation des totaux joueur (identify / capture / photo / échange / reset) | `malidex_unique`, `malix_captures_total`, `malix_photos_total`, `malix_trades_total`, `malix_collection_complete` ; `malix_player_id` |
+
+**Propriétés personne PostHog** (mêmes noms que le snapshot, mises à jour via `setPersonProperties`) : `malidex_unique`, `malix_captures_total`, `malix_photos_total`, `malix_trades_total`, `malix_collection_complete`. Dashboard Hall of Fame : [docs/posthog-malix-hall-of-fame.md](posthog-malix-hall-of-fame.md).
 
 ## RGPD
 
-Seules des données d’usage (pas d’identifiants personnels) sont envoyées dans ces événements. La politique de confidentialité du site et le mécanisme de consentement (bandeau, etc.) restent de la responsabilité du site ; mentionner PostHog et l’usage des données dans la politique de confidentialité.
+Les événements Malix incluent un **identifiant technique pseudonyme** (`malix_player_id`, UUID généré localement) pour agréger la progression par appareil — pas de nom, email ni compte. Les autres événements du site restent sans identifiant personnel explicite. La politique de confidentialité du site et le mécanisme de consentement (bandeau, etc.) restent de la responsabilité du site ; mentionner PostHog et l’usage des données dans la politique de confidentialité.
 
 Sous **/malix**, l’init PostHog inclut **`disable_session_recording: true`** (pas d’enregistrement de session replay sur le mini-jeu).
 
@@ -51,6 +54,6 @@ Sous **/malix**, l’init PostHog inclut **`disable_session_recording: true`** (
 |------|----------|---------|
 | Site principal | `index.html`, `assets/js/script.js` | Snippet + événements custom du tableau ci-dessus (hors lignes watch / malix jeu). |
 | Page vidéo | `video/index.html` | Même clé et proxy ; événement **watch_video_play** ; pas de `script.js` partagé. |
-| Mini-jeu Malix | `malix/index.html`, `malix/assets/app.js` | Même clé et proxy ; init avec **`disable_session_recording: true`** et **`autocapture: false`** ; événements **malix_game_start**, **malix_capture**, **malix_photo_saved**, **malix_photo_share**, **malix_trade_completed** (pas de code PostHog Malix dans le bundle principal). |
+| Mini-jeu Malix | `malix/index.html`, `malix/assets/app.js`, `malix/assets/player-id.js` | Même clé et proxy ; init avec **`disable_session_recording: true`** et **`autocapture: false`** ; `identify` + événements **malix_*** dont **malix_player_snapshot** (pas de code PostHog Malix dans le bundle principal). |
 
 Le détail des événements Malix côté produit est aussi résumé dans [docs/SPEC-Malix.md](SPEC-Malix.md) § 1.4.

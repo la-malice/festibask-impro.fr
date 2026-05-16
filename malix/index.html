@@ -24,7 +24,7 @@
     <meta name="twitter:title" content="Chasse aux Malix – Mini-jeu Festibask'Impro" />
     <meta name="twitter:description" content="Collectionne les 27 Malix pendant le festival d'impro à Anglet. Pour les enfants, gratuit." />
     <meta name="twitter:image" content="https://festibask-impro.fr/assets/img/festibaskimpro-festival-impro-anglet-social.jpg" />
-    <link rel="stylesheet" href="./assets/style.css" />
+    <link rel="stylesheet" href="./assets/style.css?v=8" />
   </head>
   <body>
     <main class="app" id="app">
@@ -71,7 +71,15 @@
           <span class="sticker sticker-spotlight sticker-spotlight-3"></span>
         </div>
         <header class="topbar">
-          <h1 class="logo">Chasse aux Malix!</h1>
+          <button
+            type="button"
+            class="logo logo-btn"
+            id="playerCodeBtn"
+            aria-haspopup="dialog"
+            aria-controls="playerCodeOverlay"
+          >
+            Chasse aux Malix!
+          </button>
           <span class="cheat-badge hidden" id="cheatBadge">Mode cheat</span>
         </header>
 
@@ -152,6 +160,19 @@
           <img id="albumViewerImg" alt="Photo Malix" />
           <div class="album-viewer-actions">
             <button class="chip chip-ghost" id="shareAlbumPhotoBtn" type="button" disabled>Partager</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="confirm-overlay hidden" id="playerCodeOverlay" aria-label="Code joueur">
+        <div class="confirm-card player-code-card" role="dialog" aria-modal="true" aria-labelledby="playerCodeDialogTitle">
+          <h3 id="playerCodeDialogTitle">Ton code joueur</h3>
+          <p class="player-code-hint">Montre ce code au stand du festival.</p>
+          <p class="player-code-display" id="playerCodeDisplay" aria-live="polite"></p>
+          <p class="player-code-full" id="playerCodeFull"></p>
+          <div class="confirm-actions">
+            <button class="chip" id="copyPlayerCodeBtn" type="button">Copier</button>
+            <button class="chip chip-ghost" id="closePlayerCodeBtn" type="button">Fermer</button>
           </div>
         </div>
       </section>
@@ -273,6 +294,7 @@
     <script src="./assets/access-gate.js"></script>
     <script src="./assets/trade-session.js"></script>
     <script src="./assets/vendor/qrcode.min.js"></script>
-    <script src="./assets/app.js?v=6"></script>
+    <script src="./assets/player-id.js"></script>
+    <script src="./assets/app.js?v=7"></script>
   </body>
 </html>

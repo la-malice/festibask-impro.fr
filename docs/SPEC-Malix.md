@@ -30,7 +30,8 @@
 
 - **Même projet PostHog** que le site (clé et proxy `e.festibask-impro.fr`), chargé **uniquement** depuis `malix/index.html` et événements émis depuis `malix/assets/app.js` — **aucun** code analytics Malix dans `assets/js/script.js` ni `index.html` du site principal.
 - **Init** : `disable_session_recording: true` et `autocapture: false` (pas de replay de session sur le jeu ; pas d’autocapture de clics).
-- **Événements custom** (agrégats, pas de données personnelles) : **malix_game_start** (entrée en jeu après « Démarrer ») ; **malix_capture** avec `is_new`, `collection_total`, `malix_type` (1–27) et `malix_variant` (1–4) ; **malix_photo_saved** après enregistrement réussi d’une photo en mode album (`malix_type`, `malix_variant`) ; **malix_photo_share** après partage réussi depuis l’album (`malix_type`, `malix_variant`, `share_method` : `'native'` ou `'download'`) ; **malix_trade_completed** après un échange 1↔1 validé (`incoming_type` / `incoming_variant` ; `outgoing_type` / `outgoing_variant` si l’offre locale est parsable). Catalogue et périmètre : [docs/analytics-posthog.md](analytics-posthog.md).
+- **Identifiant joueur pseudonyme** : UUID v4 persistant en `localStorage` (`malix-player-id`), exposé au joueur via un code court (8 caractères) au clic sur le titre « Chasse aux Malix! » de l’écran de jeu ; `posthog.identify` avec cet UUID ; propriété `malix_player_id` sur tous les événements Malix. Pas de nom, email ni compte.
+- **Événements custom** : **malix_game_start** ; **malix_capture** (`is_new`, `collection_total`, `malix_type`, `malix_variant`) ; **malix_photo_saved** ; **malix_photo_share** (`share_method`) ; **malix_trade_completed** ; **malix_player_snapshot** (totaux agrégés : `malidex_unique`, `malix_captures_total`, `malix_photos_total`, `malix_trades_total`, `malix_collection_complete`). Propriétés personne PostHog synchronisées avec les mêmes totaux. Catalogue : [docs/analytics-posthog.md](analytics-posthog.md), Hall of Fame : [docs/posthog-malix-hall-of-fame.md](posthog-malix-hall-of-fame.md).
 
 ---
 
@@ -189,6 +190,8 @@
 - **Schéma recommandé** :
   - **Clé** : `malix-collection` (préfixe ou nom unique pour éviter les collisions avec d’éventuelles autres clés du même domaine).
   - **Valeur** : JSON. Exemple : tableau de paires `[{ "type": 1, "variant": 2 }, ...]` ou ensemble de chaînes `["1-2", "3-1", ...]`. Chaque paire (type, variante) n’apparaît qu’une fois. Type : entier 1–27, Variant : entier 1–4.
+  - **Identifiant joueur** : `malix-player-id` (UUID, conservé lors d’une réinitialisation de collection).
+  - **Compteurs** : `malix-capture-counts` (doublons par entrée), `malix-trades-total` (échanges validés), `malix-trade-owner-code` (0–99, protocole d’échange uniquement).
 - **Persistance** : à chaque capture, sauvegarder la collection mise à jour. Au chargement de la page, recharger la collection depuis localStorage pour afficher le Malidex à jour et détecter une éventuelle complétion (redirection vers écran de fin si déjà 108).
 - **Échange** : après commit d’un échange bilatéral, sauvegarder immédiatement la collection et les compteurs mis à jour. Les états intermédiaires de négociation ne sont pas persistés.
 

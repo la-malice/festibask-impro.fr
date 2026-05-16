@@ -2,13 +2,77 @@
   const collectionApi = window.MalixCollection;
   const accessGateApi = window.MalixAccessGate;
   const tradeApi = window.MalixTradeSession;
+  const playerIdApi = window.MalixPlayerId;
 
-  if (!collectionApi || !accessGateApi || !tradeApi) {
+  if (!collectionApi || !accessGateApi || !tradeApi || !playerIdApi) {
     return;
   }
 
+  const TRADES_TOTAL_KEY = 'malix-trades-total';
+  const playerId = playerIdApi.getOrCreatePlayerId(window.localStorage);
+
   function phCapture(name, props) {
-    if (window.posthog) window.posthog.capture(name, props || {});
+    if (!window.posthog) return;
+    const payload = Object.assign({ malix_player_id: playerId }, props || {});
+    window.posthog.capture(name, payload);
+  }
+
+  function sumCaptureCounts(counts) {
+    const entries = Object.values(counts || {});
+    let total = 0;
+    for (let index = 0; index < entries.length; index += 1) {
+      const value = Number.parseInt(String(entries[index]), 10);
+      if (Number.isInteger(value) && value > 0) {
+        total += value;
+      }
+    }
+    return total;
+  }
+
+  function loadTradesTotal() {
+    try {
+      const raw = window.localStorage.getItem(TRADES_TOTAL_KEY);
+      const parsed = Number.parseInt(String(raw), 10);
+      if (Number.isInteger(parsed) && parsed >= 0) {
+        return parsed;
+      }
+    } catch (error) {
+      return 0;
+    }
+    return 0;
+  }
+
+  function saveTradesTotal(total) {
+    try {
+      window.localStorage.setItem(TRADES_TOTAL_KEY, String(Math.max(0, total)));
+    } catch (error) {
+      return;
+    }
+  }
+
+  let tradesTotal = loadTradesTotal();
+
+  function getMalixStatsSnapshot() {
+    return {
+      malidex_unique: collection.size,
+      malix_captures_total: sumCaptureCounts(captureCounts),
+      malix_photos_total: photoAlbum.length,
+      malix_trades_total: tradesTotal,
+      malix_collection_complete: collectionApi.isComplete(collection)
+    };
+  }
+
+  function syncMalixPersonProperties() {
+    if (!window.posthog) return;
+    const snapshot = getMalixStatsSnapshot();
+    window.posthog.setPersonProperties(snapshot);
+    phCapture('malix_player_snapshot', snapshot);
+  }
+
+  function initMalixPosthog() {
+    if (!window.posthog) return;
+    window.posthog.identify(playerId);
+    syncMalixPersonProperties();
   }
 
   const variantColors = ['var(--v1)', 'var(--v2)', 'var(--v3)', 'var(--v4)'];
@@ -142,6 +206,12 @@
   const albumViewer = document.getElementById('albumViewer');
   const albumViewerImg = document.getElementById('albumViewerImg');
   const shareAlbumPhotoBtn = document.getElementById('shareAlbumPhotoBtn');
+  const playerCodeBtn = document.getElementById('playerCodeBtn');
+  const playerCodeOverlay = document.getElementById('playerCodeOverlay');
+  const playerCodeDisplay = document.getElementById('playerCodeDisplay');
+  const playerCodeFull = document.getElementById('playerCodeFull');
+  const copyPlayerCodeBtn = document.getElementById('copyPlayerCodeBtn');
+  const closePlayerCodeBtn = document.getElementById('closePlayerCodeBtn');
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -1811,6 +1881,7 @@
     persistPhotoAlbumIndex();
     await putPhotoBlob(photoId, blob);
     phCapture('malix_photo_saved', { malix_type: type, malix_variant: variant });
+    syncMalixPersonProperties();
   }
 
   async function takePhotoShot() {
@@ -3083,6 +3154,8 @@
       tradePhProps.outgoing_type = outgoing.type;
       tradePhProps.outgoing_variant = outgoing.variant;
     }
+    tradesTotal += 1;
+    saveTradesTotal(tradesTotal);
     phCapture('malix_trade_completed', tradePhProps);
     if (tradeProtocol) {
       tradeProtocol.markCommitted();
@@ -3090,6 +3163,7 @@
     collection = next.collection;
     captureCounts = next.counts;
     persistCollection();
+    syncMalixPersonProperties();
     updateProgress();
     renderMalidex();
     await runTradeCrossSequence(localOfferId, peerOfferId);
@@ -3135,6 +3209,7 @@
       malix_type: captured.type,
       malix_variant: captured.variant
     });
+    syncMalixPersonProperties();
     renderMalidex();
 
     if (captured.timeoutRef) {
@@ -3328,11 +3403,32 @@
     }
   }
 
+  function openPlayerCodeDialog() {
+    if (!playerCodeOverlay || !playerCodeDisplay || !playerCodeFull) return;
+    playerCodeDisplay.textContent = playerIdApi.formatDisplayCode(playerId);
+    playerCodeFull.textContent = playerId;
+    playerCodeOverlay.classList.remove('hidden');
+    if (closePlayerCodeBtn) {
+      closePlayerCodeBtn.focus();
+    }
+  }
+
+  function closePlayerCodeDialog() {
+    if (!playerCodeOverlay) return;
+    playerCodeOverlay.classList.add('hidden');
+    if (playerCodeBtn) {
+      playerCodeBtn.focus();
+    }
+  }
+
   function resetCollection() {
     collection = collectionApi.emptyState();
     captureCounts = collectionApi.emptyCounts();
+    tradesTotal = 0;
     collectionApi.clearCollection(window.localStorage);
     collectionApi.clearCounts(window.localStorage);
+    saveTradesTotal(0);
+    syncMalixPersonProperties();
     closeResetDialog();
     updateProgress();
     renderMalidex();
@@ -3356,6 +3452,7 @@
     persistCollection();
     updateProgress();
     renderMalidex();
+    syncMalixPersonProperties();
     closeMalidexSheet(true);
     showFinish();
   }
@@ -3523,9 +3620,40 @@
         return;
       }
       phCapture('malix_game_start');
+      syncMalixPersonProperties();
       showGame();
     });
   }
+
+  if (playerCodeBtn) {
+    playerCodeBtn.addEventListener('click', openPlayerCodeDialog);
+  }
+  if (closePlayerCodeBtn) {
+    closePlayerCodeBtn.addEventListener('click', closePlayerCodeDialog);
+  }
+  if (copyPlayerCodeBtn) {
+    copyPlayerCodeBtn.addEventListener('click', function () {
+      const text = playerId;
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+        navigator.clipboard.writeText(text).catch(function () {
+          return;
+        });
+      }
+    });
+  }
+  if (playerCodeOverlay) {
+    playerCodeOverlay.addEventListener('click', function (event) {
+      if (event.target === playerCodeOverlay) {
+        closePlayerCodeDialog();
+      }
+    });
+  }
+  document.addEventListener('keydown', function (event) {
+    if (event.key !== 'Escape' || !playerCodeOverlay || playerCodeOverlay.classList.contains('hidden')) {
+      return;
+    }
+    closePlayerCodeDialog();
+  });
 
   window.addEventListener('resize', syncOrientationGuard);
   window.addEventListener('orientationchange', syncOrientationGuard);
@@ -3598,6 +3726,7 @@
     malidexHandle.addEventListener('pointercancel', onHandleRelease);
   }
 
+  initMalixPosthog();
   ensureCountsConsistency();
   tradeOwnerCode = loadTradeOwnerCode();
   audienceSeatAssignment = loadAudienceSeatAssignment();

@@ -410,6 +410,63 @@ body {
     0 6px 12px rgba(71, 46, 107, 0.35);
 }
 
+/* Bouton titre : pas de -webkit-text-stroke (artefacts horizontaux sur Safari). */
+.screen-game .logo.logo-btn {
+  color: #fffef7;
+  -webkit-text-fill-color: #fffef7;
+  -webkit-text-stroke: 0;
+  paint-order: normal;
+  text-shadow:
+    0 1px 0 rgba(72, 40, 118, 0.95),
+    0 3px 8px rgba(71, 46, 107, 0.45);
+}
+
+.logo-btn {
+  cursor: pointer;
+  margin: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: 'Baloo 2', 'Nunito', 'Comic Sans MS', 'Trebuchet MS', 'Segoe UI', sans-serif;
+  font-size: clamp(2rem, 8vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: 0.03em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.logo-btn:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.95);
+  outline-offset: 3px;
+}
+
+.player-code-card {
+  text-align: center;
+  max-width: min(92vw, 22rem);
+}
+
+.player-code-hint {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+  color: rgba(48, 32, 72, 0.85);
+}
+
+.player-code-display {
+  margin: 0 0 8px;
+  font-size: clamp(2rem, 10vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: #5b2f9b;
+}
+
+.player-code-full {
+  margin: 0 0 16px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  word-break: break-all;
+  color: rgba(48, 32, 72, 0.65);
+}
+
 .chip,
 .danger {
   border: 0;
